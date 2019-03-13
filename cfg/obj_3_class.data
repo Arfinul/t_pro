@@ -1,0 +1,5 @@
+classes= 3
+train  = cfg/data/train.txt
+valid  = cfg/data/test.txt
+names = cfg/obj_3_class.names
+backup = backup/
