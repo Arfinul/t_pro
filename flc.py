@@ -410,5 +410,5 @@ def one_and_all_testing():
     return cc, fc
 
 
-cc, fc = flc_with_report()
-print("Fine = ", fc, ", Coarse = ", cc)
+# cc, fc = flc_with_report()
+# print("Fine = ", fc, ", Coarse = ", cc)
