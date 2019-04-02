@@ -2,8 +2,8 @@ import cv2
 import numpy as np
 import glob, os, ntpath
 
-image_path = "/home/arfin/Documents/GitHub/tea/Flc/test_data/2_cropped_images"
-aug_path = "/home/arfin/Documents/GitHub/tea/Flc/test_data/4_augmented/"
+image_path = "/home/agnext/Music/flc_2/test_data/2_cropped_images"
+aug_path = "/home/agnext/Music/flc_2/test_data/4_augmented/"
 angle_list = [45, 90, 135, 180, 225, 270]
 
 def getTranslationMatrix2d(dx, dy):
@@ -60,7 +60,7 @@ def rotateImage(image, angle):
 
     trans_mat = getTranslationMatrix2d(dx, dy)
     affine_mat = (np.matrix(trans_mat) * np.matrix(rot_mat))[0:2, :]
-    result = cv2.warpAffine(image, affine_mat, new_image_size, flags=cv2.INTER_LINEAR)
+    result = cv2.warpAffine(image, affine_mat, new_image_size, flags=cv2.INTER_LINEAR, borderValue = (255,255,255))
     return result
 
 

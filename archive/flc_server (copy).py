@@ -14,7 +14,7 @@ from werkzeug.utils import secure_filename
 app = Flask(__name__)
 
 # cwd = '/home/agnext/Documents/Flc_copy/test_data/1_images'
-cwd = '/home/agnext/Music/flc_2/test_data/1_images'
+cwd = '/home/agnext/Music/flc/test_data/1_images'
 subdir_list = None
 ALLOWED_EXTENSIONS = {'zip'}
 

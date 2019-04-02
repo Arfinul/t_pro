@@ -2,50 +2,117 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="6b270114-ba8b-4c4a-8083-86245e988c03" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/../.idea/misc.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../.idea/vcs.xml" afterDir="false" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Makefile" afterPath="$PROJECT_DIR$/Makefile" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/darknet" afterPath="$PROJECT_DIR$/darknet" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/obj/activation_kernels.o" afterPath="$PROJECT_DIR$/obj/activation_kernels.o" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/obj/activation_layer.o" afterPath="$PROJECT_DIR$/obj/activation_layer.o" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/obj/activations.o" afterPath="$PROJECT_DIR$/obj/activations.o" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/obj/art.o" afterPath="$PROJECT_DIR$/obj/art.o" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/obj/avgpool_layer.o" afterPath="$PROJECT_DIR$/obj/avgpool_layer.o" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/obj/avgpool_layer_kernels.o" afterPath="$PROJECT_DIR$/obj/avgpool_layer_kernels.o" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/obj/batchnorm_layer.o" afterPath="$PROJECT_DIR$/obj/batchnorm_layer.o" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/obj/blas.o" afterPath="$PROJECT_DIR$/obj/blas.o" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/obj/blas_kernels.o" afterPath="$PROJECT_DIR$/obj/blas_kernels.o" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/obj/box.o" afterPath="$PROJECT_DIR$/obj/box.o" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/obj/captcha.o" afterPath="$PROJECT_DIR$/obj/captcha.o" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/obj/cifar.o" afterPath="$PROJECT_DIR$/obj/cifar.o" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/obj/classifier.o" afterPath="$PROJECT_DIR$/obj/classifier.o" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/obj/coco.o" afterPath="$PROJECT_DIR$/obj/coco.o" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/obj/col2im.o" afterPath="$PROJECT_DIR$/obj/col2im.o" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/obj/col2im_kernels.o" afterPath="$PROJECT_DIR$/obj/col2im_kernels.o" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/obj/compare.o" afterPath="$PROJECT_DIR$/obj/compare.o" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/obj/connected_layer.o" afterPath="$PROJECT_DIR$/obj/connected_layer.o" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/obj/convolutional_kernels.o" afterPath="$PROJECT_DIR$/obj/convolutional_kernels.o" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/obj/convolutional_layer.o" afterPath="$PROJECT_DIR$/obj/convolutional_layer.o" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/obj/cost_layer.o" afterPath="$PROJECT_DIR$/obj/cost_layer.o" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/obj/crnn_layer.o" afterPath="$PROJECT_DIR$/obj/crnn_layer.o" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/obj/crop_layer.o" afterPath="$PROJECT_DIR$/obj/crop_layer.o" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/obj/crop_layer_kernels.o" afterPath="$PROJECT_DIR$/obj/crop_layer_kernels.o" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/obj/cuda.o" afterPath="$PROJECT_DIR$/obj/cuda.o" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/obj/darknet.o" afterPath="$PROJECT_DIR$/obj/darknet.o" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/obj/data.o" afterPath="$PROJECT_DIR$/obj/data.o" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/obj/demo.o" afterPath="$PROJECT_DIR$/obj/demo.o" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/obj/detection_layer.o" afterPath="$PROJECT_DIR$/obj/detection_layer.o" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/obj/detector.o" afterPath="$PROJECT_DIR$/obj/detector.o" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/obj/dice.o" afterPath="$PROJECT_DIR$/obj/dice.o" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/obj/dropout_layer.o" afterPath="$PROJECT_DIR$/obj/dropout_layer.o" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/obj/dropout_layer_kernels.o" afterPath="$PROJECT_DIR$/obj/dropout_layer_kernels.o" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/obj/gemm.o" afterPath="$PROJECT_DIR$/obj/gemm.o" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/obj/go.o" afterPath="$PROJECT_DIR$/obj/go.o" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/obj/gru_layer.o" afterPath="$PROJECT_DIR$/obj/gru_layer.o" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/obj/http_stream.o" afterPath="$PROJECT_DIR$/obj/http_stream.o" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/obj/im2col.o" afterPath="$PROJECT_DIR$/obj/im2col.o" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/obj/im2col_kernels.o" afterPath="$PROJECT_DIR$/obj/im2col_kernels.o" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/obj/image.o" afterPath="$PROJECT_DIR$/obj/image.o" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/obj/layer.o" afterPath="$PROJECT_DIR$/obj/layer.o" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/obj/list.o" afterPath="$PROJECT_DIR$/obj/list.o" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/obj/local_layer.o" afterPath="$PROJECT_DIR$/obj/local_layer.o" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/obj/matrix.o" afterPath="$PROJECT_DIR$/obj/matrix.o" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/obj/maxpool_layer.o" afterPath="$PROJECT_DIR$/obj/maxpool_layer.o" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/obj/maxpool_layer_kernels.o" afterPath="$PROJECT_DIR$/obj/maxpool_layer_kernels.o" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/obj/network.o" afterPath="$PROJECT_DIR$/obj/network.o" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/obj/network_kernels.o" afterPath="$PROJECT_DIR$/obj/network_kernels.o" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/obj/nightmare.o" afterPath="$PROJECT_DIR$/obj/nightmare.o" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/obj/normalization_layer.o" afterPath="$PROJECT_DIR$/obj/normalization_layer.o" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/obj/option_list.o" afterPath="$PROJECT_DIR$/obj/option_list.o" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/obj/parser.o" afterPath="$PROJECT_DIR$/obj/parser.o" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/obj/region_layer.o" afterPath="$PROJECT_DIR$/obj/region_layer.o" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/obj/reorg_layer.o" afterPath="$PROJECT_DIR$/obj/reorg_layer.o" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/obj/reorg_old_layer.o" afterPath="$PROJECT_DIR$/obj/reorg_old_layer.o" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/obj/rnn.o" afterPath="$PROJECT_DIR$/obj/rnn.o" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/obj/rnn_layer.o" afterPath="$PROJECT_DIR$/obj/rnn_layer.o" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/obj/rnn_vid.o" afterPath="$PROJECT_DIR$/obj/rnn_vid.o" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/obj/route_layer.o" afterPath="$PROJECT_DIR$/obj/route_layer.o" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/obj/shortcut_layer.o" afterPath="$PROJECT_DIR$/obj/shortcut_layer.o" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/obj/softmax_layer.o" afterPath="$PROJECT_DIR$/obj/softmax_layer.o" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/obj/super.o" afterPath="$PROJECT_DIR$/obj/super.o" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/obj/swag.o" afterPath="$PROJECT_DIR$/obj/swag.o" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/obj/tag.o" afterPath="$PROJECT_DIR$/obj/tag.o" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/obj/tree.o" afterPath="$PROJECT_DIR$/obj/tree.o" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/obj/upsample_layer.o" afterPath="$PROJECT_DIR$/obj/upsample_layer.o" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/obj/utils.o" afterPath="$PROJECT_DIR$/obj/utils.o" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/obj/voxel.o" afterPath="$PROJECT_DIR$/obj/voxel.o" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/obj/writing.o" afterPath="$PROJECT_DIR$/obj/writing.o" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/obj/yolo.o" afterPath="$PROJECT_DIR$/obj/yolo.o" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/obj/yolo_layer.o" afterPath="$PROJECT_DIR$/obj/yolo_layer.o" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.gitignore" afterPath="$PROJECT_DIR$/.gitignore" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/darknet-master.iml" afterPath="$PROJECT_DIR$/.idea/darknet-master.iml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/misc.xml" afterPath="$PROJECT_DIR$/.idea/misc.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/vcs.xml" afterPath="$PROJECT_DIR$/.idea/vcs.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/archive/rename.py" afterPath="$PROJECT_DIR$/archive/rename.py" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/classify.py" afterPath="$PROJECT_DIR$/classify.py" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/display_results.py" afterPath="$PROJECT_DIR$/display_results.py" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/flc.py" afterPath="$PROJECT_DIR$/flc.py" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/flc_server.py" afterPath="$PROJECT_DIR$/flc_server.py" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/flc_white_server.py" afterPath="$PROJECT_DIR$/flc_white_server.py" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/rotate.py" afterPath="$PROJECT_DIR$/rotate.py" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/detector.c" afterPath="$PROJECT_DIR$/src/detector.c" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/image.c" afterPath="$PROJECT_DIR$/src/image.c" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
+    <option name="TRACKING_ENABLED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
   </component>
+  <component name="CreatePatchCommitExecutor">
+    <option name="PATCH_PATH" value="" />
+  </component>
+  <component name="ExecutionTargetManager" SELECTED_TARGET="default_target" />
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/flc.py">
+      <file leaf-file-name="classify.py" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/classify.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="590">
-              <caret line="291" column="20" lean-forward="true" selection-start-line="291" selection-start-column="20" selection-end-line="291" selection-end-column="20" />
+            <state relative-caret-position="738">
+              <caret line="41" column="0" lean-forward="true" selection-start-line="41" selection-start-column="0" selection-end-line="41" selection-end-column="0" />
               <folding>
-                <element signature="e#0#11#0" expanded="true" />
+                <element signature="e#0#17#0" expanded="true" />
               </folding>
             </state>
           </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/test.list">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="720">
-              <caret line="101" column="93" selection-start-line="101" selection-start-column="93" selection-end-line="101" selection-end-column="93" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/result.list">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="270">
-              <caret line="18" lean-forward="true" selection-start-line="18" selection-end-line="18" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/trap.list">
-          <provider selected="true" editor-type-id="text-editor" />
         </entry>
       </file>
     </leaf>
@@ -83,43 +150,59 @@
         <option value="$PROJECT_DIR$/segmentation.py" />
         <option value="$PROJECT_DIR$/count.py" />
         <option value="$PROJECT_DIR$/new.py" />
-        <option value="$PROJECT_DIR$/rotate.py" />
-        <option value="$PROJECT_DIR$/flc_server.py" />
         <option value="$PROJECT_DIR$/trap.list" />
-        <option value="$PROJECT_DIR$/display_results.py" />
         <option value="$PROJECT_DIR$/classify.py" />
+        <option value="$PROJECT_DIR$/display_results.py" />
         <option value="$PROJECT_DIR$/flc.py" />
+        <option value="$PROJECT_DIR$/flc_server.py" />
+        <option value="$PROJECT_DIR$/flc_white_server.py" />
+        <option value="$PROJECT_DIR$/rotate.py" />
       </list>
     </option>
   </component>
-  <component name="ProjectFrameBounds" extendedState="6">
-    <option name="x" value="85" />
-    <option name="y" value="25" />
-    <option name="width" value="1750" />
-    <option name="height" value="969" />
+  <component name="ProjectFrameBounds">
+    <option name="x" value="65" />
+    <option name="y" value="24" />
+    <option name="width" value="1855" />
+    <option name="height" value="1056" />
   </component>
   <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
   <component name="ProjectView">
-    <navigator proportions="" version="1">
+    <navigator currentView="ProjectPane" proportions="" version="1">
+      <flattenPackages />
+      <showMembers />
+      <showModules />
+      <showLibraryContents />
+      <hideEmptyPackages />
+      <abbreviatePackageNames />
+      <autoscrollToSource />
+      <autoscrollFromSource />
+      <sortByType />
+      <manualOrder />
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
-      <pane id="Scope" />
       <pane id="ProjectPane">
         <subPane>
-          <expand>
-            <path>
-              <item name="Flc" type="b2602c69:ProjectViewProjectNode" />
-              <item name="Flc" type="462c0819:PsiDirectoryNode" />
-            </path>
-          </expand>
-          <select />
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="flc_2" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="flc_2" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
         </subPane>
       </pane>
+      <pane id="Scratches" />
+      <pane id="Scope" />
     </panes>
   </component>
   <component name="PropertiesComponent">
     <property name="last_opened_file_path" value="$PROJECT_DIR$" />
+    <property name="settings.editor.selected.configurable" value="com.jetbrains.python.configuration.PyActiveSdkModuleConfigurable" />
   </component>
   <component name="RunDashboard">
     <option name="ruleStates">
@@ -134,8 +217,7 @@
     </option>
   </component>
   <component name="RunManager">
-    <configuration name="count" type="PythonConfigurationType" factoryName="Python" temporary="true">
-      <module name="darknet-master" />
+    <configuration default="false" name="count" type="PythonConfigurationType" factoryName="Python" temporary="true">
       <option name="INTERPRETER_OPTIONS" value="" />
       <option name="PARENT_ENVS" value="true" />
       <envs>
@@ -146,20 +228,35 @@
       <option name="IS_MODULE_SDK" value="true" />
       <option name="ADD_CONTENT_ROOTS" value="true" />
       <option name="ADD_SOURCE_ROOTS" value="true" />
+      <module name="darknet-master" />
       <option name="SCRIPT_NAME" value="$PROJECT_DIR$/count.py" />
       <option name="PARAMETERS" value="" />
       <option name="SHOW_COMMAND_LINE" value="false" />
-      <option name="EMULATE_TERMINAL" value="false" />
-      <option name="MODULE_MODE" value="false" />
-      <option name="REDIRECT_INPUT" value="false" />
-      <option name="INPUT_FILE" value="" />
-      <method v="2" />
+      <method />
     </configuration>
-    <recent_temporary>
-      <list>
-        <item itemvalue="Python.count" />
-      </list>
-    </recent_temporary>
+    <configuration default="true" type="PythonConfigurationType" factoryName="Python">
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="" />
+      <option name="IS_MODULE_SDK" value="false" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <module name="" />
+      <option name="SCRIPT_NAME" value="" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <method />
+    </configuration>
+    <list size="1">
+      <item index="0" class="java.lang.String" itemvalue="Python.count" />
+    </list>
+  </component>
+  <component name="ShelveChangesManager" show_recycled="false">
+    <option name="remove_strategy" value="false" />
   </component>
   <component name="SvnConfiguration">
     <configuration />
@@ -175,120 +272,128 @@
     <servers />
   </component>
   <component name="ToolWindowManager">
-    <frame x="64" y="-11" width="1857" height="1092" extended-state="6" />
-    <editor active="true" />
+    <frame x="65" y="24" width="1855" height="1056" extended-state="6" />
+    <editor active="false" />
     <layout>
-      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.15829694" />
-      <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
-      <window_info id="Favorites" order="2" side_tool="true" />
-      <window_info anchor="bottom" id="Message" order="0" />
-      <window_info anchor="bottom" id="Find" order="1" />
-      <window_info anchor="bottom" id="Run" order="2" weight="0.3295099" />
-      <window_info anchor="bottom" id="Debug" order="3" weight="0.4" />
-      <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
-      <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
-      <window_info anchor="bottom" id="TODO" order="6" />
-      <window_info anchor="bottom" id="Version Control" order="7" />
-      <window_info anchor="bottom" id="Terminal" order="8" weight="0.07612096" />
-      <window_info anchor="bottom" id="Event Log" order="9" side_tool="true" />
-      <window_info anchor="bottom" id="Python Console" order="10" />
-      <window_info anchor="right" id="Commander" internal_type="SLIDING" order="0" type="SLIDING" weight="0.4" />
-      <window_info anchor="right" id="Ant Build" order="1" weight="0.25" />
-      <window_info anchor="right" content_ui="combo" id="Hierarchy" order="2" weight="0.25" />
+      <window_info id="Project" active="true" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.24959569" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
+      <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="-1" side_tool="true" content_ui="tabs" />
+      <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="-1" side_tool="false" content_ui="tabs" />
+      <window_info id="Python Console" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="-1" side_tool="false" content_ui="tabs" />
+      <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
+      <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="-1" side_tool="false" content_ui="tabs" />
+      <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="-1" side_tool="true" content_ui="tabs" />
+      <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
+      <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="2" side_tool="false" content_ui="combo" />
+      <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
+      <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
+      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
+      <window_info id="Inspection" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
+      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
+      <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
+      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
     </layout>
-    <layout-to-restore>
-      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.15829694" />
-      <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
-      <window_info id="Favorites" order="2" side_tool="true" />
-      <window_info anchor="bottom" id="Message" order="0" />
-      <window_info anchor="bottom" id="Find" order="1" />
-      <window_info anchor="bottom" id="Run" order="2" weight="0.3295099" />
-      <window_info anchor="bottom" id="Debug" order="3" weight="0.4" />
-      <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
-      <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
-      <window_info anchor="bottom" id="TODO" order="6" />
-      <window_info anchor="bottom" id="Version Control" order="7" />
-      <window_info anchor="bottom" id="Terminal" order="8" weight="0.07612096" />
-      <window_info anchor="bottom" id="Event Log" order="9" side_tool="true" />
-      <window_info anchor="bottom" id="Python Console" order="10" />
-      <window_info anchor="right" id="Commander" internal_type="SLIDING" order="0" type="SLIDING" weight="0.4" />
-      <window_info anchor="right" id="Ant Build" order="1" weight="0.25" />
-      <window_info anchor="right" content_ui="combo" id="Hierarchy" order="2" weight="0.25" />
-    </layout-to-restore>
+  </component>
+  <component name="VcsContentAnnotationSettings">
+    <option name="myLimit" value="2678400000" />
+  </component>
+  <component name="XDebuggerManager">
+    <breakpoint-manager />
+    <watches-manager />
   </component>
   <component name="editorHistoryManager">
+    <entry file="file://$PROJECT_DIR$/flc.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="0">
+          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding>
+            <element signature="e#0#11#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/Video2Frames.py" />
     <entry file="file://$PROJECT_DIR$/leaf_tracking.py" />
     <entry file="file://$PROJECT_DIR$/count.py" />
     <entry file="file://$PROJECT_DIR$/new.py" />
+    <entry file="file://$PROJECT_DIR$/test.list" />
+    <entry file="file://$PROJECT_DIR$/result.list" />
     <entry file="file://$PROJECT_DIR$/darknet.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-5175" />
+        <state relative-caret-position="0">
+          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding />
+        </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/flc_white_server.py">
-      <provider selected="true" editor-type-id="text-editor" />
+    <entry file="file://$PROJECT_DIR$/display_results.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-363">
+          <caret line="19" column="25" lean-forward="true" selection-start-line="19" selection-start-column="25" selection-end-line="19" selection-end-column="25" />
+          <folding />
+        </state>
+      </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/rotate.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="195">
-          <caret line="15" selection-start-line="15" selection-end-line="15" />
+        <state relative-caret-position="357">
+          <caret line="136" column="28" lean-forward="false" selection-start-line="136" selection-start-column="28" selection-end-line="136" selection-end-column="28" />
           <folding>
             <element signature="e#0#10#0" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/train_valid_split.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-1371">
+          <caret line="11" column="44" lean-forward="true" selection-start-line="11" selection-start-column="44" selection-end-line="11" selection-end-column="44" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/flc_white_server.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="162">
+          <caret line="11" column="0" lean-forward="true" selection-start-line="11" selection-start-column="0" selection-end-line="11" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/flc.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="3291">
+          <caret line="294" column="31" lean-forward="true" selection-start-line="294" selection-start-column="31" selection-end-line="294" selection-end-column="31" />
+          <folding>
+            <element signature="e#0#11#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/flc_server.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="975">
-          <caret line="65" column="34" lean-forward="true" selection-start-line="65" selection-start-column="34" selection-end-line="65" selection-end-column="34" />
+        <state relative-caret-position="321">
+          <caret line="91" column="41" lean-forward="true" selection-start-line="91" selection-start-column="41" selection-end-line="91" selection-end-column="41" />
           <folding>
             <element signature="e#43#54#0" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/classify.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-325">
-          <caret line="192" column="4" selection-start-line="192" selection-start-column="4" selection-end-line="192" selection-end-column="4" />
-          <folding>
-            <element signature="e#0#17#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/display_results.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-505">
-          <caret line="56" column="4" selection-start-line="56" selection-start-column="4" selection-end-line="56" selection-end-column="4" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/trap.list">
-      <provider selected="true" editor-type-id="text-editor" />
-    </entry>
-    <entry file="file://$PROJECT_DIR$/test.list">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="720">
-          <caret line="101" column="93" selection-start-line="101" selection-start-column="93" selection-end-line="101" selection-end-column="93" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/result.list">
+    <entry file="file://$PROJECT_DIR$/cfg/yolo-obj_15700.cfg">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="270">
-          <caret line="18" lean-forward="true" selection-start-line="18" selection-end-line="18" />
+          <caret line="15" column="6" lean-forward="true" selection-start-line="15" selection-start-column="6" selection-end-line="15" selection-end-column="6" />
+          <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/flc.py">
+    <entry file="file://$PROJECT_DIR$/classify.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="590">
-          <caret line="291" column="20" lean-forward="true" selection-start-line="291" selection-start-column="20" selection-end-line="291" selection-end-column="20" />
+        <state relative-caret-position="738">
+          <caret line="41" column="0" lean-forward="true" selection-start-line="41" selection-start-column="0" selection-end-line="41" selection-end-column="0" />
           <folding>
-            <element signature="e#0#11#0" expanded="true" />
+            <element signature="e#0#17#0" expanded="true" />
           </folding>
         </state>
       </provider>

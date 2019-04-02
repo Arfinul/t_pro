@@ -7,7 +7,7 @@ import os
 # Initialize the Flask application
 app = Flask(__name__)
 
-cwd = '/home/agnext/Documents/Flc_copy/test_data/1_images'  # mohali server
+cwd = '/home/agnext/Music/flc_2/test_data/1_images'  # mohali server
 # cwd = '/home/agnext-kgp/Documents/tea/Flc/test_data/1_images'  # local
 
 
