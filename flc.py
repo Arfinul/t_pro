@@ -1,29 +1,28 @@
 import glob
 import os
-
 import cv2
-import imutils
-
+import imutils, ConfigParser
 import classify, rotate, display_results
+
+
+config = ConfigParser.ConfigParser()
+config.read('flc.conf')
+root_folder = config.get('input_path', 'root_folder')
+test_data_dir = root_folder + '/test_data'
+input_images = test_data_dir + '/1_images/*'
+cropped_path = test_data_dir + '/2_cropped_images'
+
+
+
 
 
 # Runs in gcp server
 def flc_only():
-    print("Generating Fine Leaf count only")
-    print("Segmenting...")
-
-    root_folder = '/home/agnext/Music/flc_2'
-
-    image_path = '/home/agnext/Music/flc_2/test_data/1_images/*'
-
-    cropped_path = '/home/agnext/Music/flc_2/test_data/2_cropped_images'
-
-    # fourcc = cv2.VideoWriter_fourcc(*'XVID')  # Save video file
-    # out = cv2.VideoWriter('out.avi', fourcc, 20.0, (int(cap.get(3)), int(cap.get(4))))  # Save video file
-
+    print("Generating Fine Leaf count only ... wait !!!")
     firstFrame = None
     count = 0
-    for file in sorted(glob.glob(image_path)):
+    print(sorted(glob.glob(input_images)))
+    for file in sorted(glob.glob(input_images)):
         frame = cv2.imread(file)
         frame = cv2.addWeighted(frame, 2, frame, 0, 0)
         frame = imutils.resize(frame, width=1000)
@@ -45,7 +44,7 @@ def flc_only():
         # dilate the thresholded image to fill in holes, then find contours on thresholded image
         thresh = cv2.dilate(thresh, None, iterations=2)  # size of foreground object increases
 
-        # Find contours
+        # Find contoussrs
         cnts = cv2.findContours(thresh.copy(), cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
         cnts = imutils.grab_contours(cnts)
 
@@ -84,7 +83,7 @@ def flc_only():
 
     # out.release()  # Save video file
     # cv2.destroyAllWindows()
-    r = glob.glob(image_path)
+    r = glob.glob(input_images)
     for i in r:
         os.remove(i)
     print("Total bunches = %d" % len(
@@ -101,7 +100,7 @@ def flc_only():
     os.system('rm ' + cropped_path + '/*')
     cc, fc = classify.count()
 
-    r = glob.glob(image_path)
+    r = glob.glob(input_images)
     for i in r:
         os.remove(i)
 
@@ -112,16 +111,11 @@ def flc_only():
 def flc_with_report():
     print("Segmenting...")
 
-    root_folder = '/home/agnext/Music/flc_2'
-
-    image_path = '/home/agnext/Music/flc_2/test_data/1_images/*'
-
-    cropped_path = '/home/agnext/Music/flc_2/test_data/2_cropped_images'
-
     firstFrame = None
     count = 0
-    for file in sorted(glob.glob(image_path)):
+    for file in sorted(glob.glob(input_images)):
         frame = cv2.imread(file)
+        print frame
         frame = cv2.addWeighted(frame, 2, frame, 0, 0)
         frame = imutils.resize(frame, width=1000)
         gray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
@@ -173,7 +167,7 @@ def flc_with_report():
 
         count += 1
 
-    r = glob.glob(image_path)
+    r = glob.glob(input_images)
     for i in r:
         os.remove(i)
     print("Total bunches = %d" % len(
@@ -189,7 +183,7 @@ def flc_with_report():
     classify.yolo_classify_full()
     # cc, fc = classify.count()
 
-    r = glob.glob(image_path)
+    r = glob.glob(input_images)
     for i in r:
         os.remove(i)
 
@@ -204,18 +198,13 @@ def flc_with_report():
 # Runs for all full flow with one by one image result
 def flc_with_report_without_filter():
     print("full flow")
-    root_folder = '/home/agnext/Music/flc_2'
-
-    image_path = '/home/agnext/Music/flc_2/test_data/1_images/*'
-
-    cropped_path = '/home/agnext/Music/flc_2/test_data/2_cropped_images'
 
     # fourcc = cv2.VideoWriter_fourcc(*'XVID')  # Save video file
     # out = cv2.VideoWriter('out.avi', fourcc, 20.0, (int(cap.get(3)), int(cap.get(4))))  # Save video file
 
     firstFrame = None
     count = 0
-    for file in sorted(glob.glob(image_path)):
+    for file in sorted(glob.glob(input_images)):
         frame = cv2.imread(file)
         frame = cv2.addWeighted(frame, 2, frame, 0, 0)
         frame = imutils.resize(frame, width=1000)
@@ -294,7 +283,7 @@ def flc_with_report_without_filter():
     # classify.yolo_classify_full()
     # cc, fc = classify.count()
 
-    r = glob.glob(image_path)
+    r = glob.glob(input_images)
     for i in r:
         os.remove(i)
 

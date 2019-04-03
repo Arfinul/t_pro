@@ -111,3 +111,13 @@ venv.bak/
 # mypy
 .mypy_cache/
 >>>>>>> ef3e6c4448335b887d28ca0aa2584a4fa188d71c
+
+# Flc files to ignore
+*.weights
+*.pdf
+*.list
+predictions.jpg
+
+# Flc folders to ignore
+test_data/*
+
