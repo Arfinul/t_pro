@@ -212,7 +212,7 @@ def trap_images_to_test():
     os.system('rm ' + augmented_path + '/*.pdf')
 
 
-def trap_images_to_test_2():
+def yolo_classify_each_and_generate_report():
     from collections import defaultdict
     filename = 'result.list'
     image_file = 'test.list'

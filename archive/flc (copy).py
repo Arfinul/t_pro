@@ -195,7 +195,7 @@ def flc_with_report():
         os.remove(i)
 
 
-    fc, cc = classify.trap_images_to_test_2()
+    fc, cc = classify.yolo_classify_each_and_generate_report()
     print("Fine = ", fc, ", Coarse = ", cc)
 
     os.system('rm ' + cropped_path + '/*')

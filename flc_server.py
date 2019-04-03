@@ -18,6 +18,7 @@ cwd = '/home/agnext/Music/flc_2/test_data/1_images'
 subdir_list = None
 ALLOWED_EXTENSIONS = {'zip'}
 
+
 def allowed_file(filename):
     return '.' in filename and filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
 
@@ -113,7 +114,7 @@ def upload_big_data():
 
 
 # start flask app
-app.run(host="0.0.0.0", port=6000)  # Server
+app.run(host="0.0.0.0", port=5000)  # Server
 #sapp.run(port=6000)  # Local
 
 
