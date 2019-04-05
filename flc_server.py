@@ -1,20 +1,22 @@
 # Upload multiple images and prpocess flc
 
 import glob
-import os
+import os, shutil
 import flc
 import time
 import zipfile
-
-import jsonpickle
+import jsonpickle, ConfigParser
 from flask import Flask, request, Response
 from werkzeug.utils import secure_filename
 
 # Initialize the Flask application
 app = Flask(__name__)
 
-# cwd = '/home/agnext/Documents/Flc_copy/test_data/1_images'
-cwd = '/home/agnext/Music/flc_2/test_data/1_images'
+config = ConfigParser.ConfigParser()
+config.read('flc.conf')
+root_folder = config.get('input_path', 'root_folder')
+test_data_dir = root_folder + '/test_data'
+cwd = test_data_dir + '/1_images'
 subdir_list = None
 ALLOWED_EXTENSIONS = {'zip'}
 
@@ -46,11 +48,10 @@ def upload_image():
     return Response(response=response_pickled, status=200, mimetype="application/json")
 
 
-@app.route('/api/image/flc', methods=['POST'])
+@app.route('/api/flc', methods=['POST'])
 def classification_flc_only():
     start = time.time()
     cc, fc = flc.flc_only()
-    # cc, fc = flc.one_and_all_testing()
     end = time.time()
     time_cons = (end - start)
     responses = {'Fine_Count': fc,
@@ -61,19 +62,27 @@ def classification_flc_only():
     return Response(response=response_pickled, status=200, mimetype="application/json")
 
 
-@app.route('/api/report/flc', methods=['POST'])
-def classification_flc_with_report():
-    start = time.time()
-    fc, cc = flc.flc_with_report()
-    # cc, fc = flc.one_and_all_testing()
-    end = time.time()
-    time_cons = (end - start)
-    responses = {'Fine_Count': fc,
-                 'Coarse_Count': cc,
-                 'Time Taken(seconds)': round(time_cons, 2)
+@app.route('/api/cleandir', methods=['POST'])
+def post():
+   try: 
+    p = os.listdir(test_data_dir)
+    length = len(p)
+    def alldell(a):
+     for root, dirs, files in os.walk(a):
+       for f in files:
+         os.unlink(os.path.join(root, f))
+       for d in dirs:
+        shutil.rmtree(os.path.join(root, d))
+    for i in xrange(length):
+      path = test_data_dir+'/'+p[i]
+      alldell(path)
+    responses = {'status': 'deleted'
                  }
     response_pickled = jsonpickle.encode(responses)
     return Response(response=response_pickled, status=200, mimetype="application/json")
+    
+   except Exception as e:
+      return str(e) 
 
 
 @app.route('/api/bigdata', methods=['POST'])

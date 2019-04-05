@@ -2,13 +2,16 @@
 
 from flask import Flask, request, Response
 import jsonpickle
-import os
+import os, ConfigParser
 
 # Initialize the Flask application
 app = Flask(__name__)
 
-cwd = '/home/agnext/Music/flc_2/test_data/1_images'  # mohali server
-# cwd = '/home/agnext-kgp/Documents/tea/Flc/test_data/1_images'  # local
+config = ConfigParser.ConfigParser()
+config.read('flc.conf')
+root_folder = config.get('input_path', 'root_folder')
+test_data_dir = root_folder + '/test_data'
+cwd = test_data_dir + '/1_images'
 
 
 @app.route('/api/white', methods=['POST'])
@@ -19,7 +22,6 @@ def upload_white():
     print('Uploaded - ', file.filename, '\n')
     responses = {'white_image_uploaded': file.filename
                  }
-
     response_pickled = jsonpickle.encode(responses)
     return Response(response=response_pickled, status=200, mimetype="application/json")
 

@@ -1,56 +1,47 @@
 import os, shutil
-import glob
+import glob, ConfigParser
 import PIL.Image as Image
 from PIL import ImageFile
-
 import display_results
 
 ImageFile.LOAD_TRUNCATED_IMAGES = True
 images = None
 fine_count = 0
+config = ConfigParser.ConfigParser()
+config.read('flc.conf')
+root_folder = config.get('input_path', 'root_folder')
+test_data_dir = root_folder + '/test_data'
 
-cropped_path = '/home/agnext/Music/flc_2/test_data/2_cropped_images'  # gcp image path
-# cropped_path = '/test_data/2_cropped_images'  # KGP GPU image path
+cropped_path = test_data_dir + '/2_cropped_images'
+trapped_images_path = test_data_dir + '/6_trapped_images'
+test_list_path = root_folder + '/test'
+trap_list_path = root_folder + '/trap'
 
-trapped_images_path = '/home/agnext/Music/flc_2/test_data/6_trapped_images'  # gcp image path
 
-test_list_path = r'/home/agnext/Music/flc_2/test'  # gcp test list path
-# test_list_path = r'/home/agnext-kgp/Documents/tea/Flc/test'  # KGP GPU test list path
+result_image_path = test_data_dir + '/3_resulted_images'
+augmented_path = test_data_dir + '/4_augmented'
 
-trap_list_path = r'/home/agnext/Music/flc_2/trap'  # gcp test list path
 
-result_image_path = '/home/agnext/Music/flc_2/test_data/3_resulted_images'  # gcp result image path
-# result_image_path = '/home/agnext-kgp/Documents/tea/Flc/test_data/3_resulted_images'  # KGP GPU gcp result image path
-
-augmented_path = '/home/agnext/Music/flc_2/test_data/4_augmented'
-
-# command_classify_full = './darknet detector test cfg/obj.data cfg/yolo-obj_11500.cfg yolo-obj_11500.weights -dont_show<test.list>result.list'
-command_classify_full = './darknet detector test cfg/obj.data cfg/yolo-obj_15700.cfg yolo-obj_15700_36000.weights -dont_show<test.list>result.list'
-
-# command_classify_one_by_one = './darknet detector test cfg/obj.data cfg/yolo-obj_11500.cfg yolo-obj_11500.weights ''-dont_show '
-command_classify_one_by_one = './darknet detector test cfg/obj.data cfg/yolo-obj_15700.cfg yolo-obj_15700_36000.weights ''-dont_show '
+#command_classify_full = './darknet detector test cfg/obj.data cfg/yolo-obj_15700.cfg yolo-obj_15700_48600.weights -dont_show<test.list>result.list'
+#command_classify_one_by_one = './darknet detector test cfg/obj.data cfg/yolo-obj_15700.cfg yolo-obj_15700_48600.weights ''-dont_show '
 
 
 def create_test_list():
     # command_create_list = 'find `pwd`' + cropped_path + ' -name \*.jpg > test.list'  # gcp path of cropped images
     # os.system(command_create_list)
-
     files = glob.glob(cropped_path + '/*.jpg')
     with open('test.list', 'w') as in_files:
         for eachfile in sorted(files): in_files.write(eachfile + '\n')
 
 
 def create_trapped_list():
-    # command_create_list = 'find `pwd`' + cropped_path + ' -name \*.jpg > test.list'  # gcp path of cropped images
-    # os.system(command_create_list)
-
     files = glob.glob(trapped_images_path + '/*.jpg')
     with open('trap.list', 'w') as in_files:
         for eachfile in sorted(files): in_files.write(eachfile + '\n')
 
 
 def yolo_classify_full():
-    os.system(command_classify_full)
+    os.system(config.get('testing_command', 'command_classify_full'))
 
 
 def count():
@@ -67,24 +58,18 @@ def count():
     #                F = F + 1
     # print("Coarse count - : %d" % k)
     # print("Fine count - : %d" % F)
-
     # return k, F
-
     # filename = 'result.list'
 
     filename = 'result.list'
-
-    n = 0
     fine_count = 0
     lines = []
     with open(filename, 'r') as file:
         for line in file:
             lines.append(line)
         chunks = [lines[x:x + 7] for x in range(0, len(lines), 7)]
-        # print(chunks)
         for chunk in chunks:
             f = 0
-            # print(chunk)
             for line in chunk:
                 words = line.split()
                 for i in words:
@@ -111,30 +96,27 @@ def yolo_classify_one_by_one():
         for line in fobj:
             image_List.append([i for i in line.strip("\n").split(":")])
             image_List.sort(key=lambda x: x[0])
-            # image_List = [[num for num in line.split()] for line in fobj]
         for images in image_List:
-            commands = [command_classify_one_by_one, images[0]]
+            commands = [config.get('testing_command', 'command_classify_one_by_one'), ' ', images[0]]
             os.system(' '.join(commands))
             predicted_image = Image.open("predictions.jpg")
             output = result_image_path + '/predicted_image_%s' % os.path.basename(os.path.normpath(images[0]))
             predicted_image.save(output)
-    # os.system('rm ' + result_image_path + '/*')
 
 
 def yolo_classify_trap_one_by_one():
     image_List = []
     with open((trap_list_path + '.list'), 'r') as fobj:
         for line in fobj:
+            print("1.1")
             image_List.append([i for i in line.strip("\n").split(":")])
             image_List.sort(key=lambda x: x[0])
-            # image_List = [[num for num in line.split()] for line in fobj]
         for images in image_List:
-            commands = [command_classify_one_by_one, images[0]]
+            commands = [config.get('testing_command', 'command_classify_one_by_one'), ' ', images[0]]
             os.system(' '.join(commands))
             predicted_image = Image.open("predictions.jpg")
             output = result_image_path + '/predicted_image_%s' % os.path.basename(os.path.normpath(images[0]))
             predicted_image.save(output)
-    # os.system('rm ' + result_image_path + '/*')
 
 
 def trap_images_to_test():
@@ -170,25 +152,15 @@ def trap_images_to_test():
                 coarse_lines_trapped.append(coarse_list_chunk[0])
                 continue
             if f != 0:
-                # print("arfin", f)
                 fine_count = fine_count + 1
-                # print(fine_count)
-    # print("Fine count - : %d" % fine_count)
-    # print(fine_lines_trapped)
-    # print(coarse_lines_trapped)
     with open(filename) as file_again:
         for num, line in enumerate(file_again, 1):
             for each in fine_lines_trapped:
                 if each in line:
-                    # print('found at line:', num)
                     fine_index_trapped.append(num)
             for each in coarse_lines_trapped:
                 if each in line:
-                    # print('found at line:', num)
                     coarse_index_trapped.append(num)
-
-    # print(fine_index_trapped)
-    # print(coarse_index_trapped)
 
     fine_and_coarse = [fine_index_trapped, coarse_index_trapped]
     print(fine_and_coarse)
@@ -247,7 +219,6 @@ def yolo_classify_each_and_generate_report():
                 result = max(d.iteritems(), key=lambda x: x[1])
 
             frequent_fine_cases_conf = []
-            # fine_lines_trapped = []
             conf = 0
             for line in chunk:
                 words = line.split()
@@ -296,11 +267,9 @@ def yolo_classify_each_and_generate_report():
         for num, line in enumerate(file_again, 1):
             for each in fine_lines_trapped:
                 if each in line:
-                    # print('found at line:', num)
                     fine_index_trapped.append(num)
             for each in coarse_lines_trapped:
                 if each in line:
-                    # print('found at line:', num)
                     coarse_index_trapped.append(num)
     fine_and_coarse = [fine_index_trapped, coarse_index_trapped]
     print(fine_and_coarse)
@@ -328,5 +297,3 @@ def yolo_classify_each_and_generate_report():
 
     return len(fine_index_trapped), len(coarse_index_trapped)
 
-
-#trap_images_to_test_2()

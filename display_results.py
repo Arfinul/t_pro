@@ -1,19 +1,27 @@
-import os, glob, io, shutil
-from fpdf import FPDF
+import os, glob, io, shutil, ConfigParser
 from reportlab.pdfgen import canvas
 from reportlab.lib.pagesizes import letter
 from reportlab.lib.units import inch
 from PyPDF2 import PdfFileMerger, PdfFileWriter, PdfFileReader
 
+
+config = ConfigParser.ConfigParser()
+config.read('flc.conf')
+root_folder = config.get('input_path', 'root_folder')
+test_data_dir = root_folder + '/test_data'
+
+# cropped_path = test_data_dir + '/2_cropped_images'
+
+
 src = ['6_trapped_images', '3_resulted_images']
 src_without_fil = ['2_cropped_images', '3_resulted_images']
 
-dest = '/home/agnext/Music/flc_2/test_data/5_join'
-test_data_path = '/home/agnext/Music/flc_2/test_data/'
-image_path = '/home/agnext/Music/flc_2/test_data/1_images/*'
-augmented_path = '/home/agnext/Music/flc_2/test_data/4_augmented'
-test_pdf_path = '/home/agnext/Music/flc_2/test_data/7_pdf_files'
-report_path = '/home/agnext/Music/flc_2/reports'
+dest = test_data_dir + '/5_join'
+test_data_path = test_data_dir + '/'
+image_path = test_data_dir + '/1_images/*'
+augmented_path = test_data_dir + '/4_augmented'
+test_pdf_path = test_data_dir + '/7_pdf_files'
+report_path = root_folder + '/reports'
 
 
 def write_counts(text):
@@ -215,7 +223,4 @@ def make_pdf(images, pdf_name):
     cx = 0
     generate(images, cx, w, h, y, pdf_name)
 
-#
-# write_counts('Fine counts = 9', 1)
-# write_counts('Fine counts = 6', 2)
 
