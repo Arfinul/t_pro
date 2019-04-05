@@ -20,10 +20,8 @@ cropped_path = test_data_dir + '/2_cropped_images'
 
 
 def segmentation_and_rotation():
-    print("Generating Fine Leaf count only ... wait !!!")
     firstFrame = None
     count = 0
-    print(sorted(glob.glob(input_images)))
     for file in sorted(glob.glob(input_images)):
         frame = cv2.imread(file)
         frame = cv2.addWeighted(frame, 2, frame, 0, 0)
@@ -95,6 +93,7 @@ def flc_only():
     segmentation_and_rotation()
     os.chdir(root_folder)
     classify.create_test_list()
+    print("Generating Fine Leaf count only ... wait !!!")
     classify.yolo_classify_full()
 
     os.system('rm ' + cropped_path + '/*')
@@ -116,6 +115,7 @@ def flc_with_report():
     segmentation_and_rotation()
     os.chdir(root_folder)
     classify.create_test_list()
+    print("Generating FLC on report ... wait !!!")
     classify.yolo_classify_full()
 
     r = glob.glob(input_images)

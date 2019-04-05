@@ -1,6 +1,6 @@
 # Upload white image
 
-import os, ConfigParser
+import os, ConfigParser, time
 from flask import Flask, send_file
 import flc
 
@@ -16,10 +16,13 @@ url = root_folder + '/reports'
 @app.route('/api/flc/pdf', methods=['GET'])
 def pdf():
     try:
+        start = time.time()
         flc.flc_with_report()
         p = sorted(os.listdir(url))
         urlpdf = url + '/' + p[-1]
-        print(urlpdf)
+        print('location - ', urlpdf)
+        end = time.time()
+        print('leaf image upload time = ', round((end - start), 2), ' seconds')
         return send_file(urlpdf, attachment_filename='test.pdf')
 
     except Exception as e:

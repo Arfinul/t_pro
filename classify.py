@@ -108,7 +108,6 @@ def yolo_classify_trap_one_by_one():
     image_List = []
     with open((trap_list_path + '.list'), 'r') as fobj:
         for line in fobj:
-            print("1.1")
             image_List.append([i for i in line.strip("\n").split(":")])
             image_List.sort(key=lambda x: x[0])
         for images in image_List:
@@ -193,7 +192,6 @@ def yolo_classify_each_and_generate_report():
     coarse_lines_trapped = []
     fine_index_trapped = []
     coarse_index_trapped = []
-    print("Trapping the images to test.. ")
     with open(filename, 'r') as file:
         for line in file:
             lines.append(line)
@@ -207,7 +205,7 @@ def yolo_classify_each_and_generate_report():
                     fine_cases_in_7.append(words[-2])
                 else:
                     all_coarse_in_7.append(line)
-            print(fine_cases_in_7)
+            #print(fine_cases_in_7)
 
             if len(all_coarse_in_7) == 7:
                 coarse_lines_trapped.append(all_coarse_in_7[0])
@@ -259,9 +257,9 @@ def yolo_classify_each_and_generate_report():
                             fine_lines_trapped.append(line)
                             break
             #print(max(frequent_fine_cases_conf))
-            print(frequent_fine_cases_conf)
-            print(fine_lines_trapped)
-            print(coarse_lines_trapped)
+            #print(frequent_fine_cases_conf)
+            #print(fine_lines_trapped)
+            #print(coarse_lines_trapped)
 
     with open(filename) as file_again:
         for num, line in enumerate(file_again, 1):
@@ -278,11 +276,10 @@ def yolo_classify_each_and_generate_report():
 
     report_count = 1
     for each in fine_and_coarse:
-        print("ENTERED")
         for i, line in enumerate(open(image_file), 1):
             if i in each:
                 line = line.strip('\n')
-                print(line)
+                #print(line)
                 shutil.move(line, trapped_images_path)
         create_trapped_list()
         yolo_classify_trap_one_by_one()

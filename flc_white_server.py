@@ -2,7 +2,7 @@
 
 from flask import Flask, request, Response
 import jsonpickle
-import os, ConfigParser
+import os, ConfigParser, time
 
 # Initialize the Flask application
 app = Flask(__name__)
@@ -17,9 +17,12 @@ cwd = test_data_dir + '/1_images'
 @app.route('/api/white', methods=['POST'])
 def upload_white():
     os.chdir(cwd)
+    start = time.time()
     file = request.files['image']
     file.save(file.filename)
-    print('Uploaded - ', file.filename, '\n')
+    end = time.time()
+    print('Uploaded white image - ', file.filename)
+    print('white image upload time = ', round((end - start), 2), ' seconds')
     responses = {'white_image_uploaded': file.filename
                  }
     response_pickled = jsonpickle.encode(responses)

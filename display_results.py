@@ -10,9 +10,6 @@ config.read('flc.conf')
 root_folder = config.get('input_path', 'root_folder')
 test_data_dir = root_folder + '/test_data'
 
-# cropped_path = test_data_dir + '/2_cropped_images'
-
-
 src = ['6_trapped_images', '3_resulted_images']
 src_without_fil = ['2_cropped_images', '3_resulted_images']
 
@@ -98,10 +95,8 @@ def merge_test_and_result_without_fil():
 def merge_pdf(report_count):
     pdf_files = []
     for pdf_file in glob.glob(test_data_path + '/*.pdf'):
-        print("Merged all test number images")
-        print(pdf_file)
+        #print("Merged all test number images")
         pdf_files.append(pdf_file)
-    print(pdf_files)
 
     merger = PdfFileMerger()
 
@@ -110,9 +105,7 @@ def merge_pdf(report_count):
 
     with open(augmented_path + '/report' + str(report_count) + '.pdf', 'wb') as fout:
         merger.write(fout)
-
-    print("\npdf report generated", 'report' + str(report_count) + '.pdf')
-
+    #print("\npdf report generated", 'report' + str(report_count) + '.pdf')
     os.system('rm ' + test_data_path + '/*.pdf')
     
     
@@ -143,8 +136,6 @@ def final_report_pdf():
     for final_pdf_file in glob.glob(augmented_path + '/*.pdf'):
         final_pdf_files.append(final_pdf_file)
 
-    print(final_pdf_files)
-
     merger = PdfFileMerger()
 
     for each in sorted(final_pdf_files):
@@ -153,7 +144,7 @@ def final_report_pdf():
     with open(report_path + '/report_'+ str(datetime.datetime.now())+'.pdf', 'wb') as fout:
         merger.write(fout)
 
-    print("\nFinal pdf report generated")
+    print("Final pdf report generated")
 
     # os.system('rm ' + augmented_path + '/*.pdf')
 
@@ -162,9 +153,7 @@ def make_files_list(report_count,fine_count, coarse_count):
     list_of_files = []
     for file in sorted(glob.glob(dest + '/*')):
         list_of_files.append(file)
-    print("ARFIN")
-    print(list_of_files)
-    print("FARHAN")
+    #print(list_of_files)
     imgs_ts = [list_of_files[x:x + 32] for x in range(0, len(list_of_files), 32)]
     page_nmbr = 0
     for imgs_t in imgs_ts:
@@ -205,7 +194,7 @@ def generate(images, cx, w, h, y, pdf_name):
     for chunks in images:
         x = cx
         for each in chunks:
-            print(each, x, y)
+           # print(each, x, y)
             x = x + w
             c.drawImage(each, x, y, w, h)
         y = y - h

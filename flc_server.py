@@ -29,20 +29,22 @@ def allowed_file(filename):
 @app.route('/api/image', methods=['POST'])
 def upload_image():
     os.chdir(cwd)
+    start = time.time()
     print('Uploading the file ... Wait !!!\n')
 
     # Upload multiple images
     if request.method == 'POST' and 'image' in request.files:
         for file in request.files.getlist('image'):
             file.save(file.filename)
-            print('Uploaded - ', file.filename, '\n')
+            print('Uploaded tea image - ', file.filename, '\n')
 
     # Upload single image
     # file = request.files['image']
     # file.save(file.filename)
     # print('Uploaded - ', file.filename, '\n')
-
-    responses = {'Uploaded': file.filename
+    end = time.time()
+    print('leaf image upload time = ', round((end - start), 2), ' seconds')
+    responses = {'tea_image_uploaded': file.filename
                  }
     response_pickled = jsonpickle.encode(responses)
     return Response(response=response_pickled, status=200, mimetype="application/json")
@@ -54,6 +56,7 @@ def classification_flc_only():
     cc, fc = flc.flc_only()
     end = time.time()
     time_cons = (end - start)
+    print('classification time = ', round(time_cons, 2), ' seconds')
     responses = {'Fine_Count': fc,
                  'Coarse_Count': cc,
                  'Time Taken(seconds)': round(time_cons, 2)
