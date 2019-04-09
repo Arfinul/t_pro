@@ -1,7 +1,7 @@
 import glob
 import os
 import cv2
-import imutils, ConfigParser
+import imutils, ConfigParser, datetime
 import classify, rotate, display_results
 
 
@@ -11,6 +11,7 @@ root_folder = config.get('input_path', 'root_folder')
 test_data_dir = root_folder + '/test_data'
 input_images = test_data_dir + '/1_images/*'
 cropped_path = test_data_dir + '/2_cropped_images'
+
 
 
 '''Segmentation of bunches from a frame has been performed by finding the difference between the first
@@ -23,6 +24,18 @@ def segmentation_and_rotation():
     firstFrame = None
     count = 0
     for file in sorted(glob.glob(input_images)):
+        uploaded_file_name = os.path.basename(os.path.normpath(file))
+        datetime.datetime.now().time()
+        command_to_copy = 'cp ' + file + ' ' + root_folder + '/test_data_backup/' + str(
+            datetime.datetime.now().date()) + '_' + str(datetime.datetime.now().time()) + '_' + uploaded_file_name
+        os.system(command_to_copy)
+
+
+
+        #command_to_copy = 'cp ' + file + ' /home/agnext/Music/flc/test_data_backup/' + str(
+        #datetime.datetime.now().date()) + '_' + str(datetime.datetime.now().time()) + '_' + uploaded_file_name
+        #os.system(command_to_copy)
+
         frame = cv2.imread(file)
         frame = cv2.addWeighted(frame, 2, frame, 0, 0)
         frame = imutils.resize(frame, width=1000)
