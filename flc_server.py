@@ -7,6 +7,7 @@ import time
 import zipfile
 import jsonpickle, ConfigParser
 from flask import Flask, request, Response
+from gevent import wsgi
 from werkzeug.utils import secure_filename
 
 # Initialize the Flask application
@@ -19,6 +20,9 @@ test_data_dir = root_folder + '/test_data'
 cwd = test_data_dir + '/1_images'
 subdir_list = None
 ALLOWED_EXTENSIONS = {'zip'}
+
+
+print("Flc server started")
 
 
 def allowed_file(filename):
@@ -150,8 +154,11 @@ def post():
       return str(e)
 
 # start flask app
-app.run(host="0.0.0.0", port=5000)  # Server
+#app.run(host="0.0.0.0", port=5000)  # Server
 #sapp.run(port=6000)  # Local
+
+server = wsgi.WSGIServer(('0.0.0.0', 5000), app)
+server.serve_forever()
 
 
 

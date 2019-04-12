@@ -2,6 +2,7 @@
 
 import os, ConfigParser, time
 from flask import Flask, send_file
+from gevent import wsgi
 import flc
 
 # Initialize the Flask application
@@ -12,7 +13,7 @@ config.read('flc.conf')
 root_folder = config.get('input_path', 'root_folder')
 url = root_folder + '/reports'
 
-
+print("Report server started")
 @app.route('/api/flc/pdf', methods=['GET'])
 def pdf():
     try:
@@ -29,7 +30,9 @@ def pdf():
         return str(e)
 
 
-app.run(host="0.0.0.0", port=5002)  # Server
+#app.run(host="0.0.0.0", port=5002)  # Server
 # app.run(port=4002)  # Local
 
+server = wsgi.WSGIServer(('0.0.0.0', 5002), app)
+server.serve_forever()
 

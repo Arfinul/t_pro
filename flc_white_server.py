@@ -1,6 +1,7 @@
 # Upload white image
 
 from flask import Flask, request, Response
+from gevent import wsgi
 import jsonpickle
 import os, ConfigParser, time
 
@@ -13,7 +14,7 @@ root_folder = config.get('input_path', 'root_folder')
 test_data_dir = root_folder + '/test_data'
 cwd = test_data_dir + '/1_images'
 
-
+print("White image upload server started")
 @app.route('/api/white', methods=['POST'])
 def upload_white():
     os.chdir(cwd)
@@ -30,5 +31,8 @@ def upload_white():
 
 
 # start flask app
-app.run(host="0.0.0.0", port=5001)  # Server
+#app.run(host="0.0.0.0", port=5001)  # Server
 # app.run(port=4002)  # Local
+
+server = wsgi.WSGIServer(('0.0.0.0', 5001), app)
+server.serve_forever()
