@@ -28,64 +28,66 @@ def allowed_file(filename):
 # Route http posts to this method
 @app.route('/api/image', methods=['POST'])
 def upload_image():
-    os.chdir(cwd)
-    start = time.time()
-    print('Uploading the file ... Wait !!!\n')
+    try:
+        os.chdir(cwd)
+        start = time.time()
+        print('Uploading the file ... Wait !!!\n')
 
-    # Upload multiple images
-    if request.method == 'POST' and 'image' in request.files:
-        for file in request.files.getlist('image'):
-            file.save(file.filename)
-            print('Uploaded tea image - ', file.filename, '\n')
+        # Upload multiple images
+        if request.method == 'POST' and 'image' in request.files:
+            for file in request.files.getlist('image'):
+                file.save(file.filename)
+                print('Uploaded tea image - ', file.filename, '\n')
 
-    # Upload single image
-    # file = request.files['image']
-    # file.save(file.filename)
-    # print('Uploaded - ', file.filename, '\n')
-    end = time.time()
-    print('leaf image upload time = ', round((end - start), 2), ' seconds')
-    responses = {'tea_image_uploaded': file.filename
-                 }
-    response_pickled = jsonpickle.encode(responses)
-    return Response(response=response_pickled, status=200, mimetype="application/json")
+        # Upload single image
+        # file = request.files['image']
+        # file.save(file.filename)
+        # print('Uploaded - ', file.filename, '\n')
+        end = time.time()
+        print('leaf image upload time = ', round((end - start), 2), ' seconds')
+        responses = {'tea_image_uploaded': file.filename
+                     }
+        response_pickled = jsonpickle.encode(responses)
+        return Response(response=response_pickled, status=200, mimetype="application/json")
+    except Exception as e:
+        return str(e)
 
 
 @app.route('/api/flc', methods=['POST'])
 def classification_flc_only():
-    start = time.time()
-    cc, fc = flc.flc_only()
-    end = time.time()
-    time_cons = (end - start)
-    print('classification time = ', round(time_cons, 2), ' seconds')
-    responses = {'Fine_Count': fc,
-                 'Coarse_Count': cc,
-                 'Time Taken(seconds)': round(time_cons, 2)
-                 }
-    response_pickled = jsonpickle.encode(responses)
-    return Response(response=response_pickled, status=200, mimetype="application/json")
+    try:
+        start = time.time()
+        cc, fc = flc.flc_only()
+        end = time.time()
+        time_cons = (end - start)
+        print('classification time = ', round(time_cons, 2), ' seconds')
+        responses = {'Fine_Count': fc,
+                     'Coarse_Count': cc,
+                     'Time Taken(seconds)': round(time_cons, 2)
+                     }
+        response_pickled = jsonpickle.encode(responses)
+        return Response(response=response_pickled, status=200, mimetype="application/json")
+    except:
+        try:
+            p = os.listdir(test_data_dir)
+            length = len(p)
 
+            def alldell(a):
+                for root, dirs, files in os.walk(a):
+                    for f in files:
+                        os.unlink(os.path.join(root, f))
+                    for d in dirs:
+                        shutil.rmtree(os.path.join(root, d))
 
-@app.route('/api/cleandir', methods=['POST'])
-def post():
-   try: 
-    p = os.listdir(test_data_dir)
-    length = len(p)
-    def alldell(a):
-     for root, dirs, files in os.walk(a):
-       for f in files:
-         os.unlink(os.path.join(root, f))
-       for d in dirs:
-        shutil.rmtree(os.path.join(root, d))
-    for i in xrange(length):
-      path = test_data_dir+'/'+p[i]
-      alldell(path)
-    responses = {'status': 'deleted'
-                 }
-    response_pickled = jsonpickle.encode(responses)
-    return Response(response=response_pickled, status=200, mimetype="application/json")
-    
-   except Exception as e:
-      return str(e) 
+            for i in xrange(length):
+                path = test_data_dir + '/' + p[i]
+                alldell(path)
+            responses = {'status': 'Error_Try_Again'
+                         }
+            response_pickled = jsonpickle.encode(responses)
+            return Response(response=response_pickled, status=200, mimetype="application/json")
+        except Exception as e:
+            return str(e)
 
 
 @app.route('/api/bigdata', methods=['POST'])
@@ -124,6 +126,28 @@ def upload_big_data():
     response_pickled = jsonpickle.encode(responses)
     return Response(response=response_pickled, status=200, mimetype="application/json")
 
+
+@app.route('/api/cleandir', methods=['POST'])
+def post():
+   try:
+    p = os.listdir(test_data_dir)
+    length = len(p)
+    def alldell(a):
+     for root, dirs, files in os.walk(a):
+       for f in files:
+         os.unlink(os.path.join(root, f))
+       for d in dirs:
+        shutil.rmtree(os.path.join(root, d))
+    for i in xrange(length):
+      path = test_data_dir+'/'+p[i]
+      alldell(path)
+    responses = {'status': 'deleted'
+                 }
+    response_pickled = jsonpickle.encode(responses)
+    return Response(response=response_pickled, status=200, mimetype="application/json")
+
+   except Exception as e:
+      return str(e)
 
 # start flask app
 app.run(host="0.0.0.0", port=5000)  # Server
