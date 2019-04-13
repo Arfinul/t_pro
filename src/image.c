@@ -288,7 +288,7 @@ void draw_detections_v3(image im, detection *dets, int num, float thresh, char *
         const int best_class = selected_detections[i].best_class;
 //        printf("%s: %.0f%%", names[best_class],    selected_detections[i].det.prob[best_class] * 100);
 //        printf("%s %.0f%", names[best_class],    selected_detections[i].det.prob[best_class] * 100);
-        printf("%.0f%", selected_detections[i].det.prob[best_class] * 100);
+        printf("%.0f", selected_detections[i].det.prob[best_class] * 100);
         if (strcmp(names[best_class], "Leaf") == 0) count_l++;
         else if (strcmp(names[best_class], "Bud") == 0) count_b++;
         else if (strcmp(names[best_class], "Banji") == 0) count_bb++;

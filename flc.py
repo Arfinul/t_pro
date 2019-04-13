@@ -4,15 +4,12 @@ import cv2
 import imutils, ConfigParser, datetime
 import classify, rotate, display_results
 
-
 config = ConfigParser.ConfigParser()
 config.read('flc.conf')
 root_folder = config.get('input_path', 'root_folder')
 test_data_dir = root_folder + '/test_data'
 input_images = test_data_dir + '/1_images/*'
 cropped_path = test_data_dir + '/2_cropped_images'
-
-
 
 '''Segmentation of bunches from a frame has been performed by finding the difference between the first
    frame(white frame or background) and current frame.
@@ -30,11 +27,9 @@ def segmentation_and_rotation():
             datetime.datetime.now().date()) + '_' + str(datetime.datetime.now().time()) + '_' + uploaded_file_name
         os.system(command_to_copy)
 
-
-
-        #command_to_copy = 'cp ' + file + ' /home/agnext/Music/flc/test_data_backup/' + str(
-        #datetime.datetime.now().date()) + '_' + str(datetime.datetime.now().time()) + '_' + uploaded_file_name
-        #os.system(command_to_copy)
+        # command_to_copy = 'cp ' + file + ' /home/agnext/Music/flc/test_data_backup/' + str(
+        # datetime.datetime.now().date()) + '_' + str(datetime.datetime.now().time()) + '_' + uploaded_file_name
+        # os.system(command_to_copy)
 
         frame = cv2.imread(file)
         frame = cv2.addWeighted(frame, 2, frame, 0, 0)
@@ -144,21 +139,33 @@ def flc_with_report():
 
 
 # Runs for all full flow with one by one image result
-def flc_with_report_without_filter():
-    segmentation_and_rotation()
+def flc_with_cropped_images():
+    print("Total bunches = %d" % len(
+        [name for name in os.listdir(cropped_path) if os.path.isfile(os.path.join(cropped_path, name))]))
+
+    rotate.rotate_image()
+
+    print("Total rotated bunches = %d" % len(
+        [name for name in os.listdir(cropped_path) if os.path.isfile(os.path.join(cropped_path, name))]))
+
     os.chdir(root_folder)
     classify.create_test_list()
+    print("Generating FLC on report ... wait !!!")
+    classify.yolo_classify_full()
 
     r = glob.glob(input_images)
     for i in r:
         os.remove(i)
 
-    classify.yolo_classify_one_by_one()
-    display_results.merge_test_and_result_without_fil()
-    display_results.make_files_list_without_r()
-    display_results.merge_pdf_without_r()
+    fc, cc = classify.yolo_classify_each_and_generate_report()
+    print("Fine = ", fc, ", Coarse = ", cc)
+
+    os.system('rm ' + cropped_path + '/*')
+
+    return fc, cc
+
 
 # flc_only()
-# cc, fc = flc_with_report()
-# flc_with_report_without_filter()
+# fc, cc = flc_with_cropped_images()
+# # flc_with_report_without_filter()
 # print("Fine = ", fc, ", Coarse = ", cc)

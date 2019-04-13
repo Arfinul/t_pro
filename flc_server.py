@@ -21,7 +21,6 @@ cwd = test_data_dir + '/1_images'
 subdir_list = None
 ALLOWED_EXTENSIONS = {'zip'}
 
-
 print("Flc server started")
 
 
@@ -133,32 +132,32 @@ def upload_big_data():
 
 @app.route('/api/cleandir', methods=['POST'])
 def post():
-   try:
-    p = os.listdir(test_data_dir)
-    length = len(p)
-    def alldell(a):
-     for root, dirs, files in os.walk(a):
-       for f in files:
-         os.unlink(os.path.join(root, f))
-       for d in dirs:
-        shutil.rmtree(os.path.join(root, d))
-    for i in xrange(length):
-      path = test_data_dir+'/'+p[i]
-      alldell(path)
-    responses = {'status': 'deleted'
-                 }
-    response_pickled = jsonpickle.encode(responses)
-    return Response(response=response_pickled, status=200, mimetype="application/json")
+    try:
+        p = os.listdir(test_data_dir)
+        length = len(p)
 
-   except Exception as e:
-      return str(e)
+        def alldell(a):
+            for root, dirs, files in os.walk(a):
+                for f in files:
+                    os.unlink(os.path.join(root, f))
+                for d in dirs:
+                    shutil.rmtree(os.path.join(root, d))
+
+        for i in xrange(length):
+            path = test_data_dir + '/' + p[i]
+            alldell(path)
+        responses = {'status': 'deleted'
+                     }
+        response_pickled = jsonpickle.encode(responses)
+        return Response(response=response_pickled, status=200, mimetype="application/json")
+
+    except Exception as e:
+        return str(e)
+
 
 # start flask app
-#app.run(host="0.0.0.0", port=5000)  # Server
-#sapp.run(port=6000)  # Local
+# app.run(host="0.0.0.0", port=5000)  # Server
+# app.run(port=6000)  # Local
 
-server = wsgi.WSGIServer(('0.0.0.0', 5000), app)
+server = wsgi.WSGIServer(('127.0.0.1', 5000), app)
 server.serve_forever()
-
-
-
