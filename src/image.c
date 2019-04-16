@@ -329,9 +329,9 @@ void draw_detections_v3(image im, detection *dets, int num, float thresh, char *
     else if (count_l == 0 && count_b == 1) {
     	printf("1b Fine\n");
     }
-    else if (count_l == 0 && count_bb == 1) {
-    	printf("1bj Fine\n");
-    }
+    // else if (count_l == 0 && count_bb == 1) {
+    // 	printf("1bj Fine\n");
+    // }
     else if (count_l == 1 && count_bb == 1) {
     	printf("1lbj Fine\n");
     }

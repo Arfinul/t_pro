@@ -201,7 +201,7 @@ def yolo_classify_each_and_generate_report():
             all_coarse_in_7 = []
             for line in chunk:
                 words = line.split()
-                if words[-2] in ['3lb', '2lb', '1lb', '1b']:
+                if words[-2] in ['3lb', '2lb', '1lb', '1b', '1lbj']:
                     fine_cases_in_7.append(words[-2])
                 else:
                     all_coarse_in_7.append(line)
@@ -227,6 +227,8 @@ def yolo_classify_each_and_generate_report():
                         conf = (int(words[1]) + int(words[2]) + int(words[3])) / 3
                     if words[-2] == '1lb':
                         conf = (int(words[1]) + int(words[2])) / 2
+                    if words[-2] == '1lbj':
+                        conf = (int(words[1]) + int(words[2])) / 2
                     if words[-2] == '1b':
                         conf = int(words[1])
                     frequent_fine_cases_conf.append(conf)
@@ -247,6 +249,11 @@ def yolo_classify_each_and_generate_report():
                             fine_lines_trapped.append(line)
                             break
                     if words[-2] == '1lb':
+                        confd = (int(words[1]) + int(words[2])) / 2
+                        if confd == max(frequent_fine_cases_conf):
+                            fine_lines_trapped.append(line)
+                            break
+                    if words[-2] == '1lbj':
                         confd = (int(words[1]) + int(words[2])) / 2
                         if confd == max(frequent_fine_cases_conf):
                             fine_lines_trapped.append(line)
