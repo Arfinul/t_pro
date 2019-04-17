@@ -13,7 +13,7 @@ config.read('flc.conf')
 root_folder = config.get('input_path', 'root_folder')
 test_data_dir = root_folder + '/test_data'
 cwd = test_data_dir + '/1_images'
-
+print(cwd)
 print("White image upload server started")
 
 
