@@ -1,14 +1,14 @@
 # Upload white image
 
-import os, ConfigParser, time
-from flask import Flask, send_file
+import os, configparser, time
+from flask import Flask, send_file, request
 from gevent import wsgi
 import flc
 
 # Initialize the Flask application
 app = Flask(__name__)
 
-config = ConfigParser.ConfigParser()
+config = configparser.ConfigParser()
 config.read('flc.conf')
 root_folder = config.get('input_path', 'root_folder')
 url = root_folder + '/reports'
@@ -17,8 +17,11 @@ print("Report server started")
 @app.route('/api/flc/pdf', methods=['GET'])
 def pdf():
     try:
+        userId = request.form['userId']
+        sectionId = request.form['sectionId']
+
         start = time.time()
-        flc.flc_with_report()
+        flc.flc_with_report(userId, sectionId)
         p = sorted(os.listdir(url))
         urlpdf = url + '/' + p[-1]
         print('location - ', urlpdf)
@@ -33,6 +36,6 @@ def pdf():
 #app.run(host="0.0.0.0", port=5002)  # Server
 # app.run(port=4002)  # Local
 
-server = wsgi.WSGIServer(('0.0.0.0', 5002), app)
+server = wsgi.WSGIServer(('0.0.0.0', 6002), app)
 server.serve_forever()
 

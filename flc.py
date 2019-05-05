@@ -130,25 +130,22 @@ def flc_with_report(userId, sectionId):
     os.chdir(root_folder)
     classify.create_test_list(userId, sectionId)
     print("Generating FLC on report ... wait !!!")
-    classify.yolo_classify_full()
+    classify.yolo_classify_full(userId, sectionId)
+    print("classification Done")
 
-    r = glob.glob(input_images)
-    for i in r:
-        os.remove(i)
-
-    fc, cc = classify.yolo_classify_each_and_generate_report()
+    fc, cc = classify.yolo_classify_each_and_generate_report(userId, sectionId)
     print("Fine = ", fc, ", Coarse = ", cc)
 
-    os.system('rm ' + cropped_path + '/*')
+    #os.system('rm ' + cropped_path + '/*')
 
     return fc, cc
 
 
 # Runs for all full flow with one by one image result
-def flc_with_report_without_filter():
-    segmentation_and_rotation()
+def flc_with_report_without_filter(userId, sectionId):
+    segmentation_and_rotation(userId, sectionId)
     os.chdir(root_folder)
-    classify.create_test_list()
+    classify.create_test_list(userId, sectionId)
 
     r = glob.glob(input_images)
     for i in r:

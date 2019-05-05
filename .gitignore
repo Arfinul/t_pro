@@ -129,3 +129,5 @@ test_data_backup/*
 !reports/ignore_me.txt
 backup/*
 
+.idea/*
+

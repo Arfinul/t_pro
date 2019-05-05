@@ -13,7 +13,9 @@ root_folder = config.get('input_path', 'root_folder')
 test_data_dir = root_folder + '/test_data'
 
 cropped_dir = '/2_cropped_images'
-trapped_images_path = test_data_dir + '/6_trapped_images'
+tracked_image_dir = '/6_trapped_images'
+augmented_dir = '/4_augmented'
+result_dir = '/3_resulted_images'
 test_list_path = root_folder + '/test'
 trap_list_path = root_folder + '/trap'
 
@@ -26,8 +28,10 @@ def create_test_list(userId, sectionId):
         for eachfile in sorted(files): in_files.write(eachfile + '\n')
 
 
-def create_trapped_list():
-    files = glob.glob(trapped_images_path + '/*.jpg')
+def create_trapped_list(userId, sectionId):
+    user_dir = test_data_dir + '/u-' + userId + '/s-' + sectionId
+    tracked_images_path = user_dir + tracked_image_dir
+    files = glob.glob(tracked_images_path + '/*.jpg')
     with open('trap.list', 'w') as in_files:
         for eachfile in sorted(files): in_files.write(eachfile + '\n')
 
@@ -92,21 +96,23 @@ def yolo_classify_one_by_one():
             image_List.append([i for i in line.strip("\n").split(":")])
             image_List.sort(key=lambda x: x[0])
         for images in image_List:
-            commands = [config.get('testing_command', 'command_classify_one_by_one'), ' ', images[0]]
+            commands = [config.get('testing_command', 'command_classify'), ' ', images[0]]
             os.system(' '.join(commands))
             predicted_image = Image.open("predictions.jpg")
             output = result_image_path + '/predicted_image_%s' % os.path.basename(os.path.normpath(images[0]))
             predicted_image.save(output)
 
 
-def yolo_classify_trap_one_by_one():
+def yolo_classify_trap_one_by_one(userId, sectionId):
     image_List = []
+    user_dir = test_data_dir + '/u-' + userId + '/s-' + sectionId
+    result_image_path = user_dir + result_dir
     with open((trap_list_path + '.list'), 'r') as fobj:
         for line in fobj:
             image_List.append([i for i in line.strip("\n").split(":")])
             image_List.sort(key=lambda x: x[0])
         for images in image_List:
-            commands = [config.get('testing_command', 'command_classify_one_by_one'), ' ', images[0]]
+            commands = [config.get('testing_command', 'command_classify'), ' ', images[0]]
             os.system(' '.join(commands))
             predicted_image = Image.open("predictions.jpg")
             output = result_image_path + '/predicted_image_%s' % os.path.basename(os.path.normpath(images[0]))
@@ -178,10 +184,15 @@ def trap_images_to_test():
     os.system('rm ' + augmented_path + '/*.pdf')
 
 
-def yolo_classify_each_and_generate_report():
+def yolo_classify_each_and_generate_report(userId, sectionId):
     from collections import defaultdict
-    filename = 'result.list'
-    image_file = 'test.list'
+
+    user_dir = test_data_dir + '/u-' + userId + '/s-' + sectionId
+    filename = user_dir + '/result.list'
+    image_file = user_dir + '/test.list'
+    tracked_images_path = user_dir + tracked_image_dir
+    augmented_path = user_dir + augmented_dir
+
     lines = []
     fine_lines_trapped = []
     coarse_lines_trapped = []
@@ -209,7 +220,7 @@ def yolo_classify_each_and_generate_report():
                 d = defaultdict(int)
                 for i in fine_cases_in_7:
                     d[i] += 1
-                result = max(d.iteritems(), key=lambda x: x[1])
+                result = max(d.items(), key=lambda x: x[1])
 
             frequent_fine_cases_conf = []
             conf = 0
@@ -282,17 +293,17 @@ def yolo_classify_each_and_generate_report():
             if i in each:
                 line = line.strip('\n')
                 #print(line)
-                shutil.move(line, trapped_images_path)
-        create_trapped_list()
-        yolo_classify_trap_one_by_one()
-        display_results.merge_test_and_result()
-        display_results.make_files_list(report_count, len(fine_index_trapped), len(coarse_index_trapped))
-        display_results.merge_pdf(report_count)
+                shutil.move(line, tracked_images_path)
+        create_trapped_list(userId, sectionId)
+        yolo_classify_trap_one_by_one(userId, sectionId)
+        display_results.merge_test_and_result(userId, sectionId)
+        display_results.make_files_list(report_count, len(fine_index_trapped), len(coarse_index_trapped), userId, sectionId)
+        display_results.merge_pdf(report_count, userId, sectionId)
 
         report_count = report_count + 1
 
-    display_results.final_report_pdf()
-    os.system('rm ' + augmented_path + '/*.pdf')
+    display_results.final_report_pdf(userId, sectionId)
+    shutil.rmtree(test_data_dir + '/u-' + userId + '/s-' + sectionId + '/')
 
     return len(fine_index_trapped), len(coarse_index_trapped)
 

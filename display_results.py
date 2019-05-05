@@ -13,16 +13,18 @@ test_data_dir = root_folder + '/test_data'
 src = ['6_trapped_images', '3_resulted_images']
 src_without_fil = ['2_cropped_images', '3_resulted_images']
 
-dest = test_data_dir + '/5_join'
-test_data_path = test_data_dir + '/'
-image_path = test_data_dir + '/1_images/*'
-augmented_path = test_data_dir + '/4_augmented'
-test_pdf_path = test_data_dir + '/7_pdf_files'
+image_dir = '/1_images'
+join_dir = '/5_join'
+augmented_dir = '/4_augmented'
+pdf_dir = '/7_pdf_files'
 report_path = root_folder + '/reports'
 
 
-def write_counts(text):
+def write_counts(text, user_dir):
     packet = io.BytesIO()
+    test_pdf_path = user_dir + pdf_dir
+    test_data_path = user_dir + '/'
+
     # create a new PDF with Reportlab
     can = canvas.Canvas(packet, pagesize=letter)
     can.drawString(30, 750, text)
@@ -48,8 +50,13 @@ def write_counts(text):
     os.system('rm ' + test_pdf_path + '/*')
 
 
-def merge_test_and_result():
+def merge_test_and_result(userId, sectionId):
     i = 0
+    user_dir = test_data_dir + '/u-' + userId + '/s-' + sectionId
+    test_data_path = user_dir + '/'
+    image_path = user_dir + image_dir + '/*'
+    dest = user_dir + join_dir
+
     for path, subdirs, files in os.walk(test_data_path + src[0]):
         for name in sorted(files):
             os.rename(os.path.join(path, name), os.path.join(dest, str(i) + '_' + name + '.jpg'))
@@ -92,8 +99,12 @@ def merge_test_and_result_without_fil():
         os.remove(i)
 
 
-def merge_pdf(report_count):
+def merge_pdf(report_count, userId, sectionId):
     pdf_files = []
+    user_dir = test_data_dir + '/u-' + userId + '/s-' + sectionId
+    test_data_path = user_dir + '/'
+    augmented_path = user_dir + augmented_dir
+
     for pdf_file in glob.glob(test_data_path + '/*.pdf'):
         #print("Merged all test number images")
         pdf_files.append(pdf_file)
@@ -130,9 +141,13 @@ def merge_pdf_without_r():
     os.system('rm ' + test_data_path + '/*.pdf')
 
 
-def final_report_pdf():
+def final_report_pdf(userId, sectionId):
     import datetime
     final_pdf_files = []
+    user_dir = test_data_dir + '/u-' + userId + '/s-' + sectionId
+    augmented_path = user_dir + augmented_dir
+
+
     for final_pdf_file in glob.glob(augmented_path + '/*.pdf'):
         final_pdf_files.append(final_pdf_file)
 
@@ -149,8 +164,12 @@ def final_report_pdf():
     # os.system('rm ' + augmented_path + '/*.pdf')
 
 
-def make_files_list(report_count,fine_count, coarse_count):
+def make_files_list(report_count,fine_count, coarse_count, userId, sectionId):
     list_of_files = []
+    user_dir = test_data_dir + '/u-' + userId + '/s-' + sectionId
+    dest = user_dir + join_dir
+    test_data_path = user_dir + '/'
+
     for file in sorted(glob.glob(dest + '/*')):
         list_of_files.append(file)
     #print(list_of_files)
@@ -162,9 +181,9 @@ def make_files_list(report_count,fine_count, coarse_count):
         make_pdf(imgs_32, test_data_path + "/" + "test_" + str(page_nmbr) + ".pdf")
 
     if report_count == 1:
-        write_counts('Fine counts = ' + str(fine_count))
+        write_counts('Fine counts = ' + str(fine_count), user_dir)
     if report_count == 2:
-        write_counts('Coarse counts = ' + str(coarse_count))
+        write_counts('Coarse counts = ' + str(coarse_count), user_dir)
 
     os.system('rm ' + dest + '/*')
     

@@ -103,7 +103,7 @@ def classification_flc_only():
         return Response(response=response_pickled, status=200, mimetype="application/json")
     except:
         try:
-            shutil.rmtree(test_data_dir + '/u-' + userId + '/')
+            shutil.rmtree(test_data_dir + '/u-' + userId + '/s-' + sectionId + '/')
             responses = {'status': 'Error_Try_Again'
                          }
             response_pickled = jsonpickle.encode(responses)
