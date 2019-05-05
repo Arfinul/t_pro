@@ -2,86 +2,8 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="6b270114-ba8b-4c4a-8083-86245e988c03" name="Default Changelist" comment="">
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/darknet" afterPath="$PROJECT_DIR$/darknet" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/obj/activation_kernels.o" afterPath="$PROJECT_DIR$/obj/activation_kernels.o" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/obj/activation_layer.o" afterPath="$PROJECT_DIR$/obj/activation_layer.o" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/obj/activations.o" afterPath="$PROJECT_DIR$/obj/activations.o" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/obj/art.o" afterPath="$PROJECT_DIR$/obj/art.o" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/obj/avgpool_layer.o" afterPath="$PROJECT_DIR$/obj/avgpool_layer.o" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/obj/avgpool_layer_kernels.o" afterPath="$PROJECT_DIR$/obj/avgpool_layer_kernels.o" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/obj/batchnorm_layer.o" afterPath="$PROJECT_DIR$/obj/batchnorm_layer.o" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/obj/blas.o" afterPath="$PROJECT_DIR$/obj/blas.o" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/obj/blas_kernels.o" afterPath="$PROJECT_DIR$/obj/blas_kernels.o" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/obj/box.o" afterPath="$PROJECT_DIR$/obj/box.o" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/obj/captcha.o" afterPath="$PROJECT_DIR$/obj/captcha.o" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/obj/cifar.o" afterPath="$PROJECT_DIR$/obj/cifar.o" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/obj/classifier.o" afterPath="$PROJECT_DIR$/obj/classifier.o" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/obj/coco.o" afterPath="$PROJECT_DIR$/obj/coco.o" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/obj/col2im.o" afterPath="$PROJECT_DIR$/obj/col2im.o" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/obj/col2im_kernels.o" afterPath="$PROJECT_DIR$/obj/col2im_kernels.o" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/obj/compare.o" afterPath="$PROJECT_DIR$/obj/compare.o" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/obj/connected_layer.o" afterPath="$PROJECT_DIR$/obj/connected_layer.o" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/obj/convolutional_kernels.o" afterPath="$PROJECT_DIR$/obj/convolutional_kernels.o" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/obj/convolutional_layer.o" afterPath="$PROJECT_DIR$/obj/convolutional_layer.o" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/obj/cost_layer.o" afterPath="$PROJECT_DIR$/obj/cost_layer.o" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/obj/crnn_layer.o" afterPath="$PROJECT_DIR$/obj/crnn_layer.o" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/obj/crop_layer.o" afterPath="$PROJECT_DIR$/obj/crop_layer.o" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/obj/crop_layer_kernels.o" afterPath="$PROJECT_DIR$/obj/crop_layer_kernels.o" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/obj/cuda.o" afterPath="$PROJECT_DIR$/obj/cuda.o" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/obj/darknet.o" afterPath="$PROJECT_DIR$/obj/darknet.o" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/obj/data.o" afterPath="$PROJECT_DIR$/obj/data.o" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/obj/demo.o" afterPath="$PROJECT_DIR$/obj/demo.o" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/obj/detection_layer.o" afterPath="$PROJECT_DIR$/obj/detection_layer.o" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/obj/detector.o" afterPath="$PROJECT_DIR$/obj/detector.o" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/obj/dice.o" afterPath="$PROJECT_DIR$/obj/dice.o" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/obj/dropout_layer.o" afterPath="$PROJECT_DIR$/obj/dropout_layer.o" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/obj/dropout_layer_kernels.o" afterPath="$PROJECT_DIR$/obj/dropout_layer_kernels.o" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/obj/gemm.o" afterPath="$PROJECT_DIR$/obj/gemm.o" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/obj/go.o" afterPath="$PROJECT_DIR$/obj/go.o" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/obj/gru_layer.o" afterPath="$PROJECT_DIR$/obj/gru_layer.o" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/obj/http_stream.o" afterPath="$PROJECT_DIR$/obj/http_stream.o" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/obj/im2col.o" afterPath="$PROJECT_DIR$/obj/im2col.o" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/obj/im2col_kernels.o" afterPath="$PROJECT_DIR$/obj/im2col_kernels.o" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/obj/layer.o" afterPath="$PROJECT_DIR$/obj/layer.o" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/obj/list.o" afterPath="$PROJECT_DIR$/obj/list.o" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/obj/local_layer.o" afterPath="$PROJECT_DIR$/obj/local_layer.o" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/obj/matrix.o" afterPath="$PROJECT_DIR$/obj/matrix.o" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/obj/maxpool_layer.o" afterPath="$PROJECT_DIR$/obj/maxpool_layer.o" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/obj/maxpool_layer_kernels.o" afterPath="$PROJECT_DIR$/obj/maxpool_layer_kernels.o" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/obj/network.o" afterPath="$PROJECT_DIR$/obj/network.o" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/obj/network_kernels.o" afterPath="$PROJECT_DIR$/obj/network_kernels.o" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/obj/nightmare.o" afterPath="$PROJECT_DIR$/obj/nightmare.o" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/obj/normalization_layer.o" afterPath="$PROJECT_DIR$/obj/normalization_layer.o" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/obj/option_list.o" afterPath="$PROJECT_DIR$/obj/option_list.o" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/obj/parser.o" afterPath="$PROJECT_DIR$/obj/parser.o" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/obj/region_layer.o" afterPath="$PROJECT_DIR$/obj/region_layer.o" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/obj/reorg_layer.o" afterPath="$PROJECT_DIR$/obj/reorg_layer.o" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/obj/reorg_old_layer.o" afterPath="$PROJECT_DIR$/obj/reorg_old_layer.o" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/obj/rnn.o" afterPath="$PROJECT_DIR$/obj/rnn.o" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/obj/rnn_layer.o" afterPath="$PROJECT_DIR$/obj/rnn_layer.o" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/obj/rnn_vid.o" afterPath="$PROJECT_DIR$/obj/rnn_vid.o" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/obj/route_layer.o" afterPath="$PROJECT_DIR$/obj/route_layer.o" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/obj/shortcut_layer.o" afterPath="$PROJECT_DIR$/obj/shortcut_layer.o" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/obj/softmax_layer.o" afterPath="$PROJECT_DIR$/obj/softmax_layer.o" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/obj/super.o" afterPath="$PROJECT_DIR$/obj/super.o" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/obj/swag.o" afterPath="$PROJECT_DIR$/obj/swag.o" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/obj/tag.o" afterPath="$PROJECT_DIR$/obj/tag.o" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/obj/tree.o" afterPath="$PROJECT_DIR$/obj/tree.o" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/obj/upsample_layer.o" afterPath="$PROJECT_DIR$/obj/upsample_layer.o" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/obj/utils.o" afterPath="$PROJECT_DIR$/obj/utils.o" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/obj/voxel.o" afterPath="$PROJECT_DIR$/obj/voxel.o" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/obj/writing.o" afterPath="$PROJECT_DIR$/obj/writing.o" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/obj/yolo.o" afterPath="$PROJECT_DIR$/obj/yolo.o" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/obj/yolo_layer.o" afterPath="$PROJECT_DIR$/obj/yolo_layer.o" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.gitignore" afterPath="$PROJECT_DIR$/.gitignore" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/classify.py" afterPath="$PROJECT_DIR$/classify.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/display_results.py" afterPath="$PROJECT_DIR$/display_results.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/flc.conf" afterPath="$PROJECT_DIR$/flc.conf" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/flc.py" afterPath="$PROJECT_DIR$/flc.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/flc_server.py" afterPath="$PROJECT_DIR$/flc_server.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/flc_white_server.py" afterPath="$PROJECT_DIR$/flc_white_server.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/rotate.py" afterPath="$PROJECT_DIR$/rotate.py" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="TRACKING_ENABLED" value="true" />
@@ -100,7 +22,7 @@
         <entry file="file://$PROJECT_DIR$/classify.py">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="396">
-              <caret line="43" column="27" lean-forward="true" selection-start-line="43" selection-start-column="27" selection-end-line="43" selection-end-column="27" />
+              <caret line="43" column="27" lean-forward="false" selection-start-line="43" selection-start-column="27" selection-end-line="43" selection-end-column="27" />
               <folding>
                 <element signature="e#0#17#0" expanded="true" />
               </folding>
@@ -108,21 +30,11 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name=".gitignore" pinned="false" current-in-tab="false">
+      <file leaf-file-name=".gitignore" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/.gitignore">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="87">
-              <caret line="81" column="0" lean-forward="true" selection-start-line="81" selection-start-column="0" selection-end-line="81" selection-end-column="0" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="flc.conf" pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/flc.conf">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="162">
-              <caret line="9" column="41" lean-forward="false" selection-start-line="9" selection-start-column="41" selection-end-line="9" selection-end-column="41" />
+            <state relative-caret-position="200">
+              <caret line="97" column="8" lean-forward="true" selection-start-line="97" selection-start-column="8" selection-end-line="97" selection-end-column="8" />
               <folding />
             </state>
           </provider>
@@ -157,6 +69,7 @@
       <find>trap_list_path</find>
       <find>test_data_path</find>
       <find>test_data_dir</find>
+      <find>report</find>
     </findStrings>
   </component>
   <component name="Git.Settings">
@@ -448,32 +361,6 @@
     <watches-manager />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/flc.conf">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="180">
-          <caret line="10" column="0" lean-forward="true" selection-start-line="10" selection-start-column="0" selection-end-line="10" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/flc_server.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="0">
-          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding>
-            <element signature="e#43#54#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/flc.conf">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="180">
-          <caret line="10" column="0" lean-forward="false" selection-start-line="10" selection-start-column="0" selection-end-line="10" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/flc_server.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="0">
@@ -791,18 +678,10 @@
     <entry file="file://$PROJECT_DIR$/classify.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="396">
-          <caret line="43" column="27" lean-forward="true" selection-start-line="43" selection-start-column="27" selection-end-line="43" selection-end-column="27" />
+          <caret line="43" column="27" lean-forward="false" selection-start-line="43" selection-start-column="27" selection-end-line="43" selection-end-column="27" />
           <folding>
             <element signature="e#0#17#0" expanded="true" />
           </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/.gitignore">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="87">
-          <caret line="81" column="0" lean-forward="true" selection-start-line="81" selection-start-column="0" selection-end-line="81" selection-end-column="0" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -810,6 +689,38 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="162">
           <caret line="9" column="41" lean-forward="false" selection-start-line="9" selection-start-column="41" selection-end-line="9" selection-end-column="41" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/reports/ignore_me">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="0">
+          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/test_data/ignore_me">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="0">
+          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/test_data_backup/ignore_me">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="0">
+          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/.gitignore">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="200">
+          <caret line="97" column="8" lean-forward="true" selection-start-line="97" selection-start-column="8" selection-end-line="97" selection-end-column="8" />
           <folding />
         </state>
       </provider>
