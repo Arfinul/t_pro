@@ -1,5 +1,5 @@
 import os, shutil
-import glob, ConfigParser
+import glob, configparser
 import PIL.Image as Image
 from PIL import ImageFile
 import display_results
@@ -7,30 +7,22 @@ import display_results
 ImageFile.LOAD_TRUNCATED_IMAGES = True
 images = None
 fine_count = 0
-config = ConfigParser.ConfigParser()
+config = configparser.ConfigParser()
 config.read('flc.conf')
 root_folder = config.get('input_path', 'root_folder')
 test_data_dir = root_folder + '/test_data'
 
-cropped_path = test_data_dir + '/2_cropped_images'
+cropped_dir = '/2_cropped_images'
 trapped_images_path = test_data_dir + '/6_trapped_images'
 test_list_path = root_folder + '/test'
 trap_list_path = root_folder + '/trap'
 
 
-result_image_path = test_data_dir + '/3_resulted_images'
-augmented_path = test_data_dir + '/4_augmented'
-
-
-#command_classify_full = './darknet detector test cfg/obj.data cfg/yolo-obj_15700.cfg yolo-obj_15700_48600.weights -dont_show<test.list>result.list'
-#command_classify_one_by_one = './darknet detector test cfg/obj.data cfg/yolo-obj_15700.cfg yolo-obj_15700_48600.weights ''-dont_show '
-
-
-def create_test_list():
-    # command_create_list = 'find `pwd`' + cropped_path + ' -name \*.jpg > test.list'  # gcp path of cropped images
-    # os.system(command_create_list)
+def create_test_list(userId, sectionId):
+    user_dir = test_data_dir + '/u-' + userId + '/s-' + sectionId
+    cropped_path = user_dir + cropped_dir
     files = glob.glob(cropped_path + '/*.jpg')
-    with open('test.list', 'w') as in_files:
+    with open(user_dir + '/test.list', 'w') as in_files:
         for eachfile in sorted(files): in_files.write(eachfile + '\n')
 
 
@@ -40,11 +32,13 @@ def create_trapped_list():
         for eachfile in sorted(files): in_files.write(eachfile + '\n')
 
 
-def yolo_classify_full():
-    os.system(config.get('testing_command', 'command_classify_full'))
+def yolo_classify_full(userId, sectionId):
+    user_dir = test_data_dir + '/u-' + userId + '/s-' + sectionId
+    testing_command = config.get('testing_command', 'command_classify')
+    os.system(testing_command + '<' + user_dir + '/test.list' + '>' + user_dir + '/result.list')
 
 
-def count():
+def count(userId, sectionId):
     # k = 0
     # F = 0
     # fname = 'result.list'
@@ -61,7 +55,8 @@ def count():
     # return k, F
     # filename = 'result.list'
 
-    filename = 'result.list'
+    user_dir = test_data_dir + '/u-' + userId + '/s-' + sectionId
+    filename = user_dir + '/result.list'
     fine_count = 0
     lines = []
     with open(filename, 'r') as file:
@@ -201,7 +196,7 @@ def yolo_classify_each_and_generate_report():
             all_coarse_in_7 = []
             for line in chunk:
                 words = line.split()
-                if words[-2] in ['3lb', '2lb', '1lb', '1b']:
+                if words[-2] in ['3lb', '2lb', '1lb', '1b', '1lbj']:
                     fine_cases_in_7.append(words[-2])
                 else:
                     all_coarse_in_7.append(line)
@@ -227,6 +222,8 @@ def yolo_classify_each_and_generate_report():
                         conf = (int(words[1]) + int(words[2]) + int(words[3])) / 3
                     if words[-2] == '1lb':
                         conf = (int(words[1]) + int(words[2])) / 2
+                    if words[-2] == '1lbj':
+                        conf = (int(words[1]) + int(words[2])) / 2
                     if words[-2] == '1b':
                         conf = int(words[1])
                     frequent_fine_cases_conf.append(conf)
@@ -247,6 +244,11 @@ def yolo_classify_each_and_generate_report():
                             fine_lines_trapped.append(line)
                             break
                     if words[-2] == '1lb':
+                        confd = (int(words[1]) + int(words[2])) / 2
+                        if confd == max(frequent_fine_cases_conf):
+                            fine_lines_trapped.append(line)
+                            break
+                    if words[-2] == '1lbj':
                         confd = (int(words[1]) + int(words[2])) / 2
                         if confd == max(frequent_fine_cases_conf):
                             fine_lines_trapped.append(line)

@@ -3,22 +3,30 @@
 from flask import Flask, request, Response
 from gevent import wsgi
 import jsonpickle
-import os, ConfigParser, time
+import os, configparser, time
 
 # Initialize the Flask application
 app = Flask(__name__)
 
-config = ConfigParser.ConfigParser()
+config = configparser.ConfigParser()
 config.read('flc.conf')
 root_folder = config.get('input_path', 'root_folder')
 test_data_dir = root_folder + '/test_data'
-cwd = test_data_dir + '/1_images'
 
 print("White image upload server started")
 @app.route('/api/white', methods=['POST'])
 def upload_white():
+    userId = request.form['userId']
+    sectionId = request.form['sectionId']
+
+    cwd = test_data_dir + '/u-' + userId + '/s-' + sectionId + '/1_images'
+    print(cwd)
+
+    os.makedirs(cwd, exist_ok=True)
     os.chdir(cwd)
+
     start = time.time()
+
     file = request.files['image']
     file.save(file.filename)
     end = time.time()
@@ -34,5 +42,5 @@ def upload_white():
 #app.run(host="0.0.0.0", port=5001)  # Server
 # app.run(port=4002)  # Local
 
-server = wsgi.WSGIServer(('0.0.0.0', 5001), app)
+server = wsgi.WSGIServer(('0.0.0.0', 6001), app)
 server.serve_forever()

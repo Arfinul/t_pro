@@ -121,4 +121,4 @@ predictions.jpg
 # Flc folders to ignore
 test_data/*
 test_data_backup/*
-reports/*
+backup/*

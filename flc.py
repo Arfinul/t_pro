@@ -1,17 +1,18 @@
-import glob
+import glob, shutil
 import os
 import cv2
-import imutils, ConfigParser, datetime
+import imutils, configparser, datetime
 import classify, rotate, display_results
 
 
-config = ConfigParser.ConfigParser()
+config = configparser.ConfigParser()
 config.read('flc.conf')
 root_folder = config.get('input_path', 'root_folder')
 test_data_dir = root_folder + '/test_data'
-input_images = test_data_dir + '/1_images/*'
-cropped_path = test_data_dir + '/2_cropped_images'
+test_data_backup_dir = root_folder + '/test_data_backup'
 
+image_dir = '/1_images'
+cropped_dir = '/2_cropped_images'
 
 
 '''Segmentation of bunches from a frame has been performed by finding the difference between the first
@@ -20,21 +21,20 @@ cropped_path = test_data_dir + '/2_cropped_images'
 '''
 
 
-def segmentation_and_rotation():
+def segmentation_and_rotation(userId, sectionId):
     firstFrame = None
     count = 0
+    user_dir = test_data_dir + '/u-' + userId + '/s-' + sectionId
+
+    cropped_path = user_dir + cropped_dir
+    input_images = user_dir + image_dir + '/*'
+
     for file in sorted(glob.glob(input_images)):
         uploaded_file_name = os.path.basename(os.path.normpath(file))
         datetime.datetime.now().time()
-        command_to_copy = 'cp ' + file + ' ' + root_folder + '/test_data_backup/' + str(
-            datetime.datetime.now().date()) + '_' + str(datetime.datetime.now().time()) + '_' + uploaded_file_name
+        command_to_copy = 'cp ' + file + ' ' + test_data_backup_dir + '/' + str(
+            datetime.datetime.now().date()) + '_' + str(datetime.datetime.now().time()) + '_' + userId + '_' + sectionId + '_' + uploaded_file_name
         os.system(command_to_copy)
-
-
-
-        #command_to_copy = 'cp ' + file + ' /home/agnext/Music/flc/test_data_backup/' + str(
-        #datetime.datetime.now().date()) + '_' + str(datetime.datetime.now().time()) + '_' + uploaded_file_name
-        #os.system(command_to_copy)
 
         frame = cv2.imread(file)
         frame = cv2.addWeighted(frame, 2, frame, 0, 0)
@@ -91,7 +91,7 @@ def segmentation_and_rotation():
     print("Total bunches = %d" % len(
         [name for name in os.listdir(cropped_path) if os.path.isfile(os.path.join(cropped_path, name))]))
 
-    rotate.rotate_image()
+    rotate.rotate_image(user_dir)
 
     print("Total rotated bunches = %d" % len(
         [name for name in os.listdir(cropped_path) if os.path.isfile(os.path.join(cropped_path, name))]))
@@ -102,19 +102,20 @@ def segmentation_and_rotation():
 '''
 
 
-def flc_only():
-    segmentation_and_rotation()
+def flc_only(userId, sectionId):
+    segmentation_and_rotation(userId, sectionId)
     os.chdir(root_folder)
-    classify.create_test_list()
+    classify.create_test_list(userId, sectionId)
     print("Generating Fine Leaf count only ... wait !!!")
-    classify.yolo_classify_full()
+    classify.yolo_classify_full(userId, sectionId)
 
-    os.system('rm ' + cropped_path + '/*')
-    cc, fc = classify.count()
+    #os.system('rm ' + cropped_path + '/*')
+    cc, fc = classify.count(userId, sectionId)
+    shutil.rmtree(test_data_dir + '/u-' + userId + '/s-' + sectionId + '/')
 
-    r = glob.glob(input_images)
-    for i in r:
-        os.remove(i)
+    #r = glob.glob(input_images)
+    #for i in r:
+        #os.remove(i)
 
     return cc, fc
 
@@ -124,10 +125,10 @@ def flc_only():
 '''
 
 
-def flc_with_report():
-    segmentation_and_rotation()
+def flc_with_report(userId, sectionId):
+    segmentation_and_rotation(userId, sectionId)
     os.chdir(root_folder)
-    classify.create_test_list()
+    classify.create_test_list(userId, sectionId)
     print("Generating FLC on report ... wait !!!")
     classify.yolo_classify_full()
 

@@ -5,7 +5,7 @@ import os, shutil
 import flc
 import time
 import zipfile
-import jsonpickle, ConfigParser
+import jsonpickle, configparser
 from flask import Flask, request, Response
 from gevent import wsgi
 from werkzeug.utils import secure_filename
@@ -13,11 +13,20 @@ from werkzeug.utils import secure_filename
 # Initialize the Flask application
 app = Flask(__name__)
 
-config = ConfigParser.ConfigParser()
+config = configparser.ConfigParser()
 config.read('flc.conf')
+
 root_folder = config.get('input_path', 'root_folder')
 test_data_dir = root_folder + '/test_data'
-cwd = test_data_dir + '/1_images'
+
+image_dir = '/1_images'
+cropped_dir = '/2_cropped_images'
+result_dir = '/3_resulted_images'
+augmented_dir = '/4_augmented'
+join_dir = '/5_join'
+tracked_image_dir = '/6_trapped_images'
+pdf_dir = '/7_pdf_files'
+
 subdir_list = None
 ALLOWED_EXTENSIONS = {'zip'}
 
@@ -33,10 +42,28 @@ def allowed_file(filename):
 @app.route('/api/image', methods=['POST'])
 def upload_image():
     try:
-        os.chdir(cwd)
+        userId = request.form['userId']
+        sectionId = request.form['sectionId']
+        user_dir = test_data_dir + '/u-' + userId + '/s-' + sectionId
+
+        test_images = user_dir + image_dir
+        os.makedirs(test_images, exist_ok=True)
+        cropped_path = user_dir + cropped_dir
+        os.makedirs(cropped_path, exist_ok=True)
+        result_image_path = user_dir + result_dir
+        os.makedirs(result_image_path, exist_ok=True)
+        augmented_path = user_dir + augmented_dir
+        os.makedirs(augmented_path, exist_ok=True)
+        join_path = user_dir + join_dir
+        os.makedirs(join_path, exist_ok=True)
+        tracked_images_path = user_dir + tracked_image_dir
+        os.makedirs(tracked_images_path, exist_ok=True)
+        pdf_path = user_dir +pdf_dir
+        os.makedirs(pdf_path, exist_ok=True)
+
+        os.chdir(test_images)
         start = time.time()
         print('Uploading the file ... Wait !!!\n')
-
         # Upload multiple images
         if request.method == 'POST' and 'image' in request.files:
             for file in request.files.getlist('image'):
@@ -60,8 +87,11 @@ def upload_image():
 @app.route('/api/flc', methods=['POST'])
 def classification_flc_only():
     try:
+        userId = request.form['userId']
+        sectionId = request.form['sectionId']
+
         start = time.time()
-        cc, fc = flc.flc_only()
+        cc, fc = flc.flc_only(userId, sectionId)
         end = time.time()
         time_cons = (end - start)
         print('classification time = ', round(time_cons, 2), ' seconds')
@@ -73,19 +103,7 @@ def classification_flc_only():
         return Response(response=response_pickled, status=200, mimetype="application/json")
     except:
         try:
-            p = os.listdir(test_data_dir)
-            length = len(p)
-
-            def alldell(a):
-                for root, dirs, files in os.walk(a):
-                    for f in files:
-                        os.unlink(os.path.join(root, f))
-                    for d in dirs:
-                        shutil.rmtree(os.path.join(root, d))
-
-            for i in xrange(length):
-                path = test_data_dir + '/' + p[i]
-                alldell(path)
+            shutil.rmtree(test_data_dir + '/u-' + userId + '/')
             responses = {'status': 'Error_Try_Again'
                          }
             response_pickled = jsonpickle.encode(responses)
@@ -96,7 +114,14 @@ def classification_flc_only():
 
 @app.route('/api/bigdata', methods=['POST'])
 def upload_big_data():
-    os.chdir(cwd)
+    userId = request.form['userId']
+    sectionId = request.form['sectionId']
+    user_dir = test_data_dir + '/u-' + userId + '/s-' + sectionId
+
+    test_images = user_dir + image_dir
+
+
+    os.chdir(test_images)
     start = time.time()
     if request.method == 'POST':
         # print('\nUploading the file ... Wait !!!')
@@ -104,22 +129,22 @@ def upload_big_data():
         print('1')
         if file and allowed_file(file.filename):
             filename = secure_filename(file.filename)
-            file.save(os.path.join(cwd, filename))
-            zip_ref = zipfile.ZipFile(os.path.join(cwd, filename), 'r')
-            zip_ref.extractall(cwd)
+            file.save(os.path.join(test_images, filename))
+            zip_ref = zipfile.ZipFile(os.path.join(test_images, filename), 'r')
+            zip_ref.extractall(test_images)
             zip_ref.close()
-            r = glob.glob(cwd + '/*.zip')
+            r = glob.glob(test_images + '/*.zip')
             for i in sorted(r):
                 os.remove(i)
-            for x, y, z in os.walk(cwd):
+            for x, y, z in os.walk(test_images):
                 subdir_list = y
                 break
             for each in subdir_list:
-                os.system('mv ' + cwd + '/' + each + '/* ' + cwd)
-                os.system('rm -r ' + cwd + '/' + each)
+                os.system('mv ' + test_images + '/' + each + '/* ' + test_images)
+                os.system('rm -r ' + test_images + '/' + each)
     end = time.time()
     time_cons = (end - start)
-    image_count = len([name for name in os.listdir(cwd) if os.path.isfile(os.path.join(cwd, name))])
+    image_count = len([name for name in os.listdir(test_images) if os.path.isfile(os.path.join(test_images, name))])
     print('Uploaded - ', file.filename)
     print('Time_Taken(seconds) - ', round(time_cons, 2))
     print('Total images - ', image_count)
@@ -157,7 +182,7 @@ def post():
 #app.run(host="0.0.0.0", port=5000)  # Server
 #sapp.run(port=6000)  # Local
 
-server = wsgi.WSGIServer(('0.0.0.0', 5000), app)
+server = wsgi.WSGIServer(('0.0.0.0', 6000), app)
 server.serve_forever()
 
 

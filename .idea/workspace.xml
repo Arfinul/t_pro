@@ -2,9 +2,86 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="6b270114-ba8b-4c4a-8083-86245e988c03" name="Default Changelist" comment="">
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/flc_report_server.py" afterPath="$PROJECT_DIR$/flc_report_server.py" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/darknet" afterPath="$PROJECT_DIR$/darknet" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/obj/activation_kernels.o" afterPath="$PROJECT_DIR$/obj/activation_kernels.o" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/obj/activation_layer.o" afterPath="$PROJECT_DIR$/obj/activation_layer.o" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/obj/activations.o" afterPath="$PROJECT_DIR$/obj/activations.o" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/obj/art.o" afterPath="$PROJECT_DIR$/obj/art.o" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/obj/avgpool_layer.o" afterPath="$PROJECT_DIR$/obj/avgpool_layer.o" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/obj/avgpool_layer_kernels.o" afterPath="$PROJECT_DIR$/obj/avgpool_layer_kernels.o" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/obj/batchnorm_layer.o" afterPath="$PROJECT_DIR$/obj/batchnorm_layer.o" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/obj/blas.o" afterPath="$PROJECT_DIR$/obj/blas.o" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/obj/blas_kernels.o" afterPath="$PROJECT_DIR$/obj/blas_kernels.o" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/obj/box.o" afterPath="$PROJECT_DIR$/obj/box.o" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/obj/captcha.o" afterPath="$PROJECT_DIR$/obj/captcha.o" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/obj/cifar.o" afterPath="$PROJECT_DIR$/obj/cifar.o" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/obj/classifier.o" afterPath="$PROJECT_DIR$/obj/classifier.o" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/obj/coco.o" afterPath="$PROJECT_DIR$/obj/coco.o" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/obj/col2im.o" afterPath="$PROJECT_DIR$/obj/col2im.o" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/obj/col2im_kernels.o" afterPath="$PROJECT_DIR$/obj/col2im_kernels.o" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/obj/compare.o" afterPath="$PROJECT_DIR$/obj/compare.o" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/obj/connected_layer.o" afterPath="$PROJECT_DIR$/obj/connected_layer.o" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/obj/convolutional_kernels.o" afterPath="$PROJECT_DIR$/obj/convolutional_kernels.o" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/obj/convolutional_layer.o" afterPath="$PROJECT_DIR$/obj/convolutional_layer.o" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/obj/cost_layer.o" afterPath="$PROJECT_DIR$/obj/cost_layer.o" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/obj/crnn_layer.o" afterPath="$PROJECT_DIR$/obj/crnn_layer.o" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/obj/crop_layer.o" afterPath="$PROJECT_DIR$/obj/crop_layer.o" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/obj/crop_layer_kernels.o" afterPath="$PROJECT_DIR$/obj/crop_layer_kernels.o" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/obj/cuda.o" afterPath="$PROJECT_DIR$/obj/cuda.o" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/obj/darknet.o" afterPath="$PROJECT_DIR$/obj/darknet.o" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/obj/data.o" afterPath="$PROJECT_DIR$/obj/data.o" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/obj/demo.o" afterPath="$PROJECT_DIR$/obj/demo.o" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/obj/detection_layer.o" afterPath="$PROJECT_DIR$/obj/detection_layer.o" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/obj/detector.o" afterPath="$PROJECT_DIR$/obj/detector.o" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/obj/dice.o" afterPath="$PROJECT_DIR$/obj/dice.o" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/obj/dropout_layer.o" afterPath="$PROJECT_DIR$/obj/dropout_layer.o" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/obj/dropout_layer_kernels.o" afterPath="$PROJECT_DIR$/obj/dropout_layer_kernels.o" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/obj/gemm.o" afterPath="$PROJECT_DIR$/obj/gemm.o" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/obj/go.o" afterPath="$PROJECT_DIR$/obj/go.o" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/obj/gru_layer.o" afterPath="$PROJECT_DIR$/obj/gru_layer.o" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/obj/http_stream.o" afterPath="$PROJECT_DIR$/obj/http_stream.o" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/obj/im2col.o" afterPath="$PROJECT_DIR$/obj/im2col.o" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/obj/im2col_kernels.o" afterPath="$PROJECT_DIR$/obj/im2col_kernels.o" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/obj/layer.o" afterPath="$PROJECT_DIR$/obj/layer.o" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/obj/list.o" afterPath="$PROJECT_DIR$/obj/list.o" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/obj/local_layer.o" afterPath="$PROJECT_DIR$/obj/local_layer.o" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/obj/matrix.o" afterPath="$PROJECT_DIR$/obj/matrix.o" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/obj/maxpool_layer.o" afterPath="$PROJECT_DIR$/obj/maxpool_layer.o" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/obj/maxpool_layer_kernels.o" afterPath="$PROJECT_DIR$/obj/maxpool_layer_kernels.o" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/obj/network.o" afterPath="$PROJECT_DIR$/obj/network.o" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/obj/network_kernels.o" afterPath="$PROJECT_DIR$/obj/network_kernels.o" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/obj/nightmare.o" afterPath="$PROJECT_DIR$/obj/nightmare.o" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/obj/normalization_layer.o" afterPath="$PROJECT_DIR$/obj/normalization_layer.o" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/obj/option_list.o" afterPath="$PROJECT_DIR$/obj/option_list.o" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/obj/parser.o" afterPath="$PROJECT_DIR$/obj/parser.o" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/obj/region_layer.o" afterPath="$PROJECT_DIR$/obj/region_layer.o" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/obj/reorg_layer.o" afterPath="$PROJECT_DIR$/obj/reorg_layer.o" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/obj/reorg_old_layer.o" afterPath="$PROJECT_DIR$/obj/reorg_old_layer.o" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/obj/rnn.o" afterPath="$PROJECT_DIR$/obj/rnn.o" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/obj/rnn_layer.o" afterPath="$PROJECT_DIR$/obj/rnn_layer.o" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/obj/rnn_vid.o" afterPath="$PROJECT_DIR$/obj/rnn_vid.o" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/obj/route_layer.o" afterPath="$PROJECT_DIR$/obj/route_layer.o" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/obj/shortcut_layer.o" afterPath="$PROJECT_DIR$/obj/shortcut_layer.o" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/obj/softmax_layer.o" afterPath="$PROJECT_DIR$/obj/softmax_layer.o" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/obj/super.o" afterPath="$PROJECT_DIR$/obj/super.o" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/obj/swag.o" afterPath="$PROJECT_DIR$/obj/swag.o" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/obj/tag.o" afterPath="$PROJECT_DIR$/obj/tag.o" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/obj/tree.o" afterPath="$PROJECT_DIR$/obj/tree.o" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/obj/upsample_layer.o" afterPath="$PROJECT_DIR$/obj/upsample_layer.o" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/obj/utils.o" afterPath="$PROJECT_DIR$/obj/utils.o" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/obj/voxel.o" afterPath="$PROJECT_DIR$/obj/voxel.o" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/obj/writing.o" afterPath="$PROJECT_DIR$/obj/writing.o" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/obj/yolo.o" afterPath="$PROJECT_DIR$/obj/yolo.o" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/obj/yolo_layer.o" afterPath="$PROJECT_DIR$/obj/yolo_layer.o" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.gitignore" afterPath="$PROJECT_DIR$/.gitignore" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/classify.py" afterPath="$PROJECT_DIR$/classify.py" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/display_results.py" afterPath="$PROJECT_DIR$/display_results.py" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/flc.conf" afterPath="$PROJECT_DIR$/flc.conf" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/flc.py" afterPath="$PROJECT_DIR$/flc.py" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/flc_server.py" afterPath="$PROJECT_DIR$/flc_server.py" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/flc_white_server.py" afterPath="$PROJECT_DIR$/flc_white_server.py" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/rotate.py" afterPath="$PROJECT_DIR$/rotate.py" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="TRACKING_ENABLED" value="true" />
@@ -19,35 +96,13 @@
   <component name="ExecutionTargetManager" SELECTED_TARGET="default_target" />
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file leaf-file-name="flc.py" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/flc.py">
+      <file leaf-file-name="classify.py" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/classify.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="18">
-              <caret line="63" column="17" lean-forward="false" selection-start-line="63" selection-start-column="17" selection-end-line="63" selection-end-column="17" />
+            <state relative-caret-position="396">
+              <caret line="43" column="27" lean-forward="true" selection-start-line="43" selection-start-column="27" selection-end-line="43" selection-end-column="27" />
               <folding>
-                <element signature="e#0#11#0" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="flc.conf" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/flc.conf">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="180">
-              <caret line="10" column="0" lean-forward="false" selection-start-line="10" selection-start-column="0" selection-end-line="10" selection-end-column="0" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="flc_server.py" pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/flc_server.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="450">
-              <caret line="25" column="0" lean-forward="true" selection-start-line="25" selection-start-column="0" selection-end-line="25" selection-end-column="0" />
-              <folding>
-                <element signature="e#43#54#0" expanded="true" />
+                <element signature="e#0#17#0" expanded="true" />
               </folding>
             </state>
           </provider>
@@ -56,33 +111,19 @@
       <file leaf-file-name=".gitignore" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/.gitignore">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="1728">
-              <caret line="96" column="4" lean-forward="false" selection-start-line="96" selection-start-column="4" selection-end-line="96" selection-end-column="4" />
+            <state relative-caret-position="87">
+              <caret line="81" column="0" lean-forward="true" selection-start-line="81" selection-start-column="0" selection-end-line="81" selection-end-column="0" />
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="flc_white_server.py" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/flc_white_server.py">
+      <file leaf-file-name="flc.conf" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/flc.conf">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="324">
-              <caret line="18" column="19" lean-forward="true" selection-start-line="18" selection-start-column="19" selection-end-line="18" selection-end-column="19" />
-              <folding>
-                <element signature="e#22#64#0" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="flc_report_server.py" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/flc_report_server.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="270">
-              <caret line="15" column="0" lean-forward="true" selection-start-line="15" selection-start-column="0" selection-end-line="15" selection-end-column="30" />
-              <folding>
-                <element signature="e#22#51#0" expanded="true" />
-              </folding>
+            <state relative-caret-position="162">
+              <caret line="9" column="41" lean-forward="false" selection-start-line="9" selection-start-column="41" selection-end-line="9" selection-end-column="41" />
+              <folding />
             </state>
           </provider>
         </entry>
@@ -115,6 +156,7 @@
       <find>command_classify_one_by_one</find>
       <find>trap_list_path</find>
       <find>test_data_path</find>
+      <find>test_data_dir</find>
     </findStrings>
   </component>
   <component name="Git.Settings">
@@ -130,15 +172,15 @@
         <option value="$PROJECT_DIR$/count.py" />
         <option value="$PROJECT_DIR$/new.py" />
         <option value="$PROJECT_DIR$/trap.list" />
-        <option value="$PROJECT_DIR$/rotate.py" />
-        <option value="$PROJECT_DIR$/flc.conf" />
-        <option value="$PROJECT_DIR$/classify.py" />
-        <option value="$PROJECT_DIR$/display_results.py" />
-        <option value="$PROJECT_DIR$/flc.py" />
-        <option value="$PROJECT_DIR$/.gitignore" />
         <option value="$PROJECT_DIR$/flc_report_server.py" />
         <option value="$PROJECT_DIR$/flc_white_server.py" />
+        <option value="$PROJECT_DIR$/display_results.py" />
+        <option value="$PROJECT_DIR$/rotate.py" />
         <option value="$PROJECT_DIR$/flc_server.py" />
+        <option value="$PROJECT_DIR$/flc.py" />
+        <option value="$PROJECT_DIR$/flc.conf" />
+        <option value="$PROJECT_DIR$/classify.py" />
+        <option value="$PROJECT_DIR$/.gitignore" />
       </list>
     </option>
   </component>
@@ -170,11 +212,11 @@
         <subPane>
           <PATH>
             <PATH_ELEMENT>
-              <option name="myItemId" value="flc_2" />
+              <option name="myItemId" value="flc_3" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
             </PATH_ELEMENT>
             <PATH_ELEMENT>
-              <option name="myItemId" value="flc_2" />
+              <option name="myItemId" value="flc_3" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
           </PATH>
@@ -401,25 +443,66 @@
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
-      <breakpoints>
-        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
-          <url>file://$PROJECT_DIR$/flc_report_server.py</url>
-          <line>2</line>
-          <option name="timeStamp" value="1" />
-        </line-breakpoint>
-      </breakpoints>
-      <option name="time" value="2" />
+      <option name="time" value="3" />
     </breakpoint-manager>
     <watches-manager />
   </component>
   <component name="editorHistoryManager">
+    <entry file="file://$PROJECT_DIR$/flc.conf">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="180">
+          <caret line="10" column="0" lean-forward="true" selection-start-line="10" selection-start-column="0" selection-end-line="10" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/flc_server.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="0">
+          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding>
+            <element signature="e#43#54#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/flc.conf">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="180">
+          <caret line="10" column="0" lean-forward="false" selection-start-line="10" selection-start-column="0" selection-end-line="10" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/flc_server.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="0">
+          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding>
+            <element signature="e#43#54#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/flc.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="1134">
+          <caret line="63" column="17" lean-forward="false" selection-start-line="63" selection-start-column="17" selection-end-line="63" selection-end-column="17" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/flc.conf">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="0">
+          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/flc.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="1062">
           <caret line="63" column="17" lean-forward="false" selection-start-line="63" selection-start-column="17" selection-end-line="63" selection-end-column="17" />
-          <folding>
-            <element signature="e#0#11#0" expanded="true" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -435,9 +518,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="1314">
           <caret line="80" column="0" lean-forward="false" selection-start-line="80" selection-start-column="0" selection-end-line="84" selection-end-column="7" />
-          <folding>
-            <element signature="e#43#54#0" expanded="true" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -445,9 +525,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="0">
           <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding>
-            <element signature="e#0#11#0" expanded="true" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -463,9 +540,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="1674">
           <caret line="100" column="48" lean-forward="true" selection-start-line="100" selection-start-column="48" selection-end-line="100" selection-end-column="48" />
-          <folding>
-            <element signature="e#43#54#0" expanded="true" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -473,9 +547,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="2160">
           <caret line="124" column="41" lean-forward="false" selection-start-line="124" selection-start-column="41" selection-end-line="124" selection-end-column="41" />
-          <folding>
-            <element signature="e#0#11#0" expanded="true" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -519,9 +590,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="432">
           <caret line="31" column="23" lean-forward="true" selection-start-line="31" selection-start-column="23" selection-end-line="31" selection-end-column="23" />
-          <folding>
-            <element signature="e#43#54#0" expanded="true" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -536,9 +604,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="54">
           <caret line="7" column="0" lean-forward="false" selection-start-line="7" selection-start-column="0" selection-end-line="12" selection-end-column="50" />
-          <folding>
-            <element signature="e#0#11#0" expanded="true" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -575,9 +640,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="2232">
           <caret line="128" column="0" lean-forward="true" selection-start-line="128" selection-start-column="0" selection-end-line="128" selection-end-column="0" />
-          <folding>
-            <element signature="e#0#11#0" expanded="true" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -592,9 +654,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="5400">
           <caret line="300" column="2" lean-forward="false" selection-start-line="300" selection-start-column="2" selection-end-line="300" selection-end-column="2" />
-          <folding>
-            <element signature="e#0#11#0" expanded="true" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -610,9 +669,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="0">
           <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding>
-            <element signature="e#0#11#0" expanded="true" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -620,7 +676,6 @@
     <entry file="file://$PROJECT_DIR$/leaf_tracking.py" />
     <entry file="file://$PROJECT_DIR$/count.py" />
     <entry file="file://$PROJECT_DIR$/new.py" />
-    <entry file="file://$PROJECT_DIR$/test.list" />
     <entry file="file://$PROJECT_DIR$/darknet.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="0">
@@ -636,13 +691,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/result.list">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="0">
-          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/trap.list">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="270">
@@ -650,80 +698,119 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/rotate.py">
+    <entry file="file://$USER_HOME$/.PyCharmCE2016.3/system/python_stubs/-1247972723/__builtin__.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="198">
-          <caret line="13" column="0" lean-forward="false" selection-start-line="13" selection-start-column="0" selection-end-line="13" selection-end-column="0" />
+        <state relative-caret-position="317">
+          <caret line="29" column="0" lean-forward="false" selection-start-line="29" selection-start-column="0" selection-end-line="29" selection-end-column="0" />
+          <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/classify.py">
+    <entry file="file://$PROJECT_DIR$/result.list">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="843">
-          <caret line="272" column="26" lean-forward="true" selection-start-line="272" selection-start-column="26" selection-end-line="272" selection-end-column="26" />
+        <state relative-caret-position="18">
+          <caret line="1" column="107" lean-forward="false" selection-start-line="1" selection-start-column="106" selection-end-line="1" selection-end-column="107" />
+          <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/display_results.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="342">
-          <caret line="19" column="46" lean-forward="true" selection-start-line="19" selection-start-column="46" selection-end-line="19" selection-end-column="46" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/flc.conf">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="180">
-          <caret line="10" column="0" lean-forward="false" selection-start-line="10" selection-start-column="0" selection-end-line="10" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/flc.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="18">
-          <caret line="63" column="17" lean-forward="false" selection-start-line="63" selection-start-column="17" selection-end-line="63" selection-end-column="17" />
+          <caret line="19" column="13" lean-forward="false" selection-start-line="19" selection-start-column="0" selection-end-line="19" selection-end-column="13" />
           <folding>
-            <element signature="e#0#11#0" expanded="true" />
+            <element signature="e#0#41#0" expanded="true" />
           </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/.gitignore">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1728">
-          <caret line="96" column="4" lean-forward="false" selection-start-line="96" selection-start-column="4" selection-end-line="96" selection-end-column="4" />
-          <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/flc_report_server.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="270">
-          <caret line="15" column="0" lean-forward="true" selection-start-line="15" selection-start-column="0" selection-end-line="15" selection-end-column="30" />
+          <caret line="18" column="8" lean-forward="false" selection-start-line="18" selection-start-column="8" selection-end-line="18" selection-end-column="8" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/rotate.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="252">
+          <caret line="14" column="0" lean-forward="false" selection-start-line="14" selection-start-column="0" selection-end-line="14" selection-end-column="0" />
           <folding>
-            <element signature="e#22#51#0" expanded="true" />
+            <element signature="e#0#10#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/test.list">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-3063">
+          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Makefile">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="0">
+          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/flc_server.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="51">
+          <caret line="70" column="44" lean-forward="false" selection-start-line="70" selection-start-column="44" selection-end-line="70" selection-end-column="44" />
+          <folding>
+            <element signature="e#43#54#0" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/flc_white_server.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="324">
-          <caret line="18" column="19" lean-forward="true" selection-start-line="18" selection-start-column="19" selection-end-line="18" selection-end-column="19" />
+        <state relative-caret-position="108">
+          <caret line="6" column="0" lean-forward="false" selection-start-line="6" selection-start-column="0" selection-end-line="6" selection-end-column="0" />
           <folding>
             <element signature="e#22#64#0" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/flc_server.py">
+    <entry file="file://$PROJECT_DIR$/flc.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="450">
-          <caret line="25" column="0" lean-forward="true" selection-start-line="25" selection-start-column="0" selection-end-line="25" selection-end-column="0" />
+        <state relative-caret-position="414">
+          <caret line="119" column="17" lean-forward="true" selection-start-line="119" selection-start-column="17" selection-end-line="119" selection-end-column="17" />
           <folding>
-            <element signature="e#43#54#0" expanded="true" />
+            <element signature="e#0#19#0" expanded="true" />
           </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/classify.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="396">
+          <caret line="43" column="27" lean-forward="true" selection-start-line="43" selection-start-column="27" selection-end-line="43" selection-end-column="27" />
+          <folding>
+            <element signature="e#0#17#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/.gitignore">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="87">
+          <caret line="81" column="0" lean-forward="true" selection-start-line="81" selection-start-column="0" selection-end-line="81" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/flc.conf">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="162">
+          <caret line="9" column="41" lean-forward="false" selection-start-line="9" selection-start-column="41" selection-end-line="9" selection-end-column="41" />
+          <folding />
         </state>
       </provider>
     </entry>

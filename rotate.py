@@ -1,14 +1,18 @@
 import cv2
 import numpy as np
-import glob, os, ntpath, ConfigParser
+import glob, os, ntpath, configparser
 
 
-config = ConfigParser.ConfigParser()
+config = configparser.ConfigParser()
 config.read('flc.conf')
-root_folder = config.get('input_path', 'root_folder')
-test_data_dir = root_folder + '/test_data'
-image_path = test_data_dir + '/2_cropped_images'
-aug_path = test_data_dir + '/4_augmented/'
+#root_folder = config.get('input_path', 'root_folder')
+#test_data_dir = root_folder + '/test_data'
+
+
+cropped_dir = '/2_cropped_images'
+augmented_dir = '/4_augmented'
+
+
 angle_list = [45, 90, 135, 180, 225, 270]
 
 
@@ -70,7 +74,10 @@ def rotateImage(image, angle):
     return result
 
 
-def rotate_image():
+def rotate_image(user_dir):
+    image_path = user_dir + cropped_dir
+    aug_path = user_dir + augmented_dir + '/'
+
     for angle in angle_list:
         for file in sorted(glob.glob(image_path + '/*')):
             image = cv2.imread(file)
