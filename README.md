@@ -1,6 +1,6 @@
 # Flc
 
-## To use it:
+## Instructions:
 1. Capture in proper daylight, not in hudge sunlight(will create shadow)
 2. Use white Chart paper or white banner.
 3. Camera resolution 12Mega PIxels + 
