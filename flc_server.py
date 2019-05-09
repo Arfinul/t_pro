@@ -158,32 +158,34 @@ def upload_big_data():
 
 @app.route('/api/cleandir', methods=['POST'])
 def post():
-   try:
-    p = os.listdir(test_data_dir)
-    length = len(p)
-    def alldell(a):
-     for root, dirs, files in os.walk(a):
-       for f in files:
-         os.unlink(os.path.join(root, f))
-       for d in dirs:
-        shutil.rmtree(os.path.join(root, d))
-    for i in xrange(length):
-      path = test_data_dir+'/'+p[i]
-      alldell(path)
-    responses = {'status': 'deleted'
-                 }
-    response_pickled = jsonpickle.encode(responses)
-    return Response(response=response_pickled, status=200, mimetype="application/json")
+    try:
+        userId = request.form['userId']
+        sectionId = request.form['sectionId']
 
-   except Exception as e:
-      return str(e)
+        if os.path.exists(test_data_dir + '/u-' + userId + '/s-' + sectionId):
+            shutil.rmtree(test_data_dir + '/u-' + userId + '/s-' + sectionId + '/')
+            print('Deleted the directory - ', sectionId , ', under ', userId)
+            responses = {'status': 'Reset_Done'
+                         }
+            response_pickled = jsonpickle.encode(responses)
+            return Response(response=response_pickled, status=200, mimetype="application/json")
+        else:
+            print('Deleted the directory - ', sectionId, ', under ', userId)
+            responses = {'status': 'Fail - directory not found'
+                         }
+            response_pickled = jsonpickle.encode(responses)
+            return Response(response=response_pickled, status=200, mimetype="application/json")
+
+    except Exception as e:
+        return str(e)
+
 
 # start flask app
-#app.run(host="0.0.0.0", port=5000)  # Server
+app.run(host="0.0.0.0", port=6000, threaded=True)  # Server
 #sapp.run(port=6000)  # Local
 
-server = wsgi.WSGIServer(('0.0.0.0', 6000), app)
-server.serve_forever()
+#server = wsgi.WSGIServer(('0.0.0.0', 6000), app)
+#server.serve_forever()
 
 
 

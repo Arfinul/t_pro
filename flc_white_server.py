@@ -39,8 +39,8 @@ def upload_white():
 
 
 # start flask app
-#app.run(host="0.0.0.0", port=5001)  # Server
+app.run(host="0.0.0.0", port=6001, threaded=True)  # Server
 # app.run(port=4002)  # Local
 
-server = wsgi.WSGIServer(('0.0.0.0', 6001), app)
-server.serve_forever()
+#server = wsgi.WSGIServer(('0.0.0.0', 6001), app)
+#server.serve_forever()

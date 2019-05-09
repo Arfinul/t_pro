@@ -33,9 +33,9 @@ def pdf():
         return str(e)
 
 
-#app.run(host="0.0.0.0", port=5002)  # Server
+app.run(host="0.0.0.0", port=6002, threaded=True)  # Server
 # app.run(port=4002)  # Local
 
-server = wsgi.WSGIServer(('0.0.0.0', 6002), app)
-server.serve_forever()
+#server = wsgi.WSGIServer(('0.0.0.0', 6002), app)
+#server.serve_forever()
 
