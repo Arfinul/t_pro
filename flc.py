@@ -14,6 +14,7 @@ root_folder = config.get('input_path', 'root_folder')
 test_data_dir = root_folder + '/test_data'
 input_images = test_data_dir + '/1_images/*'
 cropped_path = test_data_dir + '/2_cropped_images'
+video_dir = root_folder + '/video_data'
 
 '''Segmentation of bunches from a frame has been performed by finding the difference between the first
    frame(white frame or background) and current frame.
@@ -243,15 +244,15 @@ def flc_with_cropped_images():
     classify.yolo_classify_full()
     cc, fc = classify.count()
     print("Fine = ", fc, ", Coarse = ", cc)
-    # r = glob.glob(input_images)
-    # for i in r:
-    #     os.remove(i)
 
-    fc1, cc1 = classify.yolo_classify_each_and_generate_report()
+
+    #fc1, cc1 = classify.yolo_classify_each_and_generate_report()
+    #print("Fine = ", fc1, ", Coarse = ", cc1)
+
     os.system('rm ' + cropped_path + '/*')
-    # os.system('rm ' + cropped_path + '/*')
-    print("Fine = ", fc1, ", Coarse = ", cc1)
-    #return fc1, cc1
+    r = glob.glob(video_dir + '/*')
+    for i in r:
+        os.remove(i)
 
 
 # flc_only()
@@ -260,3 +261,5 @@ def flc_with_cropped_images():
 # print("Fine = ", fc, ", Coarse = ", cc)
 # video_segmentation()
 # flc_with_cropped_images()
+
+
