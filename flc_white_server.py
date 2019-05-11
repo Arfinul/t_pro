@@ -3,12 +3,12 @@
 from flask import Flask, request, Response
 from gevent import wsgi
 import jsonpickle
-import os, ConfigParser, time
+import os, configparser, time
 
 # Initialize the Flask application
 app = Flask(__name__)
 
-config = ConfigParser.ConfigParser()
+config = configparser.ConfigParser()
 config.read('flc.conf')
 root_folder = config.get('input_path', 'root_folder')
 test_data_dir = root_folder + '/test_data'
@@ -34,10 +34,10 @@ def upload_white():
 
 # start flask app
 # app.run(host="0.0.0.0", port=5001)  # Server
-# app.run(port=4002)  # Local
+app.run(port=4002)  # Local
 
 # server = wsgi.WSGIServer(('0.0.0.0', 5001), app)
 # server.serve_forever()
 
-server = wsgi.WSGIServer(5001, app)
-server.serve_forever()
+# server = wsgi.WSGIServer(5001, app)
+# server.serve_forever()

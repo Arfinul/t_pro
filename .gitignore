@@ -122,3 +122,4 @@ predictions.jpg
 test_data/*
 test_data_backup/*
 reports/*
+video_data/*

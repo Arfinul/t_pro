@@ -109,7 +109,7 @@ def video_segmentation():
 
         if frame_count % 4 == 0:
             if ret:
-                frame = cv2.addWeighted(frame, 2, frame, 0, 0)
+                frame = cv2.addWeighted(frame, 1.8, frame, 0, 0)
                 frame = imutils.resize(frame, width=1000)
                 gray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
                 gray = cv2.GaussianBlur(gray, (21, 21), 0)  # blurring to smooth our images.
@@ -151,9 +151,7 @@ def video_segmentation():
                             print(count, x, y, x + w, y + h, count, seg_c, w * h)
                             # cv2.rectangle(frame, (x, y), (x + w, y + h), (0, 255, 0), 2)
                             crop_img = frame[y:y + h, x:x + w]
-                            cv2.imwrite(
-                                "/home/chiranjeevi/Pictures/tea/flc/test_data/2_cropped_images/frame%d.%d_crop.jpg" % (
-                                    count, seg_c), crop_img)  # Save Frames
+                            cv2.imwrite(cropped_path + '/frame%d.%d_crop.jpg' % (count, seg_c), crop_img)  # Save Frames
                             # cv2.imwrite(
                             #     "/home/document/darknet-master-GCP/test_data/cropped_images/frame%d.%d_crop.jpg" % (
                             #         count, seg_c), crop_img)  # Save Frames gcp path
@@ -164,7 +162,7 @@ def video_segmentation():
                             # cv2.rectangle(frame, (x, y), (x + w, y + h), (0, 255, 0), 2)
                             crop_img = frame[y:y + h, x:x + w]
                             cv2.imwrite(
-                                "/home/chiranjeevi/Pictures/tea/flc/test_data/2_cropped_images/frame%d_crop.jpg" % count,
+                                cropped_path + '/frame%d_crop.jpg' % count,
                                 crop_img)  # Save Frames
                             # cv2.imwrite(
                             #     "/home/document/darknet-master-GCP/test_data/cropped_images/frame%d_crop.jpg" % count,
@@ -244,21 +242,21 @@ def flc_with_cropped_images():
     print("Generating FLC on report ... wait !!!")
     classify.yolo_classify_full()
     cc, fc = classify.count()
+    print("Fine = ", fc, ", Coarse = ", cc)
     # r = glob.glob(input_images)
     # for i in r:
     #     os.remove(i)
 
-    # fc, cc = classify.yolo_classify_each_and_generate_report()
-    print("Fine = ", fc, ", Coarse = ", cc)
-
+    fc1, cc1 = classify.yolo_classify_each_and_generate_report()
+    os.system('rm ' + cropped_path + '/*')
     # os.system('rm ' + cropped_path + '/*')
-
-    return fc, cc
+    print("Fine = ", fc1, ", Coarse = ", cc1)
+    #return fc1, cc1
 
 
 # flc_only()
 
 # # flc_with_report_without_filter()
 # print("Fine = ", fc, ", Coarse = ", cc)
-video_segmentation()
-fc, cc = flc_with_cropped_images()
+# video_segmentation()
+# flc_with_cropped_images()

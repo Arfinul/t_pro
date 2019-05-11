@@ -211,10 +211,11 @@ def yolo_classify_each_and_generate_report():
                 coarse_lines_trapped.append(all_coarse_in_7[0])
                 continue
             else:
-                d = defaultdict(int)
-                for i in fine_cases_in_7:
-                    d[i] += 1
-                result = max(d.iteritems(), key=lambda x: x[1])
+                if fine_cases_in_7:
+                    d = defaultdict(int)
+                    for i in fine_cases_in_7:
+                        d[i] += 1
+                    result = max(d.items(), key=lambda x: x[1])
 
             frequent_fine_cases_conf = []
             conf = 0
