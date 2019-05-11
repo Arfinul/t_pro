@@ -1,9 +1,9 @@
 import cv2
 import numpy as np
-import glob, os, ntpath, ConfigParser
+import glob, os, ntpath, configparser
 
 
-config = ConfigParser.ConfigParser()
+config = configparser.ConfigParser()
 config.read('flc.conf')
 root_folder = config.get('input_path', 'root_folder')
 test_data_dir = root_folder + '/test_data'

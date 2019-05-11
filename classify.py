@@ -1,5 +1,5 @@
 import os, shutil
-import glob, ConfigParser
+import glob, configparser
 import PIL.Image as Image
 from PIL import ImageFile
 import display_results
@@ -7,7 +7,7 @@ import display_results
 ImageFile.LOAD_TRUNCATED_IMAGES = True
 images = None
 fine_count = 0
-config = ConfigParser.ConfigParser()
+config = configparser.ConfigParser()
 config.read('flc.conf')
 root_folder = config.get('input_path', 'root_folder')
 test_data_dir = root_folder + '/test_data'

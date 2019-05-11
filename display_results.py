@@ -1,11 +1,11 @@
-import os, glob, io, shutil, ConfigParser
+import os, glob, io, shutil, configparser
 from reportlab.pdfgen import canvas
 from reportlab.lib.pagesizes import letter
 from reportlab.lib.units import inch
 from PyPDF2 import PdfFileMerger, PdfFileWriter, PdfFileReader
 
 
-config = ConfigParser.ConfigParser()
+config = configparser.ConfigParser()
 config.read('flc.conf')
 root_folder = config.get('input_path', 'root_folder')
 test_data_dir = root_folder + '/test_data'
