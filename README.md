@@ -9,6 +9,7 @@
 6. Height of camera and sheet - Between 36' to 40' , inches
 7. Total number of Bunches to test - Between 130 and 150
 8. Don't zoom white capturing the images
+9. Mantain gap of 2 cm between the white sheet boundary and leaves.
 9. White and Tea images reolution must be same
 ```
 Correct - white and leaf image resolution - 560 x 1109 pixels
