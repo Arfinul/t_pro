@@ -108,16 +108,15 @@ def flc_only(userId, sectionId):
     classify.create_test_list(userId, sectionId)
     print("Generating Fine Leaf count only ... wait !!!")
     classify.yolo_classify_full(userId, sectionId)
-
-    #os.system('rm ' + cropped_path + '/*')
-    cc, fc = classify.count(userId, sectionId)
+    lb_1, lb_2, lb_3, lbj_1, b_1, total = classify.find_each_class_count(userId, sectionId)
+    #cc, fc = classify.count(userId, sectionId)
     shutil.rmtree(test_data_dir + '/u-' + userId + '/s-' + sectionId + '/')
 
     #r = glob.glob(input_images)
     #for i in r:
         #os.remove(i)
 
-    return cc, fc
+    return lb_1, lb_2, lb_3, lbj_1, b_1, total
 
 
 '''classification of each image, it will create pdf report

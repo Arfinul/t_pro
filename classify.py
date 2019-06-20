@@ -88,6 +88,117 @@ def count(userId, sectionId):
     return coarse, fine_count
 
 
+def find_each_class_count(userId, sectionId):
+    from collections import defaultdict
+
+    user_dir = test_data_dir + '/u-' + userId + '/s-' + sectionId
+    filename = user_dir + '/result.list'
+
+    lines = []
+    fine_lines_trapped = []
+    coarse_lines_trapped = []
+    fine_index_trapped = []
+    coarse_index_trapped = []
+    lb_1 = lb_2 = lb_3 = lbj_1 = b_1 = 0
+    with open(filename, 'r') as file:
+        for line in file:
+            lines.append(line)
+        chunks = [lines[x:x + 7] for x in range(0, len(lines), 7)]
+        for chunk in chunks:
+            fine_cases_in_7 = []
+            all_coarse_in_7 = []
+            for line in chunk:
+                words = line.split()
+                if words[-2] in ['3lb', '2lb', '1lb', '1b', '1lbj']:
+                    fine_cases_in_7.append(words[-2])
+                else:
+                    all_coarse_in_7.append(line)
+            #print(fine_cases_in_7)
+
+            if len(all_coarse_in_7) == 7:
+                coarse_lines_trapped.append(all_coarse_in_7[0])
+                continue
+            else:
+                if fine_cases_in_7:
+                    d = defaultdict(int)
+                    for i in fine_cases_in_7:
+                        d[i] += 1
+                    result = max(d.items(), key=lambda x: x[1])
+
+            frequent_fine_cases_conf = []
+            conf = 0
+            for line in chunk:
+                words = line.split()
+                if words[-2] == result[0]:
+                    if words[-2] == '3lb':
+                        conf = (int(words[1]) + int(words[2]) + int(words[3]) + int(words[4])) / 4
+                    if words[-2] == '2lb':
+                        conf = (int(words[1]) + int(words[2]) + int(words[3])) / 3
+                    if words[-2] == '1lb':
+                        conf = (int(words[1]) + int(words[2])) / 2
+                    if words[-2] == '1lbj':
+                        conf = (int(words[1]) + int(words[2])) / 2
+                    if words[-2] == '1b':
+                        conf = int(words[1])
+                    frequent_fine_cases_conf.append(conf)
+
+            for line in chunk:
+                words = line.split()
+                if words[-2] == result[0]:
+                    if words[-2] == '3lb':
+                        confd = (int(words[1]) + int(words[2]) + int(words[3]) + int(words[4])) / 4
+                        if confd == max(frequent_fine_cases_conf):
+                            lb_3 = lb_3 + 1
+                            fine_lines_trapped.append(line)
+                            break
+                    if words[-2] == '2lb':
+                        confd = (int(words[1]) + int(words[2]) + int(words[3])) / 3
+                        if confd == max(frequent_fine_cases_conf):
+                            lb_2 = lb_2 + 1
+                            fine_lines_trapped.append(line)
+                            break
+                    if words[-2] == '1lb':
+                        confd = (int(words[1]) + int(words[2])) / 2
+                        if confd == max(frequent_fine_cases_conf):
+                            lb_1 = lb_1 + 1
+                            fine_lines_trapped.append(line)
+                            break
+                    if words[-2] == '1lbj':
+                        confd = (int(words[1]) + int(words[2])) / 2
+                        if confd == max(frequent_fine_cases_conf):
+                            fine_lines_trapped.append(line)
+                            lbj_1 = lbj_1 + 1
+                            break
+                    if words[-2] == '1b':
+                        confd = int(words[1])
+                        if confd == max(frequent_fine_cases_conf):
+                            b_1 = b_1 + 1
+                            fine_lines_trapped.append(line)
+                            break
+
+
+    with open(filename) as file_again:
+        for num, line in enumerate(file_again, 1):
+            for each in fine_lines_trapped:
+                if each in line:
+                    fine_index_trapped.append(num)
+            for each in coarse_lines_trapped:
+                if each in line:
+                    coarse_index_trapped.append(num)
+    fine_and_coarse = [fine_index_trapped, coarse_index_trapped]
+    print(fine_and_coarse)
+    print('Fine = ', len(fine_index_trapped))
+    print('Coarse = ', len(coarse_index_trapped))
+    print("lb_1 = %d" % lb_1)
+    print("lb_2 = %d" % lb_2)
+    print("lb_3 = %d" % lb_3)
+    print("lbj_1 = %d" % lbj_1)
+    print("b_1 = %d" % b_1)
+    print("total = %d" % (len(fine_index_trapped) + len(coarse_index_trapped)))
+    return lb_1, lb_2, lb_3, lbj_1, b_1, (len(fine_index_trapped) + len(coarse_index_trapped))
+
+
+
 def yolo_classify_one_by_one():
     image_List = []
     test_list_Path = test_list_path

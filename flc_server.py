@@ -91,23 +91,41 @@ def classification_flc_only():
         sectionId = request.form['sectionId']
 
         start = time.time()
-        cc, fc = flc.flc_only(userId, sectionId)
+        lb_1, lb_2, lb_3, lbj_1, b_1, total = flc.flc_only(userId, sectionId)
         end = time.time()
         time_cons = (end - start)
         print('classification time = ', round(time_cons, 2), ' seconds')
-        responses = {'Fine_Count': fc,
-                     'Coarse_Count': cc,
+        responses = {'1LeafBud_Count': lb_1,
+                     '2LeafBud_Count': lb_2,
+                     '3LeafBud_Count': lb_3,
+                     '1LeafBanjhi_Count': lbj_1,
+                     '2LeafBanjhi_Count': b_1,
+                     'Total_Bunches': total,
                      'Time Taken(seconds)': round(time_cons, 2)
                      }
         response_pickled = jsonpickle.encode(responses)
         return Response(response=response_pickled, status=200, mimetype="application/json")
-    except:
+    except Exception as e:
         try:
-            shutil.rmtree(test_data_dir + '/u-' + userId + '/s-' + sectionId + '/')
-            responses = {'status': 'Error_Try_Again'
-                         }
-            response_pickled = jsonpickle.encode(responses)
-            return Response(response=response_pickled, status=200, mimetype="application/json")
+            print(e)
+            if '209' in str(e):
+                shutil.rmtree(test_data_dir + '/u-' + userId + '/s-' + sectionId + '/')
+                responses = {'status' : 'Images must have same resolution'
+                             }
+                response_pickled = jsonpickle.encode(responses)
+                return Response(response=response_pickled, status=200, mimetype="application/json")
+            if 'memory' in str(e):
+                shutil.rmtree(test_data_dir + '/u-' + userId + '/s-' + sectionId + '/')
+                responses = {'status' : 'Server Memory Error'
+                             }
+                response_pickled = jsonpickle.encode(responses)
+                return Response(response=response_pickled, status=200, mimetype="application/json")
+            else:
+                shutil.rmtree(test_data_dir + '/u-' + userId + '/s-' + sectionId + '/')
+                responses = {'status': 'Error - Try Again'
+                             }
+                response_pickled = jsonpickle.encode(responses)
+                return Response(response=response_pickled, status=200, mimetype="application/json")
         except Exception as e:
             return str(e)
 
@@ -181,7 +199,7 @@ def post():
 
 
 # start flask app
-app.run(host="0.0.0.0", port=6000, threaded=True)  # Server
+app.run(host="0.0.0.0", port=7000, threaded=True)  # Server
 #sapp.run(port=6000)  # Local
 
 #server = wsgi.WSGIServer(('0.0.0.0', 6000), app)
