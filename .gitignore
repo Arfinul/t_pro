@@ -1,3 +1,11 @@
+<<<<<<< HEAD
+.idea/
+__pycache__/
+
+*.pyc
+*.swp
+
+=======
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]
@@ -102,3 +110,24 @@ venv.bak/
 
 # mypy
 .mypy_cache/
+>>>>>>> ef3e6c4448335b887d28ca0aa2584a4fa188d71c
+
+# Flc files to ignore
+*.weights
+
+*.pdf
+*.list
+predictions.jpg
+
+# Flc folders to ignore
+test_data/*
+!test_data/ignore_me
+
+test_data_backup/*
+!test_data_backup/ignore_me
+
+!reports/ignore_me.txt
+backup/*
+
+.idea/*
+
