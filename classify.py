@@ -21,19 +21,33 @@ trap_list_path = root_folder + '/trap'
 
 
 def create_test_list(userId, sectionId):
+    types = ('/*.jpg', '/*.png')
+    files_grabbed = []
     user_dir = test_data_dir + '/u-' + userId + '/s-' + sectionId
     cropped_path = user_dir + cropped_dir
-    files = glob.glob(cropped_path + '/*.jpg')
+    for files in types:
+        files_grabbed.extend(glob.glob(cropped_path + files))
+    #print(files_grabbed)
     with open(user_dir + '/test.list', 'w') as in_files:
-        for eachfile in sorted(files): in_files.write(eachfile + '\n')
+        for eachfile in sorted(files_grabbed): in_files.write(eachfile + '\n')
 
 
 def create_trapped_list(userId, sectionId):
+    types = ('/*.jpg', '/*.png')
+    files_grabbed = []
     user_dir = test_data_dir + '/u-' + userId + '/s-' + sectionId
     tracked_images_path = user_dir + tracked_image_dir
-    files = glob.glob(tracked_images_path + '/*.jpg')
-    with open('trap.list', 'w') as in_files:
-        for eachfile in sorted(files): in_files.write(eachfile + '\n')
+    for files in types:
+        files_grabbed.extend(glob.glob(tracked_images_path + files))
+    with open(root_folder + '/trap.list', 'w') as in_files:
+        for eachfile in sorted(files_grabbed): in_files.write(eachfile + '\n')
+
+
+    #user_dir = test_data_dir + '/u-' + userId + '/s-' + sectionId
+    #tracked_images_path = user_dir + tracked_image_dir
+    #files = glob.glob(tracked_images_path + '/*.jpg')
+    #with open('trap.list', 'w') as in_files:
+        #for eachfile in sorted(files): in_files.write(eachfile + '\n')
 
 
 def yolo_classify_full(userId, sectionId):
@@ -400,6 +414,7 @@ def yolo_classify_each_and_generate_report(userId, sectionId):
 
     report_count = 1
     for each in fine_and_coarse:
+        #print(each)  #QQQQQQQQQQQQQQQQQQQQQQQ
         for i, line in enumerate(open(image_file), 1):
             if i in each:
                 line = line.strip('\n')
@@ -414,7 +429,7 @@ def yolo_classify_each_and_generate_report(userId, sectionId):
         report_count = report_count + 1
 
     display_results.final_report_pdf(userId, sectionId)
-    shutil.rmtree(test_data_dir + '/u-' + userId + '/s-' + sectionId + '/')
+    #shutil.rmtree(test_data_dir + '/u-' + userId + '/s-' + sectionId + '/')
 
     return len(fine_index_trapped), len(coarse_index_trapped)
 

@@ -115,7 +115,7 @@ def flc_only(userId, sectionId):
     #r = glob.glob(input_images)
     #for i in r:
         #os.remove(i)
-
+    print(lb_1, lb_2, lb_3, lbj_1, b_1, total)
     return lb_1, lb_2, lb_3, lbj_1, b_1, total
 
 
@@ -155,7 +155,43 @@ def flc_with_report_without_filter(userId, sectionId):
     display_results.make_files_list_without_r()
     display_results.merge_pdf_without_r()
 
+
+def rotation(userId, sectionId):
+    firstFrame = None
+    count = 0
+    user_dir = test_data_dir + '/u-' + userId + '/s-' + sectionId
+
+    cropped_path = user_dir + cropped_dir
+    input_images = user_dir + image_dir + '/*'
+
+    print("Total bunches = %d" % len(
+        [name for name in os.listdir(cropped_path) if os.path.isfile(os.path.join(cropped_path, name))]))
+
+    rotate.rotate_image(user_dir)
+
+    print("Total rotated bunches = %d" % len(
+        [name for name in os.listdir(cropped_path) if os.path.isfile(os.path.join(cropped_path, name))]))
+
+
+
+def flc_with_report_for_cropped(userId, sectionId):
+    rotation(userId, sectionId)
+    os.chdir(root_folder)
+    classify.create_test_list(userId, sectionId)
+    print("Generating FLC on report ... wait !!!")
+    classify.yolo_classify_full(userId, sectionId)
+    print("classification Done")
+
+    fc, cc = classify.yolo_classify_each_and_generate_report(userId, sectionId)
+    print("Fine = ", fc, ", Coarse = ", cc)
+
+    #os.system('rm ' + cropped_path + '/*')
+
+    return fc, cc
+
 # flc_only()
 # cc, fc = flc_with_report()
 # flc_with_report_without_filter()
 # print("Fine = ", fc, ", Coarse = ", cc)
+#flc_with_report_for_cropped(userId='salil', sectionId='1')
+#flc_only(userId='salil', sectionId='1')
