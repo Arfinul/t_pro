@@ -6,7 +6,7 @@ import flc
 import time
 import zipfile
 import jsonpickle, configparser
-from flask import Flask, request, Response
+from flask import Flask, request, Response, send_file
 from gevent import wsgi
 from werkzeug.utils import secure_filename
 
@@ -26,6 +26,7 @@ augmented_dir = '/4_augmented'
 join_dir = '/5_join'
 tracked_image_dir = '/6_trapped_images'
 pdf_dir = '/7_pdf_files'
+url = root_folder + '/reports'
 
 subdir_list = None
 ALLOWED_EXTENSIONS = {'zip'}
@@ -130,21 +131,50 @@ def classification_flc_only():
             return str(e)
 
 
+@app.route('/api/bigdata/flc/pdf', methods=['GET'])
+def pdf():
+    print("Big Data Report server started")
+    try:
+        start = time.time()
+        userId = request.form['userId']
+        sectionId = request.form['sectionId']
+        flc.flc_with_report_for_cropped(userId, sectionId)
+        p = sorted(os.listdir(url))
+        urlpdf = url + '/' + p[-1]
+        print('location - ', urlpdf)
+        end = time.time()
+        print('leaf image upload time = ', round((end - start), 2), ' seconds')
+        return send_file(urlpdf, attachment_filename='test.pdf')
+
+    except Exception as e:
+        return str(e)
+
+
 @app.route('/api/bigdata', methods=['POST'])
 def upload_big_data():
     userId = request.form['userId']
     sectionId = request.form['sectionId']
     user_dir = test_data_dir + '/u-' + userId + '/s-' + sectionId
+    
+    test_images = user_dir + cropped_dir
+    os.makedirs(test_images, exist_ok=True)
+    result_image_path = user_dir + result_dir
+    os.makedirs(result_image_path, exist_ok=True)
+    augmented_path = user_dir + augmented_dir
+    os.makedirs(augmented_path, exist_ok=True)
+    join_path = user_dir + join_dir
+    os.makedirs(join_path, exist_ok=True)
+    tracked_images_path = user_dir + tracked_image_dir
+    os.makedirs(tracked_images_path, exist_ok=True)
+    pdf_path = user_dir +pdf_dir
+    os.makedirs(pdf_path, exist_ok=True)
 
-    test_images = user_dir + image_dir
-
-
+    print('started uploading Big Data ...')
     os.chdir(test_images)
     start = time.time()
     if request.method == 'POST':
         # print('\nUploading the file ... Wait !!!')
         file = request.files['bigData']
-        print('1')
         if file and allowed_file(file.filename):
             filename = secure_filename(file.filename)
             file.save(os.path.join(test_images, filename))

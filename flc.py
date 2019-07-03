@@ -115,7 +115,7 @@ def flc_only(userId, sectionId):
     #r = glob.glob(input_images)
     #for i in r:
         #os.remove(i)
-    print(lb_1, lb_2, lb_3, lbj_1, b_1, total)
+    #print(lb_1, lb_2, lb_3, lbj_1, b_1, total)
     return lb_1, lb_2, lb_3, lbj_1, b_1, total
 
 
@@ -183,7 +183,8 @@ def flc_with_report_for_cropped(userId, sectionId):
     print("classification Done")
 
     fc, cc = classify.yolo_classify_each_and_generate_report(userId, sectionId)
-    print("Fine = ", fc, ", Coarse = ", cc)
+    #print("Fine = ", fc, ", Coarse = ", cc)
+    shutil.rmtree(test_data_dir + '/u-' + userId + '/s-' + sectionId + '/')
 
     #os.system('rm ' + cropped_path + '/*')
 
