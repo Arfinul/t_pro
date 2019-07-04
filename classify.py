@@ -414,19 +414,21 @@ def yolo_classify_each_and_generate_report(userId, sectionId):
 
     report_count = 1
     for each in fine_and_coarse:
-        #print(each)  #QQQQQQQQQQQQQQQQQQQQQQQ
-        for i, line in enumerate(open(image_file), 1):
-            if i in each:
-                line = line.strip('\n')
-                #print(line)
-                shutil.move(line, tracked_images_path)
-        create_trapped_list(userId, sectionId)
-        yolo_classify_trap_one_by_one(userId, sectionId)
-        display_results.merge_test_and_result(userId, sectionId)
-        display_results.make_files_list(report_count, len(fine_index_trapped), len(coarse_index_trapped), userId, sectionId)
-        display_results.merge_pdf(report_count, userId, sectionId)
+        if each:
+            for i, line in enumerate(open(image_file), 1):
+                if i in each:
+                    line = line.strip('\n')
+                    #print(line)
+                    shutil.move(line, tracked_images_path)
+            create_trapped_list(userId, sectionId)
+            yolo_classify_trap_one_by_one(userId, sectionId)
+            display_results.merge_test_and_result(userId, sectionId)
+            display_results.make_files_list(report_count, len(fine_index_trapped), len(coarse_index_trapped), userId, sectionId)
+            display_results.merge_pdf(report_count, userId, sectionId)
 
-        report_count = report_count + 1
+            report_count = report_count + 1
+        else:
+            continue
 
     display_results.final_report_pdf(userId, sectionId)
     #shutil.rmtree(test_data_dir + '/u-' + userId + '/s-' + sectionId + '/')
