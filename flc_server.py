@@ -108,6 +108,7 @@ def classification_flc_only():
         return Response(response=response_pickled, status=200, mimetype="application/json")
     except Exception as e:
         try:
+            print("Below is the Exceptional Error")
             print(e)
             if '209' in str(e):
                 shutil.rmtree(test_data_dir + '/u-' + userId + '/s-' + sectionId + '/')
@@ -115,9 +116,9 @@ def classification_flc_only():
                              }
                 response_pickled = jsonpickle.encode(responses)
                 return Response(response=response_pickled, status=200, mimetype="application/json")
-            if 'memory' in str(e):
+            if 'assignment' in str(e):
                 shutil.rmtree(test_data_dir + '/u-' + userId + '/s-' + sectionId + '/')
-                responses = {'status' : 'Server Memory Error'
+                responses = {'status' : 'GPU Memory Error'
                              }
                 response_pickled = jsonpickle.encode(responses)
                 return Response(response=response_pickled, status=200, mimetype="application/json")
@@ -146,8 +147,26 @@ def pdf():
         print('leaf image upload time = ', round((end - start), 2), ' seconds')
         return send_file(urlpdf, attachment_filename='test.pdf')
 
+   # except Exception as e:
+        #return str(e)
     except Exception as e:
-        return str(e)
+        try:
+            print("Below is the Exceptional Error")
+            print(e)
+            if 'empty' in str(e):
+                shutil.rmtree(test_data_dir + '/u-' + userId + '/s-' + sectionId + '/')
+                responses = {'status' : 'GPU Memory Error'
+                             }
+                response_pickled = jsonpickle.encode(responses)
+                return Response(response=response_pickled, status=200, mimetype="application/json")
+            else:
+                shutil.rmtree(test_data_dir + '/u-' + userId + '/s-' + sectionId + '/')
+                responses = {'status': 'Error - Try Again'
+                             }
+                response_pickled = jsonpickle.encode(responses)
+                return Response(response=response_pickled, status=200, mimetype="application/json")
+        except Exception as e:
+            return str(e)
 
 
 @app.route('/api/bigdata', methods=['POST'])
