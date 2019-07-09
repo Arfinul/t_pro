@@ -124,6 +124,9 @@ predictions.jpg
 test_data/*
 !test_data/ignore_me
 
+reports/*
+!reports/ignore_me
+
 test_data_backup/*
 !test_data_backup/ignore_me
 
