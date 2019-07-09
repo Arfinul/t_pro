@@ -73,8 +73,13 @@ def merge_test_and_result(userId, sectionId):
         os.remove(i)
         
         
-def merge_test_and_result_without_fil():
+def merge_test_and_result_without_fil(userId, sectionId):
     i = 0
+    user_dir = test_data_dir + '/u-' + userId + '/s-' + sectionId
+    test_data_path = user_dir + '/'
+    image_path = user_dir + image_dir + '/*'
+    dest = user_dir + join_dir
+
     for path, subdirs, files in os.walk(test_data_path + src_without_fil[0]):
         for name in sorted(files):
             if i < 10:
@@ -120,8 +125,12 @@ def merge_pdf(report_count, userId, sectionId):
     os.system('rm ' + test_data_path + '/*.pdf')
     
     
-def merge_pdf_without_r():
+def merge_pdf_without_r(userId, sectionId):
     pdf_files = []
+    user_dir = test_data_dir + '/u-' + userId + '/s-' + sectionId
+    test_data_path = user_dir + '/'
+    augmented_path = user_dir + augmented_dir
+
     for pdf_file in sorted(glob.glob(test_data_path + '/*.pdf')):
         print("Merged all test number images")
         print(pdf_file)
@@ -133,7 +142,7 @@ def merge_pdf_without_r():
     for pdf in sorted(pdf_files):
         merger.append(open(pdf, 'rb'))
 
-    with open('report.pdf', 'wb') as fout:
+    with open(augmented_path + '/report' + '.pdf', 'wb') as fout:
         merger.write(fout)
 
     print("\npdf report generated", 'report.pdf')
@@ -188,8 +197,12 @@ def make_files_list(report_count,fine_count, coarse_count, userId, sectionId):
     os.system('rm ' + dest + '/*')
     
     
-def make_files_list_without_r():
+def make_files_list_without_r(userId, sectionId):
     list_of_files = []
+    user_dir = test_data_dir + '/u-' + userId + '/s-' + sectionId
+    dest = user_dir + join_dir
+    test_data_path = user_dir + '/'
+
     for file in sorted(glob.glob(dest + '/*')):
         list_of_files.append(file)
     print("ARFIN")

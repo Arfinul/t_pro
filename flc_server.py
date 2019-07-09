@@ -132,8 +132,45 @@ def classification_flc_only():
             return str(e)
 
 
-@app.route('/api/bigdata/flc/pdf', methods=['GET'])
+@app.route('/api/bigdata/flc/cropped/all_rotation/pdf', methods=['GET'])
 def pdf():
+    print("Big Data Report server started")
+    try:
+        start = time.time()
+        userId = request.form['userId']
+        sectionId = request.form['sectionId']
+        flc.flc_with_report_without_filter(userId, sectionId)
+        p = sorted(os.listdir(url))
+        urlpdf = url + '/' + p[-1]
+        print('location - ', urlpdf)
+        end = time.time()
+        print('leaf image upload time = ', round((end - start), 2), ' seconds')
+        return send_file(urlpdf, attachment_filename='test.pdf')
+
+   # except Exception as e:
+        #return str(e)
+    except Exception as e:
+        try:
+            print("Below is the Exceptional Error")
+            print(e)
+            if 'empty' in str(e):
+                shutil.rmtree(test_data_dir + '/u-' + userId + '/s-' + sectionId + '/')
+                responses = {'status' : 'GPU Memory Error'
+                             }
+                response_pickled = jsonpickle.encode(responses)
+                return Response(response=response_pickled, status=200, mimetype="application/json")
+            else:
+                shutil.rmtree(test_data_dir + '/u-' + userId + '/s-' + sectionId + '/')
+                responses = {'status': 'Error - Try Again'
+                             }
+                response_pickled = jsonpickle.encode(responses)
+                return Response(response=response_pickled, status=200, mimetype="application/json")
+        except Exception as e:
+            return str(e)
+
+
+@app.route('/api/bigdata/flc/pdf', methods=['GET'])
+def pdf_cropped_all_rotation():
     print("Big Data Report server started")
     try:
         start = time.time()

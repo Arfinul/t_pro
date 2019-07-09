@@ -142,18 +142,18 @@ def flc_with_report(userId, sectionId):
 
 # Runs for all full flow with one by one image result
 def flc_with_report_without_filter(userId, sectionId):
-    segmentation_and_rotation(userId, sectionId)
+    rotation(userId, sectionId)
     os.chdir(root_folder)
     classify.create_test_list(userId, sectionId)
-
-    r = glob.glob(input_images)
-    for i in r:
-        os.remove(i)
-
-    classify.yolo_classify_one_by_one()
-    display_results.merge_test_and_result_without_fil()
-    display_results.make_files_list_without_r()
-    display_results.merge_pdf_without_r()
+    #r = glob.glob(input_images)
+    #for i in r:
+       # os.remove(i)
+    classify.yolo_classify_one_by_one(userId, sectionId)
+    display_results.merge_test_and_result_without_fil(userId, sectionId)
+    display_results.make_files_list_without_r(userId, sectionId)
+    display_results.merge_pdf_without_r(userId, sectionId)
+    display_results.final_report_pdf(userId, sectionId)
+    shutil.rmtree(test_data_dir + '/u-' + userId + '/s-' + sectionId + '/')
 
 
 def rotation(userId, sectionId):
@@ -192,7 +192,7 @@ def flc_with_report_for_cropped(userId, sectionId):
 
 # flc_only()
 # cc, fc = flc_with_report()
-# flc_with_report_without_filter()
+#flc_with_report_without_filter(userId='salil', sectionId='1')
 # print("Fine = ", fc, ", Coarse = ", cc)
 #flc_with_report_for_cropped(userId='salil', sectionId='1')
 #flc_only(userId='salil', sectionId='1')

@@ -213,9 +213,13 @@ def find_each_class_count(userId, sectionId):
 
 
 
-def yolo_classify_one_by_one():
+def yolo_classify_one_by_one(userId, sectionId):
     image_List = []
-    test_list_Path = test_list_path
+
+    user_dir = test_data_dir + '/u-' + userId + '/s-' + sectionId
+    test_list_Path  = user_dir + '/test'
+    result_image_path = user_dir + result_dir
+     
     with open((test_list_Path + '.list'), 'r') as fobj:
         for line in fobj:
             image_List.append([i for i in line.strip("\n").split(":")])
