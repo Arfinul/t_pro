@@ -124,3 +124,4 @@ predictions.jpg
 test_data/*
 test_data_backup/*
 cfg/data
+dumped/*
