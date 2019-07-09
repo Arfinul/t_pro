@@ -306,32 +306,70 @@ int compare_by_probs(const void *a_ptr, const void *b_ptr) {
 
 void draw_detections_v3(image im, detection *dets, int num, float thresh, char **names, image **alphabet, int classes, int ext_output)
 {
-    static int frame_id = 0;
-    frame_id++;
-
     int selected_detections_num;
     detection_with_class* selected_detections = get_actual_detections(dets, num, thresh, &selected_detections_num, names);
 
     // text output
     qsort(selected_detections, selected_detections_num, sizeof(*selected_detections), compare_by_lefts);
-    int i;
+    int i, count_l = 0, count_b = 0, count_bb = 0;
     for (i = 0; i < selected_detections_num; ++i) {
         const int best_class = selected_detections[i].best_class;
-        printf("%s: %.0f%%", names[best_class],    selected_detections[i].det.prob[best_class] * 100);
+//        printf("%s: %.0f%%", names[best_class],    selected_detections[i].det.prob[best_class] * 100);
+//        printf("%s %.0f%", names[best_class],    selected_detections[i].det.prob[best_class] * 100);
+        printf("%.0f%", selected_detections[i].det.prob[best_class] * 100);
+        if (strcmp(names[best_class], "Leaf") == 0) count_l++;
+        else if (strcmp(names[best_class], "Bud") == 0) count_b++;
+        else if (strcmp(names[best_class], "Banji") == 0) count_bb++;
+
         if (ext_output)
-            printf("\t(left_x: %4.0f   top_y: %4.0f   width: %4.0f   height: %4.0f)\n",
-                round((selected_detections[i].det.bbox.x - selected_detections[i].det.bbox.w / 2)*im.w),
-                round((selected_detections[i].det.bbox.y - selected_detections[i].det.bbox.h / 2)*im.h),
-                round(selected_detections[i].det.bbox.w*im.w), round(selected_detections[i].det.bbox.h*im.h));
+            printf(" (left_x: %4.0f   top_y: %4.0f   width: %4.0f   height: %4.0f)",
+                (selected_detections[i].det.bbox.x - selected_detections[i].det.bbox.w / 2)*im.w,
+                (selected_detections[i].det.bbox.y - selected_detections[i].det.bbox.h / 2)*im.h,
+                selected_detections[i].det.bbox.w*im.w, selected_detections[i].det.bbox.h*im.h);
         else
-            printf("\n");
+            printf(" ");
         int j;
-        for (j = 0; j < classes; ++j) {
-            if (selected_detections[i].det.prob[j] > thresh && j != best_class) {
-                printf("%s: %.0f%%\n", names[j], selected_detections[i].det.prob[j] * 100);
-            }
-        }
+        //for (j = 0; j < classes; ++j) {
+            //if (selected_detections[i].det.prob[j] > thresh && j != best_class) {
+                //printf("%s: %.0f%%", names[j], selected_detections[i].det.prob[j] * 100);
+                //printf("%.0f%", selected_detections[i].det.prob[j] * 100);
+           // }
+       // }
     }
+//    printf("Leaf_Count= %d, ", count_l);
+//    printf("Bud_Count= %d, ", count_b);
+//    printf("Banjhi_Count= %d >>> ", count_bb);
+//    printf("Lc%d, ", count_l);
+//    printf("Bc%d, ", count_b);
+//    printf("Bj%d, ", count_bb);==============
+
+
+    //printf("Total = %d \n", selected_detections_num);
+    if (count_l == 2 && count_b == 1) {
+        printf("2lb Fine\n");
+    }
+    else if (count_l == 3 && count_b == 1) {
+        printf("3lb Fine\n");
+    }
+    else if (count_l == 1 && count_b == 1) {
+        printf("1lb Fine\n");
+    }
+    else if (count_l == 0 && count_b == 1) {
+        printf("1b Fine\n");
+    }
+    else if (count_l == 0 && count_bb == 1) {
+        printf("1bj Fine\n");
+    }
+    else if (count_l == 1 && count_bb == 1) {
+        printf("1lbj Fine\n");
+    }
+    //else if (count_l == 2 && count_b == 0) {
+       // printf("2b, Fine\n");
+    //}
+    else {
+        printf("Coarse\n");
+    }
+
 
     // image output
     qsort(selected_detections, selected_detections_num, sizeof(*selected_detections), compare_by_probs);
@@ -403,6 +441,16 @@ void draw_detections_v3(image im, detection *dets, int num, float thresh, char *
             }
             if (alphabet) {
                 char labelstr[4096] = { 0 };
+
+
+                int k;
+                k = selected_detections[i].best_class;
+                char bufferj[100];
+                sprintf(bufferj, " %.0f%% ", selected_detections[i].det.prob[k] * 100 );
+                strcat(labelstr, bufferj);
+
+
+
                 strcat(labelstr, names[selected_detections[i].best_class]);
                 int j;
                 for (j = 0; j < classes; ++j) {
@@ -451,7 +499,7 @@ void draw_detections(image im, int num, float thresh, box *boxes, float **probs,
                 width = pow(prob, 1./2.)*10+1;
                 alphabet = 0;
             }
-
+            //printf("%s: %.0f%%\n", names[class_id], prob * 100);
             int offset = class_id*123457 % classes;
             float red = get_color(2,offset,classes);
             float green = get_color(1,offset,classes);
@@ -479,7 +527,7 @@ void draw_detections(image im, int num, float thresh, box *boxes, float **probs,
             //printf(" - id: %d, x_center: %d, y_center: %d, width: %d, height: %d",
             //    class_id, (right + left) / 2, (bot - top) / 2, right - left, bot - top);
 
-            printf("\n");
+            //printf("\n");
             draw_box_width(im, left, top, right, bot, width, red, green, blue);
             if (alphabet) {
                 image label = get_label(alphabet, names[class_id], (im.h*.03)/10);
