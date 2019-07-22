@@ -124,6 +124,23 @@ def flc_only(userId, sectionId):
 '''
 
 
+def flc_as_per_best_among_7_rotation_by_priotising_leaf_def(userId, sectionId):
+    segmentation_and_rotation(userId, sectionId)
+    os.chdir(root_folder)
+    classify.create_test_list(userId, sectionId)
+    print("Generating Fine Leaf count only ... wait !!!")
+    classify.yolo_classify_full(userId, sectionId)
+    lb_1, lb_2, lb_3, lbj_1, lbj_2, lbj_3, b_1, bj_1, l_1, l_2, l_3, total = classify.get_fine_count_as_per_best_among_7_rotation_by_priotising_leaf_def(userId, sectionId)
+    shutil.rmtree(test_data_dir + '/u-' + userId + '/s-' + sectionId + '/')
+
+    #r = glob.glob(input_images)
+    #for i in r:
+        #os.remove(i)
+
+    return lb_1, lb_2, lb_3, lbj_1, lbj_2, lbj_3, b_1, bj_1, l_1, l_2, l_3, total
+
+
+
 def flc_with_report(userId, sectionId):
     segmentation_and_rotation(userId, sectionId)
     os.chdir(root_folder)

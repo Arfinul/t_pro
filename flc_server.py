@@ -92,7 +92,7 @@ def classification_flc_only():
         sectionId = request.form['sectionId']
 
         start = time.time()
-        lb_1, lb_2, lb_3, lbj_1, b_1, total = flc.flc_only(userId, sectionId)
+        lb_1, lb_2, lb_3, lbj_1, lbj_2, lbj_3, b_1, bj_1, l_1, l_2, l_3, total = flc.flc_as_per_best_among_7_rotation_by_priotising_leaf_def(userId, sectionId)
         end = time.time()
         time_cons = (end - start)
         print('classification time = ', round(time_cons, 2), ' seconds')
@@ -100,7 +100,13 @@ def classification_flc_only():
                      '2LeafBud_Count': lb_2,
                      '3LeafBud_Count': lb_3,
                      '1LeafBanjhi_Count': lbj_1,
-                     '2LeafBanjhi_Count': b_1,
+                     '2LeafBanjhi_Count': lbj_2,
+                     '3LeafBanjhi_Count': lbj_3,
+                     '1Bud_Count': b_1,
+                     '1Banjhi_Count': bj_1,
+                     '1Leaf_Count': l_1,
+                     '2Leaf_Count': l_2,
+                     '3Leaf_Count': l_3,
                      'Total_Bunches': total,
                      'Time Taken(seconds)': round(time_cons, 2)
                      }

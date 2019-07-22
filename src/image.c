@@ -345,6 +345,8 @@ void draw_detections_v3(image im, detection *dets, int num, float thresh, char *
 
 
     //printf("Total = %d \n", selected_detections_num);
+
+ // Fine category
     if (count_l == 2 && count_b == 1) {
         printf("2lb Fine\n");
     }
@@ -363,9 +365,29 @@ void draw_detections_v3(image im, detection *dets, int num, float thresh, char *
     else if (count_l == 1 && count_bb == 1) {
         printf("1lbj Fine\n");
     }
-    //else if (count_l == 2 && count_b == 0) {
-       // printf("2b, Fine\n");
-    //}
+// Coarse category
+
+    else if (count_l == 2 && count_bb == 1) {
+        printf("2lbj Fine\n");
+    }
+
+    else if (count_l == 2 && count_bb == 0 && count_b == 0) {
+        printf("2l Fine\n");
+    }
+
+    else if (count_l == 3 && count_bb == 1) {
+        printf("3lbj Fine\n");
+    }
+
+    else if (count_l == 3 && count_bb == 0 && count_b == 0) {
+        printf("3l Fine\n");
+    }
+
+    else if (count_l == 1 && count_bb == 0 && count_b == 0) {
+        printf("1l Fine\n");
+    }
+
+
     else {
         printf("Coarse\n");
     }
