@@ -319,7 +319,7 @@ void draw_detections_v3(image im, detection *dets, int num, float thresh, char *
         printf("%.0f%", selected_detections[i].det.prob[best_class] * 100);
         if (strcmp(names[best_class], "Leaf") == 0) count_l++;
         else if (strcmp(names[best_class], "Bud") == 0) count_b++;
-        else if (strcmp(names[best_class], "Banji") == 0) count_bb++;
+        else if (strcmp(names[best_class], "Banjhi") == 0) count_bb++;
 
         if (ext_output)
             printf(" (left_x: %4.0f   top_y: %4.0f   width: %4.0f   height: %4.0f)",
@@ -386,6 +386,7 @@ void draw_detections_v3(image im, detection *dets, int num, float thresh, char *
     else if (count_l == 1 && count_bb == 0 && count_b == 0) {
         printf("1l Fine\n");
     }
+
 
 
     else {
