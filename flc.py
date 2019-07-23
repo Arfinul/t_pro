@@ -69,8 +69,12 @@ def segmentation_and_rotation_without_white_image(userId, sectionId):
                                                                                                    cv2.contourArea(c),
                                                                                                    x,
                                                                                                    y, w, h))
-                        cv2.imwrite(cropped_path + '/frame_%d.%d.jpg' % (frame_count, count), roi)  # % count,roi
-                        count += 1
+                        if count < 10:
+                            cv2.imwrite(cropped_path + '/frame_0%d.jpg' % (count), roi)  # % count,roi
+                            count += 1
+                        else:
+                            cv2.imwrite(cropped_path + '/frame_%d.jpg' % (count), roi)  # % count,roi
+                            count += 1
 
     r = glob.glob(input_images)
     for i in r:
@@ -165,7 +169,7 @@ def segmentation_and_rotation(userId, sectionId):
 
 
 def flc_only(userId, sectionId):
-    # segmentation_and_rotation(userId, sectionId)
+    segmentation_and_rotation(userId, sectionId)
     # segmentation_and_rotation_without_white_image(userId, sectionId)
     os.chdir(root_folder)
     classify.create_test_list(userId, sectionId)
@@ -195,6 +199,7 @@ def flc_as_per_best_among_7_rotation_by_priotising_leaf_def(userId, sectionId):
     print("Generating Fine Leaf count only ... wait !!!")
     classify.yolo_classify_full(userId, sectionId)
     lb_1, lb_2, lb_3, lbj_1, lbj_2, lbj_3, b_1, bj_1, l_1, l_2, l_3, total = classify.get_fine_count_as_per_best_among_7_rotation_by_priotising_leaf_def(userId, sectionId)
+
     shutil.rmtree(test_data_dir + '/u-' + userId + '/s-' + sectionId + '/')
 
     #r = glob.glob(input_images)
@@ -215,6 +220,23 @@ def flc_with_report(userId, sectionId):
 
     fc, cc = classify.yolo_classify_each_and_generate_report(userId, sectionId)
     print("Fine = ", fc, ", Coarse = ", cc)
+
+    #os.system('rm ' + cropped_path + '/*')
+
+    return fc, cc
+
+def flc_with_report_as_per_best_among_7_rotation_by_priotising_leaf_def(userId, sectionId):
+    segmentation_and_rotation_without_white_image(userId, sectionId)
+    os.chdir(root_folder)
+    classify.create_test_list(userId, sectionId)
+    print("Generating FLC on report ... wait !!!")
+    classify.yolo_classify_full(userId, sectionId)
+    print("classification Done")
+
+    fc, cc = classify.yolo_classify_each_and_generate_report_as_per_best_among_7_rotation_by_priotising_leaf_def(userId, sectionId)
+    print("Fine = ", fc, ", Coarse = ", cc)
+
+    shutil.rmtree(test_data_dir + '/u-' + userId + '/s-' + sectionId + '/')
 
     #os.system('rm ' + cropped_path + '/*')
 

@@ -21,7 +21,8 @@ def pdf():
         sectionId = request.form['sectionId']
 
         start = time.time()
-        flc.flc_with_report(userId, sectionId)
+        #flc.flc_with_report(userId, sectionId)
+        flc.flc_with_report_as_per_best_among_7_rotation_by_priotising_leaf_def(userId, sectionId)
         p = sorted(os.listdir(url))
         urlpdf = url + '/' + p[-1]
         print('location - ', urlpdf)
