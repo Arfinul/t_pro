@@ -275,7 +275,7 @@ def get_fine_count_as_per_best_among_7_rotation_by_priotising_leaf_def(userId, s
                         confd = (int(words[1]) + int(words[2]) + int(words[3]) + int(words[4])) / 4
                         if confd == max(frequent_fine_cases_conf):
                             lbj_3 = lbj_3 + 1
-                            fine_lines_trapped.append(line)
+                            coarse_lines_trapped.append(line)
                             break
                     if words[-2] == '2lb':
                         confd = (int(words[1]) + int(words[2]) + int(words[3])) / 3
@@ -287,7 +287,7 @@ def get_fine_count_as_per_best_among_7_rotation_by_priotising_leaf_def(userId, s
                         confd = (int(words[1]) + int(words[2]) + int(words[3])) / 3
                         if confd == max(frequent_fine_cases_conf):
                             lbj_2 = lbj_2 + 1
-                            fine_lines_trapped.append(line)
+                            coarse_lines_trapped.append(line)
                             break
                     if words[-2] == '1lb':
                         confd = (int(words[1]) + int(words[2])) / 2
@@ -317,19 +317,19 @@ def get_fine_count_as_per_best_among_7_rotation_by_priotising_leaf_def(userId, s
                         confd = int(words[1])
                         if confd == max(frequent_fine_cases_conf):
                             l_1 = l_1 + 1
-                            fine_lines_trapped.append(line)
+                            coarse_lines_trapped.append(line)
                             break
                     if words[-2] == '2l':
                         confd = (int(words[1]) + int(words[2])) / 2
                         if confd == max(frequent_fine_cases_conf):
                             l_2 = l_2 + 1
-                            fine_lines_trapped.append(line)
+                            coarse_lines_trapped.append(line)
                             break
                     if words[-2] == '3l':
                         confd = (int(words[1]) + int(words[2]) + int(words[3])) / 3
                         if confd == max(frequent_fine_cases_conf):
                             l_3 = l_3 + 1
-                            fine_lines_trapped.append(line)
+                            coarse_lines_trapped.append(line)
                             break
 
 
@@ -343,6 +343,7 @@ def get_fine_count_as_per_best_among_7_rotation_by_priotising_leaf_def(userId, s
                     coarse_index_trapped.append(num)
     fine_and_coarse = [fine_index_trapped, coarse_index_trapped]
     print(fine_and_coarse)
+    print('Fine = ', len(fine_index_trapped))
     print('Coarse = ', len(coarse_index_trapped))
     print("lb_1 = %d" % lb_1)
     print("lb_2 = %d" % lb_2)
@@ -653,7 +654,7 @@ def yolo_classify_each_and_generate_report_as_per_best_among_7_rotation_by_priot
                         confd = (int(words[1]) + int(words[2]) + int(words[3]) + int(words[4])) / 4
                         if confd == max(frequent_fine_cases_conf):
                             lbj_3 = lbj_3 + 1
-                            fine_lines_trapped.append(line)
+                            coarse_lines_trapped.append(line)
                             break
                     if words[-2] == '2lb':
                         confd = (int(words[1]) + int(words[2]) + int(words[3])) / 3
@@ -665,7 +666,7 @@ def yolo_classify_each_and_generate_report_as_per_best_among_7_rotation_by_priot
                         confd = (int(words[1]) + int(words[2]) + int(words[3])) / 3
                         if confd == max(frequent_fine_cases_conf):
                             lbj_2 = lbj_2 + 1
-                            fine_lines_trapped.append(line)
+                            coarse_lines_trapped.append(line)
                             break
                     if words[-2] == '1lb':
                         confd = (int(words[1]) + int(words[2])) / 2
@@ -695,19 +696,19 @@ def yolo_classify_each_and_generate_report_as_per_best_among_7_rotation_by_priot
                         confd = int(words[1])
                         if confd == max(frequent_fine_cases_conf):
                             l_1 = l_1 + 1
-                            fine_lines_trapped.append(line)
+                            coarse_lines_trapped.append(line)
                             break
                     if words[-2] == '2l':
                         confd = (int(words[1]) + int(words[2])) / 2
                         if confd == max(frequent_fine_cases_conf):
                             l_2 = l_2 + 1
-                            fine_lines_trapped.append(line)
+                            coarse_lines_trapped.append(line)
                             break
                     if words[-2] == '3l':
                         confd = (int(words[1]) + int(words[2]) + int(words[3])) / 3
                         if confd == max(frequent_fine_cases_conf):
                             l_3 = l_3 + 1
-                            fine_lines_trapped.append(line)
+                            coarse_lines_trapped.append(line)
                             break
 
     with open(filename) as file_again:
@@ -738,9 +739,7 @@ def yolo_classify_each_and_generate_report_as_per_best_among_7_rotation_by_priot
     report_count = 1
     for each in fine_and_coarse:
         if each:
-            print("each")
             for i, line in enumerate(open(image_file), 1):
-                print(line)
                 if i in each:
                     line = line.strip('\n')
                     shutil.move(line, tracked_images_path)

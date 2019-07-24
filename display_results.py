@@ -245,3 +245,24 @@ def make_pdf(images, pdf_name):
     generate(images, cx, w, h, y, pdf_name)
 
 
+
+
+    # with open(filename) as file_again:
+    #     for num, line in enumerate(file_again, 1):
+    #         for each in fine_lines_trapped:
+    #             if each in line:
+    #
+    #                 word = line.split()
+    #                 print("AAYA FINE")
+    #                 if any(word[-2] in s for s in ['1b', '1bj', '1lbj', '1lb', '2lb', '3lb']):
+    #                     fine_index_trapped.append(num)
+    #
+    #         for each in coarse_lines_trapped:
+    #             if coarse_lines_trapped:
+    #                 if each in line:
+    #                     coarse_index_trapped.append(num)
+    #             if not coarse_lines_trapped:
+    #
+    #                 word = line.split()
+    #                 if not any(word[-2] in s for s in ['1b', '1bj', '1lbj', '1lb', '2lb', '3lb']):
+    #                     fine_index_trapped.append(num)

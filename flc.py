@@ -35,7 +35,6 @@ def segmentation_and_rotation_without_white_image(userId, sectionId):
             datetime.datetime.now().date()) + '_' + str(datetime.datetime.now().time()) + '_' + str(userId) + '_' + str(sectionId) + '_' + uploaded_file_name
         os.system(command_to_copy)
         frame_count += 1
-
         print("\n==================== Image {}=================\n".format(frame_count))
         orig_img = cv2.imread(file)
         orig_img = cv2.addWeighted(orig_img, 2, orig_img, 0, 0)
@@ -192,8 +191,8 @@ def flc_only(userId, sectionId):
 
 
 def flc_as_per_best_among_7_rotation_by_priotising_leaf_def(userId, sectionId):
-    # segmentation_and_rotation(userId, sectionId)
-    segmentation_and_rotation_without_white_image(userId, sectionId)
+    segmentation_and_rotation(userId, sectionId)
+    # segmentation_and_rotation_without_white_image(userId, sectionId)
     os.chdir(root_folder)
     classify.create_test_list(userId, sectionId)
     print("Generating Fine Leaf count only ... wait !!!")
@@ -226,7 +225,7 @@ def flc_with_report(userId, sectionId):
     return fc, cc
 
 def flc_with_report_as_per_best_among_7_rotation_by_priotising_leaf_def(userId, sectionId):
-    segmentation_and_rotation_without_white_image(userId, sectionId)
+    segmentation_and_rotation(userId, sectionId)
     os.chdir(root_folder)
     classify.create_test_list(userId, sectionId)
     print("Generating FLC on report ... wait !!!")
