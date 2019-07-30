@@ -21,7 +21,7 @@ cropped_dir = '/2_cropped_images'
 '''
 def segmentation_and_rotation_without_white_image(userId, sectionId):
     DENOISING = False
-    CONTOUR_AREA = 700
+    CONTOUR_AREA = 500
     frame_count = 0
 
     user_dir = test_data_dir + '/u-' + str(userId) + '/s-' + str(sectionId)
@@ -29,6 +29,8 @@ def segmentation_and_rotation_without_white_image(userId, sectionId):
     input_images = user_dir + image_dir + '/*'
 
     for file in sorted(glob.glob(input_images)):
+        print("started")
+        print(file)
         uploaded_file_name = os.path.basename(os.path.normpath(file))
         datetime.datetime.now().time()
         command_to_copy = 'cp ' + file + ' ' + test_data_backup_dir + '/' + str(
@@ -37,6 +39,8 @@ def segmentation_and_rotation_without_white_image(userId, sectionId):
         frame_count += 1
         print("\n==================== Image {}=================\n".format(frame_count))
         orig_img = cv2.imread(file)
+        # orig_img = imutils.resize(orig_img, width=990)
+        orig_img = cv2.resize(orig_img,(960,540))
         orig_img = cv2.addWeighted(orig_img, 2, orig_img, 0, 0)
         frame = orig_img.copy()
         frame = cv2.cvtColor(frame, cv2.COLOR_BGR2HLS)  # Change colorspace to HLS
@@ -56,7 +60,7 @@ def segmentation_and_rotation_without_white_image(userId, sectionId):
         for c in contours:
             if cv2.contourArea(c) >= CONTOUR_AREA:
                 x, y, w, h = cv2.boundingRect(c)
-                if (x != 0) & (y != 0) & (w > 40) & (h > 60):
+                if (x != 0) & (y != 0):
                     # & ((x + w) != 960/3120)
                     print(x, y, w, h)
                     print(x, y, (x + w), (y + h))
@@ -69,15 +73,18 @@ def segmentation_and_rotation_without_white_image(userId, sectionId):
                                                                                                    x,
                                                                                                    y, w, h))
                         if count < 10:
-                            cv2.imwrite(cropped_path + '/frame_0%d.jpg' % (count), roi)  # % count,roi
+                            cv2.imwrite(cropped_path + '/frame_0%d.%d.jpg' % (frame_count, count), roi)  # % count,roi
                             count += 1
                         else:
-                            cv2.imwrite(cropped_path + '/frame_%d.jpg' % (count), roi)  # % count,roi
+                            cv2.imwrite(cropped_path + '/frame_%d.%d.jpg' % (frame_count, count), roi)  # % count,roi
                             count += 1
 
-    r = glob.glob(input_images)
-    for i in r:
-        os.remove(i)
+
+
+
+    # r = glob.glob(input_images)
+    # for i in r:
+    #     os.remove(i)
     print("Total bunches = %d" % len(
         [name for name in os.listdir(cropped_path) if os.path.isfile(os.path.join(cropped_path, name))]))
 
@@ -297,4 +304,5 @@ def flc_with_report_for_cropped(userId, sectionId):
 #flc_with_report_without_filter(userId='salil', sectionId='1')
 # print("Fine = ", fc, ", Coarse = ", cc)
 #flc_with_report_for_cropped(userId='salil', sectionId='1')
-# flc_only(userId='salil', sectionId='3')
+# flc_as_per_best_among_7_rotation_by_priotising_leaf_def(userId='salil', sectionId='3')
+# segmentation_and_rotation_without_white_image(userId='salil', sectionId='3')
