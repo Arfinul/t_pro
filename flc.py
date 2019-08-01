@@ -21,7 +21,8 @@ cropped_dir = '/2_cropped_images'
 '''
 def segmentation_and_rotation_without_white_image(userId, sectionId):
     DENOISING = False
-    CONTOUR_AREA = 500
+    CONTOUR_AREA = 500  # This was before(improvement was there)
+    CONTOUR_AREA = 700
     frame_count = 0
 
     user_dir = test_data_dir + '/u-' + str(userId) + '/s-' + str(sectionId)
@@ -29,8 +30,6 @@ def segmentation_and_rotation_without_white_image(userId, sectionId):
     input_images = user_dir + image_dir + '/*'
 
     for file in sorted(glob.glob(input_images)):
-        print("started")
-        print(file)
         uploaded_file_name = os.path.basename(os.path.normpath(file))
         datetime.datetime.now().time()
         command_to_copy = 'cp ' + file + ' ' + test_data_backup_dir + '/' + str(
@@ -39,9 +38,10 @@ def segmentation_and_rotation_without_white_image(userId, sectionId):
         frame_count += 1
         print("\n==================== Image {}=================\n".format(frame_count))
         orig_img = cv2.imread(file)
-        # orig_img = imutils.resize(orig_img, width=990)
-        orig_img = cv2.resize(orig_img,(960,540))
         orig_img = cv2.addWeighted(orig_img, 2, orig_img, 0, 0)
+        orig_img = imutils.resize(orig_img, width=1000)
+        # orig_img = cv2.resize(orig_img,(960,540))  # This was before(improvement was there)
+
         frame = orig_img.copy()
         frame = cv2.cvtColor(frame, cv2.COLOR_BGR2HLS)  # Change colorspace to HLS
 
@@ -60,7 +60,8 @@ def segmentation_and_rotation_without_white_image(userId, sectionId):
         for c in contours:
             if cv2.contourArea(c) >= CONTOUR_AREA:
                 x, y, w, h = cv2.boundingRect(c)
-                if (x != 0) & (y != 0):
+                # if (x != 0) & (y != 0):   # This was before(improvement was there)
+                if (x != 0) & (y != 0) & ((x + w) != 1000) & ((y + h) != 562):
                     # & ((x + w) != 960/3120)
                     print(x, y, w, h)
                     print(x, y, (x + w), (y + h))

@@ -118,6 +118,7 @@ venv.bak/
 *.png
 *.pdf
 *.list
+*.jpg
 predictions.jpg
 
 # Flc folders to ignore
