@@ -1,7 +1,7 @@
 import cv2
 import time
 import argparse
-import os
+import os, shutil
 import imutils, configparser
 
 import flc
@@ -22,6 +22,15 @@ video_path = config.get('video_path', 'file')
 root_folder = config.get('input_path', 'root_folder')
 test_data_dir = root_folder + '/test_data'
 cropped_path = test_data_dir + '/2_cropped_images'
+
+
+image_dir = '/1_images'
+cropped_dir = '/2_cropped_images'
+result_dir = '/3_resulted_images'
+augmented_dir = '/4_augmented'
+join_dir = '/5_join'
+tracked_image_dir = '/6_trapped_images'
+pdf_dir = '/7_pdf_files'
 
 
 def finding_contours(thresh_value):
@@ -66,6 +75,23 @@ def finding_right_contour(img, cnts, frame_counter, img_name):
 
 
 def main():
+    user_dir = test_data_dir
+
+    test_images = user_dir + image_dir
+    os.makedirs(test_images, exist_ok=True)
+    cropped_path = user_dir + cropped_dir
+    os.makedirs(cropped_path, exist_ok=True)
+    result_image_path = user_dir + result_dir
+    os.makedirs(result_image_path, exist_ok=True)
+    augmented_path = user_dir + augmented_dir
+    os.makedirs(augmented_path, exist_ok=True)
+    join_path = user_dir + join_dir
+    os.makedirs(join_path, exist_ok=True)
+    tracked_images_path = user_dir + tracked_image_dir
+    os.makedirs(tracked_images_path, exist_ok=True)
+    pdf_path = user_dir +pdf_dir
+    os.makedirs(pdf_path, exist_ok=True)
+
     for file in os.listdir(video_path):
         if file.endswith(".MTS"):
             path = os.path.join(video_path, file)
@@ -137,3 +163,11 @@ if __name__ == '__main__':
         main()
     except:
         flc.flc_with_cropped_images()
+        shutil.rmtree(test_data_dir + image_dir + '/' )
+        shutil.rmtree(test_data_dir + cropped_dir + '/')
+        shutil.rmtree(test_data_dir + result_dir + '/')
+        shutil.rmtree(test_data_dir + augmented_dir + '/')
+        shutil.rmtree(test_data_dir + join_dir + '/')
+        shutil.rmtree(test_data_dir + tracked_image_dir + '/')
+        shutil.rmtree(test_data_dir + pdf_dir + '/')
+

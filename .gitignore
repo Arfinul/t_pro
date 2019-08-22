@@ -116,10 +116,20 @@ venv.bak/
 *.weights
 *.pdf
 *.list
+*.MTS
 predictions.jpg
 
 # Flc folders to ignore
 test_data/*
-test_data_backup/*
-reports/*
+!test_data/ignore_me
+!test_data/1_images
+!test_data/2_cropped_images
+!test_data/3_resulted_images
+!test_data/4_augmented
+!test_data/5_join
+!test_data/6_trapped_images
+!test_data/7_pdf_files
+
+# Flc video_folder to ignore
 video_data/*
+!video_data/ignore_me
