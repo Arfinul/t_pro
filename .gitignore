@@ -118,12 +118,12 @@ venv.bak/
 *.png
 *.pdf
 *.list
-*.jpg
 *.mp4
 *.MTS
 predictions.jpg
 
 # Flc folders to ignore
+result
 test_data/*
 !test_data/ignore_me
 
