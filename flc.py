@@ -2,7 +2,7 @@ import glob, shutil
 import os
 import cv2
 import imutils, configparser, datetime
-import classify, rotate, display_results
+import classify, rotate, display_results, crop
 
 
 config = configparser.ConfigParser()
@@ -19,6 +19,31 @@ cropped_dir = '/2_cropped_images'
    frame(white frame or background) and current frame.
 
 '''
+def segmentation_and_rotation_shape_wise(userId, sectionId):
+    frame_count = 0
+    user_dir = test_data_dir + '/u-' + str(userId) + '/s-' + str(sectionId)
+    cropped_path = user_dir + cropped_dir
+    input_images = user_dir + image_dir + '/*'
+
+    for file in sorted(glob.glob(input_images)):
+        uploaded_file_name = os.path.basename(os.path.normpath(file))
+        datetime.datetime.now().time()
+        command_to_copy = 'cp ' + file + ' ' + test_data_backup_dir + '/' + str(
+            datetime.datetime.now().date()) + '_' + str(datetime.datetime.now().time()) + '_' + str(userId) + '_' + str(sectionId) + '_' + uploaded_file_name
+        os.system(command_to_copy)
+        frame_count += 1
+        print("\n==================== Image {}=================\n".format(frame_count))
+        crop.as_per_shape(file, frame_count, cropped_path)
+
+    print("Total bunches = %d" % len(
+        [name for name in os.listdir(cropped_path) if os.path.isfile(os.path.join(cropped_path, name))]))
+
+    rotate.rotate_image(user_dir)
+
+    print("Total rotated bunches = %d" % len(
+        [name for name in os.listdir(cropped_path) if os.path.isfile(os.path.join(cropped_path, name))]))
+
+
 def segmentation_and_rotation_without_white_image(userId, sectionId):
     DENOISING = False
     CONTOUR_AREA = 700  # This was before(improvement was there)
@@ -199,6 +224,7 @@ def flc_only(userId, sectionId):
 
 def flc_as_per_best_among_7_rotation_by_priotising_leaf_def(userId, sectionId):
    # segmentation_and_rotation(userId, sectionId)
+   #  segmentation_and_rotation_shape_wise(userId, sectionId)
     segmentation_and_rotation_without_white_image(userId, sectionId)
     os.chdir(root_folder)
     classify.create_test_list(userId, sectionId)
@@ -233,7 +259,8 @@ def flc_with_report(userId, sectionId):
 
 def flc_with_report_as_per_best_among_7_rotation_by_priotising_leaf_def(userId, sectionId):
     # segmentation_and_rotation(userId, sectionId)
-    segmentation_and_rotation_without_white_image(userId, sectionId)
+    segmentation_and_rotation_shape_wise(userId, sectionId)
+    # segmentation_and_rotation_without_white_image(userId, sectionId)
     os.chdir(root_folder)
     classify.create_test_list(userId, sectionId)
     print("Generating FLC on report ... wait !!!")
@@ -309,4 +336,4 @@ def flc_with_report_for_cropped(userId, sectionId):
 # segmentation_and_rotation_without_white_image(userId='salil', sectionId='3')
 # flc_with_report_for_cropped(userId='salil', sectionId='4')
 # segmentation_and_rotation_without_white_image(userId='salil', sectionId='4')
-
+# segmentation_and_rotation_shape_wise(userId='salil', sectionId='4')
