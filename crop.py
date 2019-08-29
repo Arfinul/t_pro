@@ -8,9 +8,9 @@ import os, imutils
 
 CONTOUR_AREA = 700
 
+
 # ============================================================
 def as_per_shape(image_path, frame_count, cropped_path):
-
     image = cv2.imread(image_path)
     image = imutils.resize(image, width=1000)
     hsv_img = cv2.cvtColor(image, cv2.COLOR_BGR2HSV)
@@ -23,10 +23,11 @@ def as_per_shape(image_path, frame_count, cropped_path):
     # converting the HSV image to Gray in order to be able to apply contouring
     RGB_again = cv2.cvtColor(hsv_img, cv2.COLOR_HSV2RGB)
     gray = cv2.cvtColor(RGB_again, cv2.COLOR_RGB2GRAY)
-    ret, threshold = cv2.threshold(gray, 120, 255, 0)
+    # ret, threshold = cv2.threshold(gray, 120, 255, 0)
+    ret, threshold = cv2.threshold(gray, 130, 255, cv2.THRESH_OTSU)
     _, contours, _ = cv2.findContours(threshold, cv2.RETR_TREE, cv2.CHAIN_APPROX_SIMPLE)
 
-# ============================================================
+    # ============================================================
 
     first_image = -1
     i = 0
@@ -40,15 +41,25 @@ def as_per_shape(image_path, frame_count, cropped_path):
             mask = np.zeros((image.shape[0], image.shape[1], 1), np.uint8)
 
             cv2.fillConvexPoly(mask, c, 255, 1)
-            kernel = np.ones((5, 5), np.uint8)
-            mask = cv2.dilate(mask, kernel, iterations=5)
+            kernel = np.ones((6, 6), np.uint8)
+            mask = cv2.dilate(mask, kernel, iterations=8)
             out = cv2.bitwise_and(image, image, mask=mask)
             out = out[y:y + h, x:x + w]
-
             out[np.where((out == [0, 0, 0]).all(axis=2))] = [255, 255, 255]
-
-            outfile = cropped_path + '/' + '/frame_0%d.%d.jpg' % (frame_count, (i+1))
-            out = cv2.addWeighted(out, 1.8, out, 0, 0)
-            cv2.imwrite(outfile, out)
+            # outfile = cropped_path + '/' + '/frame%d_%d.jpg' % (frame_count, (i+1))
             i += 1
+
+            if (i > 0) & (i < 10):
+                outfile = cropped_path + '/' + '/frame%d_000%d.jpg' % (frame_count, i)
+            if (i > 9) & (i < 100):
+                outfile = cropped_path + '/' + '/frame%d_00%d.jpg' % (frame_count, i)
+            if (i > 99) & (i < 1000):
+                outfile = cropped_path + '/' + '/frame%d_0%d.jpg' % (frame_count, i)
+            if (i > 999) & (i < 10000):
+                outfile = cropped_path + '/' + '/frame%d_%d.jpg' % (frame_count, i)
+
+
+            out = cv2.addWeighted(out, 2, out, 0, 0)
+            cv2.imwrite(outfile, out)
+
 
