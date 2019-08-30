@@ -1,7 +1,6 @@
 import cv2
 import numpy as np
 import os, imutils
-import tensorflow as tf
 # ============================================================
 #                     Config
 # ============================================================
@@ -63,5 +62,3 @@ def as_per_shape(image_path, frame_count, cropped_path):
                 out = cv2.addWeighted(out, 2, out, 0, 0)
                 cv2.imwrite(outfile, out)
 
-
-print(tf.Session(config=tf.ConfigProto(log_device_placement=True)))
