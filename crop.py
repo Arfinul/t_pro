@@ -1,7 +1,7 @@
 import cv2
 import numpy as np
 import os, imutils
-
+import tensorflow as tf
 # ============================================================
 #                     Config
 # ============================================================
@@ -37,29 +37,31 @@ def as_per_shape(image_path, frame_count, cropped_path):
             if first_image == 0:
                 continue
             x, y, w, h = cv2.boundingRect(c)
-            print('Image {}: x: {}, y: {}, w: {}, h: {}'.format(i + 1, x, y, w, h))
-            mask = np.zeros((image.shape[0], image.shape[1], 1), np.uint8)
+            if (x != 0) & (y != 0) & ((x + w) != 1000) & ((y + h) != 562):
+                print('Image {}: x: {}, y: {}, w: {}, h: {}'.format(i + 1, x, y, w, h))
+                mask = np.zeros((image.shape[0], image.shape[1], 1), np.uint8)
 
-            cv2.fillConvexPoly(mask, c, 255, 1)
-            kernel = np.ones((6, 6), np.uint8)
-            mask = cv2.dilate(mask, kernel, iterations=8)
-            out = cv2.bitwise_and(image, image, mask=mask)
-            out = out[y:y + h, x:x + w]
-            out[np.where((out == [0, 0, 0]).all(axis=2))] = [255, 255, 255]
-            # outfile = cropped_path + '/' + '/frame%d_%d.jpg' % (frame_count, (i+1))
-            i += 1
+                cv2.fillConvexPoly(mask, c, 255, 1)
+                kernel = np.ones((6, 6), np.uint8)
+                mask = cv2.dilate(mask, kernel, iterations=8)
+                out = cv2.bitwise_and(image, image, mask=mask)
+                out = out[y:y + h, x:x + w]
+                out[np.where((out == [0, 0, 0]).all(axis=2))] = [255, 255, 255]
+                # outfile = cropped_path + '/' + '/frame%d_%d.jpg' % (frame_count, (i+1))
+                i += 1
 
-            if (i > 0) & (i < 10):
-                outfile = cropped_path + '/' + '/frame%d_000%d.jpg' % (frame_count, i)
-            if (i > 9) & (i < 100):
-                outfile = cropped_path + '/' + '/frame%d_00%d.jpg' % (frame_count, i)
-            if (i > 99) & (i < 1000):
-                outfile = cropped_path + '/' + '/frame%d_0%d.jpg' % (frame_count, i)
-            if (i > 999) & (i < 10000):
-                outfile = cropped_path + '/' + '/frame%d_%d.jpg' % (frame_count, i)
-
-
-            out = cv2.addWeighted(out, 2, out, 0, 0)
-            cv2.imwrite(outfile, out)
+                if (i > 0) & (i < 10):
+                    outfile = cropped_path + '/' + '/frame%d_000%d.jpg' % (frame_count, i)
+                if (i > 9) & (i < 100):
+                    outfile = cropped_path + '/' + '/frame%d_00%d.jpg' % (frame_count, i)
+                if (i > 99) & (i < 1000):
+                    outfile = cropped_path + '/' + '/frame%d_0%d.jpg' % (frame_count, i)
+                if (i > 999) & (i < 10000):
+                    outfile = cropped_path + '/' + '/frame%d_%d.jpg' % (frame_count, i)
 
 
+                out = cv2.addWeighted(out, 2, out, 0, 0)
+                cv2.imwrite(outfile, out)
+
+
+print(tf.Session(config=tf.ConfigProto(log_device_placement=True)))
