@@ -4,7 +4,6 @@ import cv2
 import imutils, configparser, datetime
 import classify, rotate, display_results, crop
 
-
 config = configparser.ConfigParser()
 config.read('flc.conf')
 root_folder = config.get('input_path', 'root_folder')
@@ -14,11 +13,12 @@ test_data_backup_dir = root_folder + '/test_data_backup'
 image_dir = '/1_images'
 cropped_dir = '/2_cropped_images'
 
-
 '''Segmentation of bunches from a frame has been performed by finding the difference between the first
    frame(white frame or background) and current frame.
 
 '''
+
+
 def segmentation_and_rotation_shape_wise(userId, sectionId):
     frame_count = 0
     user_dir = test_data_dir + '/u-' + str(userId) + '/s-' + str(sectionId)
@@ -29,7 +29,8 @@ def segmentation_and_rotation_shape_wise(userId, sectionId):
         uploaded_file_name = os.path.basename(os.path.normpath(file))
         datetime.datetime.now().time()
         command_to_copy = 'cp ' + file + ' ' + test_data_backup_dir + '/' + str(
-            datetime.datetime.now().date()) + '_' + str(datetime.datetime.now().time()) + '_' + str(userId) + '_' + str(sectionId) + '_' + uploaded_file_name
+            datetime.datetime.now().date()) + '_' + str(datetime.datetime.now().time()) + '_' + str(userId) + '_' + str(
+            sectionId) + '_' + uploaded_file_name
         os.system(command_to_copy)
         frame_count += 1
         print("\n==================== Image {}=================\n".format(frame_count))
@@ -57,7 +58,8 @@ def segmentation_and_rotation_without_white_image(userId, sectionId):
         uploaded_file_name = os.path.basename(os.path.normpath(file))
         datetime.datetime.now().time()
         command_to_copy = 'cp ' + file + ' ' + test_data_backup_dir + '/' + str(
-            datetime.datetime.now().date()) + '_' + str(datetime.datetime.now().time()) + '_' + str(userId) + '_' + str(sectionId) + '_' + uploaded_file_name
+            datetime.datetime.now().date()) + '_' + str(datetime.datetime.now().time()) + '_' + str(userId) + '_' + str(
+            sectionId) + '_' + uploaded_file_name
         os.system(command_to_copy)
         frame_count += 1
         print("\n==================== Image {}=================\n".format(frame_count))
@@ -79,7 +81,7 @@ def segmentation_and_rotation_without_white_image(userId, sectionId):
         thresh = cv2.dilate(thresh, None, iterations=3)
         _, contours, hier = cv2.findContours(thresh, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_NONE)
 
-        count = 1
+        i = 1
 
         for c in contours:
             if cv2.contourArea(c) >= CONTOUR_AREA:
@@ -93,19 +95,30 @@ def segmentation_and_rotation_without_white_image(userId, sectionId):
 
                     if 0 not in roi.shape:
                         print(
-                        "[INFO]: Image {}: Shape: {} Area: ({}) Location: ({},{},{},{})...".format(count, roi.shape,
-                                                                                                   cv2.contourArea(c),
-                                                                                                   x,
-                                                                                                   y, w, h))
-                        if count < 10:
-                            cv2.imwrite(cropped_path + '/frame_0%d.%d.jpg' % (frame_count, count), roi)  # % count,roi
-                            count += 1
-                        else:
-                            cv2.imwrite(cropped_path + '/frame_%d.%d.jpg' % (frame_count, count), roi)  # % count,roi
-                            count += 1
+                            "[INFO]: Image {}: Shape: {} Area: ({}) Location: ({},{},{},{})...".format(i, roi.shape,
+                                                                                                       cv2.contourArea(
+                                                                                                           c),
+                                                                                                       x,
+                                                                                                       y, w, h))
+                        # if count < 10:
+                        #     cv2.imwrite(cropped_path + '/frame_0%d.%d.jpg' % (frame_count, count), roi)  # % count,roi
+                        #     count += 1
+                        # else:
+                        #     cv2.imwrite(cropped_path + '/frame_%d.%d.jpg' % (frame_count, count), roi)  # % count,roi
+                        #     count += 1
 
 
+                        i = i + 1
+                        if (i > 0) & (i < 10):
+                            outfile = cropped_path + '/' + '/frame%d_000%d.jpg' % (frame_count, i)
+                        if (i > 9) & (i < 100):
+                            outfile = cropped_path + '/' + '/frame%d_00%d.jpg' % (frame_count, i)
+                        if (i > 99) & (i < 1000):
+                            outfile = cropped_path + '/' + '/frame%d_0%d.jpg' % (frame_count, i)
+                        if (i > 999) & (i < 10000):
+                            outfile = cropped_path + '/' + '/frame%d_%d.jpg' % (frame_count, i)
 
+                        cv2.imwrite(outfile, roi)
 
     # r = glob.glob(input_images)
     # for i in r:
@@ -117,6 +130,7 @@ def segmentation_and_rotation_without_white_image(userId, sectionId):
 
     print("Total rotated bunches = %d" % len(
         [name for name in os.listdir(cropped_path) if os.path.isfile(os.path.join(cropped_path, name))]))
+
 
 def segmentation_and_rotation(userId, sectionId):
     firstFrame = None
@@ -130,7 +144,8 @@ def segmentation_and_rotation(userId, sectionId):
         uploaded_file_name = os.path.basename(os.path.normpath(file))
         datetime.datetime.now().time()
         command_to_copy = 'cp ' + file + ' ' + test_data_backup_dir + '/' + str(
-            datetime.datetime.now().date()) + '_' + str(datetime.datetime.now().time()) + '_' + userId + '_' + sectionId + '_' + uploaded_file_name
+            datetime.datetime.now().date()) + '_' + str(
+            datetime.datetime.now().time()) + '_' + userId + '_' + sectionId + '_' + uploaded_file_name
         os.system(command_to_copy)
 
         frame = cv2.imread(file)
@@ -207,13 +222,13 @@ def flc_only(userId, sectionId):
     print("Generating Fine Leaf count only ... wait !!!")
     classify.yolo_classify_full(userId, sectionId)
     lb_1, lb_2, lb_3, lbj_1, b_1, total = classify.find_each_class_count(userId, sectionId)
-    #cc, fc = classify.count(userId, sectionId)
+    # cc, fc = classify.count(userId, sectionId)
     shutil.rmtree(test_data_dir + '/u-' + userId + '/s-' + sectionId + '/')
 
-    #r = glob.glob(input_images)
-    #for i in r:
-        #os.remove(i)
-    #print(lb_1, lb_2, lb_3, lbj_1, b_1, total)
+    # r = glob.glob(input_images)
+    # for i in r:
+    # os.remove(i)
+    # print(lb_1, lb_2, lb_3, lbj_1, b_1, total)
     return lb_1, lb_2, lb_3, lbj_1, b_1, total
 
 
@@ -223,23 +238,23 @@ def flc_only(userId, sectionId):
 
 
 def flc_as_per_best_among_7_rotation_by_priotising_leaf_def(userId, sectionId):
-   # segmentation_and_rotation(userId, sectionId)
-   #  segmentation_and_rotation_shape_wise(userId, sectionId)
+    # segmentation_and_rotation(userId, sectionId)
+    #  segmentation_and_rotation_shape_wise(userId, sectionId)
     segmentation_and_rotation_without_white_image(userId, sectionId)
     os.chdir(root_folder)
     classify.create_test_list(userId, sectionId)
     print("Generating Fine Leaf count only ... wait !!!")
     classify.yolo_classify_full(userId, sectionId)
-    lb_1, lb_2, lb_3, lbj_1, lbj_2, lbj_3, b_1, bj_1, l_1, l_2, l_3, total = classify.get_fine_count_as_per_best_among_7_rotation_by_priotising_leaf_def(userId, sectionId)
+    lb_1, lb_2, lb_3, lbj_1, lbj_2, lbj_3, b_1, bj_1, l_1, l_2, l_3, total = classify.get_fine_count_as_per_best_among_7_rotation_by_priotising_leaf_def(
+        userId, sectionId)
 
     shutil.rmtree(test_data_dir + '/u-' + userId + '/s-' + sectionId + '/')
 
-    #r = glob.glob(input_images)
-    #for i in r:
-        #os.remove(i)
+    # r = glob.glob(input_images)
+    # for i in r:
+    # os.remove(i)
 
     return lb_1, lb_2, lb_3, lbj_1, lbj_2, lbj_3, b_1, bj_1, l_1, l_2, l_3, total
-
 
 
 def flc_with_report(userId, sectionId):
@@ -253,26 +268,28 @@ def flc_with_report(userId, sectionId):
     fc, cc = classify.yolo_classify_each_and_generate_report(userId, sectionId)
     print("Fine = ", fc, ", Coarse = ", cc)
 
-    #os.system('rm ' + cropped_path + '/*')
+    # os.system('rm ' + cropped_path + '/*')
 
     return fc, cc
 
+
 def flc_with_report_as_per_best_among_7_rotation_by_priotising_leaf_def(userId, sectionId):
     # segmentation_and_rotation(userId, sectionId)
-    segmentation_and_rotation_shape_wise(userId, sectionId)
-    # segmentation_and_rotation_without_white_image(userId, sectionId)
+    # segmentation_and_rotation_shape_wise(userId, sectionId)
+    segmentation_and_rotation_without_white_image(userId, sectionId)
     os.chdir(root_folder)
     classify.create_test_list(userId, sectionId)
     print("Generating FLC on report ... wait !!!")
     classify.yolo_classify_full(userId, sectionId)
     print("classification Done")
 
-    fc, cc = classify.yolo_classify_each_and_generate_report_as_per_best_among_7_rotation_by_priotising_leaf_def(userId, sectionId)
+    fc, cc = classify.yolo_classify_each_and_generate_report_as_per_best_among_7_rotation_by_priotising_leaf_def(userId,
+                                                                                                                 sectionId)
     print("Fine = ", fc, ", Coarse = ", cc)
 
     shutil.rmtree(test_data_dir + '/u-' + userId + '/s-' + sectionId + '/')
 
-    #os.system('rm ' + cropped_path + '/*')
+    # os.system('rm ' + cropped_path + '/*')
 
     return fc, cc
 
@@ -282,9 +299,9 @@ def flc_with_report_without_filter(userId, sectionId):
     rotation(userId, sectionId)
     os.chdir(root_folder)
     classify.create_test_list(userId, sectionId)
-    #r = glob.glob(input_images)
-    #for i in r:
-       # os.remove(i)
+    # r = glob.glob(input_images)
+    # for i in r:
+    # os.remove(i)
     classify.yolo_classify_one_by_one(userId, sectionId)
     display_results.merge_test_and_result_without_fil(userId, sectionId)
     display_results.make_files_list_without_r(userId, sectionId)
@@ -310,7 +327,6 @@ def rotation(userId, sectionId):
         [name for name in os.listdir(cropped_path) if os.path.isfile(os.path.join(cropped_path, name))]))
 
 
-
 def flc_with_report_for_cropped(userId, sectionId):
     rotation(userId, sectionId)
     os.chdir(root_folder)
@@ -319,19 +335,20 @@ def flc_with_report_for_cropped(userId, sectionId):
     classify.yolo_classify_full(userId, sectionId)
     print("classification Done")
 
-    fc, cc = classify.yolo_classify_each_and_generate_report_as_per_best_among_7_rotation_by_priotising_leaf_def(userId, sectionId)
-    #print("Fine = ", fc, ", Coarse = ", cc)
+    fc, cc = classify.yolo_classify_each_and_generate_report_as_per_best_among_7_rotation_by_priotising_leaf_def(userId,
+                                                                                                                 sectionId)
+    # print("Fine = ", fc, ", Coarse = ", cc)
     shutil.rmtree(test_data_dir + '/u-' + userId + '/s-' + sectionId + '/')
 
-    #os.system('rm ' + cropped_path + '/*')
+    # os.system('rm ' + cropped_path + '/*')
 
     return fc, cc
 
 # flc_only()
 # cc, fc = flc_with_report()
-#flc_with_report_without_filter(userId='salil', sectionId='1')
+# flc_with_report_without_filter(userId='salil', sectionId='1')
 # print("Fine = ", fc, ", Coarse = ", cc)
-#flc_with_report_for_cropped(userId='salil', sectionId='1')
+# flc_with_report_for_cropped(userId='salil', sectionId='1')
 # flc_as_per_best_among_7_rotation_by_priotising_leaf_def(userId='salil', sectionId='4')
 # segmentation_and_rotation_without_white_image(userId='salil', sectionId='3')
 # flc_with_report_for_cropped(userId='salil', sectionId='4')
