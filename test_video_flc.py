@@ -17,11 +17,11 @@ args_input = parser.parse_args()
 
 config = configparser.ConfigParser()
 config.read('flc.conf')
-video_path = config.get('video_path', 'file')
 
 root_folder = config.get('input_path', 'root_folder')
 test_data_dir = root_folder + '/test_data'
 cropped_path = test_data_dir + '/2_cropped_images'
+video_path = root_folder + '/video_data'
 
 
 image_dir = '/1_images'

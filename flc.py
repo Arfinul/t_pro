@@ -9,12 +9,11 @@ import logging, time
 
 config = configparser.ConfigParser()
 config.read('flc.conf')
-video_path = config.get('video_path', 'file')
 root_folder = config.get('input_path', 'root_folder')
 test_data_dir = root_folder + '/test_data'
 input_images = test_data_dir + '/1_images/*'
 cropped_path = test_data_dir + '/2_cropped_images'
-video_dir = root_folder + '/video_data'
+video_path = root_folder + '/video_data'
 
 '''Segmentation of bunches from a frame has been performed by finding the difference between the first
    frame(white frame or background) and current frame.
@@ -250,7 +249,7 @@ def flc_with_cropped_images():
     #print("Fine = ", fc1, ", Coarse = ", cc1)
 
     os.system('rm ' + cropped_path + '/*')
-    r = glob.glob(video_dir + '/*')
+    r = glob.glob(video_path + '/*')
     for i in r:
         os.remove(i)
 
