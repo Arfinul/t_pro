@@ -97,11 +97,6 @@ def main():
             path = os.path.join(video_path, file)
             cap = cv2.VideoCapture(path)
             bgSubtractor = cv2.bgsegm.createBackgroundSubtractorMOG()
-            # fouorcc = cv2.VideoWriter_fourcc(*args_input.codec)
-
-            hasFrame, frame = cap.read()
-            # vid_writer = cv2.VideoWriter(args_input.output, fouorcc, args_input.fps, (frame.shape[1], frame.shape[0])) # black frame init
-            # vid_writer2 = cv2.VideoWriter("normal.avi", fouorcc, args_input.fps, (frame.shape[1], frame.shape[0])) #normal frame
 
             calibrateFlag = False
             initTime = time.time()

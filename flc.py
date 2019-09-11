@@ -232,7 +232,7 @@ def flc_with_cropped_images():
     print("Total bunches = %d" % len(
         [name for name in os.listdir(cropped_path) if os.path.isfile(os.path.join(cropped_path, name))]))
 
-    rotate.rotate_image()
+    # rotate.rotate_image()
 
     print("Total rotated bunches = %d" % len(
         [name for name in os.listdir(cropped_path) if os.path.isfile(os.path.join(cropped_path, name))]))
@@ -248,10 +248,10 @@ def flc_with_cropped_images():
     #fc1, cc1 = classify.yolo_classify_each_and_generate_report()
     #print("Fine = ", fc1, ", Coarse = ", cc1)
 
-    os.system('rm ' + cropped_path + '/*')
-    r = glob.glob(video_path + '/*')
-    for i in r:
-        os.remove(i)
+    # os.system('rm ' + cropped_path + '/*')
+    # r = glob.glob(video_path + '/*')
+    # for i in r:
+    #     os.remove(i)
 
 
 # flc_only()
