@@ -15,7 +15,7 @@
 #endif
 
 // To use tracking - uncomment the following line. Tracking is supported only by OpenCV 3.x
-//#define TRACK_OPTFLOW
+#define TRACK_OPTFLOW   // AgNext change - uncommented it, originally commented.
 
 //#include "C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v9.1\include\cuda_runtime.h"
 //#pragma comment(lib, "C:/Program Files/NVIDIA GPU Computing Toolkit/CUDA/v9.1/lib/x64/cudart.lib")
@@ -189,12 +189,14 @@ void draw_boxes(cv::Mat mat_img, std::vector<bbox_t> result_vec, std::vector<std
         if (obj_names.size() > i.obj_id) {
             std::string obj_name = obj_names[i.obj_id];
             if (i.track_id > 0) obj_name += " - " + std::to_string(i.track_id);
-            cv::Size const text_size = getTextSize(obj_name, cv::FONT_HERSHEY_COMPLEX_SMALL, 1.2, 2, 0);
+            //cv::Size const text_size = getTextSize(obj_name, cv::FONT_HERSHEY_COMPLEX_SMALL, 1.2, 2, 0); //Original
+            cv::Size const text_size = getTextSize(obj_name, cv::FONT_HERSHEY_COMPLEX_SMALL, 0.8, 2, 0); //AgNext
             int const max_width = (text_size.width > i.w + 2) ? text_size.width : (i.w + 2);
-            cv::rectangle(mat_img, cv::Point2f(std::max((int)i.x - 1, 0), std::max((int)i.y - 30, 0)), 
-                cv::Point2f(std::min((int)i.x + max_width, mat_img.cols-1), std::min((int)i.y, mat_img.rows-1)), 
-                color, CV_FILLED, 8, 0);
-            putText(mat_img, obj_name, cv::Point2f(i.x, i.y - 10), cv::FONT_HERSHEY_COMPLEX_SMALL, 1.2, cv::Scalar(0, 0, 0), 2);
+            cv::rectangle(mat_img, cv::Point2f(std::max((int)i.x - 1, 0), std::max((int)i.y - 30, 0)), // Agnext - uncommented
+                cv::Point2f(std::min((int)i.x + max_width, mat_img.cols-1), std::min((int)i.y, mat_img.rows-1)),  // Agnext - uncommented it
+                color, CV_FILLED, 8, 0);   // Agnext - uncommented it
+            //putText(mat_img, obj_name, cv::Point2f(i.x, i.y - 10), cv::FONT_HERSHEY_COMPLEX_SMALL, 1.2, cv::Scalar(0, 0, 0), 2);  //Original
+            putText(mat_img, obj_name, cv::Point2f(i.x, i.y - 10), cv::FONT_HERSHEY_COMPLEX_SMALL, 0.8, cv::Scalar(0, 0, 0), 2);  //AgNext
         }
     }
     if (current_det_fps >= 0 && current_cap_fps >= 0) {
@@ -208,7 +210,7 @@ void draw_boxes(cv::Mat mat_img, std::vector<bbox_t> result_vec, std::vector<std
 void show_console_result(std::vector<bbox_t> const result_vec, std::vector<std::string> const obj_names) {
     for (auto &i : result_vec) {
         if (obj_names.size() > i.obj_id) std::cout << obj_names[i.obj_id] << " - ";
-        std::cout << "obj_id = " << i.obj_id << ",  x = " << i.x << ", y = " << i.y 
+        std::cout << "track_id = " << i.track_id << ", obj_id = " << i.obj_id << ",  x = " << i.x << ", y = " << i.y 
             << ", w = " << i.w << ", h = " << i.h
             << std::setprecision(3) << ", prob = " << i.prob << std::endl;
     }
@@ -239,7 +241,7 @@ int main(int argc, char *argv[])
     }
     else if (argc > 1) filename = argv[1];
 
-    float const thresh = (argc > 5) ? std::stof(argv[5]) : 0.20;
+    float const thresh = (argc > 5) ? std::stof(argv[5]) : 0.60; // AgNext, before thresh value was 0.20, now setup to 0.60
 
     Detector detector(cfg_file, weights_file);
 
@@ -267,7 +269,7 @@ int main(int argc, char *argv[])
 
             std::string const file_ext = filename.substr(filename.find_last_of(".") + 1);
             std::string const protocol = filename.substr(0, 7);
-            if (file_ext == "avi" || file_ext == "mp4" || file_ext == "mjpg" || file_ext == "mov" ||     // video file
+            if (file_ext == "MTS" || file_ext == "avi" || file_ext == "mp4" || file_ext == "mjpg" || file_ext == "mov" ||     // video file
                 protocol == "rtmp://" || protocol == "rtsp://" || protocol == "http://" || protocol == "https:/")    // video network stream
             {
                 cv::Mat cap_frame, cur_frame, det_frame, write_frame;
@@ -290,10 +292,19 @@ int main(int argc, char *argv[])
                 std::chrono::steady_clock::time_point steady_start, steady_end;
                 cv::VideoCapture cap(filename); cap >> cur_frame;
                 int const video_fps = cap.get(CV_CAP_PROP_FPS);
+
+
+                cv::Mat resized;
+                cv::resize(cur_frame, resized, cv::Size(1000, 562));
+
+
+
+
                 cv::Size const frame_size = cur_frame.size();
                 cv::VideoWriter output_video;
                 if (save_output_videofile)
-                    output_video.open(out_videofile, CV_FOURCC('D', 'I', 'V', 'X'), std::max(35, video_fps), frame_size, true);
+                    output_video.open(out_videofile, CV_FOURCC('D', 'I', 'V', 'X'), std::max(35, video_fps), frame_size, true);  // Original
+                    //output_video.open(out_videofile, CV_FOURCC('D', 'I', 'V', 'X'), std::max(1, video_fps), frame_size, true);  //AgNext change
 
                 while (!cur_frame.empty()) 
                 {
@@ -382,6 +393,14 @@ int main(int argc, char *argv[])
                     }
                     //while (!consumed);    // sync detection
 
+
+
+
+
+                    cv::namedWindow("FLC", cv::WINDOW_FULLSCREEN);
+                    cv::moveWindow("FLC", 0, 0);
+                    cv::resizeWindow("FLC", 1000, 562);
+
                     if (!cur_frame.empty()) {
                         steady_end = std::chrono::steady_clock::now();
                         if (std::chrono::duration<double>(steady_end - steady_start).count() >= 1) {
@@ -406,10 +425,11 @@ int main(int argc, char *argv[])
                             cv::putText(cur_frame, "extrapolate", cv::Point2f(10, 40), cv::FONT_HERSHEY_COMPLEX_SMALL, 1.0, cv::Scalar(50, 50, 0), 2);
                         }
                         draw_boxes(cur_frame, result_vec_draw, obj_names, current_det_fps, current_cap_fps);
-                        //show_console_result(result_vec, obj_names);
+                        show_console_result(result_vec, obj_names);
                         large_preview.draw(cur_frame);
 
-                        cv::imshow("window name", cur_frame);
+                        cv::imshow("FLC", cur_frame);
+                        //cv::resizeWindow('FLC', 1000,562)
                         int key = cv::waitKey(3);    // 3 or 16ms
                         if (key == 'f') show_small_boxes = !show_small_boxes;
                         if (key == 'p') while (true) if(cv::waitKey(100) == 'p') break;

@@ -117,6 +117,7 @@ venv.bak/
 *.pdf
 *.list
 *.MTS
+*.mp4
 predictions.jpg
 
 # Flc folders to ignore
