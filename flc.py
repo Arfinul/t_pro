@@ -239,8 +239,8 @@ def flc_only(userId, sectionId):
 
 def flc_as_per_best_among_7_rotation_by_priotising_leaf_def(userId, sectionId):
     # segmentation_and_rotation(userId, sectionId)
-    #  segmentation_and_rotation_shape_wise(userId, sectionId)
-    segmentation_and_rotation_without_white_image(userId, sectionId)
+    segmentation_and_rotation_shape_wise(userId, sectionId)
+    # segmentation_and_rotation_without_white_image(userId, sectionId)
     os.chdir(root_folder)
     classify.create_test_list(userId, sectionId)
     print("Generating Fine Leaf count only ... wait !!!")
@@ -275,8 +275,8 @@ def flc_with_report(userId, sectionId):
 
 def flc_with_report_as_per_best_among_7_rotation_by_priotising_leaf_def(userId, sectionId):
     # segmentation_and_rotation(userId, sectionId)
-    # segmentation_and_rotation_shape_wise(userId, sectionId)
-    segmentation_and_rotation_without_white_image(userId, sectionId)
+    segmentation_and_rotation_shape_wise(userId, sectionId)
+    # segmentation_and_rotation_without_white_image(userId, sectionId)
     os.chdir(root_folder)
     classify.create_test_list(userId, sectionId)
     print("Generating FLC on report ... wait !!!")
