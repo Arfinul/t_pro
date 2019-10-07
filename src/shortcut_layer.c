@@ -1,13 +1,15 @@
 #include "shortcut_layer.h"
-#include "cuda.h"
+#include "convolutional_layer.h"
+#include "dark_cuda.h"
 #include "blas.h"
 #include <stdio.h>
 #include <assert.h>
 
-layer make_shortcut_layer(int batch, int index, int w, int h, int c, int w2, int h2, int c2)
+layer make_shortcut_layer(int batch, int index, int w, int h, int c, int w2, int h2, int c2, int assisted_excitation)
 {
-    fprintf(stderr,"Shortcut Layer: %d\n", index);
-    layer l = {0};
+    if(assisted_excitation) fprintf(stderr, "Shortcut Layer - AE: %d\n", index);
+    else fprintf(stderr,"Shortcut Layer: %d\n", index);
+    layer l = { (LAYER_TYPE)0 };
     l.type = SHORTCUT;
     l.batch = batch;
     l.w = w2;
@@ -19,20 +21,30 @@ layer make_shortcut_layer(int batch, int index, int w, int h, int c, int w2, int
     l.outputs = w*h*c;
     l.inputs = l.outputs;
 
+    l.assisted_excitation = assisted_excitation;
+
+    if(w != w2 || h != h2 || c != c2) fprintf(stderr, " w = %d, w2 = %d, h = %d, h2 = %d, c = %d, c2 = %d \n", w, w2, h, h2, c, c2);
+
     l.index = index;
 
-    l.delta =  calloc(l.outputs*batch, sizeof(float));
-    l.output = calloc(l.outputs*batch, sizeof(float));;
+    l.delta = (float*)calloc(l.outputs * batch, sizeof(float));
+    l.output = (float*)calloc(l.outputs * batch, sizeof(float));
 
     l.forward = forward_shortcut_layer;
     l.backward = backward_shortcut_layer;
-    #ifdef GPU
+#ifdef GPU
     l.forward_gpu = forward_shortcut_layer_gpu;
     l.backward_gpu = backward_shortcut_layer_gpu;
 
     l.delta_gpu =  cuda_make_array(l.delta, l.outputs*batch);
     l.output_gpu = cuda_make_array(l.output, l.outputs*batch);
-    #endif
+    if (l.assisted_excitation)
+    {
+        const int size = l.out_w * l.out_h * l.batch;
+        l.gt_gpu = cuda_make_array(NULL, size);
+        l.a_avg_gpu = cuda_make_array(NULL, size);
+    }
+#endif  // GPU
     return l;
 }
 
@@ -44,8 +56,8 @@ void resize_shortcut_layer(layer *l, int w, int h)
     l->h = l->out_h = h;
     l->outputs = w*h*l->out_c;
     l->inputs = l->outputs;
-    l->delta = realloc(l->delta, l->outputs*l->batch * sizeof(float));
-    l->output = realloc(l->output, l->outputs*l->batch * sizeof(float));
+    l->delta = (float*)realloc(l->delta, l->outputs * l->batch * sizeof(float));
+    l->output = (float*)realloc(l->output, l->outputs * l->batch * sizeof(float));
 
 #ifdef GPU
     cuda_free(l->output_gpu);
@@ -58,9 +70,20 @@ void resize_shortcut_layer(layer *l, int w, int h)
 
 void forward_shortcut_layer(const layer l, network_state state)
 {
-    copy_cpu(l.outputs*l.batch, state.input, 1, l.output, 1);
-    shortcut_cpu(l.batch, l.w, l.h, l.c, state.net.layers[l.index].output, l.out_w, l.out_h, l.out_c, l.output);
+    if (l.w == l.out_w && l.h == l.out_h && l.c == l.out_c) {
+        int size = l.batch * l.w * l.h * l.c;
+        int i;
+        #pragma omp parallel for
+        for(i = 0; i < size; ++i)
+            l.output[i] = state.input[i] + state.net.layers[l.index].output[i];
+    }
+    else {
+        copy_cpu(l.outputs*l.batch, state.input, 1, l.output, 1);
+        shortcut_cpu(l.batch, l.w, l.h, l.c, state.net.layers[l.index].output, l.out_w, l.out_h, l.out_c, l.output);
+    }
     activate_array(l.output, l.outputs*l.batch, l.activation);
+
+    if (l.assisted_excitation && state.train) assisted_excitation_forward(l, state);
 }
 
 void backward_shortcut_layer(const layer l, network_state state)
@@ -73,9 +96,13 @@ void backward_shortcut_layer(const layer l, network_state state)
 #ifdef GPU
 void forward_shortcut_layer_gpu(const layer l, network_state state)
 {
-    copy_ongpu(l.outputs*l.batch, state.input, 1, l.output_gpu, 1);
-    shortcut_gpu(l.batch, l.w, l.h, l.c, state.net.layers[l.index].output_gpu, l.out_w, l.out_h, l.out_c, l.output_gpu);
+    //copy_ongpu(l.outputs*l.batch, state.input, 1, l.output_gpu, 1);
+    //simple_copy_ongpu(l.outputs*l.batch, state.input, l.output_gpu);
+    //shortcut_gpu(l.batch, l.w, l.h, l.c, state.net.layers[l.index].output_gpu, l.out_w, l.out_h, l.out_c, l.output_gpu);
+    input_shortcut_gpu(state.input, l.batch, l.w, l.h, l.c, state.net.layers[l.index].output_gpu, l.out_w, l.out_h, l.out_c, l.output_gpu);
     activate_array_ongpu(l.output_gpu, l.outputs*l.batch, l.activation);
+
+    if (l.assisted_excitation && state.train) assisted_excitation_forward_gpu(l, state);
 }
 
 void backward_shortcut_layer_gpu(const layer l, network_state state)
