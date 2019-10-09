@@ -374,8 +374,8 @@ int main(int argc, char *argv[])
                 cv::VideoWriter output_video;
                 if (save_output_videofile)
 #ifdef CV_VERSION_EPOCH // OpenCV 2.x
-                    // output_video.open(out_videofile, CV_FOURCC('D', 'I', 'V', 'X'), std::max(35, video_fps), frame_size, true);  // Original
-                    output_video.open(out_videofile, CV_FOURCC('D', 'I', 'V', 'X'), std::max(1, video_fps), frame_size, true);  // Agnext
+                    output_video.open(out_videofile, CV_FOURCC('D', 'I', 'V', 'X'), std::max(35, video_fps), frame_size, true);  // Original
+                    // output_video.open(out_videofile, CV_FOURCC('D', 'I', 'V', 'X'), std::max(1, video_fps), frame_size, true);  // Agnext
 #else
                     output_video.open(out_videofile, cv::VideoWriter::fourcc('D', 'I', 'V', 'X'), std::max(35, video_fps), frame_size, true);
 #endif

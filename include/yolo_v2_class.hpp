@@ -86,8 +86,12 @@ public:
     LIB_API int get_net_height() const;
     LIB_API int get_net_color_depth() const;
 
+    // LIB_API std::vector<bbox_t> tracking_id(std::vector<bbox_t> cur_bbox_vec, bool const change_history = true,
+    //                                             int const frames_story = 10, int const max_dist =150);  // Original
+
+
     LIB_API std::vector<bbox_t> tracking_id(std::vector<bbox_t> cur_bbox_vec, bool const change_history = true,
-                                                int const frames_story = 5, int const max_dist = 40);
+                                                int const frames_story = 30, int const max_dist =30);  // AgNext
 
     LIB_API void *get_cuda_context();
 
