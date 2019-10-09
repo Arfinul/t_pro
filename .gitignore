@@ -115,7 +115,6 @@ venv.bak/
 # Flc files to ignore
 *.weights
 *.zip
-*.png
 *.pdf
 *.list
 *.jpg

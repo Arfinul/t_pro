@@ -13,8 +13,8 @@
 
 // It makes sense only for video-Camera (not for video-File)
 // To use - uncomment the following line. Optical-flow is supported only by OpenCV 3.x - 4.x
-//#define TRACK_OPTFLOW
-//#define GPU
+// #define TRACK_OPTFLOW
+// #define GPU
 
 // To use 3D-stereo camera ZED - uncomment the following line. ZED_SDK should be installed.
 //#define ZED_STEREO
@@ -231,7 +231,7 @@ std::vector<std::string> objects_names_from_file(std::string const filename) {
     std::vector<std::string> file_lines;
     if (!file.is_open()) return file_lines;
     for(std::string line; getline(file, line);) file_lines.push_back(line);
-    std::cout << "object names loaded \n";
+    // std::cout << "object names loaded \n";  // AgNext, originally uncommented
     return file_lines;
 }
 
@@ -303,7 +303,7 @@ int main(int argc, char *argv[])
 
     while (true)
     {
-        std::cout << "input image or video filename: ";
+        //std::cout << "input image or video filename: ";  //AgNext, original uncommented
         if(filename.size() == 0) std::cin >> filename;
         if (filename.size() == 0) break;
 
@@ -369,7 +369,7 @@ int main(int argc, char *argv[])
 #endif
                 cv::Size const frame_size = cur_frame.size();
                 //cv::Size const frame_size(cap.get(CV_CAP_PROP_FRAME_WIDTH), cap.get(CV_CAP_PROP_FRAME_HEIGHT));
-                std::cout << "\n Video size: " << frame_size << std::endl;
+                // std::cout << "\n Video size: " << frame_size << std::endl;  // AgNext, originally uncommented
 
                 cv::VideoWriter output_video;
                 if (save_output_videofile)
