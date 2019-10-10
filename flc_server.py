@@ -9,8 +9,25 @@ import jsonpickle, configparser
 from flask import Flask, request, Response, send_file
 from gevent import wsgi
 from werkzeug.utils import secure_filename
-
+import PIL.Image
+import cv2
+import io, numpy as np
 # Initialize the Flask application
+#####################
+import fastai
+import sys
+
+from fastai.vision import *
+import warnings
+
+warnings.filterwarnings("ignore")
+
+PATH = '/home/agnext/Documents/tea_infer/'  # Location of .pkl file file
+
+learn = load_learner(PATH, test=ImageList.from_folder('test'))
+
+###################
+
 app = Flask(__name__)
 
 config = configparser.ConfigParser()
@@ -29,8 +46,8 @@ pdf_dir = '/7_pdf_files'
 url = root_folder + '/reports'
 
 subdir_list = None
-ALLOWED_EXTENSIONS = {'zip'}
-
+# ALLOWED_EXTENSIONS = {'zip'}
+ALLOWED_EXTENSIONS = {'jpg', 'jpeg', 'png'}
 
 print("Flc server started")
 
@@ -83,30 +100,61 @@ def upload_image():
         os.makedirs(join_path, exist_ok=True)
         tracked_images_path = user_dir + tracked_image_dir
         os.makedirs(tracked_images_path, exist_ok=True)
-        pdf_path = user_dir +pdf_dir
+        pdf_path = user_dir + pdf_dir
         os.makedirs(pdf_path, exist_ok=True)
 
         os.chdir(test_images)
         start = time.time()
-        print('Uploading the file ... Wait !!!\n')
+
         # Upload multiple images
-        if request.method == 'POST' and 'image' in request.files:
-            for file in request.files.getlist('image'):
+        if request.method == 'POST':
+            file = request.files['image']
+            if file and allowed_file(file.filename):
+                print('...............................\nImage Checking ... Wait !!!\n')
                 file.save(file.filename)
-                print('Uploaded tea image - ', file.filename, '\n')
+                print('Uploaded tea image - ', file.filename)
+                end = time.time()
+                print('leaf image upload time = ', round((end - start), 2), ' seconds')
+                img = open_image(file.filename)
+                pred_class, pred_idx, outputs = learn.predict(img)
+                print("Predicted Class = ", pred_class)
+                print("Prediction Probability = %.2f" % (outputs.numpy()[1] * 100))
+
+                if str(pred_class) == 'Normal':
+                    responses = {'tea_image_uploaded': file.filename,
+                                 'success': 'true',
+                                 'message': 'image accepted',
+                                 'status': 'pass'
+                                 }
+                if str(pred_class) == 'Abnormal':
+                    os.remove(test_data_dir + '/u-' + userId + '/s-' + sectionId + image_dir + '/' + file.filename)
+                    responses = {'success': 'true',
+                                 'message': 'image rejected',
+                                 'status': 'fail'
+                                 }
+
+            if not allowed_file(file.filename):
+                print('unsupported file')
+                wrong_extension = '.' in file.filename and file.filename.rsplit('.', 1)[1].lower()
+                responses = {'success': 'false',
+                             'message': str(wrong_extension) + ' not supported',
+                             'status': 'fail'
+                             }
 
         # Upload single image
         # file = request.files['image']
         # file.save(file.filename)
         # print('Uploaded - ', file.filename, '\n')
-        end = time.time()
-        print('leaf image upload time = ', round((end - start), 2), ' seconds')
-        responses = {'tea_image_uploaded': file.filename
-                     }
+
         response_pickled = jsonpickle.encode(responses)
         return Response(response=response_pickled, status=200, mimetype="application/json")
     except Exception as e:
-        return str(e)
+        responses_fail = {'success': 'false',
+                          'message': str(e),
+                          'status': 'fail'
+                          }
+        response_pickled = jsonpickle.encode(responses_fail)
+        return Response(response=response_pickled, status=200, mimetype="application/json")
 
 
 @app.route('/api/flc', methods=['POST'])
@@ -116,7 +164,8 @@ def classification_flc_only():
         sectionId = request.form['sectionId']
 
         start = time.time()
-        lb_1, lb_2, lb_3, lbj_1, lbj_2, lbj_3, b_1, bj_1, l_1, l_2, l_3, total = flc.flc_as_per_best_among_7_rotation_by_priotising_leaf_def(userId, sectionId)
+        lb_1, lb_2, lb_3, lbj_1, lbj_2, lbj_3, b_1, bj_1, l_1, l_2, l_3, total = flc.flc_as_per_best_among_7_rotation_by_priotising_leaf_def(
+            userId, sectionId)
         end = time.time()
         time_cons = (end - start)
         print('classification time = ', round(time_cons, 2), ' seconds')
@@ -142,13 +191,13 @@ def classification_flc_only():
             print(e)
             if '209' in str(e):
                 shutil.rmtree(test_data_dir + '/u-' + userId + '/s-' + sectionId + '/')
-                responses = {'status' : 'Images must have same resolution'
+                responses = {'status': 'Images must have same resolution'
                              }
                 response_pickled = jsonpickle.encode(responses)
                 return Response(response=response_pickled, status=200, mimetype="application/json")
             if 'assignment' in str(e):
                 shutil.rmtree(test_data_dir + '/u-' + userId + '/s-' + sectionId + '/')
-                responses = {'status' : 'GPU Memory Error'
+                responses = {'status': 'GPU Memory Error'
                              }
                 response_pickled = jsonpickle.encode(responses)
                 return Response(response=response_pickled, status=200, mimetype="application/json")
@@ -177,15 +226,15 @@ def pdf():
         print('leaf image upload time = ', round((end - start), 2), ' seconds')
         return send_file(urlpdf, attachment_filename='test.pdf')
 
-   # except Exception as e:
-        #return str(e)
+        # except Exception as e:
+        # return str(e)
     except Exception as e:
         try:
             print("Below is the Exceptional Error")
             print(e)
             if 'empty' in str(e):
                 shutil.rmtree(test_data_dir + '/u-' + userId + '/s-' + sectionId + '/')
-                responses = {'status' : 'GPU Memory Error'
+                responses = {'status': 'GPU Memory Error'
                              }
                 response_pickled = jsonpickle.encode(responses)
                 return Response(response=response_pickled, status=200, mimetype="application/json")
@@ -214,15 +263,15 @@ def pdf_cropped_all_rotation():
         print('leaf image upload time = ', round((end - start), 2), ' seconds')
         return send_file(urlpdf, attachment_filename='test.pdf')
 
-   # except Exception as e:
-        #return str(e)
+        # except Exception as e:
+        # return str(e)
     except Exception as e:
         try:
             print("Below is the Exceptional Error")
             print(e)
             if 'empty' in str(e):
                 shutil.rmtree(test_data_dir + '/u-' + userId + '/s-' + sectionId + '/')
-                responses = {'status' : 'GPU Memory Error'
+                responses = {'status': 'GPU Memory Error'
                              }
                 response_pickled = jsonpickle.encode(responses)
                 return Response(response=response_pickled, status=200, mimetype="application/json")
@@ -241,7 +290,7 @@ def upload_big_data():
     userId = request.form['userId']
     sectionId = request.form['sectionId']
     user_dir = test_data_dir + '/u-' + userId + '/s-' + sectionId
-    
+
     test_images = user_dir + cropped_dir
     os.makedirs(test_images, exist_ok=True)
     result_image_path = user_dir + result_dir
@@ -252,7 +301,7 @@ def upload_big_data():
     os.makedirs(join_path, exist_ok=True)
     tracked_images_path = user_dir + tracked_image_dir
     os.makedirs(tracked_images_path, exist_ok=True)
-    pdf_path = user_dir +pdf_dir
+    pdf_path = user_dir + pdf_dir
     os.makedirs(pdf_path, exist_ok=True)
 
     print('started uploading Big Data ...')
@@ -298,7 +347,7 @@ def post():
 
         if os.path.exists(test_data_dir + '/u-' + userId + '/s-' + sectionId):
             shutil.rmtree(test_data_dir + '/u-' + userId + '/s-' + sectionId + '/')
-            print('Deleted the directory - ', sectionId , ', under ', userId)
+            print('Deleted the directory - ', sectionId, ', under ', userId)
             responses = {'status': 'Reset_Done'
                          }
             response_pickled = jsonpickle.encode(responses)
@@ -316,10 +365,7 @@ def post():
 
 # start flask app
 app.run(host="0.0.0.0", port=9000, threaded=True)  # Server
-#sapp.run(port=6000)  # Local
+# sapp.run(port=6000)  # Local
 
-#server = wsgi.WSGIServer(('0.0.0.0', 6000), app)
-#server.serve_forever()
-
-
-
+# server = wsgi.WSGIServer(('0.0.0.0', 6000), app)
+# server.serve_forever()

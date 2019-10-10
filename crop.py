@@ -96,7 +96,7 @@ def as_per_shape(image_path, frame_count, cropped_path):
     ret, thresh = cv2.threshold(blur, 0, 255, cv2.THRESH_OTSU)
     print(ret)
     # thresh = cv2.dilate(thresh, None, iterations=3)
-    _, contours, hier = cv2.findContours(thresh, cv2.RETR_TREE, cv2.CHAIN_APPROX_NONE)
+    contours, hier = cv2.findContours(thresh, cv2.RETR_TREE, cv2.CHAIN_APPROX_NONE)
 
     # ============================================================
 
