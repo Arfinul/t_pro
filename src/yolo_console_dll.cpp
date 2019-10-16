@@ -183,7 +183,8 @@ void draw_boxes(cv::Mat mat_img, std::vector<bbox_t> result_vec, std::vector<std
     for (auto &i : result_vec) {
         cv::Scalar color = obj_id_to_color(i.obj_id);
         cv::rectangle(mat_img, cv::Rect(i.x, i.y, i.w, i.h), color, 2);
-        if (obj_names.size() > i.obj_id) {
+        // if (obj_names.size() > i.obj_id) {
+        if (obj_names.size() > i.obj_id && result_vec.size() > 0) {
             std::string obj_name = obj_names[i.obj_id];
             if (i.track_id > 0) obj_name += " - " + std::to_string(i.track_id);
             cv::Size const text_size = getTextSize(obj_name, cv::FONT_HERSHEY_COMPLEX_SMALL, 1.2, 2, 0);
@@ -217,10 +218,10 @@ void draw_boxes(cv::Mat mat_img, std::vector<bbox_t> result_vec, std::vector<std
 
 
 void show_console_result(std::vector<bbox_t> const result_vec, std::vector<std::string> const obj_names, int frame_id = -1) {
-    if (frame_id >= 0) std::cout << " Frame: " << frame_id << std::endl;
+    if (frame_id >= 0 && result_vec.size() > 0) std::cout << "Frame: " << frame_id << std::endl;
     for (auto &i : result_vec) {
         if (obj_names.size() > i.obj_id) std::cout << obj_names[i.obj_id] << " - ";
-        std::cout << "track_id = " << i.track_id << "obj_id = " << i.obj_id << ",  x = " << i.x << ", y = " << i.y
+        std::cout << "track_id = " << i.track_id << ", obj_id = " << i.obj_id << ", x = " << i.x << ", y = " << i.y
             << ", w = " << i.w << ", h = " << i.h
             << std::setprecision(3) << ", prob = " << i.prob << std::endl;
     }
@@ -290,8 +291,8 @@ int main(int argc, char *argv[])
     auto obj_names = objects_names_from_file(names_file);
     std::string out_videofile = "result.mp4";
     bool const save_output_videofile = true;   // true - for history
-    bool const send_network = true;        // true - for remote detection
-    bool const use_kalman_filter = true;   // true - for stationary camera
+    bool const send_network = false;        // true - for remote detection
+    bool const use_kalman_filter = false;   // true - for stationary camera
 
     bool detection_sync = true;             // true - for video-file
 #ifdef TRACK_OPTFLOW    // for slow GPU
@@ -374,10 +375,11 @@ int main(int argc, char *argv[])
                 cv::VideoWriter output_video;
                 if (save_output_videofile)
 #ifdef CV_VERSION_EPOCH // OpenCV 2.x
-                    output_video.open(out_videofile, CV_FOURCC('D', 'I', 'V', 'X'), std::max(35, video_fps), frame_size, true);  // Original
-                    // output_video.open(out_videofile, CV_FOURCC('D', 'I', 'V', 'X'), std::max(1, video_fps), frame_size, true);  // Agnext
+                    // output_video.open(out_videofile, CV_FOURCC('D', 'I', 'V', 'X'), std::max(35, video_fps), frame_size, true);  // Original
+                    output_video.open(out_videofile, CV_FOURCC('D', 'I', 'V', 'X'), std::max(1, video_fps), frame_size, true);  // Agnext
 #else
-                    output_video.open(out_videofile, cv::VideoWriter::fourcc('D', 'I', 'V', 'X'), std::max(35, video_fps), frame_size, true);
+                    // output_video.open(out_videofile, cv::VideoWriter::fourcc('D', 'I', 'V', 'X'), std::max(35, video_fps), frame_size, true);
+                output_video.open(out_videofile, cv::VideoWriter::fourcc('D', 'I', 'V', 'X'), std::max(1, video_fps), frame_size, true);  // AgNext
 #endif
 
                 struct detection_data_t {
@@ -421,7 +423,7 @@ int main(int argc, char *argv[])
                         fps_cap_counter++;
                         detection_data.frame_id = frame_id++;
                         if (detection_data.cap_frame.empty() || exit_flag) {
-                            std::cout << " exit_flag: detection_data.cap_frame.size = " << detection_data.cap_frame.size() << std::endl;
+                            //std::cout << " exit_flag: detection_data.cap_frame.size = " << detection_data.cap_frame.size() << std::endl;  //AgNext, originall was uncomented
                             detection_data.exit_flag = true;
                             detection_data.cap_frame = cv::Mat(frame_size, CV_8UC3);
                         }
@@ -431,7 +433,7 @@ int main(int argc, char *argv[])
                         }
                         cap2prepare.send(detection_data);
                     } while (!detection_data.exit_flag);
-                    std::cout << " t_cap exit \n";
+                    // std::cout << " t_cap exit \n";  //AgNext, originall was uncomented
                 });
 
 
@@ -448,7 +450,7 @@ int main(int argc, char *argv[])
                         prepare2detect.send(detection_data);    // detection
 
                     } while (!detection_data.exit_flag);
-                    std::cout << " t_prepare exit \n";
+                    // std::cout << " t_prepare exit \n";  //AgNext, originall was uncomented
                 });
 
 
@@ -472,7 +474,7 @@ int main(int argc, char *argv[])
                         detection_data.result_vec = result_vec;
                         detect2draw.send(detection_data);
                     } while (!detection_data.exit_flag);
-                    std::cout << " t_detect exit \n";
+                    // std::cout << " t_detect exit \n";  //AgNext, originall was uncomented
                 });
 
                 // draw rectangles (and track objects)
@@ -556,7 +558,7 @@ int main(int argc, char *argv[])
                         if (send_network) draw2net.send(detection_data);
                         if (output_video.isOpened()) draw2write.send(detection_data);
                     } while (!detection_data.exit_flag);
-                    std::cout << " t_draw exit \n";
+                    // std::cout << " t_draw exit \n";  //AgNext, originall was uncomented
                 });
 
 
@@ -574,7 +576,7 @@ int main(int argc, char *argv[])
                         } while (!detection_data.exit_flag);
                         output_video.release();
                     }
-                    std::cout << " t_write exit \n";
+                    // std::cout << " t_write exit \n";  //AgNext, originall was uncomented
                 });
 
                 // send detection to the network
@@ -589,7 +591,7 @@ int main(int argc, char *argv[])
 
                         } while (!detection_data.exit_flag);
                     }
-                    std::cout << " t_network exit \n";
+                    // std::cout << " t_network exit \n";  //AgNext, originall was uncomented
                 });
 
 
@@ -623,7 +625,7 @@ int main(int argc, char *argv[])
 
                     //std::cout << " current_fps_det = " << current_fps_det << ", current_fps_cap = " << current_fps_cap << std::endl;
                 } while (!detection_data.exit_flag);
-                std::cout << " show detection exit \n";
+                // std::cout << " show detection exit \n";  //AgNext, originall was uncomented
 
                 cv::destroyWindow("window name");
                 // wait for all threads
