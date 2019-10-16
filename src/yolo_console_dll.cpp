@@ -157,11 +157,11 @@ std::vector<bbox_t> get_3d_coordinates(std::vector<bbox_t> bbox_vect, cv::Mat xy
 #ifndef USE_CMAKE_LIBS
 #pragma comment(lib, "opencv_world" OPENCV_VERSION ".lib")
 #ifdef TRACK_OPTFLOW
-#pragma comment(lib, "opencv_cudaoptflow" OPENCV_VERSION ".lib")
-#pragma comment(lib, "opencv_cudaimgproc" OPENCV_VERSION ".lib")
-#pragma comment(lib, "opencv_core" OPENCV_VERSION ".lib")
-#pragma comment(lib, "opencv_imgproc" OPENCV_VERSION ".lib")
-#pragma comment(lib, "opencv_highgui" OPENCV_VERSION ".lib")
+// #pragma comment(lib, "opencv_cudaoptflow" OPENCV_VERSION ".lib")  // AGnext Originally uncommented
+// #pragma comment(lib, "opencv_cudaimgproc" OPENCV_VERSION ".lib")   // Agnext Originally uncommented
+// #pragma comment(lib, "opencv_core" OPENCV_VERSION ".lib")  // Agnext Originally uncommented
+// #pragma comment(lib, "opencv_imgproc" OPENCV_VERSION ".lib")  // Agnext Originally uncommented
+// #pragma comment(lib, "opencv_highgui" OPENCV_VERSION ".lib")  // Agnext Originally uncommented
 #endif    // TRACK_OPTFLOW
 #endif    // USE_CMAKE_LIBS
 #else     // OpenCV 2.x
