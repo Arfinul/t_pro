@@ -1,0 +1,5 @@
+classes= 4
+train  = cfg/data/train.txt
+valid  = cfg/data/test.txt
+names = cfg/1_black_conveyor.names
+backup = backup/
