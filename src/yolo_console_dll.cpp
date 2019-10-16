@@ -13,7 +13,7 @@
 
 // It makes sense only for video-Camera (not for video-File)
 // To use - uncomment the following line. Optical-flow is supported only by OpenCV 3.x - 4.x
-//#define TRACK_OPTFLOW
+#define TRACK_OPTFLOW
 //#define GPU
 
 // To use 3D-stereo camera ZED - uncomment the following line. ZED_SDK should be installed.
@@ -313,7 +313,7 @@ int main(int argc, char *argv[])
 
             std::string const file_ext = filename.substr(filename.find_last_of(".") + 1);
             std::string const protocol = filename.substr(0, 7);
-            if (file_ext == "avi" || file_ext == "mp4" || file_ext == "mjpg" || file_ext == "mov" ||     // video file
+            if (file_ext == "MTS" || file_ext == "mp4" || file_ext == "avi" || file_ext == "mp4" || file_ext == "mjpg" || file_ext == "mov" ||     // video file
                 protocol == "rtmp://" || protocol == "rtsp://" || protocol == "http://" || protocol == "https:/" ||    // video network stream
                 filename == "zed_camera" || file_ext == "svo" || filename == "web_camera")   // ZED stereo camera
 
