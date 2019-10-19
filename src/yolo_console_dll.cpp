@@ -289,7 +289,7 @@ int main(int argc, char *argv[])
     Detector detector(cfg_file, weights_file);
 
     auto obj_names = objects_names_from_file(names_file);
-    std::string out_videofile = "result.mp4";
+    std::string out_videofile = "result.avi";
     bool const save_output_videofile = true;   // true - for history
     bool const send_network = false;        // true - for remote detection
     bool const use_kalman_filter = true;   // true - for stationary camera
