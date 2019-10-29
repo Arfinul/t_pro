@@ -174,9 +174,16 @@ std::vector<bbox_t> get_3d_coordinates(std::vector<bbox_t> bbox_vect, cv::Mat xy
 #endif    // USE_CMAKE_LIBS
 #endif    // CV_VERSION_EPOCH
 
+int count_1lb = 0;
+int count_2lb = 0;
+int count_3lb = 0;
+int count_coarse = 0;
+int count_fine = 0;
+float fine_percnt = 0.0;
+
 
 void draw_boxes(cv::Mat mat_img, std::vector<bbox_t> result_vec, std::vector<std::string> obj_names,
-    int current_det_fps = -1, int current_cap_fps = -1, int frame_id = -1)
+    int current_det_fps = -1, int current_cap_fps = -1)
 {
     int const colors[6][3] = { { 1,0,1 },{ 0,0,1 },{ 0,1,1 },{ 0,1,0 },{ 1,1,0 },{ 1,0,0 } };
 
@@ -205,13 +212,16 @@ void draw_boxes(cv::Mat mat_img, std::vector<bbox_t> result_vec, std::vector<std
                 cv::Point2f(std::min((int)i.x + max_width, mat_img.cols - 1), std::min((int)i.y, mat_img.rows - 1)),
                 color, CV_FILLED, 8, 0);
             // putText(mat_img, obj_name, cv::Point2f(i.x, i.y - 16), cv::FONT_HERSHEY_COMPLEX_SMALL, 1.2, cv::Scalar(0, 0, 0), 2); // original
-            std::string frame_str = "FRAME: " + std::to_string(frame_id);
-            putText(mat_img, frame_str, cv::Point2f(10, 50), cv::FONT_HERSHEY_COMPLEX_SMALL, 1.2, cv::Scalar(0, 255, 255), 1);  // Agnext
+
+            // std::string frame_str = "FRAME: " + std::to_string(frame_id);
+            // putText(mat_img, frame_str, cv::Point2f(10, 50), cv::FONT_HERSHEY_COMPLEX_SMALL, 1.2, cv::Scalar(0, 255, 255), 1);  // Agnext
+
             putText(mat_img, obj_name, cv::Point2f(i.x, i.y - 16), cv::FONT_HERSHEY_COMPLEX_SMALL, 1, cv::Scalar(0, 0, 0), 2); // Agnext
             if(!coords_3d.empty()) putText(mat_img, coords_3d, cv::Point2f(i.x, i.y-1), cv::FONT_HERSHEY_COMPLEX_SMALL, 0.8, cv::Scalar(0, 0, 0), 1);
         }
     }
     if (current_det_fps >= 0 && current_cap_fps >= 0) {
+
         std::string fps_str = "FPS detection: " + std::to_string(current_det_fps) + "   FPS capture: " + std::to_string(current_cap_fps);
         putText(mat_img, fps_str, cv::Point2f(10, 20), cv::FONT_HERSHEY_COMPLEX_SMALL, 1.2, cv::Scalar(50, 255, 0), 2);
     }
@@ -550,10 +560,51 @@ int main(int argc, char *argv[])
 
                         //small_preview.set(draw_frame, result_vec);
                         //large_preview.set(draw_frame, result_vec);
-                        // draw_boxes(draw_frame, result_vec, obj_names, current_fps_det, current_fps_cap); // Originall
-                        draw_boxes(draw_frame, result_vec, obj_names, current_fps_det, current_fps_cap, detection_data.frame_id); // AgNext
+                        draw_boxes(draw_frame, result_vec, obj_names, current_fps_det, current_fps_cap); // Originall
+                        // draw_boxes(draw_frame, result_vec, obj_names, current_fps_det, current_fps_cap, detection_data.frame_id); // AgNext
 
                         show_console_result(result_vec, obj_names, detection_data.frame_id); // Agnext, originall was commented
+                        for (auto &i : result_vec) {        // Agnext, added for counting fine counts
+                            if (obj_names.size() > i.obj_id) 
+                                if (obj_names[i.obj_id] == "1LB"){
+                                    count_1lb = i.track_id;
+                                }
+                                else if (obj_names[i.obj_id] == "2LB"){
+                                    count_2lb = i.track_id;
+                                }
+                                else if (obj_names[i.obj_id] == "3LB"){
+                                    count_3lb = i.track_id;
+                                }
+                                else if (obj_names[i.obj_id] == "Coarse"){
+                                    count_coarse = i.track_id;
+                                }
+                        }
+
+                        std::string frame_str = "FRAME : " + std::to_string(detection_data.frame_id); // Agnext
+                        putText(draw_frame, frame_str, cv::Point2f(10, 50), cv::FONT_HERSHEY_COMPLEX_SMALL, 1.2, cv::Scalar(50, 255, 0), 2); // Agnext
+
+                        std::string _1lb_str = "1LB : " + std::to_string(count_1lb); // Agnext
+                        putText(draw_frame, _1lb_str, cv::Point2f(10, 100), cv::FONT_HERSHEY_COMPLEX_SMALL, 1.2, cv::Scalar(0, 255, 255), 1);  // Agnext
+
+                        std::string _2lb_str = "2LB : " + std::to_string(count_2lb); // Agnext
+                        putText(draw_frame, _2lb_str, cv::Point2f(10, 130), cv::FONT_HERSHEY_COMPLEX_SMALL, 1.2, cv::Scalar(0, 255, 255), 1);  // Agnext
+
+                        std::string _3lb_str = "3LB : " + std::to_string(count_3lb); // Agnext
+                        putText(draw_frame, _3lb_str, cv::Point2f(10, 160), cv::FONT_HERSHEY_COMPLEX_SMALL, 1.2, cv::Scalar(0, 255, 255), 1);  // Agnext
+
+                        std::string coarse_str = "Coarse : " + std::to_string(count_coarse); // Agnext
+                        putText(draw_frame, coarse_str, cv::Point2f(10, 190), cv::FONT_HERSHEY_COMPLEX_SMALL, 1.2, cv::Scalar(0, 255, 255), 1);  // Agnext
+                        
+                        count_fine = count_1lb + count_2lb + count_3lb;
+                        fine_percnt = (count_fine * 100) / float(count_fine + count_coarse);
+
+                        // std::string fine_str = "Fine: " + std::to_string(count_fine); // Agnext
+                        // putText(draw_frame, fine_str, cv::Point2f(10, 300), cv::FONT_HERSHEY_COMPLEX_SMALL, 1.2, cv::Scalar(0, 255, 255), 1);  // Agnext
+                        // // std::setprecision(2) 
+                        // std::fixed << std::setprecision(2) << fine_percnt;
+                        std::string fine_per = "FLC % : " + std::to_string(fine_percnt); // Agnext
+                        putText(draw_frame, fine_per, cv::Point2f(10, 250), cv::FONT_HERSHEY_COMPLEX_SMALL, 1.2, cv::Scalar(0, 255, 255), 2);  // Agnext
+
                         //large_preview.draw(draw_frame);
                         //small_preview.draw(draw_frame, true);
 
