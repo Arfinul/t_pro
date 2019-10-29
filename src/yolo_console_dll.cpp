@@ -176,7 +176,7 @@ std::vector<bbox_t> get_3d_coordinates(std::vector<bbox_t> bbox_vect, cv::Mat xy
 
 
 void draw_boxes(cv::Mat mat_img, std::vector<bbox_t> result_vec, std::vector<std::string> obj_names,
-    int current_det_fps = -1, int current_cap_fps = -1)
+    int current_det_fps = -1, int current_cap_fps = -1, int frame_id = -1)
 {
     int const colors[6][3] = { { 1,0,1 },{ 0,0,1 },{ 0,1,1 },{ 0,1,0 },{ 1,1,0 },{ 1,0,0 } };
 
@@ -205,6 +205,8 @@ void draw_boxes(cv::Mat mat_img, std::vector<bbox_t> result_vec, std::vector<std
                 cv::Point2f(std::min((int)i.x + max_width, mat_img.cols - 1), std::min((int)i.y, mat_img.rows - 1)),
                 color, CV_FILLED, 8, 0);
             // putText(mat_img, obj_name, cv::Point2f(i.x, i.y - 16), cv::FONT_HERSHEY_COMPLEX_SMALL, 1.2, cv::Scalar(0, 0, 0), 2); // original
+            std::string frame_str = "FRAME: " + std::to_string(frame_id);
+            putText(mat_img, frame_str, cv::Point2f(10, 50), cv::FONT_HERSHEY_COMPLEX_SMALL, 1.2, cv::Scalar(0, 255, 255), 1);  // Agnext
             putText(mat_img, obj_name, cv::Point2f(i.x, i.y - 16), cv::FONT_HERSHEY_COMPLEX_SMALL, 1, cv::Scalar(0, 0, 0), 2); // Agnext
             if(!coords_3d.empty()) putText(mat_img, coords_3d, cv::Point2f(i.x, i.y-1), cv::FONT_HERSHEY_COMPLEX_SMALL, 0.8, cv::Scalar(0, 0, 0), 1);
         }
@@ -548,7 +550,9 @@ int main(int argc, char *argv[])
 
                         //small_preview.set(draw_frame, result_vec);
                         //large_preview.set(draw_frame, result_vec);
-                        draw_boxes(draw_frame, result_vec, obj_names, current_fps_det, current_fps_cap);
+                        // draw_boxes(draw_frame, result_vec, obj_names, current_fps_det, current_fps_cap); // Originall
+                        draw_boxes(draw_frame, result_vec, obj_names, current_fps_det, current_fps_cap, detection_data.frame_id); // AgNext
+
                         show_console_result(result_vec, obj_names, detection_data.frame_id); // Agnext, originall was commented
                         //large_preview.draw(draw_frame);
                         //small_preview.draw(draw_frame, true);
