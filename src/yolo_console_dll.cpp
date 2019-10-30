@@ -9,6 +9,8 @@
 #include <atomic>
 #include <mutex>         // std::mutex, std::unique_lock
 #include <cmath>
+#include <ctime>
+#include <chrono>       // Agnext TIMER
 
 
 // It makes sense only for video-Camera (not for video-File)
@@ -174,12 +176,16 @@ std::vector<bbox_t> get_3d_coordinates(std::vector<bbox_t> bbox_vect, cv::Mat xy
 #endif    // USE_CMAKE_LIBS
 #endif    // CV_VERSION_EPOCH
 
-int count_1lb = 0;
-int count_2lb = 0;
-int count_3lb = 0;
-int count_coarse = 0;
-int count_fine = 0;
-float fine_percnt = 0.0;
+int count_1lb = 0;  // Agnext
+int count_2lb = 0; // Agnext
+int count_3lb = 0;// Agnext
+int count_coarse = 0; // Agnext
+int count_fine = 0; // Agnext
+float fine_percnt = 0.0;// Agnext
+
+// Agnext (timer)  
+double duration;    // Agnext
+int seconds, minutes, hours; // Agnext
 
 
 void draw_boxes(cv::Mat mat_img, std::vector<bbox_t> result_vec, std::vector<std::string> obj_names,
@@ -287,6 +293,8 @@ int main(int argc, char *argv[])
     std::string  cfg_file = "cfg/yolov3.cfg";
     std::string  weights_file = "yolov3.weights";
     std::string filename;
+
+    auto t_start = std::chrono::high_resolution_clock::now(); // Agnext TIMER
 
     if (argc > 4) {    //voc.names yolo-voc.cfg yolo-voc.weights test.mp4
         names_file = argv[1];
@@ -593,15 +601,23 @@ int main(int argc, char *argv[])
                         std::string coarse_str = "Coarse : " + std::to_string(count_coarse); // Agnext
                         putText(draw_frame, coarse_str, cv::Point2f(10, 190), cv::FONT_HERSHEY_COMPLEX_SMALL, 1.2, cv::Scalar(0, 255, 255), 1);  // Agnext
                         
-                        count_fine = count_1lb + count_2lb + count_3lb;
-                        fine_percnt = (count_fine * 100) / float(count_fine + count_coarse);
+                        count_fine = count_1lb + count_2lb + count_3lb; // Agnext
+                        fine_percnt = (count_fine * 100) / float(count_fine + count_coarse); // Agnext
 
-                        // std::string fine_str = "Fine: " + std::to_string(count_fine); // Agnext
-                        // putText(draw_frame, fine_str, cv::Point2f(10, 300), cv::FONT_HERSHEY_COMPLEX_SMALL, 1.2, cv::Scalar(0, 255, 255), 1);  // Agnext
-                        // // std::setprecision(2) 
-                        // std::fixed << std::setprecision(2) << fine_percnt;
                         std::string fine_per = "FLC % : " + std::to_string(fine_percnt); // Agnext
                         putText(draw_frame, fine_per.substr(0,12), cv::Point2f(10, 250), cv::FONT_HERSHEY_COMPLEX_SMALL, 1.2, cv::Scalar(0, 255, 255), 2);  // Agnext
+
+                        // TIMER
+                        auto t_end = std::chrono::high_resolution_clock::now(); // Agnext
+                        duration = std::chrono::duration<double, std::milli>(t_end-t_start).count(); // Agnext
+
+                        seconds = int(duration/1000);// Agnext
+                        minutes = seconds / 60; // Agnext
+                        hours = minutes / 60;// Agnext
+
+                        std::string _timer = "TIMER : " + std::to_string(int(hours)) + "H " + std::to_string(int(minutes%60)) + "M " + std::to_string(seconds%60) + "S"; // Agnext
+                        putText(draw_frame, _timer, cv::Point2f(10, 280), cv::FONT_HERSHEY_COMPLEX_SMALL, 1.2, cv::Scalar(0, 255, 255), 1);  // Agnext
+
 
                         //large_preview.draw(draw_frame);
                         //small_preview.draw(draw_frame, true);
@@ -669,7 +685,6 @@ int main(int argc, char *argv[])
                     //if (extrapolate_flag) {
                     //    cv::putText(draw_frame, "extrapolate", cv::Point2f(10, 40), cv::FONT_HERSHEY_COMPLEX_SMALL, 1.0, cv::Scalar(50, 50, 0), 2);
                     //}
-
                     cv::imshow("window name", draw_frame);
                     int key = cv::waitKey(3);    // 3 or 16ms
                     if (key == 'f') show_small_boxes = !show_small_boxes;
