@@ -560,9 +560,7 @@ int main(int argc, char *argv[])
 
                         //small_preview.set(draw_frame, result_vec);
                         //large_preview.set(draw_frame, result_vec);
-                        draw_boxes(draw_frame, result_vec, obj_names, current_fps_det, current_fps_cap); // Originall
-                        // draw_boxes(draw_frame, result_vec, obj_names, current_fps_det, current_fps_cap, detection_data.frame_id); // AgNext
-
+                        draw_boxes(draw_frame, result_vec, obj_names, current_fps_det, current_fps_cap);
                         show_console_result(result_vec, obj_names, detection_data.frame_id); // Agnext, originall was commented
                         for (auto &i : result_vec) {        // Agnext, added for counting fine counts
                             if (obj_names.size() > i.obj_id) 
@@ -603,7 +601,7 @@ int main(int argc, char *argv[])
                         // // std::setprecision(2) 
                         // std::fixed << std::setprecision(2) << fine_percnt;
                         std::string fine_per = "FLC % : " + std::to_string(fine_percnt); // Agnext
-                        putText(draw_frame, fine_per, cv::Point2f(10, 250), cv::FONT_HERSHEY_COMPLEX_SMALL, 1.2, cv::Scalar(0, 255, 255), 2);  // Agnext
+                        putText(draw_frame, fine_per.substr(0,12), cv::Point2f(10, 250), cv::FONT_HERSHEY_COMPLEX_SMALL, 1.2, cv::Scalar(0, 255, 255), 2);  // Agnext
 
                         //large_preview.draw(draw_frame);
                         //small_preview.draw(draw_frame, true);
@@ -682,7 +680,7 @@ int main(int argc, char *argv[])
                     //std::cout << " current_fps_det = " << current_fps_det << ", current_fps_cap = " << current_fps_cap << std::endl;
                 } while (!detection_data.exit_flag);
                 // std::cout << " show detection exit \n";  //AgNext, originall was uncomented
-
+                cv::waitKey(0);     // Agnext (asks for key press before video exit)
                 cv::destroyWindow("window name");
                 // wait for all threads
                 if (t_cap.joinable()) t_cap.join();
@@ -723,7 +721,10 @@ int main(int argc, char *argv[])
                 draw_boxes(mat_img, result_vec, obj_names);
                 cv::imshow("window name", mat_img);
                 show_console_result(result_vec, obj_names);
-                cv::waitKey(0);
+                char key = cvWaitKey(10);   // Agnext
+                if(key==27) // Agnext
+                    break;  // Agnext
+                // cv::waitKey(0);
             }
 #else   // OPENCV
             //std::vector<bbox_t> result_vec = detector.detect(filename);
@@ -732,6 +733,7 @@ int main(int argc, char *argv[])
             std::vector<bbox_t> result_vec = detector.detect(img);
             detector.free_image(img);
             show_console_result(result_vec, obj_names);
+
 #endif  // OPENCV
         }
         catch (std::exception &e) { std::cerr << "exception: " << e.what() << "\n"; getchar(); }
