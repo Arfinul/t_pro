@@ -187,11 +187,13 @@ float fine_percnt = 0.0;// Agnext
 double duration;    // Agnext
 int seconds, minutes, hours; // Agnext
 
+cv::Mat black_image(720, 1280, CV_8UC3); // Agnext black image
 
 void draw_boxes(cv::Mat mat_img, std::vector<bbox_t> result_vec, std::vector<std::string> obj_names,
     int current_det_fps = -1, int current_cap_fps = -1)
 {
-    int const colors[6][3] = { { 1,0,1 },{ 0,0,1 },{ 0,1,1 },{ 0,1,0 },{ 1,1,0 },{ 1,0,0 } };
+    // UNCOMMENTED FOR DEVELOPER MODE
+    int const colors[6][3] = { { 1,0,1 },{ 0,0,1 },{ 0,1,1 },{ 0,1,0 },{ 1,1,0 },{ 1,0,0 } };		// Agnext
 
     for (auto &i : result_vec) {
         cv::Scalar color = obj_id_to_color(i.obj_id);
@@ -389,8 +391,10 @@ int main(int argc, char *argv[])
 #else
                 video_fps = cap.get(cv::CAP_PROP_FPS);
 #endif
-                cv::Size const frame_size = cur_frame.size();
-                //cv::Size const frame_size(cap.get(CV_CAP_PROP_FRAME_WIDTH), cap.get(CV_CAP_PROP_FRAME_HEIGHT));
+                cv::Size const frame_size = cur_frame.size(); // Original
+                // cv::Size const frame_size(cap.get(CV_CAP_PROP_FRAME_WIDTH), cap.get(CV_CAP_PROP_FRAME_HEIGHT));
+                // cv::Size const frame_size(1280, 720);	// Agnext FRAME RESIZE
+                // cv::Size const frame_size(1920, 1080); // Agnext FRAME RESIZE
                 // std::cout << "\n Video size: " << frame_size << std::endl;  // AgNext, originally uncommented
 
                 cv::VideoWriter output_video;
@@ -568,8 +572,11 @@ int main(int argc, char *argv[])
 
                         //small_preview.set(draw_frame, result_vec);
                         //large_preview.set(draw_frame, result_vec);
+                        // resize(draw_frame, draw_frame, cv::Size(1280, 720), 0, 0, CV_INTER_CUBIC); 	// Agnext FRAME RESIZE
+                        // resize(draw_frame, draw_frame, cv::Size(1920, 1080), 0, 0, CV_INTER_CUBIC); 	// Agnext FRAME RESIZE
+                        // black_image.copyTo(draw_frame(cv::Rect(0,0, black_image.cols, black_image.rows)));      // Agnext (put black image as bg) // COMMENTED FOR DEVELOPER MODE
                         draw_boxes(draw_frame, result_vec, obj_names, current_fps_det, current_fps_cap);
-                        show_console_result(result_vec, obj_names, detection_data.frame_id); // Agnext, originall was commented
+                        show_console_result(result_vec, obj_names, detection_data.frame_id); // Agnext, originall was commented // UNCOMMENTED FOR DEVELOPER MODE
                         for (auto &i : result_vec) {        // Agnext, added for counting fine counts
                             if (obj_names.size() > i.obj_id) 
                                 if (obj_names[i.obj_id] == "1LB"){
@@ -642,6 +649,8 @@ int main(int argc, char *argv[])
                             detection_data = draw2write.receive();
                             if(detection_data.draw_frame.channels() == 4) cv::cvtColor(detection_data.draw_frame, output_frame, CV_RGBA2RGB);
                             else output_frame = detection_data.draw_frame;
+                            // resize(output_frame, output_frame, cv::Size(1280, 720), 0, 0, CV_INTER_CUBIC); 	// Agnext FRAME RESIZE
+                            // resize(output_frame, output_frame, cv::Size(1920, 1080), 0, 0, CV_INTER_CUBIC); 	// Agnext FRAME RESIZE
                             output_video << output_frame;
                         } while (!detection_data.exit_flag);
                         output_video.release();
@@ -685,7 +694,11 @@ int main(int argc, char *argv[])
                     //if (extrapolate_flag) {
                     //    cv::putText(draw_frame, "extrapolate", cv::Point2f(10, 40), cv::FONT_HERSHEY_COMPLEX_SMALL, 1.0, cv::Scalar(50, 50, 0), 2);
                     //}
-                    cv::imshow("window name", draw_frame);
+                    // resize(draw_frame, draw_frame, cv::Size(1280, 720), 0, 0, CV_INTER_CUBIC); 	// Agnext FRAME RESIZE  x 1080
+                    // resize(draw_frame, draw_frame, cv::Size(1920, 1080), 0, 0, CV_INTER_CUBIC); 
+                    cv::imshow("window", draw_frame);
+                    cv::moveWindow("window", 500, 200);     // Agnext (move window for tkinter interface)
+
                     int key = cv::waitKey(3);    // 3 or 16ms
                     if (key == 'f') show_small_boxes = !show_small_boxes;
                     if (key == 'p') while (true) if (cv::waitKey(100) == 'p') break;
@@ -696,7 +709,7 @@ int main(int argc, char *argv[])
                 } while (!detection_data.exit_flag);
                 // std::cout << " show detection exit \n";  //AgNext, originall was uncomented
                 cv::waitKey(0);     // Agnext (asks for key press before video exit)
-                cv::destroyWindow("window name");
+                cv::destroyWindow("window");
                 // wait for all threads
                 if (t_cap.joinable()) t_cap.join();
                 if (t_prepare.joinable()) t_prepare.join();
