@@ -29,6 +29,7 @@ def vp_start_gui():
 
     # function for video streaming
     def video_stream():
+        msg_sent.place_forget()
         try:
             global p
             p = subprocess.Popen("exec " + cmd, stdout= subprocess.PIPE, shell=True)
@@ -44,8 +45,8 @@ def vp_start_gui():
         p.kill()
         endRecord.configure(state="disabled", bg='silver')
         startRecord.configure(state="active", bg="#539051")
-        # send_data_api()       //send data to api
-        refresh()
+        send_data_api()       #send data to api
+        # refresh()
 
     def on_closing():
         from tkinter import messagebox
@@ -54,22 +55,26 @@ def vp_start_gui():
 
     # APIs
     def login_api(usr, pwd):
-        url = ""
-        data = {
+        payload = {
             "username": usr,
             "password": pwd,
             "entity": "mobile",
             "deviceToken": "1"
         }
-        response = requests.request("POST", url, params=json.dumps(data))
-        print(response.json())
+        headers = {
+        	"Content-Type": "application/json"
+        }
+        response = requests.request("POST", "http://18.218.214.164:9955/api/auth/login", data=json.dumps(payload), headers=headers)
         status = False
         try:
             global userID
             global token
-            userID = response.json()["id"]
-            token = response.json()['token']
-            status = True
+            if response.json()['success'] == "true":
+                userID = response.json()["user"]["id"]
+                token = response.json()['token']
+                global userName
+                userName = response.json()["user"]["name"]
+                status = True
         except Exception as e:
             print("Exception during login: ", e)
         return status
@@ -81,62 +86,36 @@ def vp_start_gui():
         _1lb = li[1].split(" : ")[1]
         _2lb = li[2].split(" : ")[1]
         _3lb = li[3].split(" : ")[1]
-        url = ""
-        headers = {
-        	"application": ""
+        head = {
+        	"Content-Type": "application/json",
+        	"Authorization": "Bearer " + token
         }
-        data = {
+        load = {
             "flcData": "",
             "sectionId": 1,
             "oneLeafBud": _1lb,
             "twoLeafBud": _2lb,
-            "oneLeafBanjhi": "",
-            "twoLeafBanjhi": "",
-            "moderateShoot": "",
-            "fineShoot": "",
+            "oneLeafBanjhi": "0",
+            "twoLeafBanjhi": "0",
+            "moderateShoot": "0",
+            "fineShoot": "0",
             "scannedBy": userID,
-            "weighment": "",
-            "oneBanjhiCount": "",
-            "oneBudCount": "",
-            "oneLeafCount": "",
-            "twoLeafCount": "",
-            "threeLeafCount": "",
-            "userId": 1,
-            "dateDone": datetime.datetime.today().date()
+            "weighment": "0",
+            "oneBanjhiCount": "0",
+            "oneBudCount": "0",
+            "oneLeafCount": "0",
+            "twoLeafCount": "0",
+            "threeLeafCount": "0",
+            "userId": userID,
+            "dateDone": "12/11/2019"
         }
-        response = requests.request("POST", url, params=json.dumps(data), headers=headers)
-        print(response.json())
-
-
-
-    # Designing window for registration
-     
-    def register():
-        global register_screen
-        register_screen = Toplevel(window)
-        register_screen.title("Register")
-        register_screen.geometry("400x300")
-     
-        global username
-        global password
-        global username_entry
-        global password_entry
-        username = StringVar()
-        password = StringVar()
-        Label(register_screen, text="").pack()
-        Label(register_screen, text="Please enter details below", font=("times", 14, 'bold'), width=30).pack()
-        Label(register_screen, text="").pack()
-        username_lable = Label(register_screen, text="Username * ", font=("times", 13))
-        username_lable.pack()
-        username_entry = Entry(register_screen, textvariable=username)
-        username_entry.pack()
-        password_lable = Label(register_screen, text="Password * ", font=("times", 13))
-        password_lable.pack()
-        password_entry = Entry(register_screen, textvariable=password, show='*')
-        password_entry.pack()
-        Label(register_screen, text="").pack()
-        Button(register_screen, text="Register", width=10, height=1, bg="salmon", command = register_user, font=("times", 13, 'bold')).pack()
-     
+        resp = requests.request("POST", "http://18.218.214.164:9955/api/own-flc", data=json.dumps(load), headers=head)
+        if resp.json()['success'] == "true":
+            msg_sent.configure(text="Data saved", fg="green")
+            msg_sent.place(x=90, y=650)
+        else:
+            msg_sent.configure(text="Couldn't save to servers", fg="red")
+            msg_sent.place(x=90, y=650, fg="red")
      
     # Designing window for login 
      
@@ -169,22 +148,6 @@ def vp_start_gui():
         Label(login_screen, text="").pack()
         Button(login_screen, text="Login", width=10, height=1, command = login_verify, font=("times", 13, 'bold')).pack()
      
-    # Implementing event on register button
-     
-    def register_user():
-     
-        username_info = username.get()
-        password_info = password.get()
-     
-        file = open(username_info, "w")
-        file.write(username_info + "\n")
-        file.write(password_info + "\n")
-        file.close()
-     
-        username_entry.delete(0, END)
-        password_entry.delete(0, END)
-     
-        Label(register_screen, text="Registration Success", fg="#539051", font=("calibri", 11)).pack()
      
     # Implementing event on login button 
      
@@ -192,24 +155,11 @@ def vp_start_gui():
         username1 = username_verify.get()
         password1 = password_verify.get()
 
-        # status = login_api(username1, password1)
-
-        username_login_entry.delete(0, END)
-        password_login_entry.delete(0, END)
-     
-        list_of_files = os.listdir()
-        if username1 in list_of_files:
-            file1 = open(username1, "r")
-            verify = file1.read().splitlines()
-            if password1 in verify:
-                global userName
-                userName = username1
-                login_sucess()
-            else:
-                password_not_recognised()
-     
+        status = login_api(username1, password1)
+        if status == True:
+            login_sucess()
         else:
-            user_not_found()
+        	user_not_found()
      
     # Designing popup for login success
      
@@ -222,7 +172,7 @@ def vp_start_gui():
         endRecord.place(x=90, y=550)
         # register.place_forget()
         signin.place_forget()
-        section_gui()
+        # section_gui()
         panel_bg.place_forget()
         # section.place(x=90, y=150)
         global userName
@@ -262,32 +212,32 @@ def vp_start_gui():
     def delete_user_not_found_screen():
         user_not_found_screen.destroy()
 
-    def section_gui():
-        # section.configure(state="disabled")
-        global section_name
-        global section_entry
-        global old_button
-        section_name = StringVar()
-        # name_label = Label(window, text="Please enter section name", font=("times", 14, 'bold'), width=30).place(x=100, y=150)
-        section_lable = Label(window, text="Section name * ", font=("times", 13, "bold"))
-        section_lable.place(x=180, y=160)
-        section_entry = Entry(window, textvariable=section_name)
-        section_entry.place(x=140, y=215)
-        tk.Button(window, text="Add Section", width=10, height=1, bg="#539051", fg="white", command = add_section, font=("times", 13, 'bold')).place(x=110, y=240)
-        tk.Button(window, text="Add Another", width=10, height=1, bg="silver", fg="black", command = refresh, font=("times", 13, 'bold')).place(x=250, y=240)
+    # def section_gui():
+    #     # section.configure(state="disabled")
+    #     global section_name
+    #     global section_entry
+    #     global old_button
+    #     section_name = StringVar()
+    #     # name_label = Label(window, text="Please enter section name", font=("times", 14, 'bold'), width=30).place(x=100, y=150)
+    #     section_lable = Label(window, text="Section name * ", font=("times", 13, "bold"))
+    #     section_lable.place(x=180, y=160)
+    #     section_entry = Entry(window, textvariable=section_name)
+    #     section_entry.place(x=140, y=215)
+    #     tk.Button(window, text="Add Section", width=10, height=1, bg="#539051", fg="white", command = add_section, font=("times", 13, 'bold')).place(x=110, y=240)
+    #     tk.Button(window, text="Add Another", width=10, height=1, bg="silver", fg="black", command = refresh, font=("times", 13, 'bold')).place(x=250, y=240)
        
-    def add_section():
-        global section_success
-        section_info = section_name.get()
-        if section_info == "":
-            section_success = Label(window, text="Can't be empty!", fg="orange", font=("calibri", 11)).place(x=150, y=280)
-        else:
-            file = open(userName, "a")
-            file.write(str(datetime.datetime.now()) + ", ")
-            file.write(section_info + "\n")
-            file.close()
+    # def add_section():
+    #     global section_success
+    #     section_info = section_name.get()
+    #     if section_info == "":
+    #         section_success = Label(window, text="Can't be empty!", fg="orange", font=("calibri", 11)).place(x=150, y=280)
+    #     else:
+    #         file = open(userName, "a")
+    #         file.write(str(datetime.datetime.now()) + ", ")
+    #         file.write(section_info + "\n")
+    #         file.close()
          
-            section_success = Label(window, text=" Section added!", fg="green", font=("calibri", 11)).place(x=150, y=280)
+    #         section_success = Label(window, text=" Section added!", fg="green", font=("calibri", 11)).place(x=150, y=280)
 
     window.protocol("WM_DELETE_WINDOW", on_closing)
 
@@ -302,10 +252,11 @@ def vp_start_gui():
     startRecord = tk.Button(window, text="Start", command=video_stream, fg="white", bg="#539051", width=20,height=3, activebackground = "Grey" , font=('times', 15, 'bold'))
     endRecord = tk.Button(window, text="Save & exit", command=end_video, fg="white", bg="#539051", width=20,height=3, activebackground = "Grey" , font=('times', 15, 'bold'))
 
+    msg_sent = Label(window, text="Data sent status", font=('times', 15), fg="green", bg='white')
 
     if is_login == True:
 
-        section_gui()
+        # section_gui()
         # section = tk.Button(window, text="Add Section", command=section_gui, fg="black", bg="deep sky blue", width=20,height=2, activebackground = "Grey" , font=('times', 15, 'bold'))
         # section.place(x=90, y=150) 
 
