@@ -1,4 +1,5 @@
 #include <iostream>
+#include <fstream>		// Agnext, for writing file
 #include <iomanip>
 #include <string>
 #include <vector>
@@ -245,6 +246,20 @@ void show_console_result(std::vector<bbox_t> const result_vec, std::vector<std::
             << ", w = " << i.w << ", h = " << i.h
             << std::setprecision(3) << ", prob = " << i.prob << std::endl;
     }
+}
+
+void writeFile(std::string frame_str, std::string _1lb_str, std::string _2lb_str, std::string _3lb_str, std::string coarse_str, std::string fine_per, std::string _timer) 
+{
+  std::ofstream myfile;
+  myfile.open("example.txt");
+  myfile <<frame_str<<"\n";
+  myfile <<_1lb_str<<"\n";
+  myfile <<_2lb_str<<"\n";
+  myfile <<_3lb_str<<"\n";
+  myfile <<coarse_str<<"\n";
+  myfile <<fine_per<<"\n";
+  myfile <<_timer<<"\n";
+  myfile.close();
 }
 
 std::vector<std::string> objects_names_from_file(std::string const filename) {
@@ -607,7 +622,7 @@ int main(int argc, char *argv[])
 
                         std::string coarse_str = "Coarse : " + std::to_string(count_coarse); // Agnext
                         putText(draw_frame, coarse_str, cv::Point2f(10, 190), cv::FONT_HERSHEY_COMPLEX_SMALL, 1.2, cv::Scalar(0, 255, 255), 1);  // Agnext
-                        
+
                         count_fine = count_1lb + count_2lb + count_3lb; // Agnext
                         fine_percnt = (count_fine * 100) / float(count_fine + count_coarse); // Agnext
 
@@ -625,6 +640,7 @@ int main(int argc, char *argv[])
                         std::string _timer = "TIMER : " + std::to_string(int(hours)) + "H " + std::to_string(int(minutes%60)) + "M " + std::to_string(seconds%60) + "S"; // Agnext
                         putText(draw_frame, _timer, cv::Point2f(10, 280), cv::FONT_HERSHEY_COMPLEX_SMALL, 1.2, cv::Scalar(0, 255, 255), 1);  // Agnext
 
+                        writeFile(frame_str, _1lb_str, _2lb_str, _3lb_str, coarse_str, fine_per.substr(0,12), _timer);
 
                         //large_preview.draw(draw_frame);
                         //small_preview.draw(draw_frame, true);
@@ -694,7 +710,7 @@ int main(int argc, char *argv[])
                     //if (extrapolate_flag) {
                     //    cv::putText(draw_frame, "extrapolate", cv::Point2f(10, 40), cv::FONT_HERSHEY_COMPLEX_SMALL, 1.0, cv::Scalar(50, 50, 0), 2);
                     //}
-                    // resize(draw_frame, draw_frame, cv::Size(1280, 720), 0, 0, CV_INTER_CUBIC); 	// Agnext FRAME RESIZE  x 1080
+                    // resize(draw_frame, draw_frame, cv::Size(1280, 720), 0, 0, CV_INTER_CUBIC); 	// Agnext FRAME RESIZE
                     // resize(draw_frame, draw_frame, cv::Size(1920, 1080), 0, 0, CV_INTER_CUBIC); 
                     cv::imshow("window", draw_frame);
                     cv::moveWindow("window", 500, 200);     // Agnext (move window for tkinter interface)
@@ -703,7 +719,7 @@ int main(int argc, char *argv[])
                     if (key == 'f') show_small_boxes = !show_small_boxes;
                     if (key == 'p') while (true) if (cv::waitKey(100) == 'p') break;
                     //if (key == 'e') extrapolate_flag = !extrapolate_flag;
-                    if (key == 27) { exit_flag = true;}
+                    if (key == 27 || key == 'q') { exit_flag = true;}   // Agnext (Exit on p key as well)
 
                     //std::cout << " current_fps_det = " << current_fps_det << ", current_fps_cap = " << current_fps_cap << std::endl;
                 } while (!detection_data.exit_flag);
@@ -751,6 +767,7 @@ int main(int argc, char *argv[])
                 show_console_result(result_vec, obj_names);
                 char key = cvWaitKey(10);   // Agnext
                 if(key==27) // Agnext
+
                     break;  // Agnext
                 // cv::waitKey(0);
             }

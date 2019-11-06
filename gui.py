@@ -16,7 +16,7 @@ import json
 
 is_login = False
 userName = ""
-cmd = 'time ./uselib cfg/1_black_conveyor.names cfg/5_yolov3_optimised.cfg 5_yolov3_optimised.weights web_camera > output.txt'
+cmd = './uselib cfg/1_black_conveyor.names cfg/5_yolov3_optimised.cfg 5_yolov3_optimised.weights web_camera > output.txt'
 
 def vp_start_gui():
     global window
