@@ -184,6 +184,14 @@ int count_coarse = 0; // Agnext
 int count_fine = 0; // Agnext
 float fine_percnt = 0.0;// Agnext
 
+std::string frame_str = ""; // Agnext
+std::string _1lb_str = "";  // Agnext
+std::string _2lb_str = "";  // Agnext
+std::string _3lb_str = "";  // Agnext
+std::string coarse_str = "";    // Agnext
+std::string fine_per = "";  // Agnext
+std::string _timer = "";    // Agnext
+
 // Agnext (timer)  
 double duration;    // Agnext
 int seconds, minutes, hours; // Agnext
@@ -608,25 +616,25 @@ int main(int argc, char *argv[])
                                 }
                         }
 
-                        std::string frame_str = "FRAME : " + std::to_string(detection_data.frame_id); // Agnext
+                        frame_str = "FRAME : " + std::to_string(detection_data.frame_id); // Agnext
                         putText(draw_frame, frame_str, cv::Point2f(10, 50), cv::FONT_HERSHEY_COMPLEX_SMALL, 1.2, cv::Scalar(50, 255, 0), 2); // Agnext
 
-                        std::string _1lb_str = "1LB : " + std::to_string(count_1lb); // Agnext
+                        _1lb_str = "1LB : " + std::to_string(count_1lb); // Agnext
                         putText(draw_frame, _1lb_str, cv::Point2f(10, 100), cv::FONT_HERSHEY_COMPLEX_SMALL, 1.2, cv::Scalar(0, 255, 255), 1);  // Agnext
 
-                        std::string _2lb_str = "2LB : " + std::to_string(count_2lb); // Agnext
+                        _2lb_str = "2LB : " + std::to_string(count_2lb); // Agnext
                         putText(draw_frame, _2lb_str, cv::Point2f(10, 130), cv::FONT_HERSHEY_COMPLEX_SMALL, 1.2, cv::Scalar(0, 255, 255), 1);  // Agnext
 
-                        std::string _3lb_str = "3LB : " + std::to_string(count_3lb); // Agnext
+                        _3lb_str = "3LB : " + std::to_string(count_3lb); // Agnext
                         putText(draw_frame, _3lb_str, cv::Point2f(10, 160), cv::FONT_HERSHEY_COMPLEX_SMALL, 1.2, cv::Scalar(0, 255, 255), 1);  // Agnext
 
-                        std::string coarse_str = "Coarse : " + std::to_string(count_coarse); // Agnext
+                        coarse_str = "Coarse : " + std::to_string(count_coarse); // Agnext
                         putText(draw_frame, coarse_str, cv::Point2f(10, 190), cv::FONT_HERSHEY_COMPLEX_SMALL, 1.2, cv::Scalar(0, 255, 255), 1);  // Agnext
 
                         count_fine = count_1lb + count_2lb + count_3lb; // Agnext
                         fine_percnt = (count_fine * 100) / float(count_fine + count_coarse); // Agnext
 
-                        std::string fine_per = "FLC % : " + std::to_string(fine_percnt); // Agnext
+                        fine_per = "FLC % : " + std::to_string(fine_percnt); // Agnext
                         putText(draw_frame, fine_per.substr(0,12), cv::Point2f(10, 250), cv::FONT_HERSHEY_COMPLEX_SMALL, 1.2, cv::Scalar(0, 255, 255), 2);  // Agnext
 
                         // TIMER
@@ -637,10 +645,8 @@ int main(int argc, char *argv[])
                         minutes = seconds / 60; // Agnext
                         hours = minutes / 60;// Agnext
 
-                        std::string _timer = "TIMER : " + std::to_string(int(hours)) + "H " + std::to_string(int(minutes%60)) + "M " + std::to_string(seconds%60) + "S"; // Agnext
+                        _timer = "TIMER : " + std::to_string(int(hours)) + "H " + std::to_string(int(minutes%60)) + "M " + std::to_string(seconds%60) + "S"; // Agnext
                         putText(draw_frame, _timer, cv::Point2f(10, 280), cv::FONT_HERSHEY_COMPLEX_SMALL, 1.2, cv::Scalar(0, 255, 255), 1);  // Agnext
-
-                        writeFile(frame_str, _1lb_str, _2lb_str, _3lb_str, coarse_str, fine_per.substr(0,12), _timer);
 
                         //large_preview.draw(draw_frame);
                         //small_preview.draw(draw_frame, true);
@@ -719,7 +725,9 @@ int main(int argc, char *argv[])
                     if (key == 'f') show_small_boxes = !show_small_boxes;
                     if (key == 'p') while (true) if (cv::waitKey(100) == 'p') break;
                     //if (key == 'e') extrapolate_flag = !extrapolate_flag;
-                    if (key == 27 || key == 'q') { exit_flag = true;}   // Agnext (Exit on p key as well)
+                    if (key == 27 || key == 'q') { 
+                        writeFile(frame_str, _1lb_str, _2lb_str, _3lb_str, coarse_str, fine_per.substr(0,12), _timer); // Agnext write to file
+                        exit_flag = true;}   // Agnext (Exit on p key as well)
 
                     //std::cout << " current_fps_det = " << current_fps_det << ", current_fps_cap = " << current_fps_cap << std::endl;
                 } while (!detection_data.exit_flag);
