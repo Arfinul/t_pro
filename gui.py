@@ -17,6 +17,7 @@ import json
 is_login = False
 userName = ""
 cmd = './uselib cfg/1_black_conveyor.names cfg/5_yolov3_optimised.cfg 5_yolov3_optimised.weights web_camera > output.txt'
+cmd_camera_setting = 'ecam_tk1_guvcview'
 
 def vp_start_gui():
     global window
@@ -30,23 +31,38 @@ def vp_start_gui():
     # function for video streaming
     def video_stream():
         msg_sent.place_forget()
+        tuneCamera.configure(state='disabled', fg="black", bg="silver")
         try:
             global p
             p = subprocess.Popen("exec " + cmd, stdout= subprocess.PIPE, shell=True)
-            endRecord.configure(state="active", bg="#539051")
-            startRecord.configure(state="disabled", bg='silver')
+            endRecord.configure(bg="#539051", state="active")
+            startRecord.configure(bg='silver', state="disabled")
         except:
             p.kill()
-            endRecord.configure(state="disabled", bg='silver')
-            startRecord.configure(state="active", bg="#539051")
+            endRecord.configure(bg='silver', state="disabled")
+            startRecord.configure(bg="#539051", state="active")
             refresh()
 
     def end_video():
         p.kill()
-        endRecord.configure(state="disabled", bg='silver')
-        startRecord.configure(state="active", bg="#539051")
+        tuneCamera.configure(fg="white", bg="#539051", state='active')
+        endRecord.configure(bg='silver', state="disabled")
+        startRecord.configure(bg="#539051", state="active")
         send_data_api()       #send data to api
         # refresh()
+
+    def set_camera():
+        try:
+            global csetting
+            csetting = subprocess.Popen("exec " + cmd_camera_setting, stdout= subprocess.PIPE, shell=True)
+            #startRecord.configure(state="disabled", bg='silver')
+        except:
+            csetting.kill()
+            refresh()
+
+    def set_camera_exit():
+        csetting.kill()
+        refresh()
 
     def on_closing():
         from tkinter import messagebox
@@ -168,6 +184,8 @@ def vp_start_gui():
         is_login = True
         login_screen.destroy()
         startRecord.place(x=90, y=450)
+        tuneCamera.place(x=90, y=200)
+        #tuneCamera_exit.place(x=90, y=750)
         endRecord.configure(state="disabled", bg="silver", fg="black")
         endRecord.place(x=90, y=550)
         # register.place_forget()
@@ -248,9 +266,10 @@ def vp_start_gui():
     panel = Label(window, image = img, bg='#539051')
     panel.place(x=1350, y=10)
     
-
+    tuneCamera = tk.Button(window, text="Camera Setting", command=set_camera, fg="white", bg="#539051", width=20,height=3, activebackground = "Grey" , font=('times', 15, 'bold'))
+    # tuneCamera_exit = tk.Button(window, text="Save Camera Setting", command=set_camera_exit, fg="white", bg="#539051", width=20,height=3, activebackground = "Grey" , font=('times', 15, 'bold'))
     startRecord = tk.Button(window, text="Start", command=video_stream, fg="white", bg="#539051", width=20,height=3, activebackground = "Grey" , font=('times', 15, 'bold'))
-    endRecord = tk.Button(window, text="Save & exit", command=end_video, fg="white", bg="#539051", width=20,height=3, activebackground = "Grey" , font=('times', 15, 'bold'))
+    endRecord = tk.Button(window, text="Save & restart", command=end_video, fg="white", bg="#539051", width=20,height=3, activebackground = "Grey" , font=('times', 15, 'bold'))
 
     msg_sent = Label(window, text="Data sent status", font=('times', 15), fg="green", bg='white')
 
