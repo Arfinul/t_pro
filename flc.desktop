@@ -1,0 +1,8 @@
+[Desktop Entry]
+Version=1.0
+Name=FLC
+Comment=FLC App
+Exec=/home/agnext/Desktop/flc.sh
+Icon=/home/agnext/Desktop/download.png
+Terminal=true
+Type=Application

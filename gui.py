@@ -13,6 +13,7 @@ import subprocess
 from time import sleep
 import requests
 import json
+os.chdir("/home/agnext/Music/darknet")	# Agnext (Desktop icon path issue fix)
 
 is_login = False
 userName = ""
@@ -97,7 +98,7 @@ def vp_start_gui():
 
 
     def send_data_api():
-        txt_file = open("example.txt", "r").read()
+        txt_file = open("result.txt", "r").read()
         li = txt_file.split("\n")
         _1lb = li[1].split(" : ")[1]
         _2lb = li[2].split(" : ")[1]
