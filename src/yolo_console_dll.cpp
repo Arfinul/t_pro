@@ -259,7 +259,7 @@ void show_console_result(std::vector<bbox_t> const result_vec, std::vector<std::
 void writeFile(std::string frame_str, std::string _1lb_str, std::string _2lb_str, std::string _3lb_str, std::string coarse_str, std::string fine_per, std::string _timer) 
 {
   std::ofstream myfile;
-  myfile.open("example.txt");
+  myfile.open("result.txt");    // Agnext changes file name
   myfile <<frame_str<<"\n";
   myfile <<_1lb_str<<"\n";
   myfile <<_2lb_str<<"\n";
