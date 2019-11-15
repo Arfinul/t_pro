@@ -1,5 +1,4 @@
 #include <iostream>
-#include <fstream>		// Agnext, for writing file
 #include <iomanip>
 #include <string>
 #include <vector>
@@ -10,8 +9,6 @@
 #include <atomic>
 #include <mutex>         // std::mutex, std::unique_lock
 #include <cmath>
-#include <ctime>
-#include <chrono>       // Agnext TIMER
 
 
 // It makes sense only for video-Camera (not for video-File)
@@ -177,32 +174,18 @@ std::vector<bbox_t> get_3d_coordinates(std::vector<bbox_t> bbox_vect, cv::Mat xy
 #endif    // USE_CMAKE_LIBS
 #endif    // CV_VERSION_EPOCH
 
-int count_1lb = 0;  // Agnext
-int count_2lb = 0; // Agnext
-int count_3lb = 0;// Agnext
-int count_coarse = 0; // Agnext
-int count_fine = 0; // Agnext
-float fine_percnt = 0.0;// Agnext
+int count_1lb = 0;
+int count_2lb = 0;
+int count_3lb = 0;
+int count_coarse = 0;
+int count_fine = 0;
+float fine_percnt = 0.0;
 
-std::string frame_str = ""; // Agnext
-std::string _1lb_str = "";  // Agnext
-std::string _2lb_str = "";  // Agnext
-std::string _3lb_str = "";  // Agnext
-std::string coarse_str = "";    // Agnext
-std::string fine_per = "";  // Agnext
-std::string _timer = "";    // Agnext
-
-// Agnext (timer)  
-double duration;    // Agnext
-int seconds, minutes, hours; // Agnext
-
-cv::Mat black_image(720, 1280, CV_8UC3); // Agnext black image
 
 void draw_boxes(cv::Mat mat_img, std::vector<bbox_t> result_vec, std::vector<std::string> obj_names,
     int current_det_fps = -1, int current_cap_fps = -1)
 {
-    // UNCOMMENTED FOR DEVELOPER MODE
-    int const colors[6][3] = { { 1,0,1 },{ 0,0,1 },{ 0,1,1 },{ 0,1,0 },{ 1,1,0 },{ 1,0,0 } };		// Agnext
+    int const colors[6][3] = { { 1,0,1 },{ 0,0,1 },{ 0,1,1 },{ 0,1,0 },{ 1,1,0 },{ 1,0,0 } };
 
     for (auto &i : result_vec) {
         cv::Scalar color = obj_id_to_color(i.obj_id);
@@ -256,20 +239,6 @@ void show_console_result(std::vector<bbox_t> const result_vec, std::vector<std::
     }
 }
 
-void writeFile(std::string frame_str, std::string _1lb_str, std::string _2lb_str, std::string _3lb_str, std::string coarse_str, std::string fine_per, std::string _timer) 
-{
-  std::ofstream myfile;
-  myfile.open("result.txt");    // Agnext changes file name
-  myfile <<frame_str<<"\n";
-  myfile <<_1lb_str<<"\n";
-  myfile <<_2lb_str<<"\n";
-  myfile <<_3lb_str<<"\n";
-  myfile <<coarse_str<<"\n";
-  myfile <<fine_per<<"\n";
-  myfile <<_timer<<"\n";
-  myfile.close();
-}
-
 std::vector<std::string> objects_names_from_file(std::string const filename) {
     std::ifstream file(filename);
     std::vector<std::string> file_lines;
@@ -318,8 +287,6 @@ int main(int argc, char *argv[])
     std::string  cfg_file = "cfg/yolov3.cfg";
     std::string  weights_file = "yolov3.weights";
     std::string filename;
-
-    auto t_start = std::chrono::high_resolution_clock::now(); // Agnext TIMER
 
     if (argc > 4) {    //voc.names yolo-voc.cfg yolo-voc.weights test.mp4
         names_file = argv[1];
@@ -414,11 +381,8 @@ int main(int argc, char *argv[])
 #else
                 video_fps = cap.get(cv::CAP_PROP_FPS);
 #endif
-                cv::Size const frame_size = cur_frame.size(); // Original
-                // cv::Size const frame_size(cap.get(CV_CAP_PROP_FRAME_WIDTH), cap.get(CV_CAP_PROP_FRAME_HEIGHT));
-                // cv::Size const frame_size(1280, 720);	// Agnext FRAME RESIZE
-                // cv::Size const frame_size(1920, 1080); // Agnext FRAME RESIZE
-		// cv::Size const frame_size(512, 384);	// Agnext FRAME RESIZE
+                cv::Size const frame_size = cur_frame.size();
+                //cv::Size const frame_size(cap.get(CV_CAP_PROP_FRAME_WIDTH), cap.get(CV_CAP_PROP_FRAME_HEIGHT));
                 // std::cout << "\n Video size: " << frame_size << std::endl;  // AgNext, originally uncommented
 
                 cv::VideoWriter output_video;
@@ -596,11 +560,10 @@ int main(int argc, char *argv[])
 
                         //small_preview.set(draw_frame, result_vec);
                         //large_preview.set(draw_frame, result_vec);
-                        // resize(draw_frame, draw_frame, cv::Size(1280, 720), 0, 0, CV_INTER_CUBIC); 	// Agnext FRAME RESIZE
-                        // resize(draw_frame, draw_frame, cv::Size(1920, 1080), 0, 0, CV_INTER_CUBIC); 	// Agnext FRAME RESIZE
-                        // black_image.copyTo(draw_frame(cv::Rect(0,0, black_image.cols, black_image.rows)));      // Agnext (put black image as bg) // COMMENTED FOR DEVELOPER MODE
-                        draw_boxes(draw_frame, result_vec, obj_names, current_fps_det, current_fps_cap);
-                        show_console_result(result_vec, obj_names, detection_data.frame_id); // Agnext, originall was commented // UNCOMMENTED FOR DEVELOPER MODE
+                        draw_boxes(draw_frame, result_vec, obj_names, current_fps_det, current_fps_cap); // Originall
+                        // draw_boxes(draw_frame, result_vec, obj_names, current_fps_det, current_fps_cap, detection_data.frame_id); // AgNext
+
+                        show_console_result(result_vec, obj_names, detection_data.frame_id); // Agnext, originall was commented
                         for (auto &i : result_vec) {        // Agnext, added for counting fine counts
                             if (obj_names.size() > i.obj_id) 
                                 if (obj_names[i.obj_id] == "1LB"){
@@ -617,39 +580,30 @@ int main(int argc, char *argv[])
                                 }
                         }
 
-                        putText(draw_frame, "Press key 'q' once to freeze, twice to quit.", cv::Point2f(50, 450), cv::FONT_HERSHEY_COMPLEX_SMALL, 1, cv::Scalar(50, 255, 0), 1); // Agnext
-
-                        frame_str = "FRAME : " + std::to_string(detection_data.frame_id); // Agnext
+                        std::string frame_str = "FRAME : " + std::to_string(detection_data.frame_id); // Agnext
                         putText(draw_frame, frame_str, cv::Point2f(10, 50), cv::FONT_HERSHEY_COMPLEX_SMALL, 1.2, cv::Scalar(50, 255, 0), 2); // Agnext
 
-                        _1lb_str = "1LB : " + std::to_string(count_1lb); // Agnext
+                        std::string _1lb_str = "1LB : " + std::to_string(count_1lb); // Agnext
                         putText(draw_frame, _1lb_str, cv::Point2f(10, 100), cv::FONT_HERSHEY_COMPLEX_SMALL, 1.2, cv::Scalar(0, 255, 255), 1);  // Agnext
 
-                        _2lb_str = "2LB : " + std::to_string(count_2lb); // Agnext
+                        std::string _2lb_str = "2LB : " + std::to_string(count_2lb); // Agnext
                         putText(draw_frame, _2lb_str, cv::Point2f(10, 130), cv::FONT_HERSHEY_COMPLEX_SMALL, 1.2, cv::Scalar(0, 255, 255), 1);  // Agnext
 
-                        _3lb_str = "3LB : " + std::to_string(count_3lb); // Agnext
+                        std::string _3lb_str = "3LB : " + std::to_string(count_3lb); // Agnext
                         putText(draw_frame, _3lb_str, cv::Point2f(10, 160), cv::FONT_HERSHEY_COMPLEX_SMALL, 1.2, cv::Scalar(0, 255, 255), 1);  // Agnext
 
-                        coarse_str = "Coarse : " + std::to_string(count_coarse); // Agnext
+                        std::string coarse_str = "Coarse : " + std::to_string(count_coarse); // Agnext
                         putText(draw_frame, coarse_str, cv::Point2f(10, 190), cv::FONT_HERSHEY_COMPLEX_SMALL, 1.2, cv::Scalar(0, 255, 255), 1);  // Agnext
+                        
+                        count_fine = count_1lb + count_2lb + count_3lb;
+                        fine_percnt = (count_fine * 100) / float(count_fine + count_coarse);
 
-                        count_fine = count_1lb + count_2lb + count_3lb; // Agnext
-                        fine_percnt = (count_fine * 100) / float(count_fine + count_coarse); // Agnext
-
-                        fine_per = "FLC % : " + std::to_string(fine_percnt); // Agnext
-                        putText(draw_frame, fine_per.substr(0,12), cv::Point2f(10, 250), cv::FONT_HERSHEY_COMPLEX_SMALL, 1.2, cv::Scalar(0, 255, 255), 2);  // Agnext
-
-                        // TIMER
-                        auto t_end = std::chrono::high_resolution_clock::now(); // Agnext
-                        duration = std::chrono::duration<double, std::milli>(t_end-t_start).count(); // Agnext
-
-                        seconds = int(duration/1000);// Agnext
-                        minutes = seconds / 60; // Agnext
-                        hours = minutes / 60;// Agnext
-
-                        _timer = "TIMER : " + std::to_string(int(hours)) + "H " + std::to_string(int(minutes%60)) + "M " + std::to_string(seconds%60) + "S"; // Agnext
-                        putText(draw_frame, _timer, cv::Point2f(10, 280), cv::FONT_HERSHEY_COMPLEX_SMALL, 1.2, cv::Scalar(0, 255, 255), 1);  // Agnext
+                        // std::string fine_str = "Fine: " + std::to_string(count_fine); // Agnext
+                        // putText(draw_frame, fine_str, cv::Point2f(10, 300), cv::FONT_HERSHEY_COMPLEX_SMALL, 1.2, cv::Scalar(0, 255, 255), 1);  // Agnext
+                        // // std::setprecision(2) 
+                        // std::fixed << std::setprecision(2) << fine_percnt;
+                        std::string fine_per = "FLC % : " + std::to_string(fine_percnt); // Agnext
+                        putText(draw_frame, fine_per, cv::Point2f(10, 250), cv::FONT_HERSHEY_COMPLEX_SMALL, 1.2, cv::Scalar(0, 255, 255), 2);  // Agnext
 
                         //large_preview.draw(draw_frame);
                         //small_preview.draw(draw_frame, true);
@@ -674,8 +628,6 @@ int main(int argc, char *argv[])
                             detection_data = draw2write.receive();
                             if(detection_data.draw_frame.channels() == 4) cv::cvtColor(detection_data.draw_frame, output_frame, CV_RGBA2RGB);
                             else output_frame = detection_data.draw_frame;
-                            // resize(output_frame, output_frame, cv::Size(1280, 720), 0, 0, CV_INTER_CUBIC); 	// Agnext FRAME RESIZE
-                            // resize(output_frame, output_frame, cv::Size(1920, 1080), 0, 0, CV_INTER_CUBIC); 	// Agnext FRAME RESIZE
                             output_video << output_frame;
                         } while (!detection_data.exit_flag);
                         output_video.release();
@@ -719,24 +671,19 @@ int main(int argc, char *argv[])
                     //if (extrapolate_flag) {
                     //    cv::putText(draw_frame, "extrapolate", cv::Point2f(10, 40), cv::FONT_HERSHEY_COMPLEX_SMALL, 1.0, cv::Scalar(50, 50, 0), 2);
                     //}
-                    // resize(draw_frame, draw_frame, cv::Size(1280, 720), 0, 0, CV_INTER_CUBIC); 	// Agnext FRAME RESIZE
-                    // resize(draw_frame, draw_frame, cv::Size(1920, 1080), 0, 0, CV_INTER_CUBIC); 
-                    cv::imshow("window", draw_frame);
-                    cv::moveWindow("window", 500, 200);     // Agnext (move window for tkinter interface)
 
+                    cv::imshow("window name", draw_frame);
                     int key = cv::waitKey(3);    // 3 or 16ms
                     if (key == 'f') show_small_boxes = !show_small_boxes;
                     if (key == 'p') while (true) if (cv::waitKey(100) == 'p') break;
                     //if (key == 'e') extrapolate_flag = !extrapolate_flag;
-                    if (key == 27 || key == 'q') { 
-                        writeFile(frame_str, _1lb_str, _2lb_str, _3lb_str, coarse_str, fine_per.substr(0,12), _timer); // Agnext write to file
-                        exit_flag = true;}   // Agnext (Exit on p key as well)
+                    if (key == 27) { exit_flag = true;}
 
                     //std::cout << " current_fps_det = " << current_fps_det << ", current_fps_cap = " << current_fps_cap << std::endl;
                 } while (!detection_data.exit_flag);
                 // std::cout << " show detection exit \n";  //AgNext, originall was uncomented
-                cv::waitKey(0);     // Agnext (asks for key press before video exit)
-                cv::destroyWindow("window");
+
+                cv::destroyWindow("window name");
                 // wait for all threads
                 if (t_cap.joinable()) t_cap.join();
                 if (t_prepare.joinable()) t_prepare.join();
@@ -776,11 +723,7 @@ int main(int argc, char *argv[])
                 draw_boxes(mat_img, result_vec, obj_names);
                 cv::imshow("window name", mat_img);
                 show_console_result(result_vec, obj_names);
-                char key = cvWaitKey(10);   // Agnext
-                if(key==27) // Agnext
-
-                    break;  // Agnext
-                // cv::waitKey(0);
+                cv::waitKey(0);
             }
 #else   // OPENCV
             //std::vector<bbox_t> result_vec = detector.detect(filename);
@@ -789,7 +732,6 @@ int main(int argc, char *argv[])
             std::vector<bbox_t> result_vec = detector.detect(img);
             detector.free_image(img);
             show_console_result(result_vec, obj_names);
-
 #endif  // OPENCV
         }
         catch (std::exception &e) { std::cerr << "exception: " << e.what() << "\n"; getchar(); }
