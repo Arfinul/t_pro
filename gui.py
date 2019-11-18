@@ -9,16 +9,25 @@ import pandas as pd
 import datetime
 import time
 import sys
-import subprocess
+import subprocess   
 from time import sleep
 import requests
 import json
-os.chdir("/home/agnext/Music/darknet")	# Agnext (Desktop icon path issue fix)
+import signal
+
+# os.chdir("/home/agnext/Music/darknet")  # Agnext (Desktop icon path issue fix)
 
 is_login = False
 userName = ""
 cmd = './uselib cfg/1_black_conveyor.names cfg/5_yolov3_optimised.cfg 5_yolov3_optimised.weights web_camera > output.txt'
 cmd_camera_setting = 'ecam_tk1_guvcview'
+jetson_clock_cmd = 'ls'
+
+def testVal(inStr,acttyp):
+    if acttyp == '1': #insert
+        if not inStr.isdigit():
+            return False
+    return True
 
 def vp_start_gui():
     global window
@@ -45,11 +54,13 @@ def vp_start_gui():
             refresh()
 
     def end_video():
+        p.terminate()
         p.kill()
         tuneCamera.configure(fg="white", bg="#539051", state='active')
         endRecord.configure(bg='silver', state="disabled")
         startRecord.configure(bg="#539051", state="active")
         send_data_api()       #send data to api
+        sleep(2)
         # refresh()
 
     def set_camera():
@@ -79,7 +90,7 @@ def vp_start_gui():
             "deviceToken": "1"
         }
         headers = {
-        	"Content-Type": "application/json"
+            "Content-Type": "application/json"
         }
         response = requests.request("POST", "http://18.218.214.164:9955/api/auth/login", data=json.dumps(payload), headers=headers)
         status = False
@@ -104,8 +115,8 @@ def vp_start_gui():
         _2lb = li[2].split(" : ")[1]
         _3lb = li[3].split(" : ")[1]
         head = {
-        	"Content-Type": "application/json",
-        	"Authorization": "Bearer " + token
+            "Content-Type": "application/json",
+            "Authorization": "Bearer " + token
         }
         load = {
             "flcData": "",
@@ -133,7 +144,7 @@ def vp_start_gui():
         else:
             msg_sent.configure(text="Couldn't save to servers", fg="red")
             msg_sent.place(x=90, y=650, fg="red")
-     
+
     # Designing window for login 
      
     def login():
@@ -175,8 +186,10 @@ def vp_start_gui():
         status = login_api(username1, password1)
         if status == True:
             login_sucess()
+            global jetson_clock
+            jetson_clock = subprocess.Popen("exec " + jetson_clock_cmd, stdout= subprocess.PIPE, shell=True)
         else:
-        	user_not_found()
+            user_not_found()
      
     # Designing popup for login success
      
@@ -196,7 +209,18 @@ def vp_start_gui():
         # section.place(x=90, y=150)
         global userName
         txt = "Welcome, " + userName.title()
-        Label(window, text=txt, font=('times', 15, 'bold'), bg='white').place(x=1550, y=130)
+        Label(window, text=txt, font=('times', 15, 'bold'), bg='white').place(x=1600, y=130)
+        
+        farmer.place(x=1250, y=200)
+        sector.place(x=1250, y=280)
+
+        FARMER_ENTRY.place(x=1450, y=200)
+        SECTOR_ENTRY.place(x=1450, y=280)
+        clear_farmer.place(x=1600, y=202)
+        clear_sector.place(x=1600, y=282)
+
+        save_details.place(x=1350, y=350)
+        qr_code.place(x=1550, y=350)
 
     # Designing popup for login invalid password
      
@@ -274,6 +298,32 @@ def vp_start_gui():
 
     msg_sent = Label(window, text="Data sent status", font=('times', 15), fg="green", bg='white')
 
+    farmer = tk.Label(window, text="Farmer ID", width=15, height=2, fg="white", bg="#539051", font=('times', 15, ' bold '))
+    sector = tk.Label(window, text="Sector ID", width=15, height=2, fg="white", bg="#539051", font=('times', 15, ' bold '))
+
+    global FARMER_ENTRY
+    FARMER_ENTRY = tk.Entry(window, width=18,validate='key', bg="silver", fg="black", font=('times', 23, 'bold'))
+    FARMER_ENTRY['validatecommand'] = (FARMER_ENTRY.register(testVal), '%P', '%d')
+    SECTOR_ENTRY = tk.Entry(window, width=18, bg="silver", fg="black", font=('times', 23, ' bold '))
+
+    def remove_farmer():
+        FARMER_ENTRY.delete(first=0, last=22)
+
+    def remove_sector():
+        SECTOR_ENTRY.delete(first=0, last=22)
+
+    def detail_fxn():
+        pass
+
+    def qr_scan_fxn():
+        pass
+
+    clear_farmer = tk.Button(window, text="Clear", command=remove_farmer, fg="black", bg="#7cadc4", width=10, height=1, activebackground="#207096", font=('times', 15, ' bold '))
+    clear_sector = tk.Button(window, text="Clear", command=remove_sector, fg="black", bg="#7cadc4", width=10, height=1, activebackground="#207096", font=('times', 15, ' bold '))
+
+    save_details = tk.Button(window, text="Save", width=10, height=1, fg="black", bg="#44c1d4", font=('times', 15, 'bold'), command=detail_fxn)
+    qr_code = tk.Button(window, text="Scan QR", width=10, height=1, fg="black", bg="#44c1d4", font=('times', 15, 'bold'), command=qr_scan_fxn)
+
     if is_login == True:
 
         # section_gui()
@@ -284,12 +334,25 @@ def vp_start_gui():
         signin.place_forget()
 
         txt = "Welcome, " + userName.title()
-        Label(window, text=txt, font=('times', 15, 'bold'), bg='white').place(x=1550, y=130)
+        Label(window, text=txt, font=('times', 15, 'bold'), bg='white').place(x=1600, y=130)
 
         startRecord.place(x=90, y=450)
 
         endRecord.place(x=90, y=550)
         endRecord.configure(state="disabled", bg="silver")
+
+        tuneCamera.place(x=90, y=200)
+
+        farmer.place(x=1250, y=200)
+        sector.place(x=1250, y=280)
+        
+        FARMER_ENTRY.place(x=1450, y=200)
+        SECTOR_ENTRY.place(x=1450, y=280)
+        clear_farmer.place(x=1600, y=202)
+        clear_sector.place(x=1600, y=282)
+
+        save_details.place(x=1350, y=350)
+        qr_code.place(x=1550, y=350)
 
     else:
         global panel_bg
@@ -306,6 +369,17 @@ def vp_start_gui():
         startRecord.place_forget()
 
         endRecord.place_forget()
+
+        farmer.place_forget()
+        sector.place_forget()
+
+        FARMER_ENTRY.place_forget()
+        SECTOR_ENTRY.place_forget()
+        clear_farmer.place_forget()
+        clear_sector.place_forget()
+
+        save_details.place_forget()
+        qr_code.place_forget()
 
     window.mainloop()
 
