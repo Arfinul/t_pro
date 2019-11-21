@@ -121,6 +121,7 @@ venv.bak/
 *.mp4
 *.MTS
 predictions.jpg
+output.txt
 
 # Flc folders to ignore
 result
@@ -144,3 +145,4 @@ cfg/data/*
 
 .idea/*
 
+1/*

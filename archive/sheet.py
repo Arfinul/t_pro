@@ -2,9 +2,9 @@ import pandas as pd
 import os
 import glob
 
-df = pd.DataFrame(columns=['User ID', "Section", "Date", "Time", "Image name"])
+df = pd.DataFrame()
 # users = glob.glob("../splits/*")
-users = ['../splits/104']
+users = ['../splits2/104']
 
 ids = []
 section = []
@@ -21,11 +21,11 @@ for i in users:
 		dates.append(li[3].split('_')[0])
 		times.append(li[3].split("_")[1].split(".")[0])
 		image_name.append(li[3].split("_")[-1])
-
-df['User ID'] = ids
-df['Section'] = section
 df['Date'] = dates
 df['Time'] = times
 df['Image name'] = image_name
+df['User ID'] = ids
+df['Section'] = section
+
 
 df.to_csv("images.csv", index=False)

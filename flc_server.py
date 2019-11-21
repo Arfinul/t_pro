@@ -363,6 +363,11 @@ def post():
         return str(e)
 
 
+@app.route('/api/live-status', methods=['GET'])
+def live_status():
+	return Response(jsonpickle.encode({"message": "website is live and running"}), status=200, mimetype="application/json")
+
+
 # start flask app
 app.run(host="0.0.0.0", port=9000, threaded=True)  # Server
 # sapp.run(port=6000)  # Local
