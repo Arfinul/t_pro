@@ -295,27 +295,27 @@ def vp_start_gui():
 
     window.protocol("WM_DELETE_WINDOW", on_closing)
 
-    message = tk.Label(window, text="Fine Leaf Count System", fg="black", bg="#539051", width=85, height=2, font=('times', 30, 'bold'))
-    message.place(x=80, y=10)
+    message = tk.Label(window, text="Fine Leaf Count System                          ", fg="black", bg="#539051", width=int(configparser.get('gui-config', 'title_width')), height=int(configparser.get('gui-config', 'title_height')), font=('times', 30, 'bold'))
+    message.place(x=int(configparser.get('gui-config', 'title_x')), y=int(configparser.get('gui-config', 'title_y')))
 
     img = ImageTk.PhotoImage(Image.open("logo.png"))
     panel = Label(window, image = img, bg='#539051')
-    panel.place(x=1350, y=10)
+    panel.place(x=int(configparser.get('gui-config', 'login_image_x')), y=int(configparser.get('gui-config', 'login_image_y')))
     
-    tuneCamera = tk.Button(window, text="Camera Setting", command=set_camera, fg="white", bg="#539051", width=20,height=3, activebackground = "Grey" , font=('times', 15, 'bold'))
+    tuneCamera = tk.Button(window, text="Camera Setting", command=set_camera, fg="white", bg="#539051", width=int(configparser.get('gui-config', 'buttons_width')),height=int(configparser.get('gui-config', 'buttons_height')), activebackground = "Grey" , font=('times', 15, 'bold'))
     # tuneCamera_exit = tk.Button(window, text="Save Camera Setting", command=set_camera_exit, fg="white", bg="#539051", width=20,height=3, activebackground = "Grey" , font=('times', 15, 'bold'))
-    startRecord = tk.Button(window, text="Start", command=video_stream, fg="white", bg="#539051", width=20,height=3, activebackground = "Grey" , font=('times', 15, 'bold'))
-    endRecord = tk.Button(window, text="Save & restart", command=end_video, fg="white", bg="#539051", width=20,height=3, activebackground = "Grey" , font=('times', 15, 'bold'))
+    startRecord = tk.Button(window, text="Start", command=video_stream, fg="white", bg="#539051", width=int(configparser.get('gui-config', 'buttons_width')),height=int(configparser.get('gui-config', 'buttons_height')), activebackground = "Grey" , font=('times', 15, 'bold'))
+    endRecord = tk.Button(window, text="Save & restart", command=end_video, fg="white", bg="#539051", width=int(configparser.get('gui-config', 'buttons_width')),height=int(configparser.get('gui-config', 'buttons_height')), activebackground = "Grey" , font=('times', 15, 'bold'))
 
     msg_sent = Label(window, text="Data sent status", font=('times', 15), fg="green", bg='white')
 
-    farmer = tk.Label(window, text="Farmer ID", width=15, height=2, fg="white", bg="#539051", font=('times', 15, ' bold '))
-    sector = tk.Label(window, text="Sector ID", width=15, height=2, fg="white", bg="#539051", font=('times', 15, ' bold '))
+    farmer = tk.Label(window, text="Farmer ID", width=int(configparser.get('gui-config', 'id_label_width')), height=int(configparser.get('gui-config', 'id_label_height')), fg="white", bg="#539051", font=('times', int(configparser.get('gui-config', 'font')), ' bold '))
+    sector = tk.Label(window, text="Sector ID", width=int(configparser.get('gui-config', 'id_label_width')), height=int(configparser.get('gui-config', 'id_label_height')), fg="white", bg="#539051", font=('times', int(configparser.get('gui-config', 'font')), ' bold '))
 
     global FARMER_ENTRY
-    FARMER_ENTRY = tk.Entry(window, width=18,validate='key', bg="silver", fg="black", font=('times', 23, 'bold'))
+    FARMER_ENTRY = tk.Entry(window, width=int(configparser.get('gui-config', 'entry_width')),validate='key', bg="silver", fg="black", font=('times', 23, 'bold'))
     FARMER_ENTRY['validatecommand'] = (FARMER_ENTRY.register(testVal), '%P', '%d')
-    SECTOR_ENTRY = tk.Entry(window, width=18, bg="silver", fg="black", font=('times', 23, ' bold '))
+    SECTOR_ENTRY = tk.Entry(window, width=int(configparser.get('gui-config', 'entry_width')), bg="silver", fg="black", font=('times', 23, ' bold '))
 
     def remove_farmer():
         FARMER_ENTRY.delete(first=0, last=22)
@@ -329,11 +329,11 @@ def vp_start_gui():
     def qr_scan_fxn():
         pass
 
-    clear_farmer = tk.Button(window, text="Clear", command=remove_farmer, fg="black", bg="#7cadc4", width=10, height=1, activebackground="#207096", font=('times', 15, ' bold '))
-    clear_sector = tk.Button(window, text="Clear", command=remove_sector, fg="black", bg="#7cadc4", width=10, height=1, activebackground="#207096", font=('times', 15, ' bold '))
+    clear_farmer = tk.Button(window, text="Clear", command=remove_farmer, fg="black", bg="#7cadc4", width=int(configparser.get('gui-config', 'clear_btn_width')), height=1, activebackground="#207096", font=('times', int(configparser.get('gui-config', 'font')), ' bold '))
+    clear_sector = tk.Button(window, text="Clear", command=remove_sector, fg="black", bg="#7cadc4", width=int(configparser.get('gui-config', 'clear_btn_width')), height=1, activebackground="#207096", font=('times', int(configparser.get('gui-config', 'font')), ' bold '))
 
-    save_details = tk.Button(window, text="Save", width=10, height=1, fg="black", bg="#44c1d4", font=('times', 15, 'bold'), command=detail_fxn)
-    qr_code = tk.Button(window, text="Scan QR", width=10, height=1, fg="black", bg="#44c1d4", font=('times', 15, 'bold'), command=qr_scan_fxn)
+    save_details = tk.Button(window, text="Save", width=10, height=1, fg="black", bg="#44c1d4", font=('times', int(configparser.get('gui-config', 'font')), 'bold'), command=detail_fxn)
+    qr_code = tk.Button(window, text="Scan QR", width=10, height=1, fg="black", bg="#44c1d4", font=('times', int(configparser.get('gui-config', 'font')), 'bold'), command=qr_scan_fxn)
 
     if is_login == True:
 
@@ -341,7 +341,7 @@ def vp_start_gui():
         # section = tk.Button(window, text="Add Section", command=section_gui, fg="black", bg="deep sky blue", width=20,height=2, activebackground = "Grey" , font=('times', 15, 'bold'))
         # section.place(x=90, y=150) 
 
-        signin = tk.Button(window, text="Login", command=login, fg="black", bg="#539051", width=20,height=2, activebackground = "Grey" , font=('times', 15, 'bold'))
+        signin = tk.Button(window, text="Login", command=login, fg="black", bg="#539051", width=int(configparser.get('gui-config', 'signin_btn_width')),height=int(configparser.get('gui-config', 'signin_btn_height')), activebackground = "Grey" , font=('times', 15, 'bold'))
         signin.place_forget()
 
         txt = "Welcome, " + userName.title()
@@ -350,14 +350,14 @@ def vp_start_gui():
 
     else:
         global panel_bg
-        img_bg = ImageTk.PhotoImage(Image.open("bg.png"))
+        img_bg = ImageTk.PhotoImage(Image.open("bg.jpg"))
         panel_bg = Label(window, image = img_bg, bg='white')
         panel_bg.place(x=int(configparser.get('gui-config', 'panel_bg_x')), y=int(configparser.get('gui-config', 'panel_bg_y')))
 
         # section = tk.Button(window, text="Add Section", command=section_gui, fg="black", bg="deep sky blue", width=20,height=2, activebackground = "Grey" , font=('times', 15, 'bold'))
         # section.place_forget()
 
-        signin = tk.Button(window, text="Login", command=login, fg="black", bg="#539051", width=25,height=2, activebackground = "Grey" , font=('times', 20, 'bold'))
+        signin = tk.Button(window, text="Login", command=login, fg="black", bg="#539051", width=int(configparser.get('gui-config', 'signin_btn_width')),height=int(configparser.get('gui-config', 'signin_btn_height')), activebackground = "Grey" , font=('times', 15, 'bold'))
         signin.place(x=int(configparser.get('gui-config', 'signin_btn_x')), y=int(configparser.get('gui-config', 'signin_btn_y')))
 
         startRecord.place_forget()
