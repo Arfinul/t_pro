@@ -231,7 +231,8 @@ public:
 // --------------------------------------------------------------------------------
 
 
-#if defined(TRACK_OPTFLOW) && defined(OPENCV) && defined(GPU)
+#if defined(TRACK_OPTFLOW) && defined(OPENCV) && defined(GPU) // Original
+//#if defined(TRACK_OPTFLOW) && defined(OPENCV) && defined(GPU_DISABLED) // Agnext
 
 #include <opencv2/cudaoptflow.hpp>
 #include <opencv2/cudaimgproc.hpp>

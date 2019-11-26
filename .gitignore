@@ -120,6 +120,8 @@ venv.bak/
 *.jpg
 *.MTS
 *.mp4
+*.avi
+*.mkv
 *.txt
 predictions.jpg
 .circleci/
