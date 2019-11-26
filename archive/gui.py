@@ -123,10 +123,10 @@ def vp_start_gui():
             "sectionId": 1,
             "oneLeafBud": _1lb,
             "twoLeafBud": _2lb,
-            "oneLeafBanjhi": "0",
-            "twoLeafBanjhi": "0",
-            "moderateShoot": "0",
-            "fineShoot": "0",
+            "oneLeafBanjhi": "23",
+            "twoLeafBanjhi": "10",
+            "moderateShoot": "19",
+            "fineShoot": "90",
             "scannedBy": userID,
             "weighment": "0",
             "oneBanjhiCount": "0",
@@ -135,7 +135,7 @@ def vp_start_gui():
             "twoLeafCount": "0",
             "threeLeafCount": "0",
             "userId": userID,
-            "dateDone": "12/11/2019"
+            "dateDone": "13/11/2019"
         }
         resp = requests.request("POST", "http://18.218.214.164:9955/api/own-flc", data=json.dumps(load), headers=head)
         if resp.json()['success'] == "true":
