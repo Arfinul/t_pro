@@ -13,13 +13,9 @@ import subprocess
 from time import sleep
 import requests
 import json
-<<<<<<< HEAD
 import signal
 
 # os.chdir("/home/agnext/Music/darknet")  # Agnext (Desktop icon path issue fix)
-=======
-os.chdir("/home/agnext/Documents/flc")	# Agnext (Desktop icon path issue fix)
->>>>>>> 8e25c314382ad5d7e8fc2c14e1a1356efab5f5b9
 
 is_login = False
 userName = ""
