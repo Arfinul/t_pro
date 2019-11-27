@@ -26,6 +26,7 @@ userName = ""
 cmd = './uselib cfg/1_black_conveyor.names cfg/5_yolov3_optimised.cfg 5_yolov3_optimised.weights web_camera > output.txt'
 cmd_camera_setting = 'ecam_tk1_guvcview'
 jetson_clock_cmd = 'ls'
+record_cam_cmd = "python3 record_cam_gui.py"
 
 def testVal(inStr,acttyp):
     if acttyp == '1': #insert
@@ -66,6 +67,25 @@ def vp_start_gui():
         send_data_api()       #send data to api
         sleep(2)
         # refresh()
+
+    def show_frame(cap, writer, lmain):
+        while True:
+            _, frame = cap.read()
+            # frame = cv2.flip(frame, 1)
+            writer.write(frame)
+            cv2image = cv2.cvtColor(frame, cv2.COLOR_BGR2RGBA)
+            img = Image.fromarray(cv2image)
+            imgtk = ImageTk.PhotoImage(image=img)
+            lmain.imgtk = imgtk
+            lmain.configure(image=imgtk)
+            lmain.after(10, show_frame) 
+
+
+    def start_record_video():
+        startCamRecord.configure(bg='silver', state="disabled")
+        global cam_record
+        cam_record = subprocess.Popen("exec " + record_cam_cmd, stdout= subprocess.PIPE, shell=True)
+
 
     def set_camera():
         try:
@@ -152,11 +172,18 @@ def vp_start_gui():
 
     def place_on_screen():
 
+        txt = "Welcome, " + userName.title()
+        Label(window, text=txt, font=('times', 15, 'bold'), bg='white').place(x=int(configparser.get('gui-config', 'welcome_text_x')), y=int(configparser.get('gui-config', 'welcome_text_y')))
+
+        refresh_button.place(x=int(configparser.get('gui-config', 'refresh_x')), y=int(configparser.get('gui-config', 'refresh_y')))
+
         startRecord.place(x=int(configparser.get('gui-config', 'startrecord_btn_x')), y=int(configparser.get('gui-config', 'startrecord_btn_y')))
         tuneCamera.place(x=int(configparser.get('gui-config', 'tunecamera_btn_x')), y=int(configparser.get('gui-config', 'tunecamera_btn_y')))
         #tuneCamera_exit.place(x=90, y=750)
         endRecord.configure(state="disabled", bg="silver", fg="black")
         endRecord.place(x=int(configparser.get('gui-config', 'endrecord_btn_x')), y=int(configparser.get('gui-config', 'endrecord_btn_y')))
+
+        startCamRecord.place(x=int(configparser.get('gui-config', 'cam_record_start_x')), y=int(configparser.get('gui-config', 'cam_record_start_y')))
 
         farmer.place(x=int(configparser.get('gui-config', 'farmer_label_x')), y=int(configparser.get('gui-config', 'farmer_label_y')))
         sector.place(x=int(configparser.get('gui-config', 'sector_label_x')), y=int(configparser.get('gui-config', 'sector_label_y')))
@@ -228,9 +255,6 @@ def vp_start_gui():
         # section_gui()
         panel_bg.place_forget()
         # section.place(x=90, y=150)
-        global userName
-        txt = "Welcome, " + userName.title()
-        Label(window, text=txt, font=('times', 15, 'bold'), bg='white').place(x=int(configparser.get('gui-config', 'welcome_text_x')), y=int(configparser.get('gui-config', 'welcome_text_y')))
         place_on_screen()
 
     # Designing popup for login invalid password
@@ -304,8 +328,12 @@ def vp_start_gui():
     
     tuneCamera = tk.Button(window, text="Camera Setting", command=set_camera, fg="white", bg="#539051", width=int(configparser.get('gui-config', 'buttons_width')),height=int(configparser.get('gui-config', 'buttons_height')), activebackground = "Grey" , font=('times', 15, 'bold'))
     # tuneCamera_exit = tk.Button(window, text="Save Camera Setting", command=set_camera_exit, fg="white", bg="#539051", width=20,height=3, activebackground = "Grey" , font=('times', 15, 'bold'))
+    refresh_button = tk.Button(window, text="Refresh", command=refresh, fg="white", bg="#539051", width=int(configparser.get('gui-config', 'refresh_width')),height=1, activebackground = "Grey" , font=('times', 10, 'bold'))
+
     startRecord = tk.Button(window, text="Start", command=video_stream, fg="white", bg="#539051", width=int(configparser.get('gui-config', 'buttons_width')),height=int(configparser.get('gui-config', 'buttons_height')), activebackground = "Grey" , font=('times', 15, 'bold'))
     endRecord = tk.Button(window, text="Save & restart", command=end_video, fg="white", bg="#539051", width=int(configparser.get('gui-config', 'buttons_width')),height=int(configparser.get('gui-config', 'buttons_height')), activebackground = "Grey" , font=('times', 15, 'bold'))
+
+    startCamRecord = tk.Button(window, text="Start video record", command=start_record_video, fg="white", bg="#539051", width=int(configparser.get('gui-config', 'buttons_width')),height=int(configparser.get('gui-config', 'buttons_height')), activebackground = "Grey" , font=('times', 15, 'bold'))
 
     msg_sent = Label(window, text="Data sent status", font=('times', 15), fg="green", bg='white')
 
@@ -343,14 +371,12 @@ def vp_start_gui():
 
         signin = tk.Button(window, text="Login", command=login, fg="black", bg="#539051", width=int(configparser.get('gui-config', 'signin_btn_width')),height=int(configparser.get('gui-config', 'signin_btn_height')), activebackground = "Grey" , font=('times', 15, 'bold'))
         signin.place_forget()
-
-        txt = "Welcome, " + userName.title()
-        Label(window, text=txt, font=('times', 15, 'bold'), bg='white').place(x=int(configparser.get('gui-config', 'welcome_text_x')), y=int(configparser.get('gui-config', 'welcome_text_y')))
+ 
         place_on_screen()
 
     else:
         global panel_bg
-        img_bg = ImageTk.PhotoImage(Image.open("bg.jpg"))
+        img_bg = ImageTk.PhotoImage(Image.open(configparser.get('gui-config', 'bg_image')))
         panel_bg = Label(window, image = img_bg, bg='white')
         panel_bg.place(x=int(configparser.get('gui-config', 'panel_bg_x')), y=int(configparser.get('gui-config', 'panel_bg_y')))
 
@@ -361,8 +387,9 @@ def vp_start_gui():
         signin.place(x=int(configparser.get('gui-config', 'signin_btn_x')), y=int(configparser.get('gui-config', 'signin_btn_y')))
 
         startRecord.place_forget()
-
         endRecord.place_forget()
+
+        startCamRecord.place_forget()
 
         farmer.place_forget()
         sector.place_forget()
