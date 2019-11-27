@@ -4,7 +4,7 @@ import glob
 
 df = pd.DataFrame()
 # users = glob.glob("../splits/*")
-users = ['../splits2/104']
+users = ['../splitss1/104']
 
 ids = []
 section = []
