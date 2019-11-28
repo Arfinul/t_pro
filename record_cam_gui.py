@@ -50,15 +50,15 @@ window.protocol("WM_DELETE_WINDOW", do_nothing)
 imageFrame = tk.Frame(window, width=600, height=600)
 imageFrame.pack(side="top", fill="x")
 
-vid_name = tk.Entry(window, width=20,validate='key', bg="silver", fg="black", font=('times', 23, 'bold'))
+vid_name = tk.Entry(window, width=20,validate='key', bg="white", fg="black", font=('times', 23, 'bold'))
 vid_name.insert(1, 'Enter video name..')
 vid_name.pack(side='top', fill="both", expand=True)
 vid_name.bind("<Button-1>", clear_search) 
 
-save = tk.Button(window, text="Save video", command=save_and_close, fg="white", bg="#539051", width=10,height=2, activebackground = "Grey" , font=('times', 15, 'bold'))
+save = tk.Button(window, text="Save video", command=save_and_close, fg="white", bg="green", width=10,height=2, activebackground = "Grey" , font=('times', 15, 'bold'))
 save.pack(side="left", fill="both", expand=True)
 
-discard = tk.Button(window, text="Discard video", command=discard_video, fg="white", bg="#539051", width=10,height=2, activebackground = "Grey" , font=('times', 15, 'bold'))
+discard = tk.Button(window, text="Discard video", command=discard_video, fg="white", bg="#e33b3b", width=10,height=2, activebackground = "Grey" , font=('times', 15, 'bold'))
 discard.pack(side="right", fill="both", expand=True)
 
 #Capture video frames

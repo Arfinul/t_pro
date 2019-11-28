@@ -27,6 +27,7 @@ cmd = './uselib cfg/1_black_conveyor.names cfg/5_yolov3_optimised.cfg 5_yolov3_o
 cmd_camera_setting = 'ecam_tk1_guvcview'
 jetson_clock_cmd = 'ls'
 record_cam_cmd = "python3 record_cam_gui.py"
+edit_details_cmd = "python3 farmer_section.py"
 
 def testVal(inStr,acttyp):
     if acttyp == '1': #insert
@@ -71,9 +72,12 @@ def vp_start_gui():
 
     def start_record_video():
         startCamRecord.configure(bg='silver', state="disabled")
-        global cam_record
         cam_record = subprocess.Popen("exec " + record_cam_cmd, stdout= subprocess.PIPE, shell=True)
 
+
+    def edit_details():
+        editDetails.configure(bg='silver', state="disabled")
+        details_process = subprocess.Popen("exec " + edit_details_cmd, stdout= subprocess.PIPE, shell=True)
 
     def set_camera():
         try:
@@ -185,17 +189,18 @@ def vp_start_gui():
         endRecord.place(x=int(configparser.get('gui-config', 'endrecord_btn_x')), y=int(configparser.get('gui-config', 'endrecord_btn_y')))
 
         startCamRecord.place(x=int(configparser.get('gui-config', 'cam_record_start_x')), y=int(configparser.get('gui-config', 'cam_record_start_y')))
+        editDetails.place(x=int(configparser.get('gui-config', 'edit_details_x')), y=int(configparser.get('gui-config', 'edit_details_y')))
 
-        farmer.place(x=int(configparser.get('gui-config', 'farmer_label_x')), y=int(configparser.get('gui-config', 'farmer_label_y')))
-        sector.place(x=int(configparser.get('gui-config', 'sector_label_x')), y=int(configparser.get('gui-config', 'sector_label_y')))
+        # farmer.place(x=int(configparser.get('gui-config', 'farmer_label_x')), y=int(configparser.get('gui-config', 'farmer_label_y')))
+        # sector.place(x=int(configparser.get('gui-config', 'sector_label_x')), y=int(configparser.get('gui-config', 'sector_label_y')))
 
-        FARMER_ENTRY.place(x=int(configparser.get('gui-config', 'farmer_entry_x')), y=int(configparser.get('gui-config', 'farmer_entry_y')))
-        SECTOR_ENTRY.place(x=int(configparser.get('gui-config', 'sector_entry_x')), y=int(configparser.get('gui-config', 'sector_entry_y')))
-        clear_farmer.place(x=int(configparser.get('gui-config', 'farmer_clear_x')), y=int(configparser.get('gui-config', 'farmer_clear_y')))
-        clear_sector.place(x=int(configparser.get('gui-config', 'sector_clear_x')), y=int(configparser.get('gui-config', 'sector_clear_y')))
+        # FARMER_ENTRY.place(x=int(configparser.get('gui-config', 'farmer_entry_x')), y=int(configparser.get('gui-config', 'farmer_entry_y')))
+        # SECTOR_ENTRY.place(x=int(configparser.get('gui-config', 'sector_entry_x')), y=int(configparser.get('gui-config', 'sector_entry_y')))
+        # clear_farmer.place(x=int(configparser.get('gui-config', 'farmer_clear_x')), y=int(configparser.get('gui-config', 'farmer_clear_y')))
+        # clear_sector.place(x=int(configparser.get('gui-config', 'sector_clear_x')), y=int(configparser.get('gui-config', 'sector_clear_y')))
 
-        save_details.place(x=int(configparser.get('gui-config', 'save_details_x')), y=int(configparser.get('gui-config', 'save_details_y')))
-        qr_code.place(x=int(configparser.get('gui-config', 'qr_code_x')), y=int(configparser.get('gui-config', 'qr_code_y')))
+        # save_details.place(x=int(configparser.get('gui-config', 'save_details_x')), y=int(configparser.get('gui-config', 'save_details_y')))
+        # qr_code.place(x=int(configparser.get('gui-config', 'qr_code_x')), y=int(configparser.get('gui-config', 'qr_code_y')))
 
 
     # Designing window for login 
@@ -348,26 +353,27 @@ def vp_start_gui():
     # tuneCamera_exit = tk.Button(window, text="Save Camera Setting", command=set_camera_exit, fg="white", bg="#539051", width=20,height=3, activebackground = "Grey" , font=('times', 15, 'bold'))
     refresh_button = tk.Button(window, text="Refresh", command=refresh, fg="white", bg="#539051", width=int(configparser.get('gui-config', 'refresh_width')),height=1, activebackground = "Grey" , font=('times', 10, 'bold'))
 
-    startRecord = tk.Button(window, text="Start", command=video_stream, fg="white", bg="#539051", width=int(configparser.get('gui-config', 'buttons_width')),height=int(configparser.get('gui-config', 'buttons_height')), activebackground = "Grey" , font=('times', 15, 'bold'))
+    startRecord = tk.Button(window, text="Start Testing", command=video_stream, fg="white", bg="#539051", width=int(configparser.get('gui-config', 'buttons_width')),height=int(configparser.get('gui-config', 'buttons_height')), activebackground = "Grey" , font=('times', 15, 'bold'))
     endRecord = tk.Button(window, text="Save & restart", command=end_video, fg="white", bg="#539051", width=int(configparser.get('gui-config', 'buttons_width')),height=int(configparser.get('gui-config', 'buttons_height')), activebackground = "Grey" , font=('times', 15, 'bold'))
 
-    startCamRecord = tk.Button(window, text="Start video record", command=start_record_video, fg="white", bg="#539051", width=int(configparser.get('gui-config', 'buttons_width')),height=int(configparser.get('gui-config', 'buttons_height')), activebackground = "Grey" , font=('times', 15, 'bold'))
+    startCamRecord = tk.Button(window, text="Record training video", command=start_record_video, fg="white", bg="#539051", width=int(configparser.get('gui-config', 'buttons_width')),height=int(configparser.get('gui-config', 'buttons_height')), activebackground = "Grey" , font=('times', 15, 'bold'))
+    editDetails = tk.Button(window, text="Edit details", command=edit_details, fg="white", bg="#539051", width=int(configparser.get('gui-config', 'buttons_width')),height=int(configparser.get('gui-config', 'buttons_height')), activebackground = "Grey" , font=('times', 15, 'bold'))
 
     msg_sent = Label(window, text="Data sent status", font=('times', 15), fg="green", bg='white')
 
-    farmer = tk.Label(window, text="Farmer ID", width=int(configparser.get('gui-config', 'id_label_width')), height=int(configparser.get('gui-config', 'id_label_height')), fg="white", bg="#539051", font=('times', int(configparser.get('gui-config', 'font')), ' bold '))
-    sector = tk.Label(window, text="Sector ID", width=int(configparser.get('gui-config', 'id_label_width')), height=int(configparser.get('gui-config', 'id_label_height')), fg="white", bg="#539051", font=('times', int(configparser.get('gui-config', 'font')), ' bold '))
+    # farmer = tk.Label(window, text="Farmer ID", width=int(configparser.get('gui-config', 'id_label_width')), height=int(configparser.get('gui-config', 'id_label_height')), fg="white", bg="#539051", font=('times', int(configparser.get('gui-config', 'font')), ' bold '))
+    # sector = tk.Label(window, text="Sector ID", width=int(configparser.get('gui-config', 'id_label_width')), height=int(configparser.get('gui-config', 'id_label_height')), fg="white", bg="#539051", font=('times', int(configparser.get('gui-config', 'font')), ' bold '))
 
-    global FARMER_ENTRY
-    FARMER_ENTRY = tk.Entry(window, width=int(configparser.get('gui-config', 'entry_width')),validate='key', bg="silver", fg="black", font=('times', 23, 'bold'))
-    FARMER_ENTRY['validatecommand'] = (FARMER_ENTRY.register(testVal), '%P', '%d')
-    SECTOR_ENTRY = tk.Entry(window, width=int(configparser.get('gui-config', 'entry_width')), bg="silver", fg="black", font=('times', 23, ' bold '))
+    # global FARMER_ENTRY
+    # FARMER_ENTRY = tk.Entry(window, width=int(configparser.get('gui-config', 'entry_width')),validate='key', bg="silver", fg="black", font=('times', 23, 'bold'))
+    # FARMER_ENTRY['validatecommand'] = (FARMER_ENTRY.register(testVal), '%P', '%d')
+    # SECTOR_ENTRY = tk.Entry(window, width=int(configparser.get('gui-config', 'entry_width')), bg="silver", fg="black", font=('times', 23, ' bold '))
 
-    def remove_farmer():
-        FARMER_ENTRY.delete(first=0, last=22)
+    # def remove_farmer():
+    #     FARMER_ENTRY.delete(first=0, last=22)
 
-    def remove_sector():
-        SECTOR_ENTRY.delete(first=0, last=22)
+    # def remove_sector():
+    #     SECTOR_ENTRY.delete(first=0, last=22)
 
     def detail_fxn():
         pass
@@ -375,11 +381,11 @@ def vp_start_gui():
     def qr_scan_fxn():
         pass
 
-    clear_farmer = tk.Button(window, text="Clear", command=remove_farmer, fg="black", bg="#7cadc4", width=int(configparser.get('gui-config', 'clear_btn_width')), height=1, activebackground="#207096", font=('times', int(configparser.get('gui-config', 'font')), ' bold '))
-    clear_sector = tk.Button(window, text="Clear", command=remove_sector, fg="black", bg="#7cadc4", width=int(configparser.get('gui-config', 'clear_btn_width')), height=1, activebackground="#207096", font=('times', int(configparser.get('gui-config', 'font')), ' bold '))
+    # clear_farmer = tk.Button(window, text="Clear", command=remove_farmer, fg="black", bg="#7cadc4", width=int(configparser.get('gui-config', 'clear_btn_width')), height=1, activebackground="#207096", font=('times', int(configparser.get('gui-config', 'font')), ' bold '))
+    # clear_sector = tk.Button(window, text="Clear", command=remove_sector, fg="black", bg="#7cadc4", width=int(configparser.get('gui-config', 'clear_btn_width')), height=1, activebackground="#207096", font=('times', int(configparser.get('gui-config', 'font')), ' bold '))
 
-    save_details = tk.Button(window, text="Save", width=10, height=1, fg="black", bg="#44c1d4", font=('times', int(configparser.get('gui-config', 'font')), 'bold'), command=detail_fxn)
-    qr_code = tk.Button(window, text="Scan QR", width=10, height=1, fg="black", bg="#44c1d4", font=('times', int(configparser.get('gui-config', 'font')), 'bold'), command=qr_scan_fxn)
+    # save_details = tk.Button(window, text="Save", width=10, height=1, fg="black", bg="#44c1d4", font=('times', int(configparser.get('gui-config', 'font')), 'bold'), command=detail_fxn)
+    # qr_code = tk.Button(window, text="Scan QR", width=10, height=1, fg="black", bg="#44c1d4", font=('times', int(configparser.get('gui-config', 'font')), 'bold'), command=qr_scan_fxn)
 
     if is_login == True:
 
@@ -408,17 +414,18 @@ def vp_start_gui():
         endRecord.place_forget()
 
         startCamRecord.place_forget()
+        editDetails.place_forget()
 
-        farmer.place_forget()
-        sector.place_forget()
+        # farmer.place_forget()
+        # sector.place_forget()
 
-        FARMER_ENTRY.place_forget()
-        SECTOR_ENTRY.place_forget()
-        clear_farmer.place_forget()
-        clear_sector.place_forget()
+        # FARMER_ENTRY.place_forget()
+        # SECTOR_ENTRY.place_forget()
+        # clear_farmer.place_forget()
+        # clear_sector.place_forget()
 
-        save_details.place_forget()
-        qr_code.place_forget()
+        # save_details.place_forget()
+        # qr_code.place_forget()
 
     window.mainloop()
 
