@@ -68,18 +68,6 @@ def vp_start_gui():
         sleep(2)
         # refresh()
 
-    def show_frame(cap, writer, lmain):
-        while True:
-            _, frame = cap.read()
-            # frame = cv2.flip(frame, 1)
-            writer.write(frame)
-            cv2image = cv2.cvtColor(frame, cv2.COLOR_BGR2RGBA)
-            img = Image.fromarray(cv2image)
-            imgtk = ImageTk.PhotoImage(image=img)
-            lmain.imgtk = imgtk
-            lmain.configure(image=imgtk)
-            lmain.after(10, show_frame) 
-
 
     def start_record_video():
         startCamRecord.configure(bg='silver', state="disabled")
@@ -116,7 +104,7 @@ def vp_start_gui():
         headers = {
             "Content-Type": "application/json"
         }
-        response = requests.request("POST", "http://18.218.214.164:9955/api/auth/login", data=json.dumps(payload), headers=headers)
+        response = requests.request("POST", configparser.get('gui-config', 'ip') + "/api/auth/login", data=json.dumps(payload), headers=headers)
         status = False
         try:
             global userID
@@ -133,41 +121,54 @@ def vp_start_gui():
 
 
     def send_data_api():
-        txt_file = open("result.txt", "r").read()
-        li = txt_file.split("\n")
-        _1lb = li[1].split(" : ")[1]
-        _2lb = li[2].split(" : ")[1]
-        _3lb = li[3].split(" : ")[1]
-        head = {
-            "Content-Type": "application/json",
-            "Authorization": "Bearer " + token
-        }
-        load = {
-            "flcData": "",
-            "sectionId": 1,
-            "oneLeafBud": _1lb,
-            "twoLeafBud": _2lb,
-            "oneLeafBanjhi": "0",
-            "twoLeafBanjhi": "0",
-            "moderateShoot": "0",
-            "fineShoot": "0",
-            "scannedBy": userID,
-            "weighment": "0",
-            "oneBanjhiCount": "0",
-            "oneBudCount": "0",
-            "oneLeafCount": "0",
-            "twoLeafCount": "0",
-            "threeLeafCount": "0",
-            "userId": userID,
-            "dateDone": "12/11/2019"
-        }
-        resp = requests.request("POST", "http://18.218.214.164:9955/api/own-flc", data=json.dumps(load), headers=head)
-        if resp.json()['success'] == "true":
+        if configparser.get('gui-config', 'internet') == 'true':
+            txt_file = open("result.txt", "r").read()
+            li = txt_file.split("\n")
+            _1lb = li[1].split(" : ")[1]
+            _2lb = li[2].split(" : ")[1]
+            _3lb = li[3].split(" : ")[1]
+            head = {
+                "Content-Type": "application/json",
+                "Authorization": "Bearer " + token
+            }
+            load = {
+                "flcData": "",
+                "sectionId": 1,
+                "oneLeafBud": _1lb,
+                "twoLeafBud": _2lb,
+                "oneLeafBanjhi": "0",
+                "twoLeafBanjhi": "0",
+                "moderateShoot": "0",
+                "fineShoot": "0",
+                "scannedBy": userID,
+                "weighment": "0",
+                "oneBanjhiCount": "0",
+                "oneBudCount": "0",
+                "oneLeafCount": "0",
+                "twoLeafCount": "0",
+                "threeLeafCount": "0",
+                "userId": userID,
+                "dateDone": "12/11/2019"
+            }
+            resp = requests.request("POST", configparser.get('gui-config', 'ip') + "/api/own-flc", data=json.dumps(load), headers=head)
+            saved = resp.json()['success']
+        else:
+            txt_file = open("result.txt", "r").read()
+            li = txt_file.split("\n")
+
+            with open("testing.logs", "a") as out_file:
+                out_file.write("Datetime " + str(datetime.datetime.now())[:-7] + "\n")
+                out_file.write(txt_file)
+                out_file.write("\n")
+            saved = "true"
+
+        if saved == "true":
             msg_sent.configure(text="Data saved", fg="green")
             msg_sent.place(x=int(configparser.get('gui-config', 'data_saved_notification_x')), y=int(configparser.get('gui-config', 'data_saved_notification_y')))
         else:
             msg_sent.configure(text="Couldn't save to servers", fg="red")
             msg_sent.place(x=int(configparser.get('gui-config', 'data_saved_notification_x')), y=int(configparser.get('gui-config', 'data_saved_notification_y')))
+
 
 
     def place_on_screen():
@@ -235,13 +236,30 @@ def vp_start_gui():
         username1 = username_verify.get()
         password1 = password_verify.get()
 
-        status = login_api(username1, password1)
-        if status == True:
-            login_sucess()
-            global jetson_clock
-            jetson_clock = subprocess.Popen("exec " + jetson_clock_cmd, stdout= subprocess.PIPE, shell=True)
+        if configparser.get('gui-config', 'internet') == 'true':
+            status = login_api(username1, password1)
+            if status == True:
+                login_sucess()
+                global jetson_clock
+                jetson_clock = subprocess.Popen("exec " + jetson_clock_cmd, stdout= subprocess.PIPE, shell=True)
+            else:
+                user_not_found()
         else:
-            user_not_found()
+            list_of_files = os.listdir()
+            if username1 in list_of_files:
+                file1 = open(username1, "r")
+                verify = file1.read().splitlines()
+                if password1 in verify:
+                    global userName
+                    userName = username1
+                    login_sucess()
+                else:
+                    password_not_recognised()
+
+            else:
+                user_not_found()
+
+        
      
     # Designing popup for login success
      
