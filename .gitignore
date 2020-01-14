@@ -121,6 +121,9 @@ predictions.jpg
 test_data/*
 !test_data/ignore_me
 
+trainVideo/*
+!trainVideo/ignore_me
+
 weights/*
 !weights/ignore_me
 
