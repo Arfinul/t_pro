@@ -108,7 +108,6 @@ venv.bak/
 *.zip
 *.pdf
 *.list
-*.jpg
 *.MTS
 *.mp4
 *.avi
@@ -121,6 +120,9 @@ predictions.jpg
 # Flc folders to ignore
 test_data/*
 !test_data/ignore_me
+
+weights/*
+!weights/ignore_me
 
 reports/*
 !reports/ignore_me
