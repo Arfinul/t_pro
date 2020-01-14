@@ -124,6 +124,12 @@ test_data/*
 trainVideo/*
 !trainVideo/ignore_me
 
+training/*
+!training/ignore_me
+
+testing/*
+!testing/ignore_me
+
 weights/*
 !weights/ignore_me
 
