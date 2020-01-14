@@ -12,6 +12,7 @@
 #include <cmath>
 #include <ctime>
 #include <chrono>       // Agnext TIMER
+#include <sstream>      // Agnext video timestamp
 
 
 // It makes sense only for video-Camera (not for video-File)
@@ -180,8 +181,6 @@ std::vector<bbox_t> get_3d_coordinates(std::vector<bbox_t> bbox_vect, cv::Mat xy
 int count_1lb = 0;  // Agnext
 int count_2lb = 0; // Agnext
 int count_3lb = 0;// Agnext
-int count_1Banjhi = 0;// Agnext
-int count_2Banjhi = 0;// Agnext
 int count_coarse = 0; // Agnext
 int count_fine = 0; // Agnext
 float fine_percnt = 0.0;// Agnext
@@ -190,8 +189,6 @@ std::string frame_str = ""; // Agnext
 std::string _1lb_str = "";  // Agnext
 std::string _2lb_str = "";  // Agnext
 std::string _3lb_str = "";  // Agnext
-std::string _1Banjhi_str = "";  // Agnext
-std::string _2Banjhi_str = "";  // Agnext
 std::string coarse_str = "";    // Agnext
 std::string fine_per = "";  // Agnext
 std::string _timer = "";    // Agnext
@@ -200,51 +197,54 @@ std::string _timer = "";    // Agnext
 double duration;    // Agnext
 int seconds, minutes, hours; // Agnext
 
-cv::Mat black_image(720, 1280, CV_8UC3); // Agnext black image
+cv::Mat black_image(480, 640, CV_8UC3); // Agnext black image
+bool black_background = true;
 
 void draw_boxes(cv::Mat mat_img, std::vector<bbox_t> result_vec, std::vector<std::string> obj_names,
-    int current_det_fps = -1, int current_cap_fps = -1)
+    int current_det_fps = -1, int current_cap_fps = -1, bool black_screen=false)
 {
     // UNCOMMENTED FOR DEVELOPER MODE
     int const colors[6][3] = { { 1,0,1 },{ 0,0,1 },{ 0,1,1 },{ 0,1,0 },{ 1,1,0 },{ 1,0,0 } };		// Agnext
+    if (black_screen == false)
+    {
+        for (auto &i : result_vec) {
+            cv::Scalar color = obj_id_to_color(i.obj_id);
+            cv::rectangle(mat_img, cv::Rect(i.x, i.y, i.w, i.h), color, 2);
+            // if (obj_names.size() > i.obj_id) {
+            if (obj_names.size() > i.obj_id && result_vec.size() > 0) {
+                std::string obj_name = obj_names[i.obj_id];
+                if (i.track_id > 0) obj_name += " - " + std::to_string(i.track_id);
+                cv::Size const text_size = getTextSize(obj_name, cv::FONT_HERSHEY_COMPLEX_SMALL, 1.2, 2, 0);
+                int max_width = (text_size.width > i.w + 2) ? text_size.width : (i.w + 2);
+                max_width = std::max(max_width, (int)i.w + 2);
+                //max_width = std::max(max_width, 283);
+                std::string coords_3d;
+                if (!std::isnan(i.z_3d)) {
+                    std::stringstream ss;
+                    // ss << std::fixed << std::setprecision(2) << "x:" << i.x_3d << "m y:" << i.y_3d << "m z:" << i.z_3d << "m ";  // Agnext, originall uncommented
+                    coords_3d = ss.str();
+                    cv::Size const text_size_3d = getTextSize(ss.str(), cv::FONT_HERSHEY_COMPLEX_SMALL, 0.8, 1, 0);
+                    int const max_width_3d = (text_size_3d.width > i.w + 2) ? text_size_3d.width : (i.w + 2);
+                    if (max_width_3d > max_width) max_width = max_width_3d;
+                }
 
-    for (auto &i : result_vec) {
-        cv::Scalar color = obj_id_to_color(i.obj_id);
-        cv::rectangle(mat_img, cv::Rect(i.x, i.y, i.w, i.h), color, 2);
-        // if (obj_names.size() > i.obj_id) {
-        if (obj_names.size() > i.obj_id && result_vec.size() > 0) {
-            std::string obj_name = obj_names[i.obj_id];
-            if (i.track_id > 0) obj_name += " - " + std::to_string(i.track_id);
-            cv::Size const text_size = getTextSize(obj_name, cv::FONT_HERSHEY_COMPLEX_SMALL, 1.2, 2, 0);
-            int max_width = (text_size.width > i.w + 2) ? text_size.width : (i.w + 2);
-            max_width = std::max(max_width, (int)i.w + 2);
-            //max_width = std::max(max_width, 283);
-            std::string coords_3d;
-            if (!std::isnan(i.z_3d)) {
-                std::stringstream ss;
-                // ss << std::fixed << std::setprecision(2) << "x:" << i.x_3d << "m y:" << i.y_3d << "m z:" << i.z_3d << "m ";  // Agnext, originall uncommented
-                coords_3d = ss.str();
-                cv::Size const text_size_3d = getTextSize(ss.str(), cv::FONT_HERSHEY_COMPLEX_SMALL, 0.8, 1, 0);
-                int const max_width_3d = (text_size_3d.width > i.w + 2) ? text_size_3d.width : (i.w + 2);
-                if (max_width_3d > max_width) max_width = max_width_3d;
+                cv::rectangle(mat_img, cv::Point2f(std::max((int)i.x - 1, 0), std::max((int)i.y - 35, 0)),
+                    cv::Point2f(std::min((int)i.x + max_width, mat_img.cols - 1), std::min((int)i.y, mat_img.rows - 1)),
+                    color, CV_FILLED, 8, 0);
+                // putText(mat_img, obj_name, cv::Point2f(i.x, i.y - 16), cv::FONT_HERSHEY_COMPLEX_SMALL, 1.2, cv::Scalar(0, 0, 0), 2); // original
+
+                // std::string frame_str = "FRAME: " + std::to_string(frame_id);
+                // putText(mat_img, frame_str, cv::Point2f(10, 50), cv::FONT_HERSHEY_COMPLEX_SMALL, 1.2, cv::Scalar(0, 255, 255), 1);  // Agnext
+
+                putText(mat_img, obj_name, cv::Point2f(i.x, i.y - 16), cv::FONT_HERSHEY_COMPLEX_SMALL, 1, cv::Scalar(0, 0, 0), 2); // Agnext
+                if(!coords_3d.empty()) putText(mat_img, coords_3d, cv::Point2f(i.x, i.y-1), cv::FONT_HERSHEY_COMPLEX_SMALL, 0.8, cv::Scalar(0, 0, 0), 1);
             }
-
-            cv::rectangle(mat_img, cv::Point2f(std::max((int)i.x - 1, 0), std::max((int)i.y - 35, 0)),
-                cv::Point2f(std::min((int)i.x + max_width, mat_img.cols - 1), std::min((int)i.y, mat_img.rows - 1)),
-                color, CV_FILLED, 8, 0);
-            // putText(mat_img, obj_name, cv::Point2f(i.x, i.y - 16), cv::FONT_HERSHEY_COMPLEX_SMALL, 1.2, cv::Scalar(0, 0, 0), 2); // original
-
-            // std::string frame_str = "FRAME: " + std::to_string(frame_id);
-            // putText(mat_img, frame_str, cv::Point2f(10, 50), cv::FONT_HERSHEY_COMPLEX_SMALL, 1.2, cv::Scalar(0, 255, 255), 1);  // Agnext
-
-            putText(mat_img, obj_name, cv::Point2f(i.x, i.y - 16), cv::FONT_HERSHEY_COMPLEX_SMALL, 1, cv::Scalar(0, 0, 0), 2); // Agnext
-            if(!coords_3d.empty()) putText(mat_img, coords_3d, cv::Point2f(i.x, i.y-1), cv::FONT_HERSHEY_COMPLEX_SMALL, 0.8, cv::Scalar(0, 0, 0), 1);
         }
     }
     if (current_det_fps >= 0 && current_cap_fps >= 0) {
 
-        //std::string fps_str = "FPS detection: " + std::to_string(current_det_fps) + "   FPS capture: " + std::to_string(current_cap_fps);
-        //putText(mat_img, fps_str, cv::Point2f(10, 20), cv::FONT_HERSHEY_COMPLEX_SMALL, 1.2, cv::Scalar(50, 255, 0), 2);
+        std::string fps_str = "FPS detection: " + std::to_string(current_det_fps) + "   FPS capture: " + std::to_string(current_cap_fps);
+        putText(mat_img, fps_str, cv::Point2f(10, 20), cv::FONT_HERSHEY_COMPLEX_SMALL, 1.2, cv::Scalar(50, 255, 0), 2);
     }
 }
 #endif    // OPENCV
@@ -260,7 +260,7 @@ void show_console_result(std::vector<bbox_t> const result_vec, std::vector<std::
     }
 }
 
-void writeFile(std::string frame_str, std::string _1lb_str, std::string _2lb_str, std::string _3lb_str, std::string _1Banjhi_str, std::string _2Banjhi_str, std::string coarse_str, std::string fine_per, std::string _timer) 
+void writeFile(std::string frame_str, std::string _1lb_str, std::string _2lb_str, std::string _3lb_str, std::string coarse_str, std::string fine_per, std::string _timer) 
 {
   std::ofstream myfile;
   myfile.open("result.txt");    // Agnext changes file name
@@ -268,8 +268,6 @@ void writeFile(std::string frame_str, std::string _1lb_str, std::string _2lb_str
   myfile <<_1lb_str<<"\n";
   myfile <<_2lb_str<<"\n";
   myfile <<_3lb_str<<"\n";
-  myfile <<_1Banjhi_str<<"\n";
-  myfile <<_2Banjhi_str<<"\n";
   myfile <<coarse_str<<"\n";
   myfile <<fine_per<<"\n";
   myfile <<_timer<<"\n";
@@ -335,12 +333,20 @@ int main(int argc, char *argv[])
     }
     else if (argc > 1) filename = argv[1];
 
-    float const thresh = (argc > 5) ? std::stof(argv[5]) : 0.30 ;
+    float const thresh = (argc > 5) ? std::stof(argv[5]) : 0.2;
 
     Detector detector(cfg_file, weights_file);
 
     auto obj_names = objects_names_from_file(names_file);
-    std::string out_videofile = "result.avi";
+    
+    // timestamp for videoname
+    auto t = std::time(nullptr);
+    auto tm = *std::localtime(&t);
+    std::ostringstream oss;
+    oss << std::put_time(&tm, "%d-%m-%Y %H-%M-%S");
+    auto str = oss.str();
+
+    std::string out_videofile = "flc_utils/trainVideo/testing/result_" + str + ".avi";
     bool const save_output_videofile = true;   // true - for history
     bool const send_network = false;        // true - for remote detection
     bool const use_kalman_filter = true;   // true - for stationary camera
@@ -442,6 +448,7 @@ int main(int argc, char *argv[])
                     std::shared_ptr<image_t> det_image;
                     std::vector<bbox_t> result_vec;
                     cv::Mat draw_frame;
+                    cv::Mat save_video_frame;
                     bool new_detection;
                     uint64_t frame_id;
                     bool exit_flag;
@@ -600,12 +607,16 @@ int main(int argc, char *argv[])
                             result_vec = get_3d_coordinates(result_vec, detection_data.zed_cloud);
                         }
 
+                        cv::Mat copy_draw_frame = draw_frame.clone();
                         //small_preview.set(draw_frame, result_vec);
                         //large_preview.set(draw_frame, result_vec);
-                        // resize(draw_frame, draw_frame, cv::Size(1280, 720), 0, 0, CV_INTER_CUBIC); 	// Agnext FRAME RESIZE
+                        if (black_background){
+                            resize(draw_frame, draw_frame, cv::Size(640, 480), 0, 0, CV_INTER_CUBIC); 	// Agnext FRAME RESIZE
+                            black_image.copyTo(draw_frame(cv::Rect(0,0, black_image.cols, black_image.rows)));      // Agnext (put black image as bg) // COMMENTED FOR DEVELOPER MODE
+
+                        }
                         // resize(draw_frame, draw_frame, cv::Size(1920, 1080), 0, 0, CV_INTER_CUBIC); 	// Agnext FRAME RESIZE
-                        // black_image.copyTo(draw_frame(cv::Rect(0,0, black_image.cols, black_image.rows)));      // Agnext (put black image as bg) // COMMENTED FOR DEVELOPER MODE
-                        draw_boxes(draw_frame, result_vec, obj_names, current_fps_det, current_fps_cap);
+                        draw_boxes(draw_frame, result_vec, obj_names, current_fps_det, current_fps_cap, black_background);
                         show_console_result(result_vec, obj_names, detection_data.frame_id); // Agnext, originall was commented // UNCOMMENTED FOR DEVELOPER MODE
                         for (auto &i : result_vec) {        // Agnext, added for counting fine counts
                             if (obj_names.size() > i.obj_id) 
@@ -618,20 +629,14 @@ int main(int argc, char *argv[])
                                 else if (obj_names[i.obj_id] == "3LB"){
                                     count_3lb = i.track_id;
                                 }
-                                else if (obj_names[i.obj_id] == "1Banjhi"){
-                                    count_1Banjhi = i.track_id;
-                                }
-                                else if (obj_names[i.obj_id] == "2Banjhi"){
-                                    count_2Banjhi = i.track_id;
-                                }
                                 else if (obj_names[i.obj_id] == "Coarse"){
                                     count_coarse = i.track_id;
                                 }
                         }
 
-                        //putText(draw_frame, "Press key 'q' once to freeze, twice to quit.", cv::Point2f(50, 450), cv::FONT_HERSHEY_COMPLEX_SMALL, 1, cv::Scalar(50, 255, 0), 1); // Agnext
+                        putText(draw_frame, "Press key 'q' once to freeze, twice to quit.", cv::Point2f(50, 450), cv::FONT_HERSHEY_COMPLEX_SMALL, 1, cv::Scalar(50, 255, 0), 1); // Agnext
 
-                        //frame_str = "FRAME : " + std::to_string(detection_data.frame_id); // Agnext
+                        frame_str = "FRAME : " + std::to_string(detection_data.frame_id); // Agnext
                         putText(draw_frame, frame_str, cv::Point2f(10, 50), cv::FONT_HERSHEY_COMPLEX_SMALL, 1.2, cv::Scalar(50, 255, 0), 2); // Agnext
 
                         _1lb_str = "1LB : " + std::to_string(count_1lb); // Agnext
@@ -643,20 +648,14 @@ int main(int argc, char *argv[])
                         _3lb_str = "3LB : " + std::to_string(count_3lb); // Agnext
                         putText(draw_frame, _3lb_str, cv::Point2f(10, 160), cv::FONT_HERSHEY_COMPLEX_SMALL, 1.2, cv::Scalar(0, 255, 255), 1);  // Agnext
 
-                        _1Banjhi_str = "1Banjhi : " + std::to_string(count_1Banjhi); // Agnext
-                        putText(draw_frame, _1Banjhi_str, cv::Point2f(10, 190), cv::FONT_HERSHEY_COMPLEX_SMALL, 1.2, cv::Scalar(0, 255, 255), 1);  // Agnext
-
-                        _2Banjhi_str = "2Banjhi : " + std::to_string(count_2Banjhi); // Agnext
-                        putText(draw_frame, _2Banjhi_str, cv::Point2f(10, 220), cv::FONT_HERSHEY_COMPLEX_SMALL, 1.2, cv::Scalar(0, 255, 255), 1);  // Agnext
-
                         coarse_str = "Coarse : " + std::to_string(count_coarse); // Agnext
-                        putText(draw_frame, coarse_str, cv::Point2f(10, 250), cv::FONT_HERSHEY_COMPLEX_SMALL, 1.2, cv::Scalar(0, 255, 255), 1);  // Agnext
+                        putText(draw_frame, coarse_str, cv::Point2f(10, 190), cv::FONT_HERSHEY_COMPLEX_SMALL, 1.2, cv::Scalar(0, 255, 255), 1);  // Agnext
 
-                        count_fine = count_1lb + count_2lb + count_3lb + count_1Banjhi ; // Agnext
-                        fine_percnt = (count_fine * 100) / float(count_fine + count_coarse + count_2Banjhi); // Agnext
+                        count_fine = count_1lb + count_2lb + count_3lb; // Agnext
+                        fine_percnt = (count_fine * 100) / float(count_fine + count_coarse); // Agnext
 
                         fine_per = "FLC % : " + std::to_string(fine_percnt); // Agnext
-                        putText(draw_frame, fine_per.substr(0,12), cv::Point2f(10, 280), cv::FONT_HERSHEY_COMPLEX_SMALL, 1.2, cv::Scalar(0, 255, 255), 2);  // Agnext
+                        putText(draw_frame, fine_per.substr(0,12), cv::Point2f(10, 250), cv::FONT_HERSHEY_COMPLEX_SMALL, 1.2, cv::Scalar(0, 255, 255), 2);  // Agnext
 
                         // TIMER
                         auto t_end = std::chrono::high_resolution_clock::now(); // Agnext
@@ -667,13 +666,14 @@ int main(int argc, char *argv[])
                         hours = minutes / 60;// Agnext
 
                         _timer = "TIMER : " + std::to_string(int(hours)) + "H " + std::to_string(int(minutes%60)) + "M " + std::to_string(seconds%60) + "S"; // Agnext
-                        putText(draw_frame, _timer, cv::Point2f(10, 310), cv::FONT_HERSHEY_COMPLEX_SMALL, 1.2, cv::Scalar(0, 255, 255), 1);  // Agnext
+                        putText(draw_frame, _timer, cv::Point2f(10, 280), cv::FONT_HERSHEY_COMPLEX_SMALL, 1.2, cv::Scalar(0, 255, 255), 1);  // Agnext
 
                         //large_preview.draw(draw_frame);
                         //small_preview.draw(draw_frame, true);
 
                         detection_data.result_vec = result_vec;
                         detection_data.draw_frame = draw_frame;
+                        detection_data.save_video_frame = copy_draw_frame;
                         draw2show.send(detection_data);
                         if (send_network) draw2net.send(detection_data);
                         if (output_video.isOpened()) draw2write.send(detection_data);
@@ -690,8 +690,8 @@ int main(int argc, char *argv[])
                         cv::Mat output_frame;
                         do {
                             detection_data = draw2write.receive();
-                            if(detection_data.draw_frame.channels() == 4) cv::cvtColor(detection_data.draw_frame, output_frame, CV_RGBA2RGB);
-                            else output_frame = detection_data.draw_frame;
+                            if(detection_data.save_video_frame.channels() == 4) cv::cvtColor(detection_data.save_video_frame, output_frame, CV_RGBA2RGB);
+                            else output_frame = detection_data.save_video_frame;
                             // resize(output_frame, output_frame, cv::Size(1280, 720), 0, 0, CV_INTER_CUBIC); 	// Agnext FRAME RESIZE
                             // resize(output_frame, output_frame, cv::Size(1920, 1080), 0, 0, CV_INTER_CUBIC); 	// Agnext FRAME RESIZE
                             output_video << output_frame;
@@ -740,14 +740,14 @@ int main(int argc, char *argv[])
                     // resize(draw_frame, draw_frame, cv::Size(1280, 720), 0, 0, CV_INTER_CUBIC); 	// Agnext FRAME RESIZE
                     // resize(draw_frame, draw_frame, cv::Size(1920, 1080), 0, 0, CV_INTER_CUBIC); 
                     cv::imshow("window", draw_frame);
-                    cv::moveWindow("window", 500, 200);     // Agnext (move window for tkinter interface)
+                    cv::moveWindow("window", 200, 100);     // Agnext (move window for tkinter interface)
 
                     int key = cv::waitKey(3);    // 3 or 16ms
                     if (key == 'f') show_small_boxes = !show_small_boxes;
                     if (key == 'p') while (true) if (cv::waitKey(100) == 'p') break;
                     //if (key == 'e') extrapolate_flag = !extrapolate_flag;
                     if (key == 27 || key == 'q') { 
-                        writeFile(frame_str, _1lb_str, _2lb_str, _3lb_str, _1Banjhi_str, _2Banjhi_str, coarse_str, fine_per.substr(0,12), _timer); // Agnext write to file
+                        writeFile(frame_str, _1lb_str, _2lb_str, _3lb_str, coarse_str, fine_per.substr(0,12), _timer); // Agnext write to file
                         exit_flag = true;}   // Agnext (Exit on p key as well)
 
                     //std::cout << " current_fps_det = " << current_fps_det << ", current_fps_cap = " << current_fps_cap << std::endl;
