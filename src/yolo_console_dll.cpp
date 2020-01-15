@@ -186,6 +186,13 @@ int count_2Banjhi = 0;// Agnext
 int count_coarse = 0; // Agnext
 int count_fine = 0; // Agnext
 float fine_percnt = 0.0;// Agnext
+float perc_count_1lb = 0.0; //Agnext
+float perc_count_2lb = 0.0; //Agnext
+float perc_count_3lb = 0.0; //Agnext
+float perc_count_1Banjhi = 0.0; //Agnext
+float perc_count_2Banjhi = 0.0; //Agnext
+float perc_count_coarse = 0.0; //Agnext
+int total=0; //Agnext
 
 std::string frame_str = ""; // Agnext
 std::string _1lb_str = "";  // Agnext
@@ -645,31 +652,39 @@ int main(int argc, char *argv[])
                                     count_coarse = i.track_id;
                                 }
                         }
+                        
+                        total = count_1lb + count_2lb + count_3lb + count_1Banjhi + count_2Banjhi + count_coarse;
 
                         //putText(draw_frame, "Press key 'q' once to freeze, twice to quit.", cv::Point2f(50, 450), cv::FONT_HERSHEY_COMPLEX_SMALL, 1, cv::Scalar(50, 255, 0), 1); // Agnext
 
                         frame_str = "FRAME : " + std::to_string(detection_data.frame_id); // Agnext
                         putText(draw_frame, frame_str, cv::Point2f(10, 50), cv::FONT_HERSHEY_COMPLEX_SMALL, 1.2, cv::Scalar(50, 255, 0), 2); // Agnext
 
-                        _1lb_str = "1LB : " + std::to_string(count_1lb); // Agnext
-                        putText(draw_frame, _1lb_str, cv::Point2f(10, 100), cv::FONT_HERSHEY_COMPLEX_SMALL, 1.2, cv::Scalar(0, 255, 255), 1);  // Agnext
+                        perc_count_1lb = (count_1lb*100)/total;
+                        _1lb_str = "1LB %: " + std::to_string(perc_count_1lb); // Agnext
+                        putText(draw_frame, _1lb_str.substr(0,11), cv::Point2f(10, 100), cv::FONT_HERSHEY_COMPLEX_SMALL, 1.2, cv::Scalar(0, 255, 255), 1);  // Agnext
 
-                        _2lb_str = "2LB : " + std::to_string(count_2lb); // Agnext
-                        putText(draw_frame, _2lb_str, cv::Point2f(10, 130), cv::FONT_HERSHEY_COMPLEX_SMALL, 1.2, cv::Scalar(0, 255, 255), 1);  // Agnext
+                        perc_count_2lb = (count_2lb*100)/total;
+                        _2lb_str = "2LB %: " + std::to_string(perc_count_2lb); // Agnext
+                        putText(draw_frame, _2lb_str.substr(0,11), cv::Point2f(10, 130), cv::FONT_HERSHEY_COMPLEX_SMALL, 1.2, cv::Scalar(0, 255, 255), 1);  // Agnext
 
-                        _3lb_str = "3LB : " + std::to_string(count_3lb); // Agnext
-                        putText(draw_frame, _3lb_str, cv::Point2f(10, 160), cv::FONT_HERSHEY_COMPLEX_SMALL, 1.2, cv::Scalar(0, 255, 255), 1);  // Agnext
+                        perc_count_3lb = (count_3lb*50)/total;
+                        _3lb_str = "3LB %: " + std::to_string(perc_count_3lb); // Agnext
+                        putText(draw_frame, _3lb_str.substr(0,11), cv::Point2f(10, 160), cv::FONT_HERSHEY_COMPLEX_SMALL, 1.2, cv::Scalar(0, 255, 255), 1);  // Agnext
 
-                        _1Banjhi_str = "1Banjhi : " + std::to_string(count_1Banjhi); // Agnext	
-                        putText(draw_frame, _1Banjhi_str, cv::Point2f(10, 190), cv::FONT_HERSHEY_COMPLEX_SMALL, 1.2, cv::Scalar(0, 255, 255), 1);  // Agnext	
+                        perc_count_1Banjhi = (count_1Banjhi*100)/total;
+                        _1Banjhi_str = "1Banjhi %: " + std::to_string(perc_count_1Banjhi); // Agnext	
+                        putText(draw_frame, _1Banjhi_str.substr(0,15), cv::Point2f(10, 190), cv::FONT_HERSHEY_COMPLEX_SMALL, 1.2, cv::Scalar(0, 255, 255), 1);  // Agnext	
                         
-                        _2Banjhi_str = "2Banjhi : " + std::to_string(count_2Banjhi); // Agnext	
-                        putText(draw_frame, _2Banjhi_str, cv::Point2f(10, 220), cv::FONT_HERSHEY_COMPLEX_SMALL, 1.2, cv::Scalar(0, 255, 255), 1);  // Agnext
+                        perc_count_2Banjhi = (count_2Banjhi*100)/total;
+                        _2Banjhi_str = "2Banjhi %: " + std::to_string(perc_count_2Banjhi); // Agnext	
+                        putText(draw_frame, _2Banjhi_str.substr(0,15), cv::Point2f(10, 220), cv::FONT_HERSHEY_COMPLEX_SMALL, 1.2, cv::Scalar(0, 255, 255), 1);  // Agnext
 
-                        coarse_str = "Coarse : " + std::to_string(count_coarse); // Agnext
-                        putText(draw_frame, coarse_str, cv::Point2f(10, 250), cv::FONT_HERSHEY_COMPLEX_SMALL, 1.2, cv::Scalar(0, 255, 255), 1);  // Agnext
+                        perc_count_coarse = (count_coarse*100)/total;
+                        coarse_str = "Coarse %: " + std::to_string(perc_count_coarse); // Agnext
+                        putText(draw_frame, coarse_str.substr(0,14), cv::Point2f(10, 250), cv::FONT_HERSHEY_COMPLEX_SMALL, 1.2, cv::Scalar(0, 255, 255), 1);  // Agnext
 
-                        count_fine = count_1lb + count_2lb + count_3lb  + count_1Banjhi; // Agnext
+                        count_fine = count_1lb + count_2lb + (count_3lb/2)  + count_1Banjhi; // Agnext
                         fine_percnt = (count_fine * 100) / float(count_fine + count_coarse + count_2Banjhi); // Agnext
 
                         fine_per = "FLC % : " + std::to_string(fine_percnt); // Agnext
@@ -835,4 +850,5 @@ int main(int argc, char *argv[])
 
     return 0;
 }
+
 

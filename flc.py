@@ -138,9 +138,11 @@ def vp_start_gui():
         if configparser.get('gui-config', 'internet') == 'true':
             txt_file = open("result.txt", "r").read()
             li = txt_file.split("\n")
-            _1lb = li[1].split(" : ")[1]
-            _2lb = li[2].split(" : ")[1]
-            _3lb = li[3].split(" : ")[1]
+            _1lb = round(li[1].split(": ")[1], 2)
+            _2lb = round(li[2].split(": ")[1], 2)
+            _3lb = round(li[3].split(": ")[1], 2)
+            _1bj = round(li[4].split(": ")[1], 2)
+            _2bj = round(li[5].split(": ")[1], 2)
             head = {
                 "Content-Type": "application/json",
                 "Authorization": "Bearer " + token
@@ -150,8 +152,8 @@ def vp_start_gui():
                 "sectionId": 1,
                 "oneLeafBud": _1lb,
                 "twoLeafBud": _2lb,
-                "oneLeafBanjhi": "0",
-                "twoLeafBanjhi": "0",
+                "oneLeafBanjhi": _1bj,
+                "twoLeafBanjhi": _2bj,
                 "moderateShoot": "0",
                 "fineShoot": "0",
                 "scannedBy": userID,
@@ -347,6 +349,17 @@ def vp_start_gui():
 
     def clear_search_2(event):
         password_login_entry.delete(0, tk.END)
+
+    def popup_keyboard(event):
+    	pop = subprocess.Popen("exec " + "onboard", stdout= subprocess.PIPE, shell=True)
+
+    def action_1(event):
+    	clear_search_1(event)
+    	popup_keyboard(event)
+
+    def action_2(event):
+    	clear_search_2(event)
+    	popup_keyboard(event)
      
     global username_verify
     global password_verify
@@ -359,11 +372,11 @@ def vp_start_gui():
    
     username_login_entry = Entry(window, textvariable=username_verify)
     username_login_entry.insert(1, "Enter username")
-    username_login_entry.bind("<Button-1>", clear_search_1)
+    username_login_entry.bind("<Button-1>", action_1)
     
     password_login_entry = Entry(window, textvariable=password_verify, show= '*')
     password_login_entry.insert(1, "Enter password")
-    password_login_entry.bind("<Button-1>", clear_search_2)
+    password_login_entry.bind("<Button-1>", action_2)
     
     
     signin = tk.Button(window, text="Login", command=login_verify, fg="white", bg="#539051", width=int(configparser.get('gui-config', 'signin_btn_width')),height=int(configparser.get('gui-config', 'signin_btn_height')), activebackground = "Grey" , font=('times', 15, 'bold'))
@@ -376,8 +389,8 @@ def vp_start_gui():
         place_on_screen()
 
     else:
-        username_login_entry.place(x=570, y=200)
-        password_login_entry.place(x=570, y=230)
+        username_login_entry.place(x=570, y=140)
+        password_login_entry.place(x=570, y=170)
 
         global panel_bg
         img_bg = ImageTk.PhotoImage(Image.open(configparser.get('gui-config', 'bg_image')))
@@ -400,3 +413,4 @@ if __name__ == '__main__':
         vp_start_gui()
 
     vp_start_gui()
+
