@@ -854,7 +854,7 @@ public:
 
 
 
-    track_kalman_t(int _max_objects = 1000, int _min_frames = 3, int classes_number = 6, float _max_dist = 40, cv::Size _img_size = cv::Size(10000, 10000)) :
+    track_kalman_t(int _max_objects = 1000, int _min_frames = 3, int classes_number = 7, float _max_dist = 40, cv::Size _img_size = cv::Size(10000, 10000)) :
         max_objects(_max_objects), min_frames(_min_frames), max_dist(_max_dist), img_size(_img_size),
         track_id_vec(classes_number)
     {

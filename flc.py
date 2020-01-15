@@ -17,14 +17,18 @@ import signal
 import configparser
 
 configparser = configparser.RawConfigParser()   
+os.chdir("/home/agnext/Documents/flc")  # Agnext
+
 configparser.read('flc_utils/screens/touchScreen/gui.cfg')
-
-# os.chdir("/home/agnext/Music/darknet")  # Agnext (Desktop icon path issue fix)
-
 is_login = False
 userName = ""
-cmd = './uselib cfg/jorhat_Dec.names cfg/jorhat_Dec.cfg weights/jorhat_Dec_final.weights web_camera'
-cmd_camera_setting = 'ecam_tk1_guvcview'
+#cmd = './uselib cfg/jorhat_Dec.names cfg/jorhat_Dec.cfg weights/jorhat_Dec_final.weights web_camera'
+cmd = """
+export LD_LIBRARY_PATH=/home/agnext/Documents/flc/
+./uselib cfg/jorhat_Dec.names cfg/jorhat_Dec.cfg weights/jorhat_Dec_final.weights web_camera
+"""
+
+cmd_camera_setting = "/usr/local/ecam_tk1/bin/ecam_tk1_guvcview"
 jetson_clock_cmd = 'jetson_clocks'
 record_cam_cmd = "python3 flc_utils/guiHelpers/record_cam_gui.py"
 edit_details_cmd = "python3 flc_utils/guiHelpers/farmer_section.py"
@@ -53,6 +57,8 @@ def vp_start_gui():
         try:
             global p
             p = subprocess.Popen("exec " + cmd, stdout= subprocess.PIPE, shell=True)
+            #resp = requests.request("GET", "http://127.0.0.1:8000/cam-start")
+            #print(resp.json())
             endRecord.configure(bg="#539051", state="active")
             startRecord.place_forget()            
             endRecord.place(x=int(configparser.get('gui-config', 'endrecord_btn_x')), y=int(configparser.get('gui-config', 'endrecord_btn_y')))

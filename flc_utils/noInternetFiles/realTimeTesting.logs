@@ -20,3 +20,329 @@ Coarse : 0
 FLC % : nan
 TIMER : 0H 0M 20S
 
+Datetime 2020-01-14 15:38:22
+FRAME : 1525
+1LB : 0
+2LB : 0
+3LB : 0
+Coarse : 0
+FLC % : nan
+TIMER : 0H 0M 20S
+
+Datetime 2020-01-14 15:42:40
+FRAME : 3144
+1LB : 0
+2LB : 3
+3LB : 1
+Coarse : 4
+FLC % : 50.0
+TIMER : 0H 0M 37S
+
+Datetime 2020-01-14 16:20:14
+FRAME : 6063
+1LB : 0
+2LB : 2
+3LB : 2
+1Banjhi : 0
+2Banjhi : 3
+Coarse : 11
+FLC % : 22.2
+TIMER : 0H 1M 39S
+
+Datetime 2020-01-14 16:20:41
+FRAME : 241
+1LB : 0
+2LB : 0
+3LB : 0
+1Banjhi : 0
+2Banjhi : 0
+Coarse : 0
+FLC % : nan
+TIMER : 0H 0M 6S
+
+Datetime 2020-01-14 16:23:32
+FRAME : 4420
+1LB : 0
+2LB : 0
+3LB : 0
+1Banjhi : 0
+2Banjhi : 0
+Coarse : 0
+FLC % : nan
+TIMER : 0H 0M 48S
+
+Datetime 2020-01-14 16:23:57
+FRAME : 862
+1LB : 0
+2LB : 2
+3LB : 1
+1Banjhi : 0
+2Banjhi : 0
+Coarse : 0
+FLC % : 100.
+TIMER : 0H 0M 17S
+
+Datetime 2020-01-14 16:27:05
+FRAME : 862
+1LB : 0
+2LB : 2
+3LB : 1
+1Banjhi : 0
+2Banjhi : 0
+Coarse : 0
+FLC % : 100.
+TIMER : 0H 0M 17S
+
+Datetime 2020-01-14 16:28:46
+FRAME : 8899
+1LB : 0
+2LB : 0
+3LB : 0
+1Banjhi : 0
+2Banjhi : 0
+Coarse : 0
+FLC % : nan
+TIMER : 0H 1M 34S
+
+Datetime 2020-01-14 16:35:40
+FRAME : 8899
+1LB : 0
+2LB : 0
+3LB : 0
+1Banjhi : 0
+2Banjhi : 0
+Coarse : 0
+FLC % : nan
+TIMER : 0H 1M 34S
+
+Datetime 2020-01-14 17:03:48
+FRAME : 506
+1LB : 0
+2LB : 0
+3LB : 0
+1Banjhi : 0
+2Banjhi : 0
+Coarse : 0
+FLC % : nan
+TIMER : 0H 0M 8S
+
+Datetime 2020-01-14 17:04:35
+FRAME : 2879
+1LB : 0
+2LB : 0
+3LB : 0
+1Banjhi : 0
+2Banjhi : 2
+Coarse : 0
+FLC % : 0.00
+TIMER : 0H 0M 29S
+
+Datetime 2020-01-14 17:09:01
+FRAME : 1473
+1LB : 0
+2LB : 0
+3LB : 0
+1Banjhi : 0
+2Banjhi : 0
+Coarse : 0
+FLC % : nan
+TIMER : 0H 0M 17S
+
+Datetime 2020-01-14 17:10:33
+FRAME : 976
+1LB : 0
+2LB : 0
+3LB : 0
+1Banjhi : 0
+2Banjhi : 0
+Coarse : 0
+FLC % : nan
+TIMER : 0H 0M 12S
+
+Datetime 2020-01-14 17:16:38
+FRAME : 384
+1LB : 0
+2LB : 0
+3LB : 0
+1Banjhi : 0
+2Banjhi : 0
+Coarse : 0
+FLC % : nan
+TIMER : 0H 0M 7S
+
+Datetime 2020-01-14 18:20:18
+FRAME : 825
+1LB : 0
+2LB : 0
+3LB : 0
+1Banjhi : 0
+2Banjhi : 0
+Coarse : 0
+FLC % : nan
+TIMER : 0H 0M 14S
+
+Datetime 2020-01-14 18:26:49
+FRAME : 382
+1LB : 0
+2LB : 0
+3LB : 0
+1Banjhi : 0
+2Banjhi : 0
+Coarse : 0
+FLC % : nan
+TIMER : 0H 0M 8S
+
+Datetime 2020-01-15 09:48:35
+FRAME : 341
+1LB : 0
+2LB : 0
+3LB : 0
+1Banjhi : 0
+2Banjhi : 0
+Coarse : 0
+FLC % : nan
+TIMER : 0H 0M 8S
+
+Datetime 2020-01-15 09:56:42
+FRAME : 338
+1LB : 0
+2LB : 0
+3LB : 0
+1Banjhi : 0
+2Banjhi : 0
+Coarse : 0
+FLC % : nan
+TIMER : 0H 0M 7S
+
+Datetime 2020-01-15 10:57:47
+FRAME : 1267
+1LB : 0
+2LB : 0
+3LB : 0
+1Banjhi : 0
+2Banjhi : 0
+Coarse : 0
+FLC % : nan
+TIMER : 0H 0M 15S
+
+Datetime 2020-01-15 11:57:38
+FRAME : 867
+1LB : 0
+2LB : 0
+3LB : 0
+1Banjhi : 0
+2Banjhi : 0
+Coarse : 0
+FLC % : nan
+TIMER : 0H 0M 11S
+
+Datetime 2020-01-15 12:11:44
+FRAME : 797
+1LB : 0
+2LB : 0
+3LB : 0
+1Banjhi : 0
+2Banjhi : 0
+Coarse : 0
+FLC % : nan
+TIMER : 0H 0M 11S
+
+Datetime 2020-01-15 12:34:43
+FRAME : 1978
+1LB : 0
+2LB : 0
+3LB : 0
+1Banjhi : 0
+2Banjhi : 0
+Coarse : 0
+FLC % : nan
+TIMER : 0H 0M 23S
+
+Datetime 2020-01-15 12:37:38
+FRAME : 380
+1LB : 0
+2LB : 0
+3LB : 0
+1Banjhi : 0
+2Banjhi : 0
+Coarse : 0
+FLC % : nan
+TIMER : 0H 0M 7S
+
+Datetime 2020-01-15 12:45:13
+FRAME : 367
+1LB : 0
+2LB : 0
+3LB : 0
+1Banjhi : 0
+2Banjhi : 0
+Coarse : 0
+FLC % : nan
+TIMER : 0H 0M 7S
+
+Datetime 2020-01-15 12:47:54
+FRAME : 367
+1LB : 0
+2LB : 0
+3LB : 0
+1Banjhi : 0
+2Banjhi : 0
+Coarse : 0
+FLC % : nan
+TIMER : 0H 0M 7S
+
+Datetime 2020-01-15 12:48:12
+FRAME : 446
+1LB : 0
+2LB : 0
+3LB : 0
+1Banjhi : 0
+2Banjhi : 0
+Coarse : 0
+FLC % : nan
+TIMER : 0H 0M 7S
+
+Datetime 2020-01-15 14:33:32
+FRAME : 10988
+1LB : 0
+2LB : 0
+3LB : 0
+1Banjhi : 0
+2Banjhi : 0
+Coarse : 0
+FLC % : nan
+TIMER : 0H 1M 39S
+
+Datetime 2020-01-15 15:28:42
+FRAME : 665
+1LB : 0
+2LB : 0
+3LB : 0
+1Banjhi : 0
+2Banjhi : 0
+Coarse : 0
+FLC % : nan
+TIMER : 0H 0M 10S
+
+Datetime 2020-01-15 15:34:30
+FRAME : 812
+1LB : 0
+2LB : 0
+3LB : 0
+1Banjhi : 0
+2Banjhi : 0
+Coarse : 0
+FLC % : nan
+TIMER : 0H 0M 11S
+
+Datetime 2020-01-15 15:45:50
+FRAME : 985
+1LB : 0
+2LB : 0
+3LB : 0
+1Banjhi : 0
+2Banjhi : 0
+Coarse : 0
+FLC % : nan
+TIMER : 0H 0M 12S
+
