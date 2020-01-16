@@ -21,17 +21,20 @@ os.chdir("/home/agnext/Documents/flc")  # Agnext
 
 configparser.read('flc_utils/screens/touchScreen/gui.cfg')
 is_login = False
+details_filled = False
+is_admin = True
 userName = ""
-#cmd = './uselib cfg/jorhat_Dec.names cfg/jorhat_Dec.cfg weights/jorhat_Dec_final.weights web_camera'
+
 cmd = """
 export LD_LIBRARY_PATH=/home/agnext/Documents/flc/
 ./uselib cfg/jorhat_Dec.names cfg/jorhat_Dec.cfg weights/jorhat_Dec_final.weights web_camera
 """
 
+pwd = "qwerty"
 cmd_camera_setting = "/usr/local/ecam_tk1/bin/ecam_tk1_guvcview"
 jetson_clock_cmd = 'jetson_clocks'
 record_cam_cmd = "python3 flc_utils/guiHelpers/record_cam_gui.py"
-edit_details_cmd = "python3 flc_utils/guiHelpers/farmer_section.py"
+# edit_details_cmd = "python3 flc_utils/guiHelpers/farmer_section.py"
 
 def testVal(inStr,acttyp):
     if acttyp == '1': #insert
@@ -52,13 +55,12 @@ def vp_start_gui():
     def video_stream():
         msg_sent.place_forget()
         tuneCamera.configure(state='disabled', fg="black", bg="silver")
-        startCamRecord.configure(state='disabled', fg="black", bg="silver")
-        editDetails.configure(state='disabled', fg="black", bg="silver")
+        if is_admin:
+            startCamRecord.configure(state='disabled', fg="black", bg="silver")
+
         try:
             global p
             p = subprocess.Popen("exec " + cmd, stdout= subprocess.PIPE, shell=True)
-            #resp = requests.request("GET", "http://127.0.0.1:8000/cam-start")
-            #print(resp.json())
             endRecord.configure(bg="#539051", state="active")
             startRecord.place_forget()            
             endRecord.place(x=int(configparser.get('gui-config', 'endrecord_btn_x')), y=int(configparser.get('gui-config', 'endrecord_btn_y')))
@@ -72,8 +74,8 @@ def vp_start_gui():
         p.terminate()
         p.kill()
         tuneCamera.configure(fg="white", bg="#539051", state='active')
-        startCamRecord.configure(fg="white", bg="#539051", state='active')
-        editDetails.configure(fg="white", bg="#539051", state='active')
+        if is_admin:
+            startCamRecord.configure(fg="white", bg="#539051", state='active')
         endRecord.place_forget()
         startRecord.place(x=int(configparser.get('gui-config', 'startrecord_btn_x')), y=int(configparser.get('gui-config', 'startrecord_btn_y')))
         send_data_api()       #send data to api
@@ -85,10 +87,6 @@ def vp_start_gui():
         startCamRecord.configure(bg='silver', state="disabled")
         cam_record = subprocess.Popen("exec " + record_cam_cmd, stdout= subprocess.PIPE, shell=True)
 
-
-    def edit_details():
-        editDetails.configure(bg='silver', state="disabled")
-        details_process = subprocess.Popen("exec " + edit_details_cmd, stdout= subprocess.PIPE, shell=True)
 
     def set_camera():
         try:
@@ -106,6 +104,28 @@ def vp_start_gui():
         from tkinter import messagebox
         if messagebox.askokcancel("Quit", "Do you want to quit?"):
             window.destroy()
+
+    def clear_search_1(event):
+        username_login_entry.delete(0, tk.END)
+
+    def clear_search_2(event):
+        password_login_entry.delete(0, tk.END)
+            
+
+    def popup_keyboard(event):
+        pop = subprocess.Popen("exec " + "onboard", stdout= subprocess.PIPE, shell=True)
+
+    def clear_farmer(event):
+        farmer_entry.delete(0, tk.END)
+        popup_keyboard(event)
+
+    def action_1(event):
+        clear_search_1(event)
+        popup_keyboard(event)
+
+    def action_2(event):
+        clear_search_2(event)
+        popup_keyboard(event)
 
     # APIs
     def login_api(usr, pwd):
@@ -138,11 +158,11 @@ def vp_start_gui():
         if configparser.get('gui-config', 'internet') == 'true':
             txt_file = open("result.txt", "r").read()
             li = txt_file.split("\n")
-            _1lb = round(li[1].split(": ")[1], 2)
-            _2lb = round(li[2].split(": ")[1], 2)
-            _3lb = round(li[3].split(": ")[1], 2)
-            _1bj = round(li[4].split(": ")[1], 2)
-            _2bj = round(li[5].split(": ")[1], 2)
+            _1lb = round(float(li[1].split(": ")[1]), 2)
+            _2lb = round(float(li[2].split(": ")[1]), 2)
+            _3lb = round(float(li[3].split(": ")[1]), 2)
+            _1bj = round(float(li[4].split(": ")[1]), 2)
+            _2bj = round(float(li[5].split(": ")[1]), 2)
             head = {
                 "Content-Type": "application/json",
                 "Authorization": "Bearer " + token
@@ -188,17 +208,23 @@ def vp_start_gui():
 
 
     def place_on_screen():
-
-        txt = "Welcome, " + userName.title()
-        Label(window, text=txt, font=('times', 15, 'bold'), bg='white').place(x=int(configparser.get('gui-config', 'welcome_text_x')), y=int(configparser.get('gui-config', 'welcome_text_y')))
+        try:
+            farmer_entry.place_forget()
+            sector_entry.place_forget()
+            entered.place_forget()
+            welcome_text.place_forget()
+        except:
+            pass
 
         refresh_button.place(x=int(configparser.get('gui-config', 'refresh_x')), y=int(configparser.get('gui-config', 'refresh_y')))
+        logout_button.place(x=int(configparser.get('gui-config', 'logout_x')), y=int(configparser.get('gui-config', 'logout_y')))
 
         startRecord.place(x=int(configparser.get('gui-config', 'startrecord_btn_x')), y=int(configparser.get('gui-config', 'startrecord_btn_y')))
         tuneCamera.place(x=int(configparser.get('gui-config', 'tunecamera_btn_x')), y=int(configparser.get('gui-config', 'tunecamera_btn_y')))
 
-        startCamRecord.place(x=int(configparser.get('gui-config', 'cam_record_start_x')), y=int(configparser.get('gui-config', 'cam_record_start_y')))
-        editDetails.place(x=int(configparser.get('gui-config', 'edit_details_x')), y=int(configparser.get('gui-config', 'edit_details_y')))
+        if is_admin:
+            startCamRecord.place(x=int(configparser.get('gui-config', 'cam_record_start_x')), y=int(configparser.get('gui-config', 'cam_record_start_y')))
+
 
     # Designing window for login 
      
@@ -237,12 +263,10 @@ def vp_start_gui():
     def login_verify():
         username1 = username_verify.get()
         password1 = password_verify.get()
-        global jetson_clock
         if configparser.get('gui-config', 'internet') == 'true':
             status = login_api(username1, password1)
             if status == True:
                 login_sucess()
-                jetson_clock = subprocess.Popen("exec " + jetson_clock_cmd, stdout= subprocess.PIPE, shell=True)
             else:
                 user_not_found()
         else:
@@ -254,15 +278,71 @@ def vp_start_gui():
                     global userName
                     userName = username1
                     login_sucess()
-                    jetson_clock = subprocess.Popen("exec " + jetson_clock_cmd, stdout= subprocess.PIPE, shell=True)
                 else:
                     password_not_recognised()
 
             else:
                 user_not_found()
 
+    def show_error_msg():
+        x = window.winfo_x()
+        y = window.winfo_y()
+        w = 150
+        h = 60
+
+        global details_not_filled_screen
+        details_not_filled_screen = Toplevel(window)
+        details_not_filled_screen.geometry("%dx%d+%d+%d" % (w, h, x + 300, y + 200))
+        details_not_filled_screen.title("Error")
+        Label(details_not_filled_screen, text="Please fill all details.").pack()
+        Button(details_not_filled_screen, text="OK", command=delete_details_not_found_screen).pack()
+
+    def delete_details_not_found_screen():
+        details_not_filled_screen.destroy()
+
+    def details_verify():
+        farmer = farmer_verify.get()
+        sector = sector_verify.get()
         
+        if farmer not in ["", "Enter farmer id"] and sector not in ["", "Enter section ID"]:
+            global details_filled
+            details_filled = True
+            jetson_clock = subprocess.Popen("exec " + 'echo {} | sudo -S {}'.format(pwd, jetson_clock_cmd), stdout= subprocess.PIPE, shell=True)
+            place_on_screen()
+        else:
+            show_error_msg()
+
      
+    def enter_details():
+
+        txt = "Welcome, " + userName.title()
+        global welcome_text
+        welcome_text = Label(window, text=txt, font=('times', 15, 'bold'), bg='white')
+        welcome_text.place(x=int(configparser.get('gui-config', 'welcome_text_x')), y=int(configparser.get('gui-config', 'welcome_text_y')))
+
+        global farmer_verify
+        global sector_verify
+        OPTIONS = ["80","90","100", "110", "120"] 
+         
+        farmer_verify = StringVar()
+        sector_verify = StringVar(window)
+        sector_verify.set("Enter section ID")
+         
+        global farmer_entry
+        global sector_entry
+       
+        farmer_entry = Entry(window, textvariable=farmer_verify)
+        farmer_entry.insert(1, "Enter farmer ID")
+        farmer_entry.bind("<Button-1>", clear_farmer)
+        farmer_entry.place(x=150,y=135, height=30)
+        
+        sector_entry = OptionMenu(window, sector_verify, *OPTIONS)
+        sector_entry.place(x=300, y=135, height=30)
+        
+        global entered
+        entered = tk.Button(window, text="Submit", command=details_verify, fg="white", bg="#539051", width=int(configparser.get('gui-config', 'signin_btn_width')),height=1, activebackground = "Grey" , font=('times', 15, 'bold'))
+        entered.place(x=450, y=135)
+
     # Designing popup for login success
      
     def login_sucess():
@@ -272,7 +352,7 @@ def vp_start_gui():
         password_login_entry.place_forget()
         signin.place_forget()
         panel_bg.place_forget()
-        place_on_screen()
+        enter_details()
 
     # Designing popup for login invalid password
      
@@ -329,12 +409,13 @@ def vp_start_gui():
     tuneCamera = tk.Button(window, text="Camera Setting", command=set_camera, fg="white", bg="#539051", width=int(configparser.get('gui-config', 'buttons_width')),height=int(configparser.get('gui-config', 'buttons_height')), activebackground = "Grey" , font=('times', 15, 'bold'))
 
     refresh_button = tk.Button(window, text="Refresh", command=refresh, fg="white", bg="#539051", width=int(configparser.get('gui-config', 'refresh_width')),height=1, activebackground = "Grey" , font=('times', 10, 'bold'))
+    logout_button = tk.Button(window, text="Logout", command=logout, fg="white", bg="#539051", width=int(configparser.get('gui-config', 'refresh_width')),height=1, activebackground = "Grey" , font=('times', 10, 'bold'))
 
     startRecord = tk.Button(window, text="Start Testing", command=video_stream, fg="white", bg="#539051", width=int(configparser.get('gui-config', 'buttons_width')),height=int(configparser.get('gui-config', 'buttons_height')), activebackground = "Grey" , font=('times', 15, 'bold'))
     endRecord = tk.Button(window, text="Save & restart", command=end_video, fg="white", bg="#539051", width=int(configparser.get('gui-config', 'buttons_width')),height=int(configparser.get('gui-config', 'buttons_height')), activebackground = "Grey" , font=('times', 15, 'bold'))
 
-    startCamRecord = tk.Button(window, text="Record training video", command=start_record_video, fg="white", bg="#539051", width=int(configparser.get('gui-config', 'buttons_width')),height=int(configparser.get('gui-config', 'buttons_height')), activebackground = "Grey" , font=('times', 15, 'bold'))
-    editDetails = tk.Button(window, text="Edit details", command=edit_details, fg="white", bg="#539051", width=int(configparser.get('gui-config', 'buttons_width')),height=int(configparser.get('gui-config', 'buttons_height')), activebackground = "Grey" , font=('times', 15, 'bold'))
+    if is_admin:
+        startCamRecord = tk.Button(window, text="Record training video", command=start_record_video, fg="white", bg="#539051", width=int(configparser.get('gui-config', 'buttons_width')),height=int(configparser.get('gui-config', 'buttons_height')), activebackground = "Grey" , font=('times', 15, 'bold'))
 
     msg_sent = Label(window, text="Data sent status", font=('times', 15), fg="green", bg='white')
 
@@ -343,23 +424,6 @@ def vp_start_gui():
 
     def qr_scan_fxn():
         pass
-
-    def clear_search_1(event):
-        username_login_entry.delete(0, tk.END)
-
-    def clear_search_2(event):
-        password_login_entry.delete(0, tk.END)
-
-    def popup_keyboard(event):
-    	pop = subprocess.Popen("exec " + "onboard", stdout= subprocess.PIPE, shell=True)
-
-    def action_1(event):
-    	clear_search_1(event)
-    	popup_keyboard(event)
-
-    def action_2(event):
-    	clear_search_2(event)
-    	popup_keyboard(event)
      
     global username_verify
     global password_verify
@@ -380,8 +444,8 @@ def vp_start_gui():
     
     
     signin = tk.Button(window, text="Login", command=login_verify, fg="white", bg="#539051", width=int(configparser.get('gui-config', 'signin_btn_width')),height=int(configparser.get('gui-config', 'signin_btn_height')), activebackground = "Grey" , font=('times', 15, 'bold'))
-
-    if is_login == True:
+    
+    if is_login == True and details_filled == True:
 
         signin.place_forget()
         username_login_entry.place_forget()
@@ -401,9 +465,8 @@ def vp_start_gui():
 
         startRecord.place_forget()
         endRecord.place_forget()
-
-        startCamRecord.place_forget()
-        editDetails.place_forget()
+        if is_admin:
+            startCamRecord.place_forget()
 
     window.mainloop()
 
@@ -412,5 +475,11 @@ if __name__ == '__main__':
         window.destroy()
         vp_start_gui()
 
+    def logout():
+        global is_login
+        is_login = False
+        refresh()
+
     vp_start_gui()
+
 

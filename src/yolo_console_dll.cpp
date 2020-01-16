@@ -1,5 +1,5 @@
 #include <iostream>
-#include <fstream>		// Agnext, for writing file
+#include <fstream>      // Agnext, for writing file
 #include <iomanip>
 #include <string>
 #include <vector>
@@ -181,7 +181,7 @@ std::vector<bbox_t> get_3d_coordinates(std::vector<bbox_t> bbox_vect, cv::Mat xy
 int count_1lb = 0;  // Agnext
 int count_2lb = 0; // Agnext
 int count_3lb = 0;// Agnext
-int count_1Banjhi = 0;// Agnext	
+int count_1Banjhi = 0;// Agnext 
 int count_2Banjhi = 0;// Agnext
 int count_coarse = 0; // Agnext
 int count_fine = 0; // Agnext
@@ -198,7 +198,7 @@ std::string frame_str = ""; // Agnext
 std::string _1lb_str = "";  // Agnext
 std::string _2lb_str = "";  // Agnext
 std::string _3lb_str = "";  // Agnext
-std::string _1Banjhi_str = "";  // Agnext	
+std::string _1Banjhi_str = "";  // Agnext   
 std::string _2Banjhi_str = "";  // Agnext
 std::string coarse_str = "";    // Agnext
 std::string fine_per = "";  // Agnext
@@ -210,12 +210,13 @@ int seconds, minutes, hours; // Agnext
 
 cv::Mat black_image(480, 640, CV_8UC3); // Agnext black image
 bool black_background = false;
+bool clean_video = false;
 
 void draw_boxes(cv::Mat mat_img, std::vector<bbox_t> result_vec, std::vector<std::string> obj_names,
     int current_det_fps = -1, int current_cap_fps = -1, bool black_screen=false)
 {
     // UNCOMMENTED FOR DEVELOPER MODE
-    int const colors[6][3] = { { 1,0,1 },{ 0,0,1 },{ 0,1,1 },{ 0,1,0 },{ 1,1,0 },{ 1,0,0 } };		// Agnext
+    int const colors[6][3] = { { 1,0,1 },{ 0,0,1 },{ 0,1,1 },{ 0,1,0 },{ 1,1,0 },{ 1,0,0 } };       // Agnext
     if (black_screen == false)
     {
         for (auto &i : result_vec) {
@@ -279,7 +280,7 @@ void writeFile(std::string frame_str, std::string _1lb_str, std::string _2lb_str
   myfile <<_1lb_str<<"\n";
   myfile <<_2lb_str<<"\n";
   myfile <<_3lb_str<<"\n";
-  myfile <<_1Banjhi_str<<"\n";	
+  myfile <<_1Banjhi_str<<"\n";  
   myfile <<_2Banjhi_str<<"\n";
   myfile <<coarse_str<<"\n";
   myfile <<fine_per<<"\n";
@@ -441,9 +442,9 @@ int main(int argc, char *argv[])
 #endif
                 cv::Size const frame_size = cur_frame.size(); // Original
                 // cv::Size const frame_size(cap.get(CV_CAP_PROP_FRAME_WIDTH), cap.get(CV_CAP_PROP_FRAME_HEIGHT));
-                // cv::Size const frame_size(1280, 720);	// Agnext FRAME RESIZE
+                // cv::Size const frame_size(1280, 720);    // Agnext FRAME RESIZE
                 // cv::Size const frame_size(1920, 1080); // Agnext FRAME RESIZE
-		// cv::Size const frame_size(512, 384);	// Agnext FRAME RESIZE
+        // cv::Size const frame_size(512, 384); // Agnext FRAME RESIZE
                 // std::cout << "\n Video size: " << frame_size << std::endl;  // AgNext, originally uncommented
 
                 cv::VideoWriter output_video;
@@ -624,11 +625,11 @@ int main(int argc, char *argv[])
                         //small_preview.set(draw_frame, result_vec);
                         //large_preview.set(draw_frame, result_vec);
                         if (black_background){
-                            resize(draw_frame, draw_frame, cv::Size(640, 480), 0, 0, CV_INTER_CUBIC); 	// Agnext FRAME RESIZE
+                            resize(draw_frame, draw_frame, cv::Size(640, 480), 0, 0, CV_INTER_CUBIC);   // Agnext FRAME RESIZE
                             black_image.copyTo(draw_frame(cv::Rect(0,0, black_image.cols, black_image.rows)));      // Agnext (put black image as bg) // COMMENTED FOR DEVELOPER MODE
 
                         }
-                        // resize(draw_frame, draw_frame, cv::Size(1920, 1080), 0, 0, CV_INTER_CUBIC); 	// Agnext FRAME RESIZE
+                        // resize(draw_frame, draw_frame, cv::Size(1920, 1080), 0, 0, CV_INTER_CUBIC);  // Agnext FRAME RESIZE
                         draw_boxes(draw_frame, result_vec, obj_names, current_fps_det, current_fps_cap, black_background);
                         show_console_result(result_vec, obj_names, detection_data.frame_id); // Agnext, originall was commented // UNCOMMENTED FOR DEVELOPER MODE
                         for (auto &i : result_vec) {        // Agnext, added for counting fine counts
@@ -642,11 +643,11 @@ int main(int argc, char *argv[])
                                 else if (obj_names[i.obj_id] == "3LB"){
                                     count_3lb = i.track_id;
                                 }
-                                else if (obj_names[i.obj_id] == "1Banjhi"){	
-                                    count_1Banjhi = i.track_id;	
-                                }	
-                                else if (obj_names[i.obj_id] == "2Banjhi"){	
-                                    count_2Banjhi = i.track_id;	
+                                else if (obj_names[i.obj_id] == "1Banjhi"){ 
+                                    count_1Banjhi = i.track_id; 
+                                }   
+                                else if (obj_names[i.obj_id] == "2Banjhi"){ 
+                                    count_2Banjhi = i.track_id; 
                                 }
                                 else if (obj_names[i.obj_id] == "Coarse"){
                                     count_coarse = i.track_id;
@@ -673,11 +674,11 @@ int main(int argc, char *argv[])
                         putText(draw_frame, _3lb_str.substr(0,11), cv::Point2f(10, 160), cv::FONT_HERSHEY_COMPLEX_SMALL, 1.2, cv::Scalar(0, 255, 255), 1);  // Agnext
 
                         perc_count_1Banjhi = (count_1Banjhi*100)/total;
-                        _1Banjhi_str = "1Banjhi %: " + std::to_string(perc_count_1Banjhi); // Agnext	
-                        putText(draw_frame, _1Banjhi_str.substr(0,15), cv::Point2f(10, 190), cv::FONT_HERSHEY_COMPLEX_SMALL, 1.2, cv::Scalar(0, 255, 255), 1);  // Agnext	
+                        _1Banjhi_str = "1Banjhi %: " + std::to_string(perc_count_1Banjhi); // Agnext    
+                        putText(draw_frame, _1Banjhi_str.substr(0,15), cv::Point2f(10, 190), cv::FONT_HERSHEY_COMPLEX_SMALL, 1.2, cv::Scalar(0, 255, 255), 1);  // Agnext   
                         
                         perc_count_2Banjhi = (count_2Banjhi*100)/total;
-                        _2Banjhi_str = "2Banjhi %: " + std::to_string(perc_count_2Banjhi); // Agnext	
+                        _2Banjhi_str = "2Banjhi %: " + std::to_string(perc_count_2Banjhi); // Agnext    
                         putText(draw_frame, _2Banjhi_str.substr(0,15), cv::Point2f(10, 220), cv::FONT_HERSHEY_COMPLEX_SMALL, 1.2, cv::Scalar(0, 255, 255), 1);  // Agnext
 
                         perc_count_coarse = (count_coarse*100)/total;
@@ -706,7 +707,13 @@ int main(int argc, char *argv[])
 
                         detection_data.result_vec = result_vec;
                         detection_data.draw_frame = draw_frame;
-                        detection_data.save_video_frame = copy_draw_frame;
+                        if (clean_video){
+                            detection_data.save_video_frame = copy_draw_frame;
+                        }
+                        else{
+                            detection_data.save_video_frame = draw_frame;
+                        }
+                        
                         draw2show.send(detection_data);
                         if (send_network) draw2net.send(detection_data);
                         if (output_video.isOpened()) draw2write.send(detection_data);
@@ -725,8 +732,8 @@ int main(int argc, char *argv[])
                             detection_data = draw2write.receive();
                             if(detection_data.save_video_frame.channels() == 4) cv::cvtColor(detection_data.save_video_frame, output_frame, CV_RGBA2RGB);
                             else output_frame = detection_data.save_video_frame;
-                            // resize(output_frame, output_frame, cv::Size(1280, 720), 0, 0, CV_INTER_CUBIC); 	// Agnext FRAME RESIZE
-                            // resize(output_frame, output_frame, cv::Size(1920, 1080), 0, 0, CV_INTER_CUBIC); 	// Agnext FRAME RESIZE
+                            // resize(output_frame, output_frame, cv::Size(1280, 720), 0, 0, CV_INTER_CUBIC);   // Agnext FRAME RESIZE
+                            // resize(output_frame, output_frame, cv::Size(1920, 1080), 0, 0, CV_INTER_CUBIC);  // Agnext FRAME RESIZE
                             output_video << output_frame;
                         } while (!detection_data.exit_flag);
                         output_video.release();
@@ -770,10 +777,10 @@ int main(int argc, char *argv[])
                     //if (extrapolate_flag) {
                     //    cv::putText(draw_frame, "extrapolate", cv::Point2f(10, 40), cv::FONT_HERSHEY_COMPLEX_SMALL, 1.0, cv::Scalar(50, 50, 0), 2);
                     //}
-                    // resize(draw_frame, draw_frame, cv::Size(1280, 720), 0, 0, CV_INTER_CUBIC); 	// Agnext FRAME RESIZE
+                    // resize(draw_frame, draw_frame, cv::Size(1280, 720), 0, 0, CV_INTER_CUBIC);   // Agnext FRAME RESIZE
                     // resize(draw_frame, draw_frame, cv::Size(1920, 1080), 0, 0, CV_INTER_CUBIC); 
                     cv::imshow("window", draw_frame);
-                    cv::moveWindow("window", 100, 10);     // Agnext (move window for tkinter interface)
+                    cv::moveWindow("window", 100, 140);     // Agnext (move window for tkinter interface)
 
                     int key = cv::waitKey(3);    // 3 or 16ms
                     if (key == 'f') show_small_boxes = !show_small_boxes;
@@ -850,5 +857,6 @@ int main(int argc, char *argv[])
 
     return 0;
 }
+
 
 
