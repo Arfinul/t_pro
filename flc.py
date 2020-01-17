@@ -5,7 +5,6 @@ import csv
 import os
 import numpy as np
 from PIL import Image,ImageTk
-import pandas as pd
 import datetime
 import time
 import sys
@@ -34,7 +33,7 @@ pwd = "qwerty"
 cmd_camera_setting = "/usr/local/ecam_tk1/bin/ecam_tk1_guvcview"
 jetson_clock_cmd = 'jetson_clocks'
 record_cam_cmd = "python3 flc_utils/guiHelpers/record_cam_gui.py"
-# edit_details_cmd = "python3 flc_utils/guiHelpers/farmer_section.py"
+
 
 def testVal(inStr,acttyp):
     if acttyp == '1': #insert
@@ -80,7 +79,6 @@ def vp_start_gui():
         startRecord.place(x=int(configparser.get('gui-config', 'startrecord_btn_x')), y=int(configparser.get('gui-config', 'startrecord_btn_y')))
         send_data_api()       #send data to api
         sleep(2)
-        # refresh()
 
 
     def start_record_video():
@@ -113,6 +111,7 @@ def vp_start_gui():
             
 
     def popup_keyboard(event):
+        global pop
         pop = subprocess.Popen("exec " + "onboard", stdout= subprocess.PIPE, shell=True)
 
     def clear_farmer(event):
@@ -184,7 +183,7 @@ def vp_start_gui():
                 "twoLeafCount": "0",
                 "threeLeafCount": "0",
                 "userId": userID,
-                "dateDone": "12/11/2019"
+                "dateDone": datetime.datetime.today().strftime("%d/%m/%Y")
             }
             resp = requests.request("POST", configparser.get('gui-config', 'ip') + "/api/own-flc", data=json.dumps(load), headers=head)
             saved = resp.json()['success']
@@ -209,6 +208,10 @@ def vp_start_gui():
 
     def place_on_screen():
         try:
+            subprocess.Popen("exec " + "killall onboard", stdout= subprocess.PIPE, shell=True)
+        except:
+            pass
+        try:
             farmer_entry.place_forget()
             sector_entry.place_forget()
             entered.place_forget()
@@ -224,38 +227,6 @@ def vp_start_gui():
 
         if is_admin:
             startCamRecord.place(x=int(configparser.get('gui-config', 'cam_record_start_x')), y=int(configparser.get('gui-config', 'cam_record_start_y')))
-
-
-    # Designing window for login 
-     
-    def login():
-        x = window.winfo_x()
-        y = window.winfo_y()
-        global login_screen
-        login_screen = Toplevel(window)
-        login_screen.title("Login")
-        login_screen.geometry("+%d+%d" % (x + int(configparser.get('gui-config', 'login_screen_x')), y + int(configparser.get('gui-config', 'login_screen_y'))))
-        Label(login_screen, text="Please enter details below to login", font=("times", 14, 'bold'), width=30).pack()
-        Label(login_screen, text="").pack()
-     
-        global username_verify
-        global password_verify
-     
-        username_verify = StringVar()
-        password_verify = StringVar()
-     
-        global username_login_entry
-        global password_login_entry
-     
-        Label(login_screen, text="Username * ", font=("times", 13)).pack()
-        username_login_entry = Entry(login_screen, textvariable=username_verify)
-        username_login_entry.pack()
-        Label(login_screen, text="").pack()
-        Label(login_screen, text="Password * ", font=("times", 13)).pack()
-        password_login_entry = Entry(login_screen, textvariable=password_verify, show= '*')
-        password_login_entry.pack()
-        Label(login_screen, text="").pack()
-        Button(login_screen, text="Login", width=10, height=1, command = login_verify, font=("times", 13, 'bold')).pack()
      
      
     # Implementing event on login button 
@@ -481,5 +452,6 @@ if __name__ == '__main__':
         refresh()
 
     vp_start_gui()
+
 
 

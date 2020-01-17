@@ -793,7 +793,7 @@ int main(int argc, char *argv[])
                     //std::cout << " current_fps_det = " << current_fps_det << ", current_fps_cap = " << current_fps_cap << std::endl;
                 } while (!detection_data.exit_flag);
                 // std::cout << " show detection exit \n";  //AgNext, originall was uncomented
-                 //cv::waitKey(0);     // Agnext (asks for key press before video exit)
+                cv::waitKey(0);     // Agnext (asks for key press before video exit)
                 cv::destroyWindow("window");
                 // wait for all threads
                 if (t_cap.joinable()) t_cap.join();
