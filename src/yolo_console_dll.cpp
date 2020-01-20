@@ -823,6 +823,7 @@ int main(int argc, char *argv[])
                 // std::cout << " show detection exit \n";  //AgNext, originall was uncomented
                 // cv::waitKey(0);     // Agnext (asks for key press before video exit)
                 cv::destroyWindow("window");
+                writeFile(frame_str, _1lb_count_str, _2lb_count_str, _3lb_count_str, _1Banjhi_count_str, _2Banjhi_count_str, _coarse_count_str, fine_per.substr(0,12), _timer); // Agnext write to file
                 // wait for all threads
                 if (t_cap.joinable()) t_cap.join();
                 if (t_prepare.joinable()) t_prepare.join();

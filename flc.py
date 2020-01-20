@@ -285,6 +285,7 @@ def vp_start_gui():
         refresh_button.place(x=int(configparser.get('gui-config', 'refresh_x')), y=int(configparser.get('gui-config', 'refresh_y')))
         logout_button.place(x=int(configparser.get('gui-config', 'logout_x')), y=int(configparser.get('gui-config', 'logout_y')))
 
+
         startRecord.place(x=int(configparser.get('gui-config', 'startrecord_btn_x')), y=int(configparser.get('gui-config', 'startrecord_btn_y')))
         tuneCamera.place(x=int(configparser.get('gui-config', 'tunecamera_btn_x')), y=int(configparser.get('gui-config', 'tunecamera_btn_y')))
 
@@ -409,6 +410,8 @@ def vp_start_gui():
         global entered
         entered = tk.Button(window, text="Submit", command=details_verify, fg="white", bg="#539051", width=int(configparser.get('gui-config', 'signin_btn_width')),height=1, activebackground = "Grey" , font=('times', 15, 'bold'))
         entered.place(x=450, y=135)
+
+        logout_button.place(x=int(configparser.get('gui-config', 'logout_x')), y=int(configparser.get('gui-config', 'logout_y')))
 
     # Designing popup for login success
      
@@ -558,5 +561,6 @@ if __name__ == '__main__':
         refresh()
 
     vp_start_gui()
+
 
 
