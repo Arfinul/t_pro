@@ -22,7 +22,7 @@ os.chdir("/home/agnext/Documents/flc")  # Agnext
 configparser.read('flc_utils/screens/touchScreen/gui.cfg')
 is_login = False
 details_filled = False
-is_admin = True
+is_admin = False
 userName = ""
 
 cmd = """
@@ -50,19 +50,26 @@ def vp_start_gui():
 
     window.geometry(configparser.get('gui-config', 'window_geometry'))
     window.configure(background='snow')
+    subprocess.Popen("exec " + "onboard", stdout= subprocess.PIPE, shell=True)
 
     # function for video streaming
     def video_stream():
         msg_sent.place_forget()
-        tuneCamera.configure(state='disabled', fg="black", bg="silver")
+        startRecord.place_forget()  
+        endRecord.place_forget()
+        tuneCamera.place_forget()
+        refresh_button.place_forget()
+        logout_button.place_forget()
         if is_admin:
-            startCamRecord.configure(state='disabled', fg="black", bg="silver")
-
+            startCamRecord.place_forget() 
         try:
             global p
             p = subprocess.Popen("exec " + cmd, stdout= subprocess.PIPE, shell=True)
-            endRecord.configure(bg="#539051", state="active")
-            startRecord.place_forget()            
+            not_file_found = True
+            while(not_file_found):
+                if os.path.exists("result.txt"):
+                    not_file_found = False
+            show_results_on_display()
             endRecord.place(x=int(configparser.get('gui-config', 'endrecord_btn_x')), y=int(configparser.get('gui-config', 'endrecord_btn_y')))
         except:
             p.kill()
@@ -73,13 +80,12 @@ def vp_start_gui():
     def end_video():
         p.terminate()
         p.kill()
-        tuneCamera.configure(fg="white", bg="#539051", state='active')
-        if is_admin:
-            startCamRecord.configure(fg="white", bg="#539051", state='active')
         endRecord.place_forget()
-        startRecord.place(x=int(configparser.get('gui-config', 'startrecord_btn_x')), y=int(configparser.get('gui-config', 'startrecord_btn_y')))
         send_data_api()       #send data to api
         sleep(2)
+        if os.path.exists("result.txt"):
+            os.remove("result.txt")
+        place_all_buttons()
 
 
     def start_record_video():
@@ -102,6 +108,8 @@ def vp_start_gui():
     def on_closing():
         from tkinter import messagebox
         if messagebox.askokcancel("Quit", "Do you want to quit?"):
+            if os.path.exists("result.txt"):
+                os.remove("result.txt")
             window.destroy()
 
     def clear_search_1(event):
@@ -210,7 +218,78 @@ def vp_start_gui():
         else:
             msg_sent.configure(text="Couldn't save to servers", fg="red")
             msg_sent.place(x=int(configparser.get('gui-config', 'data_saved_notification_x')), y=int(configparser.get('gui-config', 'data_saved_notification_y')))
+        _1lb_btn.place_forget()
+        _2lb_btn.place_forget()
+        _1bj_btn.place_forget()
+        _3lb_btn.place_forget()
+        _coarse_btn.place_forget()
+        _2bj_btn.place_forget()
+        _flc_btn.place_forget()
+        _total_btn.place_forget()
 
+
+    def do_nothing():
+        pass
+
+    def show_results_on_display():
+        txt_file = open("result.txt", "r").read()
+        li = txt_file.split("\n")
+        _1lb = round(float(li[1].split(": ")[1]), 2)
+        _2lb = round(float(li[2].split(": ")[1]), 2)
+        _3lb = round(float(li[3].split(": ")[1]), 2)
+        _1bj = round(float(li[4].split(": ")[1]), 2)
+        _2bj = round(float(li[5].split(": ")[1]), 2)
+        _coarse = round(float(li[6].split(": ")[1]), 2)
+        _perc = round(float(li[7].split(": ")[1]), 2)
+        _perc = _perc if math.isnan(float('nan')) == False else 0
+        totalCount = _1lb + _2lb + _3lb + _1bj + _2bj + _coarse
+
+        _flc_btn.configure(text="FLC % " + str(_perc))
+        _total_btn.configure(text="Total " + str(totalCount))
+        try:
+            _1lb_btn.configure(text="1LB % " + str(math.ceil(_1lb*100/totalCount)))
+        except:
+            _1lb_btn.configure(text="1LB % 0.0")
+        try:
+            _2lb_btn.configure(text="2LB % " + str(math.ceil(_2lb*100/totalCount)))
+        except:
+            _2lb_btn.configure(text="2LB % 0.0")
+        try:
+            _1bj_btn.configure(text="1Banjhi % " + str(math.ceil(_1bj*100/totalCount)))
+        except:
+            _1bj_btn.configure(text="1Banjhi % 0.0")
+        try:
+            _3lb_btn.configure(text="3LB % " + str(math.ceil(_3lb*50/totalCount)))
+        except:
+            _3lb_btn.configure(text="3LB % 0.0")
+        try:
+            _coarse_btn.configure(text="Coarse % " + str(math.ceil(_1lb*100/totalCount)))
+        except:
+            _coarse_btn.configure(text="Coarse % 0.0")
+        try:
+            _2bj_btn.configure(text="2Banjhi % " + str(math.ceil(_2bj*100/totalCount)))
+        except:
+            _2bj_btn.configure(text="2Banjhi % 0.0")
+
+        _flc_btn.place(x=150,y=140)
+        _total_btn.place(x=300,y=140)
+        _1lb_btn.place(x=150,y=195)
+        _2lb_btn.place(x=300,y=195)
+        _1bj_btn.place(x=150,y=250)
+        _3lb_btn.place(x=300,y=250)
+        _coarse_btn.place(x=150,y=305)
+        _2bj_btn.place(x=300,y=305)
+
+
+    def place_all_buttons():
+        refresh_button.place(x=int(configparser.get('gui-config', 'refresh_x')), y=int(configparser.get('gui-config', 'refresh_y')))
+        logout_button.place(x=int(configparser.get('gui-config', 'logout_x')), y=int(configparser.get('gui-config', 'logout_y')))
+
+        startRecord.place(x=int(configparser.get('gui-config', 'startrecord_btn_x')), y=int(configparser.get('gui-config', 'startrecord_btn_y')))
+        tuneCamera.place(x=int(configparser.get('gui-config', 'tunecamera_btn_x')), y=int(configparser.get('gui-config', 'tunecamera_btn_y')))
+
+        if is_admin:
+            startCamRecord.place(x=int(configparser.get('gui-config', 'cam_record_start_x')), y=int(configparser.get('gui-config', 'cam_record_start_y')))
 
 
     def place_on_screen():
@@ -225,16 +304,8 @@ def vp_start_gui():
             welcome_text.place_forget()
         except:
             pass
-
-        refresh_button.place(x=int(configparser.get('gui-config', 'refresh_x')), y=int(configparser.get('gui-config', 'refresh_y')))
-        logout_button.place(x=int(configparser.get('gui-config', 'logout_x')), y=int(configparser.get('gui-config', 'logout_y')))
-
-        startRecord.place(x=int(configparser.get('gui-config', 'startrecord_btn_x')), y=int(configparser.get('gui-config', 'startrecord_btn_y')))
-        tuneCamera.place(x=int(configparser.get('gui-config', 'tunecamera_btn_x')), y=int(configparser.get('gui-config', 'tunecamera_btn_y')))
-
-        if is_admin:
-            startCamRecord.place(x=int(configparser.get('gui-config', 'cam_record_start_x')), y=int(configparser.get('gui-config', 'cam_record_start_y')))
-     
+        place_all_buttons()
+             
      
     # Implementing event on login button 
      
@@ -402,18 +473,28 @@ def vp_start_gui():
     panel = Label(window, image = img, bg='#539051')
     panel.place(x=int(configparser.get('gui-config', 'login_image_x')), y=int(configparser.get('gui-config', 'login_image_y')))
     
-    tuneCamera = tk.Button(window, text="Camera Setting", command=set_camera, fg="white", bg="#539051", width=int(configparser.get('gui-config', 'buttons_width')),height=int(configparser.get('gui-config', 'buttons_height')), activebackground = "Grey" , font=('times', 15, 'bold'))
+    tuneCamera = tk.Button(window, text="Camera Setting", command=set_camera, fg="white", bg="#539051", width=int(configparser.get('gui-config', 'buttons_width')),height=int(configparser.get('gui-config', 'buttons_height')), font=('times', 15, 'bold'))
 
-    refresh_button = tk.Button(window, text="Refresh", command=refresh, fg="white", bg="#539051", width=int(configparser.get('gui-config', 'refresh_width')),height=1, activebackground = "Grey" , font=('times', 10, 'bold'))
-    logout_button = tk.Button(window, text="Logout", command=logout, fg="white", bg="#539051", width=int(configparser.get('gui-config', 'refresh_width')),height=1, activebackground = "Grey" , font=('times', 10, 'bold'))
+    refresh_button = tk.Button(window, text="Refresh", command=refresh, fg="white", bg="#539051", width=int(configparser.get('gui-config', 'refresh_width')),height=1, font=('times', 10, 'bold'))
+    logout_button = tk.Button(window, text="Logout", command=logout, fg="white", bg="#539051", width=int(configparser.get('gui-config', 'refresh_width')),height=1, font=('times', 10, 'bold'))
 
-    startRecord = tk.Button(window, text="Start Testing", command=video_stream, fg="white", bg="#539051", width=int(configparser.get('gui-config', 'buttons_width')),height=int(configparser.get('gui-config', 'buttons_height')), activebackground = "Grey" , font=('times', 15, 'bold'))
-    endRecord = tk.Button(window, text="Save & restart", command=end_video, fg="white", bg="#539051", width=int(configparser.get('gui-config', 'buttons_width')),height=int(configparser.get('gui-config', 'buttons_height')), activebackground = "Grey" , font=('times', 15, 'bold'))
+    startRecord = tk.Button(window, text="Start", command=video_stream, fg="white", bg="#539051", width=int(configparser.get('gui-config', 'buttons_width')),height=int(configparser.get('gui-config', 'buttons_height')), font=('times', 15, 'bold'))
+    endRecord = tk.Button(window, text="Submit", command=end_video, fg="white", bg="#539051", width=int(configparser.get('gui-config', 'buttons_width')),height=int(configparser.get('gui-config', 'buttons_height')), font=('times', 15, 'bold'))
 
     if is_admin:
         startCamRecord = tk.Button(window, text="Record training video", command=start_record_video, fg="white", bg="#539051", width=int(configparser.get('gui-config', 'buttons_width')),height=int(configparser.get('gui-config', 'buttons_height')), activebackground = "Grey" , font=('times', 15, 'bold'))
 
     msg_sent = Label(window, text="Data sent status", font=('times', 15), fg="green", bg='white')
+
+    _flc_btn = tk.Button(window, text="flc", command=do_nothing, fg="white", bg="#318FCC", width=int(configparser.get('gui-config', 'result_btn_width')),height=int(configparser.get('gui-config', 'result_btn_height')), font=('times', 15, 'bold'))
+    _total_btn = tk.Button(window, text="total", command=do_nothing, fg="white", bg="#318FCC", width=int(configparser.get('gui-config', 'result_btn_width')),height=int(configparser.get('gui-config', 'result_btn_height')), font=('times', 15, 'bold'))
+    _1lb_btn = tk.Button(window, text="1lb", command=do_nothing, fg="white", bg="#12B653", width=int(configparser.get('gui-config', 'result_btn_width')),height=int(configparser.get('gui-config', 'result_btn_height')), font=('times', 15, 'bold'))
+    _2lb_btn = tk.Button(window, text="2lb", command=do_nothing, fg="white", bg="#12B653", width=int(configparser.get('gui-config', 'result_btn_width')),height=int(configparser.get('gui-config', 'result_btn_height')), font=('times', 15, 'bold'))
+    _1bj_btn = tk.Button(window, text="1bj", command=do_nothing, fg="white", bg="#12B653", width=int(configparser.get('gui-config', 'result_btn_width')),height=int(configparser.get('gui-config', 'result_btn_height')), font=('times', 15, 'bold'))
+    _3lb_btn = tk.Button(window, text="3lb", command=do_nothing, fg="black", bg="#F3EF62", width=int(configparser.get('gui-config', 'result_btn_width')),height=int(configparser.get('gui-config', 'result_btn_height')), font=('times', 15, 'bold'))
+    _coarse_btn = tk.Button(window, text="coarse", command=do_nothing, fg="white", bg="#F37C62", width=int(configparser.get('gui-config', 'result_btn_width')),height=int(configparser.get('gui-config', 'result_btn_height')), font=('times', 15, 'bold'))
+    _2bj_btn = tk.Button(window, text="2bj", command=do_nothing, fg="white", bg="#F37C62", width=int(configparser.get('gui-config', 'result_btn_width')),height=int(configparser.get('gui-config', 'result_btn_height')), font=('times', 15, 'bold'))
+
 
     def detail_fxn():
         pass
@@ -477,6 +558,5 @@ if __name__ == '__main__':
         refresh()
 
     vp_start_gui()
-
 
 
