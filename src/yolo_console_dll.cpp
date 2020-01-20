@@ -201,6 +201,12 @@ std::string _3lb_str = "";  // Agnext
 std::string _1Banjhi_str = "";  // Agnext   
 std::string _2Banjhi_str = "";  // Agnext
 std::string coarse_str = "";    // Agnext
+std::string _1lb_count_str = "";  // Agnext
+std::string _2lb_count_str = "";  // Agnext
+std::string _3lb_count_str = "";  // Agnext
+std::string _1Banjhi_count_str = "";  // Agnext   
+std::string _2Banjhi_count_str = "";  // Agnext
+std::string _coarse_count_str = "";    // Agnext
 std::string fine_per = "";  // Agnext
 std::string _timer = "";    // Agnext
 
@@ -662,26 +668,32 @@ int main(int argc, char *argv[])
                         putText(draw_frame, frame_str, cv::Point2f(10, 50), cv::FONT_HERSHEY_COMPLEX_SMALL, 1.2, cv::Scalar(50, 255, 0), 2); // Agnext
 
                         perc_count_1lb = (count_1lb*100)/total;
+                        _1lb_count_str = "1LB : " + std::to_string(count_1lb); // Agnext
                         _1lb_str = "1LB %: " + std::to_string(perc_count_1lb); // Agnext
                         putText(draw_frame, _1lb_str.substr(0,11), cv::Point2f(10, 100), cv::FONT_HERSHEY_COMPLEX_SMALL, 1.2, cv::Scalar(0, 255, 255), 1);  // Agnext
 
                         perc_count_2lb = (count_2lb*100)/total;
+                        _2lb_count_str = "2LB : " + std::to_string(count_2lb); // Agnext
                         _2lb_str = "2LB %: " + std::to_string(perc_count_2lb); // Agnext
                         putText(draw_frame, _2lb_str.substr(0,11), cv::Point2f(10, 130), cv::FONT_HERSHEY_COMPLEX_SMALL, 1.2, cv::Scalar(0, 255, 255), 1);  // Agnext
 
                         perc_count_3lb = (count_3lb*50)/total;
+                        _3lb_count_str = "3LB : " + std::to_string(count_3lb); // Agnext
                         _3lb_str = "3LB %: " + std::to_string(perc_count_3lb); // Agnext
                         putText(draw_frame, _3lb_str.substr(0,11), cv::Point2f(10, 160), cv::FONT_HERSHEY_COMPLEX_SMALL, 1.2, cv::Scalar(0, 255, 255), 1);  // Agnext
 
                         perc_count_1Banjhi = (count_1Banjhi*100)/total;
+                        _1Banjhi_count_str = "1Banjhi : " + std::to_string(count_1Banjhi); // Agnext
                         _1Banjhi_str = "1Banjhi %: " + std::to_string(perc_count_1Banjhi); // Agnext    
                         putText(draw_frame, _1Banjhi_str.substr(0,15), cv::Point2f(10, 190), cv::FONT_HERSHEY_COMPLEX_SMALL, 1.2, cv::Scalar(0, 255, 255), 1);  // Agnext   
                         
                         perc_count_2Banjhi = (count_2Banjhi*100)/total;
+                        _2Banjhi_count_str = "2Banjhi : " + std::to_string(count_2Banjhi); // Agnext
                         _2Banjhi_str = "2Banjhi %: " + std::to_string(perc_count_2Banjhi); // Agnext    
                         putText(draw_frame, _2Banjhi_str.substr(0,15), cv::Point2f(10, 220), cv::FONT_HERSHEY_COMPLEX_SMALL, 1.2, cv::Scalar(0, 255, 255), 1);  // Agnext
 
                         perc_count_coarse = (count_coarse*100)/total;
+                        _coarse_count_str = "Coarse : " + std::to_string(count_coarse); // Agnext
                         coarse_str = "Coarse %: " + std::to_string(perc_count_coarse); // Agnext
                         putText(draw_frame, coarse_str.substr(0,14), cv::Point2f(10, 250), cv::FONT_HERSHEY_COMPLEX_SMALL, 1.2, cv::Scalar(0, 255, 255), 1);  // Agnext
 
@@ -787,7 +799,7 @@ int main(int argc, char *argv[])
                     if (key == 'p') while (true) if (cv::waitKey(100) == 'p') break;
                     //if (key == 'e') extrapolate_flag = !extrapolate_flag;
                     if (key == 27 || key == 'q'|| cv::getWindowProperty("window", cv::WND_PROP_ASPECT_RATIO) < 0) { 
-                        writeFile(frame_str, _1lb_str, _2lb_str, _3lb_str, _1Banjhi_str, _2Banjhi_str, coarse_str, fine_per.substr(0,12), _timer); // Agnext write to file
+                        writeFile(frame_str, _1lb_count_str, _2lb_count_str, _3lb_count_str, _1Banjhi_count_str, _2Banjhi_count_str, _coarse_count_str, fine_per.substr(0,12), _timer); // Agnext write to file
                         exit_flag = true;}   // Agnext (Exit on p key as well)
 
                     //std::cout << " current_fps_det = " << current_fps_det << ", current_fps_cap = " << current_fps_cap << std::endl;

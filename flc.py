@@ -14,6 +14,7 @@ import requests
 import json
 import signal
 import configparser
+import math
 
 configparser = configparser.RawConfigParser()   
 os.chdir("/home/agnext/Documents/flc")  # Agnext
@@ -142,7 +143,8 @@ def vp_start_gui():
         try:
             global userID
             global token
-            if response.json()['success'] == "true":
+            
+            if response.json()['success'] == True:
                 userID = response.json()["user"]["id"]
                 token = response.json()['token']
                 global userName
@@ -162,30 +164,35 @@ def vp_start_gui():
             _3lb = round(float(li[3].split(": ")[1]), 2)
             _1bj = round(float(li[4].split(": ")[1]), 2)
             _2bj = round(float(li[5].split(": ")[1]), 2)
+            _coarse = round(float(li[6].split(": ")[1]), 2)
+            _perc = round(float(li[7].split(": ")[1]), 2)
+            _perc = _perc if math.isnan(float('nan')) == False else 0
+            totalCount = _1lb + _2lb + _3lb + _1bj + _2bj + _coarse
+
             head = {
                 "Content-Type": "application/json",
                 "Authorization": "Bearer " + token
             }
             load = {
-                "flcData": "",
-                "sectionId": 1,
+                "userId": int(userID),
+                "ccId": int(section_verify.get()),
+                "assistId": int(farmer_verify.get()),
                 "oneLeafBud": _1lb,
                 "twoLeafBud": _2lb,
+                "threeLeafBud": _3lb,
                 "oneLeafBanjhi": _1bj,
                 "twoLeafBanjhi": _2bj,
-                "moderateShoot": "0",
-                "fineShoot": "0",
-                "scannedBy": userID,
-                "weighment": "0",
-                "oneBanjhiCount": "0",
                 "oneBudCount": "0",
+                "oneBanjhiCount": 0,
                 "oneLeafCount": "0",
                 "twoLeafCount": "0",
                 "threeLeafCount": "0",
-                "userId": userID,
-                "dateDone": datetime.datetime.today().strftime("%d/%m/%Y")
+                "qualityScore": _perc,
+                "totalCount": totalCount,
             }
-            resp = requests.request("POST", configparser.get('gui-config', 'ip') + "/api/own-flc", data=json.dumps(load), headers=head)
+            resp = requests.request("POST", configparser.get('gui-config', 'ip') + "/api/user/scans", data=json.dumps(load), headers=head)
+            print(load)
+            print(resp.json())
             saved = resp.json()['success']
         else:
             txt_file = open("result.txt", "r").read()
@@ -271,11 +278,29 @@ def vp_start_gui():
     def delete_details_not_found_screen():
         details_not_filled_screen.destroy()
 
+    def enter_correct_details():
+        x = window.winfo_x()
+        y = window.winfo_y()
+        w = 150
+        h = 60
+
+        global enter_correct_details_screen
+        enter_correct_details_screen = Toplevel(window)
+        enter_correct_details_screen.geometry("%dx%d+%d+%d" % (w, h, x + 300, y + 200))
+        enter_correct_details_screen.title("Error")
+        Label(enter_correct_details_screen, text="Please enter correct details.").pack()
+        Button(enter_correct_details_screen, text="OK", command=enter_correct_details_destroy).pack()
+
+    def enter_correct_details_destroy():
+        enter_correct_details_screen.destroy()
+
     def details_verify():
         farmer = farmer_verify.get()
-        sector = sector_verify.get()
+        sector = section_verify.get()
         
-        if farmer not in ["", "Enter farmer id"] and sector not in ["", "Enter section ID"]:
+        if farmer not in ["154"] and sector not in ["", "Enter section ID"]:
+            enter_correct_details()
+        elif farmer not in ["", "Enter farmer ID"] and sector not in ["", "Enter section ID"]:
             global details_filled
             details_filled = True
             jetson_clock = subprocess.Popen("exec " + 'echo {} | sudo -S {}'.format(pwd, jetson_clock_cmd), stdout= subprocess.PIPE, shell=True)
@@ -292,12 +317,12 @@ def vp_start_gui():
         welcome_text.place(x=int(configparser.get('gui-config', 'welcome_text_x')), y=int(configparser.get('gui-config', 'welcome_text_y')))
 
         global farmer_verify
-        global sector_verify
-        OPTIONS = ["80","90","100", "110", "120"] 
+        global section_verify
+        OPTIONS = ["1","2","3", "4"] 
          
         farmer_verify = StringVar()
-        sector_verify = StringVar(window)
-        sector_verify.set("Enter section ID")
+        section_verify = StringVar(window)
+        section_verify.set("Enter section ID")
          
         global farmer_entry
         global sector_entry
@@ -307,7 +332,7 @@ def vp_start_gui():
         farmer_entry.bind("<Button-1>", clear_farmer)
         farmer_entry.place(x=150,y=135, height=30)
         
-        sector_entry = OptionMenu(window, sector_verify, *OPTIONS)
+        sector_entry = OptionMenu(window, section_verify, *OPTIONS)
         sector_entry.place(x=300, y=135, height=30)
         
         global entered
