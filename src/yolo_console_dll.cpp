@@ -294,6 +294,34 @@ void writeFile(std::string frame_str, std::string _1lb_str, std::string _2lb_str
   myfile.close();
 }
 
+// close on touch // AgNext
+struct detection_data_t {
+                    cv::Mat cap_frame;
+                    std::shared_ptr<image_t> det_image;
+                    std::vector<bbox_t> result_vec;
+                    cv::Mat draw_frame;
+                    cv::Mat save_video_frame;
+                    bool new_detection;
+                    uint64_t frame_id;
+                    bool exit_flag;
+                    cv::Mat zed_cloud;
+                    std::queue<cv::Mat> track_optflow_queue;
+                    detection_data_t() : exit_flag(false), new_detection(false) {}
+                };
+
+
+static void onMouse( int event, int x, int y, int, void* param)
+{
+    detection_data_t* dt = (detection_data_t*)param;
+    bool & exit_flag = dt -> exit_flag;
+    writeFile(frame_str, _1lb_count_str, _2lb_count_str, _3lb_count_str, _1Banjhi_count_str, _2Banjhi_count_str, _coarse_count_str, fine_per.substr(0,12), _timer); // Agnext write to file
+    exit_flag = true;  
+    cv::destroyWindow("window");
+}
+
+// close on touch // AgNext
+
+
 std::vector<std::string> objects_names_from_file(std::string const filename) {
     std::ifstream file(filename);
     std::vector<std::string> file_lines;
@@ -463,20 +491,6 @@ int main(int argc, char *argv[])
                 output_video.open(out_videofile, cv::VideoWriter::fourcc('D', 'I', 'V', 'X'), std::max(1, video_fps), frame_size, true);  // AgNext
 #endif
 
-                struct detection_data_t {
-                    cv::Mat cap_frame;
-                    std::shared_ptr<image_t> det_image;
-                    std::vector<bbox_t> result_vec;
-                    cv::Mat draw_frame;
-                    cv::Mat save_video_frame;
-                    bool new_detection;
-                    uint64_t frame_id;
-                    bool exit_flag;
-                    cv::Mat zed_cloud;
-                    std::queue<cv::Mat> track_optflow_queue;
-                    detection_data_t() : exit_flag(false), new_detection(false) {}
-                };
-
                 const bool sync = detection_sync; // sync data exchange
                 send_one_replaceable_object_t<detection_data_t> cap2prepare(sync), cap2draw(sync),
                     prepare2detect(sync), detect2draw(sync), draw2show(sync), draw2write(sync), draw2net(sync);
@@ -635,7 +649,7 @@ int main(int argc, char *argv[])
                             black_image.copyTo(draw_frame(cv::Rect(0,0, black_image.cols, black_image.rows)));      // Agnext (put black image as bg) // COMMENTED FOR DEVELOPER MODE
 
                         }
-                        // resize(draw_frame, draw_frame, cv::Size(1920, 1080), 0, 0, CV_INTER_CUBIC);  // Agnext FRAME RESIZE
+                        // resize(draw_frame, draw_frame, cv::Size(680, 480), 0, 0, CV_INTER_CUBIC);  // Agnext FRAME RESIZE
                         draw_boxes(draw_frame, result_vec, obj_names, current_fps_det, current_fps_cap, black_background);
                         show_console_result(result_vec, obj_names, detection_data.frame_id); // Agnext, originall was commented // UNCOMMENTED FOR DEVELOPER MODE
                         for (auto &i : result_vec) {        // Agnext, added for counting fine counts
@@ -792,7 +806,8 @@ int main(int argc, char *argv[])
                     // resize(draw_frame, draw_frame, cv::Size(1280, 720), 0, 0, CV_INTER_CUBIC);   // Agnext FRAME RESIZE
                     // resize(draw_frame, draw_frame, cv::Size(1920, 1080), 0, 0, CV_INTER_CUBIC); 
                     cv::imshow("window", draw_frame);
-                    cv::moveWindow("window", 100, 140);     // Agnext (move window for tkinter interface)
+                    cv::moveWindow("window", 100, 100);     // Agnext (move window for tkinter interface)
+
 
                     int key = cv::waitKey(3);    // 3 or 16ms
                     if (key == 'f') show_small_boxes = !show_small_boxes;
@@ -801,11 +816,12 @@ int main(int argc, char *argv[])
                     if (key == 27 || key == 'q'|| cv::getWindowProperty("window", cv::WND_PROP_ASPECT_RATIO) < 0) { 
                         writeFile(frame_str, _1lb_count_str, _2lb_count_str, _3lb_count_str, _1Banjhi_count_str, _2Banjhi_count_str, _coarse_count_str, fine_per.substr(0,12), _timer); // Agnext write to file
                         exit_flag = true;}   // Agnext (Exit on p key as well)
+                    cv::setMouseCallback("window", onMouse, (void*)&detection_data);
 
                     //std::cout << " current_fps_det = " << current_fps_det << ", current_fps_cap = " << current_fps_cap << std::endl;
                 } while (!detection_data.exit_flag);
                 // std::cout << " show detection exit \n";  //AgNext, originall was uncomented
-                cv::waitKey(0);     // Agnext (asks for key press before video exit)
+                // cv::waitKey(0);     // Agnext (asks for key press before video exit)
                 cv::destroyWindow("window");
                 // wait for all threads
                 if (t_cap.joinable()) t_cap.join();
@@ -869,6 +885,5 @@ int main(int argc, char *argv[])
 
     return 0;
 }
-
 
 
