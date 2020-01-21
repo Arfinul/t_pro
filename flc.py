@@ -31,7 +31,7 @@ export LD_LIBRARY_PATH=/home/agnext/Documents/flc/
 """
 
 pwd = "qwerty"
-cmd_camera_setting = "/usr/local/ecam_tk1/bin/ecam_tk1_guvcview"
+cmd_camera_setting = "/usr/local/ecam_tk1/bin/ecam_tk1_guvcview --profile=flc_utils/guvcview-config/default.gpfl"
 jetson_clock_cmd = 'jetson_clocks'
 record_cam_cmd = "python3 flc_utils/guiHelpers/record_cam_gui.py"
 
