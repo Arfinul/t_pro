@@ -31,7 +31,8 @@ export LD_LIBRARY_PATH=/home/agnext/Documents/flc/
 """
 
 pwd = "qwerty"
-cmd_camera_setting = "/usr/local/ecam_tk1/bin/ecam_tk1_guvcview --profile=flc_utils/guvcview-config/default.gpfl"
+cmd_camera_setting = "/usr/local/ecam_tk1/bin/ecam_tk1_guvcview"
+reset_camera_setting = "/usr/local/ecam_tk1/bin/ecam_tk1_guvcview --profile=flc_utils/guvcview-config/default.gpfl"
 jetson_clock_cmd = 'jetson_clocks'
 record_cam_cmd = "python3 flc_utils/guiHelpers/record_cam_gui.py"
 
@@ -93,13 +94,13 @@ def vp_start_gui():
         cam_record = subprocess.Popen("exec " + record_cam_cmd, stdout= subprocess.PIPE, shell=True)
 
 
-    def set_camera():
-        try:
-            global csetting
+    def set_camera(type_cam):
+        global csetting
+        if type_cam == "manual":
             csetting = subprocess.Popen("exec " + cmd_camera_setting, stdout= subprocess.PIPE, shell=True)
-        except:
-            csetting.kill()
-            refresh()
+        else:
+            csetting = subprocess.Popen("exec " + reset_camera_setting, stdout= subprocess.PIPE, shell=True)
+            # csetting.kill()
 
     def set_camera_exit():
         csetting.kill()
@@ -242,7 +243,7 @@ def vp_start_gui():
         _coarse = round(float(li[6].split(": ")[1]), 2)
         _perc = round(float(li[7].split(": ")[1]), 2)
         _perc = _perc if math.isnan(float('nan')) == False else 0
-        totalCount = _1lb + _2lb + _3lb + _1bj + _2bj + _coarse
+        totalCount = int(_1lb + _2lb + _3lb + _1bj + _2bj + _coarse)
 
         _flc_btn.configure(text="FLC % " + str(_perc))
         _total_btn.configure(text="Total " + str(totalCount))
@@ -263,7 +264,7 @@ def vp_start_gui():
         except:
             _3lb_btn.configure(text="3LB % 0.0")
         try:
-            _coarse_btn.configure(text="Coarse % " + str(math.ceil(_1lb*100/totalCount)))
+            _coarse_btn.configure(text="Coarse % " + str(math.ceil(_coarse_btn*100/totalCount)))
         except:
             _coarse_btn.configure(text="Coarse % 0.0")
         try:
@@ -467,6 +468,13 @@ def vp_start_gui():
     def delete_user_not_found_screen():
         user_not_found_screen.destroy()
 
+    def check_cam_selected_option(x):
+        if x == "Manual Settings":
+            set_camera("manual")
+        else:
+            set_camera("reset")
+          
+
     window.protocol("WM_DELETE_WINDOW", on_closing)
 
     message = tk.Label(window, text="Fine Leaf Count System                          ", fg="white", bg="#539051", width=int(configparser.get('gui-config', 'title_width')), height=int(configparser.get('gui-config', 'title_height')), font=('times', 30, 'bold'))
@@ -476,7 +484,12 @@ def vp_start_gui():
     panel = Label(window, image = img, bg='#539051')
     panel.place(x=int(configparser.get('gui-config', 'login_image_x')), y=int(configparser.get('gui-config', 'login_image_y')))
     
-    tuneCamera = tk.Button(window, text="Camera Setting", command=set_camera, fg="white", bg="#539051", width=int(configparser.get('gui-config', 'buttons_width')),height=int(configparser.get('gui-config', 'buttons_height')), font=('times', 15, 'bold'))
+    global camera_verify
+    OPTION = ["Default Settings", "Manual Settings"] 
+     
+    camera_verify = StringVar(window)
+    camera_verify.set("Camera Setting")
+    tuneCamera = OptionMenu(window, camera_verify, *OPTION, command=check_cam_selected_option)
 
     refresh_button = tk.Button(window, text="Refresh", command=refresh, fg="white", bg="#539051", width=int(configparser.get('gui-config', 'refresh_width')),height=1, font=('times', 10, 'bold'))
     logout_button = tk.Button(window, text="Logout", command=logout, fg="white", bg="#539051", width=int(configparser.get('gui-config', 'refresh_width')),height=1, font=('times', 10, 'bold'))
@@ -561,6 +574,7 @@ if __name__ == '__main__':
         refresh()
 
     vp_start_gui()
+
 
 
 

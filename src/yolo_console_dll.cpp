@@ -676,7 +676,7 @@ int main(int argc, char *argv[])
                         
                         total = count_1lb + count_2lb + count_3lb + count_1Banjhi + count_2Banjhi + count_coarse;
 
-                        //putText(draw_frame, "Press key 'q' once to freeze, twice to quit.", cv::Point2f(50, 450), cv::FONT_HERSHEY_COMPLEX_SMALL, 1, cv::Scalar(50, 255, 0), 1); // Agnext
+                        putText(draw_frame, "Tap to Exit", cv::Point2f(250, 350), cv::FONT_HERSHEY_COMPLEX_SMALL, 1.2, cv::Scalar(0, 0, 255), 2); // Agnext
 
                         frame_str = "FRAME : " + std::to_string(detection_data.frame_id); // Agnext
                         putText(draw_frame, frame_str, cv::Point2f(10, 50), cv::FONT_HERSHEY_COMPLEX_SMALL, 1.2, cv::Scalar(50, 255, 0), 2); // Agnext
