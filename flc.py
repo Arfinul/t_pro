@@ -66,10 +66,7 @@ def vp_start_gui():
         try:
             global p
             p = subprocess.Popen("exec " + cmd, stdout= subprocess.PIPE, shell=True)
-            not_file_found = True
-            while(not_file_found):
-                if os.path.exists("result.txt"):
-                    not_file_found = False
+            p.wait()
             show_results_on_display()
             endRecord.place(x=int(configparser.get('gui-config', 'endrecord_btn_x')), y=int(configparser.get('gui-config', 'endrecord_btn_y')))
         except:
@@ -274,12 +271,12 @@ def vp_start_gui():
 
         _flc_btn.place(x=150,y=140)
         _total_btn.place(x=300,y=140)
-        _1lb_btn.place(x=150,y=195)
-        _2lb_btn.place(x=300,y=195)
-        _1bj_btn.place(x=150,y=250)
-        _3lb_btn.place(x=300,y=250)
-        _coarse_btn.place(x=150,y=305)
-        _2bj_btn.place(x=300,y=305)
+        _1lb_btn.place(x=150,y=215)
+        _2lb_btn.place(x=300,y=215)
+        _1bj_btn.place(x=150,y=270)
+        _3lb_btn.place(x=300,y=270)
+        _coarse_btn.place(x=150,y=325)
+        _2bj_btn.place(x=300,y=325)
 
 
     def place_all_buttons():
@@ -469,7 +466,7 @@ def vp_start_gui():
         user_not_found_screen.destroy()
 
     def check_cam_selected_option(x):
-        if x == "Manual Settings":
+        if x == "Manual":
             set_camera("manual")
         else:
             set_camera("reset")
@@ -485,10 +482,10 @@ def vp_start_gui():
     panel.place(x=int(configparser.get('gui-config', 'login_image_x')), y=int(configparser.get('gui-config', 'login_image_y')))
     
     global camera_verify
-    OPTION = ["Default Settings", "Manual Settings"] 
+    OPTION = ["Default", "Manual"] 
      
     camera_verify = StringVar(window)
-    camera_verify.set("Camera Setting")
+    camera_verify.set("Camera Settings")
     tuneCamera = OptionMenu(window, camera_verify, *OPTION, command=check_cam_selected_option)
 
     refresh_button = tk.Button(window, text="Refresh", command=refresh, fg="white", bg="#539051", width=int(configparser.get('gui-config', 'refresh_width')),height=1, font=('times', 10, 'bold'))
