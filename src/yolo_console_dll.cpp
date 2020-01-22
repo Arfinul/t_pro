@@ -651,7 +651,7 @@ int main(int argc, char *argv[])
                         }
                         // resize(draw_frame, draw_frame, cv::Size(680, 480), 0, 0, CV_INTER_CUBIC);  // Agnext FRAME RESIZE
                         draw_boxes(draw_frame, result_vec, obj_names, current_fps_det, current_fps_cap, black_background);
-                        show_console_result(result_vec, obj_names, detection_data.frame_id); // Agnext, originall was commented // UNCOMMENTED FOR DEVELOPER MODE
+                        // show_console_result(result_vec, obj_names, detection_data.frame_id); // Agnext, originall was commented // UNCOMMENTED FOR DEVELOPER MODE
                         for (auto &i : result_vec) {        // Agnext, added for counting fine counts
                             if (obj_names.size() > i.obj_id) 
                                 if (obj_names[i.obj_id] == "1LB"){
@@ -844,7 +844,7 @@ int main(int argc, char *argv[])
                         std::cout << line << std::endl;
                         cv::Mat mat_img = cv::imread(line);
                         std::vector<bbox_t> result_vec = detector.detect(mat_img);
-                        show_console_result(result_vec, obj_names);
+                        // show_console_result(result_vec, obj_names);
                         //draw_boxes(mat_img, result_vec, obj_names);
                         //cv::imwrite("res_" + line, mat_img);
                     }
@@ -862,7 +862,7 @@ int main(int argc, char *argv[])
                 //result_vec = detector.tracking_id(result_vec);    // comment it - if track_id is not required
                 draw_boxes(mat_img, result_vec, obj_names);
                 cv::imshow("window name", mat_img);
-                show_console_result(result_vec, obj_names);
+                // show_console_result(result_vec, obj_names);
                 char key = cvWaitKey(10);   // Agnext
                 if(key==27) // Agnext
 
@@ -875,7 +875,7 @@ int main(int argc, char *argv[])
             auto img = detector.load_image(filename);
             std::vector<bbox_t> result_vec = detector.detect(img);
             detector.free_image(img);
-            show_console_result(result_vec, obj_names);
+            // show_console_result(result_vec, obj_names);
 
 #endif  // OPENCV
         }
