@@ -232,15 +232,15 @@ def vp_start_gui():
     def show_results_on_display():
         txt_file = open("result.txt", "r").read()
         li = txt_file.split("\n")
-        _1lb = round(float(li[1].split(": ")[1]), 2)
-        _2lb = round(float(li[2].split(": ")[1]), 2)
-        _3lb = round(float(li[3].split(": ")[1]), 2)
-        _1bj = round(float(li[4].split(": ")[1]), 2)
-        _2bj = round(float(li[5].split(": ")[1]), 2)
-        _coarse = round(float(li[6].split(": ")[1]), 2)
+        _1lb = int(li[1].split(": ")[1])
+        _2lb = int(li[2].split(": ")[1])
+        _3lb = int(li[3].split(": ")[1]) / 2
+        _1bj = int(li[4].split(": ")[1])
+        _2bj = int(li[5].split(": ")[1])
+        _coarse = int(li[6].split(": ")[1])
         _perc = round(float(li[7].split(": ")[1]), 2)
-        _perc = _perc if math.isnan(float('nan')) == False else 0
-        totalCount = int(_1lb + _2lb + _3lb + _1bj + _2bj + _coarse)
+        _perc = _perc if math.isnan(float(_perc)) == False else 0
+        totalCount = _1lb + _2lb + _3lb + _1bj + _2bj + _coarse
 
         _flc_btn.configure(text="FLC % " + str(_perc))
         _total_btn.configure(text="Total " + str(totalCount))
@@ -257,11 +257,11 @@ def vp_start_gui():
         except:
             _1bj_btn.configure(text="1Banjhi % 0.0")
         try:
-            _3lb_btn.configure(text="3LB % " + str(math.ceil(_3lb*50/totalCount)))
+            _3lb_btn.configure(text="3LB % " + str(math.ceil(_3lb*100/totalCount)))
         except:
             _3lb_btn.configure(text="3LB % 0.0")
         try:
-            _coarse_btn.configure(text="Coarse % " + str(math.ceil(_coarse_btn*100/totalCount)))
+            _coarse_btn.configure(text="Coarse % " + str(math.ceil(_coarse*100/totalCount)))
         except:
             _coarse_btn.configure(text="Coarse % 0.0")
         try:
@@ -280,15 +280,15 @@ def vp_start_gui():
 
 
     def place_all_buttons():
-        refresh_button.place(x=int(configparser.get('gui-config', 'refresh_x')), y=int(configparser.get('gui-config', 'refresh_y')))
-        logout_button.place(x=int(configparser.get('gui-config', 'logout_x')), y=int(configparser.get('gui-config', 'logout_y')))
+        refresh_button.place(x=int(configparser.get('gui-config', 'refresh_x')), y=int(configparser.get('gui-config', 'refresh_y')), height=30, width=70)
+        logout_button.place(x=int(configparser.get('gui-config', 'logout_x')), y=int(configparser.get('gui-config', 'logout_y')), height=30, width=70)
 
 
-        startRecord.place(x=int(configparser.get('gui-config', 'startrecord_btn_x')), y=int(configparser.get('gui-config', 'startrecord_btn_y')))
-        tuneCamera.place(x=int(configparser.get('gui-config', 'tunecamera_btn_x')), y=int(configparser.get('gui-config', 'tunecamera_btn_y')))
+        startRecord.place(x=int(configparser.get('gui-config', 'startrecord_btn_x')), y=int(configparser.get('gui-config', 'startrecord_btn_y')), height=35, width=140)
+        tuneCamera.place(x=int(configparser.get('gui-config', 'tunecamera_btn_x')), y=int(configparser.get('gui-config', 'tunecamera_btn_y')), height=35, width=140)
 
         if is_admin:
-            startCamRecord.place(x=int(configparser.get('gui-config', 'cam_record_start_x')), y=int(configparser.get('gui-config', 'cam_record_start_y')))
+            startCamRecord.place(x=int(configparser.get('gui-config', 'cam_record_start_x')), y=int(configparser.get('gui-config', 'cam_record_start_y')), height=35, width=140)
 
 
     def place_on_screen():
@@ -388,7 +388,7 @@ def vp_start_gui():
 
         global farmer_verify
         global section_verify
-        OPTIONS = ["1","2","3", "4"] 
+        OPTIONS = ["Enter section ID", "1","2","3", "4"] 
          
         farmer_verify = StringVar()
         section_verify = StringVar(window)
@@ -400,14 +400,15 @@ def vp_start_gui():
         farmer_entry = Entry(window, textvariable=farmer_verify)
         farmer_entry.insert(1, "Enter farmer ID")
         farmer_entry.bind("<Button-1>", clear_farmer)
-        farmer_entry.place(x=150,y=135, height=30)
+        farmer_entry.place(x=60,y=135, height=30)
         
         sector_entry = OptionMenu(window, section_verify, *OPTIONS)
-        sector_entry.place(x=300, y=135, height=30)
+        sector_entry.configure(width=15)
+        sector_entry.place(x=220, y=135, height=30)
         
         global entered
-        entered = tk.Button(window, text="Submit", command=details_verify, fg="white", bg="#539051", width=int(configparser.get('gui-config', 'signin_btn_width')),height=1, activebackground = "Grey" , font=('times', 15, 'bold'))
-        entered.place(x=450, y=135)
+        entered = tk.Button(window, text="Submit", command=details_verify, fg="white", bg="#539051", width=18,height=1, font=('times', 15, 'bold'))
+        entered.place(x=400, y=135)
 
         logout_button.place(x=int(configparser.get('gui-config', 'logout_x')), y=int(configparser.get('gui-config', 'logout_y')))
 
@@ -468,13 +469,15 @@ def vp_start_gui():
     def check_cam_selected_option(x):
         if x == "Manual":
             set_camera("manual")
-        else:
+        elif x == "Default":
             set_camera("reset")
+        else:
+            pass
           
 
     window.protocol("WM_DELETE_WINDOW", on_closing)
 
-    message = tk.Label(window, text="Fine Leaf Count System                          ", fg="white", bg="#539051", width=int(configparser.get('gui-config', 'title_width')), height=int(configparser.get('gui-config', 'title_height')), font=('times', 30, 'bold'))
+    message = tk.Label(window, text="                                         Fine Leaf Count System", fg="white", bg="#539051", width=int(configparser.get('gui-config', 'title_width')), height=int(configparser.get('gui-config', 'title_height')), font=('times', 30, 'bold'))
     message.place(x=int(configparser.get('gui-config', 'title_x')), y=int(configparser.get('gui-config', 'title_y')))
 
     img = ImageTk.PhotoImage(Image.open(configparser.get('gui-config', 'logo')))
@@ -482,20 +485,21 @@ def vp_start_gui():
     panel.place(x=int(configparser.get('gui-config', 'login_image_x')), y=int(configparser.get('gui-config', 'login_image_y')))
     
     global camera_verify
-    OPTION = ["Default", "Manual"] 
+    OPTION = ["Camera Settings", "Default", "Manual"] 
      
     camera_verify = StringVar(window)
     camera_verify.set("Camera Settings")
     tuneCamera = OptionMenu(window, camera_verify, *OPTION, command=check_cam_selected_option)
+    tuneCamera.configure(width=15)
 
-    refresh_button = tk.Button(window, text="Refresh", command=refresh, fg="white", bg="#539051", width=int(configparser.get('gui-config', 'refresh_width')),height=1, font=('times', 10, 'bold'))
-    logout_button = tk.Button(window, text="Logout", command=logout, fg="white", bg="#539051", width=int(configparser.get('gui-config', 'refresh_width')),height=1, font=('times', 10, 'bold'))
+    refresh_button = tk.Button(window, text="Refresh", command=refresh, fg="white", bg="#539051", width=int(configparser.get('gui-config', 'refresh_width')),font=('times', 12, 'bold'))
+    logout_button = tk.Button(window, text="Logout", command=logout, fg="white", bg="#539051", width=int(configparser.get('gui-config', 'refresh_width')), font=('times', 12, 'bold'))
 
-    startRecord = tk.Button(window, text="Start", command=video_stream, fg="white", bg="#539051", width=int(configparser.get('gui-config', 'buttons_width')),height=int(configparser.get('gui-config', 'buttons_height')), font=('times', 15, 'bold'))
-    endRecord = tk.Button(window, text="Submit", command=end_video, fg="white", bg="#539051", width=int(configparser.get('gui-config', 'buttons_width')),height=int(configparser.get('gui-config', 'buttons_height')), font=('times', 15, 'bold'))
+    startRecord = tk.Button(window, text="Start", command=video_stream, fg="white", bg="#539051", font=('times', 15, 'bold'))
+    endRecord = tk.Button(window, text="Submit", command=end_video, fg="white", bg="#539051", font=('times', 15, 'bold'))
 
     if is_admin:
-        startCamRecord = tk.Button(window, text="Record training video", command=start_record_video, fg="white", bg="#539051", width=int(configparser.get('gui-config', 'buttons_width')),height=int(configparser.get('gui-config', 'buttons_height')), activebackground = "Grey" , font=('times', 15, 'bold'))
+        startCamRecord = tk.Button(window, text="Record training video", command=start_record_video, fg="white", bg="#539051", font=('times', 15, 'bold'))
 
     msg_sent = Label(window, text="Data sent status", font=('times', 15), fg="green", bg='white')
 
@@ -533,7 +537,7 @@ def vp_start_gui():
     password_login_entry.bind("<Button-1>", action_2)
     
     
-    signin = tk.Button(window, text="Login", command=login_verify, fg="white", bg="#539051", width=int(configparser.get('gui-config', 'signin_btn_width')),height=int(configparser.get('gui-config', 'signin_btn_height')), activebackground = "Grey" , font=('times', 15, 'bold'))
+    signin = tk.Button(window, text="Login", command=login_verify, fg="white", bg="#539051", width=int(configparser.get('gui-config', 'signin_btn_width')),height=int(configparser.get('gui-config', 'signin_btn_height')), font=('times', 15, 'bold'))
     
     if is_login == True and details_filled == True:
 
@@ -543,8 +547,8 @@ def vp_start_gui():
         place_on_screen()
 
     else:
-        username_login_entry.place(x=570, y=140)
-        password_login_entry.place(x=570, y=170)
+        username_login_entry.place(x=570, y=140, width=130, height=25)
+        password_login_entry.place(x=570, y=170, width=130, height=25)
 
         global panel_bg
         img_bg = ImageTk.PhotoImage(Image.open(configparser.get('gui-config', 'bg_image')))

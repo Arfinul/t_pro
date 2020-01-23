@@ -217,6 +217,7 @@ int seconds, minutes, hours; // Agnext
 cv::Mat black_image(480, 640, CV_8UC3); // Agnext black image
 bool black_background = false;
 bool clean_video = false;
+int tap_count = 0;
 
 void draw_boxes(cv::Mat mat_img, std::vector<bbox_t> result_vec, std::vector<std::string> obj_names,
     int current_det_fps = -1, int current_cap_fps = -1, bool black_screen=false)
@@ -312,11 +313,16 @@ struct detection_data_t {
 
 static void onMouse( int event, int x, int y, int, void* param)
 {
-    detection_data_t* dt = (detection_data_t*)param;
-    bool & exit_flag = dt -> exit_flag;
-    writeFile(frame_str, _1lb_count_str, _2lb_count_str, _3lb_count_str, _1Banjhi_count_str, _2Banjhi_count_str, _coarse_count_str, fine_per.substr(0,12), _timer); // Agnext write to file
-    exit_flag = true;  
-    cv::destroyWindow("window");
+    if (tap_count > 4){
+        detection_data_t* dt = (detection_data_t*)param;
+        bool & exit_flag = dt -> exit_flag;
+        writeFile(frame_str, _1lb_count_str, _2lb_count_str, _3lb_count_str, _1Banjhi_count_str, _2Banjhi_count_str, _coarse_count_str, fine_per.substr(0,12), _timer); // Agnext write to file
+        exit_flag = true;  
+        cv::destroyWindow("window");
+    }
+    else{
+        tap_count ++;
+    }
 }
 
 // close on touch // AgNext
@@ -676,7 +682,7 @@ int main(int argc, char *argv[])
                         
                         total = count_1lb + count_2lb + count_3lb + count_1Banjhi + count_2Banjhi + count_coarse;
 
-                        putText(draw_frame, "Tap to Exit", cv::Point2f(250, 350), cv::FONT_HERSHEY_COMPLEX_SMALL, 1.2, cv::Scalar(0, 0, 255), 2); // Agnext
+                        putText(draw_frame, "Double Tap to Exit", cv::Point2f(200, 350), cv::FONT_HERSHEY_COMPLEX_SMALL, 1.2, cv::Scalar(0, 0, 255), 2); // Agnext
 
                         frame_str = "FRAME : " + std::to_string(detection_data.frame_id); // Agnext
                         putText(draw_frame, frame_str, cv::Point2f(10, 50), cv::FONT_HERSHEY_COMPLEX_SMALL, 1.2, cv::Scalar(50, 255, 0), 2); // Agnext
