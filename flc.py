@@ -30,7 +30,7 @@ export LD_LIBRARY_PATH=/home/agnext/Documents/flc/
 ./uselib cfg/jorhat_Dec.names cfg/jorhat_Dec.cfg weights/jorhat_Dec_final.weights web_camera
 """
 
-pwd = "qwerty"
+pwd = configparser.get('gui-config', 'sys_password')
 cmd_camera_setting = "/usr/local/ecam_tk1/bin/ecam_tk1_guvcview"
 reset_camera_setting = "/usr/local/ecam_tk1/bin/ecam_tk1_guvcview --profile=flc_utils/guvcview-config/default.gpfl"
 jetson_clock_cmd = 'jetson_clocks'
@@ -165,13 +165,14 @@ def vp_start_gui():
         if configparser.get('gui-config', 'internet') == 'true':
             txt_file = open("result.txt", "r").read()
             li = txt_file.split("\n")
-            _1lb = round(float(li[1].split(": ")[1]), 2)
-            _2lb = round(float(li[2].split(": ")[1]), 2)
-            _3lb = round(float(li[3].split(": ")[1]), 2)
-            _1bj = round(float(li[4].split(": ")[1]), 2)
-            _2bj = round(float(li[5].split(": ")[1]), 2)
-            _coarse = round(float(li[6].split(": ")[1]), 2)
-            _perc = round(float(li[7].split(": ")[1]), 2)
+            _1lb = int(li[1].split(": ")[1])
+            _2lb = int(li[2].split(": ")[1])
+            _3lb = int(li[3].split(": ")[1])
+            _1bj = int(li[4].split(": ")[1])
+            _2bj = int(li[5].split(": ")[1])
+            _cluster = int(li[6].split(": ")[1])
+            _coarse = int(li[7].split(": ")[1])
+            _perc = round(float(li[8].split(": ")[1]), 2)
             _perc = _perc if math.isnan(float('nan')) == False else 0
             totalCount = _1lb + _2lb + _3lb + _1bj + _2bj + _coarse
 
@@ -237,10 +238,11 @@ def vp_start_gui():
         _3lb = int(li[3].split(": ")[1]) / 2
         _1bj = int(li[4].split(": ")[1])
         _2bj = int(li[5].split(": ")[1])
-        _coarse = int(li[6].split(": ")[1])
-        _perc = round(float(li[7].split(": ")[1]), 2)
+        _cluster = int(li[6].split(": ")[1])
+        _coarse = int(li[7].split(": ")[1])
+        _perc = round(float(li[8].split(": ")[1]), 2)
         _perc = _perc if math.isnan(float(_perc)) == False else 0
-        totalCount = _1lb + _2lb + _3lb + _1bj + _2bj + _coarse
+        totalCount = int(_1lb + _2lb + _3lb + _1bj + _2bj + _coarse)
 
         _flc_btn.configure(text="FLC % " + str(_perc))
         _total_btn.configure(text="Total " + str(totalCount))

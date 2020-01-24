@@ -184,7 +184,7 @@ int count_3lb = 0;// Agnext
 int count_1Banjhi = 0;// Agnext 
 int count_2Banjhi = 0;// Agnext
 int count_coarse = 0; // Agnext
-int count_fine = 0; // Agnext
+int count_cluster = 0; // Agnext
 float fine_percnt = 0.0;// Agnext
 float perc_count_1lb = 0.0; //Agnext
 float perc_count_2lb = 0.0; //Agnext
@@ -192,7 +192,7 @@ float perc_count_3lb = 0.0; //Agnext
 float perc_count_1Banjhi = 0.0; //Agnext
 float perc_count_2Banjhi = 0.0; //Agnext
 float perc_count_coarse = 0.0; //Agnext
-int total=0; //Agnext
+float total=0.0; //Agnext
 
 std::string frame_str = ""; // Agnext
 std::string _1lb_str = "";  // Agnext
@@ -201,12 +201,14 @@ std::string _3lb_str = "";  // Agnext
 std::string _1Banjhi_str = "";  // Agnext   
 std::string _2Banjhi_str = "";  // Agnext
 std::string coarse_str = "";    // Agnext
+std::string cluster_str = "";    // Agnext
 std::string _1lb_count_str = "";  // Agnext
 std::string _2lb_count_str = "";  // Agnext
 std::string _3lb_count_str = "";  // Agnext
 std::string _1Banjhi_count_str = "";  // Agnext   
 std::string _2Banjhi_count_str = "";  // Agnext
 std::string _coarse_count_str = "";    // Agnext
+std::string _cluster_count_str = "";    // Agnext
 std::string fine_per = "";  // Agnext
 std::string _timer = "";    // Agnext
 
@@ -279,7 +281,7 @@ void show_console_result(std::vector<bbox_t> const result_vec, std::vector<std::
     }
 }
 
-void writeFile(std::string frame_str, std::string _1lb_str, std::string _2lb_str, std::string _3lb_str, std::string _1Banjhi_str, std::string _2Banjhi_str, std::string coarse_str, std::string fine_per, std::string _timer) 
+void writeFile(std::string frame_str, std::string _1lb_str, std::string _2lb_str, std::string _3lb_str, std::string _1Banjhi_str, std::string _2Banjhi_str, std::string coarse_str, std::string cluster_str, std::string fine_per, std::string _timer) 
 {
   std::ofstream myfile;
   myfile.open("result.txt");    // Agnext changes file name
@@ -289,6 +291,7 @@ void writeFile(std::string frame_str, std::string _1lb_str, std::string _2lb_str
   myfile <<_3lb_str<<"\n";
   myfile <<_1Banjhi_str<<"\n";  
   myfile <<_2Banjhi_str<<"\n";
+  myfile <<cluster_str<<"\n";
   myfile <<coarse_str<<"\n";
   myfile <<fine_per<<"\n";
   myfile <<_timer<<"\n";
@@ -316,7 +319,7 @@ static void onMouse( int event, int x, int y, int, void* param)
     if (tap_count > 4){
         detection_data_t* dt = (detection_data_t*)param;
         bool & exit_flag = dt -> exit_flag;
-        writeFile(frame_str, _1lb_count_str, _2lb_count_str, _3lb_count_str, _1Banjhi_count_str, _2Banjhi_count_str, _coarse_count_str, fine_per.substr(0,12), _timer); // Agnext write to file
+        writeFile(frame_str, _1lb_count_str, _2lb_count_str, _3lb_count_str, _1Banjhi_count_str, _2Banjhi_count_str, _coarse_count_str, _cluster_count_str, fine_per.substr(0,12), _timer); // Agnext write to file
         exit_flag = true;  
         cv::destroyWindow("window");
     }
@@ -678,47 +681,51 @@ int main(int argc, char *argv[])
                                 else if (obj_names[i.obj_id] == "Coarse"){
                                     count_coarse = i.track_id;
                                 }
+                                else if (obj_names[i.obj_id] == "Cluster"){
+                                    count_cluster = i.track_id;
+                                }
                         }
                         
-                        total = count_1lb + count_2lb + count_3lb + count_1Banjhi + count_2Banjhi + count_coarse;
+                        total = (count_1lb + count_2lb + count_3lb + count_1Banjhi + count_2Banjhi + count_coarse);
 
                         putText(draw_frame, "Double Tap to Exit", cv::Point2f(200, 350), cv::FONT_HERSHEY_COMPLEX_SMALL, 1.2, cv::Scalar(0, 0, 255), 2); // Agnext
 
                         frame_str = "FRAME : " + std::to_string(detection_data.frame_id); // Agnext
                         putText(draw_frame, frame_str, cv::Point2f(10, 50), cv::FONT_HERSHEY_COMPLEX_SMALL, 1.2, cv::Scalar(50, 255, 0), 2); // Agnext
 
-                        perc_count_1lb = (count_1lb*100)/total;
+                        perc_count_1lb = (float(count_1lb)*100)/total;
                         _1lb_count_str = "1LB : " + std::to_string(count_1lb); // Agnext
                         _1lb_str = "1LB %: " + std::to_string(perc_count_1lb); // Agnext
                         putText(draw_frame, _1lb_str.substr(0,11), cv::Point2f(10, 100), cv::FONT_HERSHEY_COMPLEX_SMALL, 1.2, cv::Scalar(0, 255, 255), 1);  // Agnext
 
-                        perc_count_2lb = (count_2lb*100)/total;
+                        perc_count_2lb = (float(count_2lb)*100)/total;
                         _2lb_count_str = "2LB : " + std::to_string(count_2lb); // Agnext
                         _2lb_str = "2LB %: " + std::to_string(perc_count_2lb); // Agnext
                         putText(draw_frame, _2lb_str.substr(0,11), cv::Point2f(10, 130), cv::FONT_HERSHEY_COMPLEX_SMALL, 1.2, cv::Scalar(0, 255, 255), 1);  // Agnext
 
-                        perc_count_3lb = (count_3lb*50)/total;
+                        perc_count_3lb = ((float(count_3lb/2)*100)/total);
                         _3lb_count_str = "3LB : " + std::to_string(count_3lb); // Agnext
                         _3lb_str = "3LB %: " + std::to_string(perc_count_3lb); // Agnext
                         putText(draw_frame, _3lb_str.substr(0,11), cv::Point2f(10, 160), cv::FONT_HERSHEY_COMPLEX_SMALL, 1.2, cv::Scalar(0, 255, 255), 1);  // Agnext
 
-                        perc_count_1Banjhi = (count_1Banjhi*100)/total;
+                        perc_count_1Banjhi = (float(count_1Banjhi)*100)/total;
                         _1Banjhi_count_str = "1Banjhi : " + std::to_string(count_1Banjhi); // Agnext
                         _1Banjhi_str = "1Banjhi %: " + std::to_string(perc_count_1Banjhi); // Agnext    
                         putText(draw_frame, _1Banjhi_str.substr(0,15), cv::Point2f(10, 190), cv::FONT_HERSHEY_COMPLEX_SMALL, 1.2, cv::Scalar(0, 255, 255), 1);  // Agnext   
                         
-                        perc_count_2Banjhi = (count_2Banjhi*100)/total;
+                        perc_count_2Banjhi = (float(count_2Banjhi)*100)/total;
                         _2Banjhi_count_str = "2Banjhi : " + std::to_string(count_2Banjhi); // Agnext
                         _2Banjhi_str = "2Banjhi %: " + std::to_string(perc_count_2Banjhi); // Agnext    
                         putText(draw_frame, _2Banjhi_str.substr(0,15), cv::Point2f(10, 220), cv::FONT_HERSHEY_COMPLEX_SMALL, 1.2, cv::Scalar(0, 255, 255), 1);  // Agnext
 
-                        perc_count_coarse = (count_coarse*100)/total;
+                        _cluster_count_str = "Cluster : " + std::to_string(count_cluster); // Agnext
+
+                        perc_count_coarse = (float(count_coarse)*100)/total;
                         _coarse_count_str = "Coarse : " + std::to_string(count_coarse); // Agnext
                         coarse_str = "Coarse %: " + std::to_string(perc_count_coarse); // Agnext
                         putText(draw_frame, coarse_str.substr(0,14), cv::Point2f(10, 250), cv::FONT_HERSHEY_COMPLEX_SMALL, 1.2, cv::Scalar(0, 255, 255), 1);  // Agnext
 
-                        count_fine = count_1lb + count_2lb + (count_3lb/2)  + count_1Banjhi; // Agnext
-                        fine_percnt = (count_fine * 100) / float(count_fine + count_coarse + count_2Banjhi); // Agnext
+                        fine_percnt = (float(count_1lb) + float(count_2lb) + float(count_3lb/2) + float(count_1Banjhi)) * 100 / total; // Agnext
 
                         fine_per = "FLC % : " + std::to_string(fine_percnt); // Agnext
                         putText(draw_frame, fine_per.substr(0,12), cv::Point2f(10, 280), cv::FONT_HERSHEY_COMPLEX_SMALL, 1.2, cv::Scalar(0, 255, 255), 2);  // Agnext
@@ -820,7 +827,7 @@ int main(int argc, char *argv[])
                     if (key == 'p') while (true) if (cv::waitKey(100) == 'p') break;
                     //if (key == 'e') extrapolate_flag = !extrapolate_flag;
                     if (key == 27 || key == 'q'|| cv::getWindowProperty("window", cv::WND_PROP_ASPECT_RATIO) < 0) { 
-                        writeFile(frame_str, _1lb_count_str, _2lb_count_str, _3lb_count_str, _1Banjhi_count_str, _2Banjhi_count_str, _coarse_count_str, fine_per.substr(0,12), _timer); // Agnext write to file
+                        writeFile(frame_str, _1lb_count_str, _2lb_count_str, _3lb_count_str, _1Banjhi_count_str, _2Banjhi_count_str, _coarse_count_str, _cluster_count_str, fine_per.substr(0,12), _timer); // Agnext write to file
                         exit_flag = true;}   // Agnext (Exit on p key as well)
                     cv::setMouseCallback("window", onMouse, (void*)&detection_data);
 
@@ -829,7 +836,7 @@ int main(int argc, char *argv[])
                 // std::cout << " show detection exit \n";  //AgNext, originall was uncomented
                 // cv::waitKey(0);     // Agnext (asks for key press before video exit)
                 cv::destroyWindow("window");
-                writeFile(frame_str, _1lb_count_str, _2lb_count_str, _3lb_count_str, _1Banjhi_count_str, _2Banjhi_count_str, _coarse_count_str, fine_per.substr(0,12), _timer); // Agnext write to file
+                writeFile(frame_str, _1lb_count_str, _2lb_count_str, _3lb_count_str, _1Banjhi_count_str, _2Banjhi_count_str, _coarse_count_str, _cluster_count_str, fine_per.substr(0,12), _timer); // Agnext write to file
                 // wait for all threads
                 if (t_cap.joinable()) t_cap.join();
                 if (t_prepare.joinable()) t_prepare.join();
