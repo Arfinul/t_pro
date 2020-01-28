@@ -30,6 +30,11 @@ export LD_LIBRARY_PATH=/home/agnext/Documents/flc/
 ./uselib cfg/jorhat_Dec.names cfg/jorhat_Dec.cfg weights/jorhat_Dec_final.weights web_camera > output.txt
 """
 
+cmd_demo = """
+export LD_LIBRARY_PATH=/home/agnext/Documents/flc/
+./uselib cfg/jorhat_Dec.names cfg/jorhat_Dec.cfg weights/jorhat_Dec_final.weights z_testData/57_11Dec_Mix.mp4 > output.txt
+"""
+
 pwd = configparser.get('gui-config', 'sys_password')
 cmd_camera_setting = "/usr/local/ecam_tk1/bin/ecam_tk1_guvcview"
 reset_camera_setting = "/usr/local/ecam_tk1/bin/ecam_tk1_guvcview --profile=flc_utils/guvcview-config/default.gpfl"
@@ -56,9 +61,10 @@ def vp_start_gui():
     # function for video streaming
     def video_stream():
         msg_sent.place_forget()
-        startRecord.place_forget()  
+        startRecord.place_forget()
+        startDemo.place_forget()  
         endRecord.place_forget()
-        tuneCamera.place_forget()
+        # tuneCamera.place_forget()
         refresh_button.place_forget()
         logout_button.place_forget()
         if is_admin:
@@ -73,11 +79,34 @@ def vp_start_gui():
             p.kill()
             endRecord.place_forget()
             startRecord.configure(bg="#539051", state="active")
+            startDemo.configure(bg="#539051", state="active")
+            refresh()
+
+    # function for video streaming
+    def demo_video():
+        msg_sent.place_forget()
+        startRecord.place_forget()
+        startDemo.place_forget()
+        endRecord.place_forget()
+        # tuneCamera.place_forget()
+        refresh_button.place_forget()
+        logout_button.place_forget()
+        if is_admin:
+            startCamRecord.place_forget() 
+        try:
+            global q
+            q = subprocess.Popen("exec " + cmd_demo, stdout= subprocess.PIPE, shell=True)
+            q.wait()
+            show_results_on_display()
+            endRecord.place(x=int(configparser.get('gui-config', 'endrecord_btn_x')), y=int(configparser.get('gui-config', 'endrecord_btn_y')))
+        except:
+            q.kill()
+            endRecord.place_forget()
+            startRecord.configure(bg="#539051", state="active")
+            startDemo.configure(bg="#539051", state="active")
             refresh()
 
     def end_video():
-        p.terminate()
-        p.kill()
         endRecord.place_forget()
         send_data_api()       #send data to api
         sleep(2)
@@ -275,28 +304,34 @@ def vp_start_gui():
         _flc_btn.configure(text="FLC % " + str(_perc))
         _total_btn.configure(text="Total " + str(totalCount))
         try:
-            _1lb_btn.configure(text="1LB % " + str(math.ceil(_1lb*100/totalCount)))
-        except:
+            _1lb_btn.configure(text="1LB % " + str(round(_1lb*100/totalCount, 2)))
+        except Exception as e:
+            print(e)
             _1lb_btn.configure(text="1LB % 0")
         try:
-            _2lb_btn.configure(text="2LB % " + str(math.ceil(_2lb*100/totalCount)))
-        except:
+            _2lb_btn.configure(text="2LB % " + str(round(_2lb*100/totalCount, 2)))
+        except Exception as e:
+            print(e)
             _2lb_btn.configure(text="2LB % 0")
         try:
-            _1bj_btn.configure(text="1Banjhi % " + str(math.ceil(_1bj*100/totalCount)))
-        except:
+            _1bj_btn.configure(text="1Banjhi % " + str(round(_1bj*100/totalCount, 2)))
+        except Exception as e:
+            print(e)
             _1bj_btn.configure(text="1Banjhi % 0")
         try:
-            _3lb_btn.configure(text="3LB % " + str(math.ceil(_3lb*50/totalCount)))
-        except:
+            _3lb_btn.configure(text="3LB % " + str(round(_3lb*50/totalCount, 2)))
+        except Exception as e:
+            print(e)
             _3lb_btn.configure(text="3LB % 0")
         try:
-            _coarse_btn.configure(text="Coarse % " + str(math.ceil(_coarse*100/totalCount)))
-        except:
+            _coarse_btn.configure(text="Coarse % " + str(round(_coarse*100/totalCount, 2)))
+        except Exception as e:
+            print(e)
             _coarse_btn.configure(text="Coarse % 0")
         try:
-            _2bj_btn.configure(text="2Banjhi % " + str(math.ceil(_2bj*100/totalCount)))
-        except:
+            _2bj_btn.configure(text="2Banjhi % " + str(round(_2bj*100/totalCount, 2)))
+        except Exception as e:
+            print(e)
             _2bj_btn.configure(text="2Banjhi % 0")
 
         _flc_btn.place(x=150,y=140)
@@ -315,7 +350,8 @@ def vp_start_gui():
 
 
         startRecord.place(x=int(configparser.get('gui-config', 'startrecord_btn_x')), y=int(configparser.get('gui-config', 'startrecord_btn_y')), height=35, width=140)
-        tuneCamera.place(x=int(configparser.get('gui-config', 'tunecamera_btn_x')), y=int(configparser.get('gui-config', 'tunecamera_btn_y')), height=35, width=140)
+        startDemo.place(x=int(configparser.get('gui-config', 'tunecamera_btn_x')), y=int(configparser.get('gui-config', 'tunecamera_btn_y')), height=35, width=140)
+        # tuneCamera.place(x=int(configparser.get('gui-config', 'tunecamera_btn_x')), y=int(configparser.get('gui-config', 'tunecamera_btn_y')), height=35, width=140)
 
         if is_admin:
             startCamRecord.place(x=int(configparser.get('gui-config', 'cam_record_start_x')), y=int(configparser.get('gui-config', 'cam_record_start_y')), height=35, width=140)
@@ -514,18 +550,19 @@ def vp_start_gui():
     panel = Label(window, image = img, bg='#539051')
     panel.place(x=int(configparser.get('gui-config', 'login_image_x')), y=int(configparser.get('gui-config', 'login_image_y')))
     
-    global camera_verify
-    OPTION = ["Camera Settings", "Default", "Manual"] 
+    # global camera_verify
+    # OPTION = ["Camera Settings", "Default", "Manual"] 
      
-    camera_verify = StringVar(window)
-    camera_verify.set("Camera Settings")
-    tuneCamera = OptionMenu(window, camera_verify, *OPTION, command=check_cam_selected_option)
-    tuneCamera.configure(width=15)
+    # camera_verify = StringVar(window)
+    # camera_verify.set("Camera Settings")
+    # tuneCamera = OptionMenu(window, camera_verify, *OPTION, command=check_cam_selected_option)
+    # tuneCamera.configure(width=15)
 
     refresh_button = tk.Button(window, text="Refresh", command=refresh, fg="white", bg="#539051", width=int(configparser.get('gui-config', 'refresh_width')),font=('times', 12, 'bold'))
     logout_button = tk.Button(window, text="Logout", command=logout, fg="white", bg="#539051", width=int(configparser.get('gui-config', 'refresh_width')), font=('times', 12, 'bold'))
 
     startRecord = tk.Button(window, text="Start", command=video_stream, fg="white", bg="#539051", font=('times', 15, 'bold'))
+    startDemo = tk.Button(window, text="Demo Video", command=demo_video, fg="white", bg="#539051", font=('times', 15, 'bold'))
     endRecord = tk.Button(window, text="Submit", command=end_video, fg="white", bg="#539051", font=('times', 15, 'bold'))
 
     if is_admin:
@@ -588,6 +625,7 @@ def vp_start_gui():
         signin.place(x=int(configparser.get('gui-config', 'signin_btn_x')), y=int(configparser.get('gui-config', 'signin_btn_y')))
 
         startRecord.place_forget()
+        startDemo.place_forget()
         endRecord.place_forget()
         if is_admin:
             startCamRecord.place_forget()
