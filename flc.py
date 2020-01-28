@@ -107,6 +107,7 @@ def vp_start_gui():
             refresh()
 
     def end_video():
+        formula.place_forget()
         endRecord.place_forget()
         send_data_api()       #send data to api
         sleep(2)
@@ -343,6 +344,11 @@ def vp_start_gui():
         _coarse_btn.place(x=150,y=325)
         _2bj_btn.place(x=300,y=325)
 
+        global formula
+        formula = Label(window, text="FLC = 1LB + 2LB + 1Banjhi + (0.5 * 3LB)", font=("Helvetica", 15), background='white')
+        formula.place(x=50,y=425)
+
+
 
     def place_all_buttons():
         refresh_button.place(x=int(configparser.get('gui-config', 'refresh_x')), y=int(configparser.get('gui-config', 'refresh_y')), height=30, width=70)
@@ -562,7 +568,7 @@ def vp_start_gui():
     logout_button = tk.Button(window, text="Logout", command=logout, fg="white", bg="#539051", width=int(configparser.get('gui-config', 'refresh_width')), font=('times', 12, 'bold'))
 
     startRecord = tk.Button(window, text="Start", command=video_stream, fg="white", bg="#539051", font=('times', 15, 'bold'))
-    startDemo = tk.Button(window, text="Demo Video", command=demo_video, fg="white", bg="#539051", font=('times', 15, 'bold'))
+    startDemo = tk.Button(window, text="Demo Sample", command=demo_video, fg="white", bg="#539051", font=('times', 15, 'bold'))
     endRecord = tk.Button(window, text="Submit", command=end_video, fg="white", bg="#539051", font=('times', 15, 'bold'))
 
     if is_admin:
