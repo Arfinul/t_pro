@@ -27,7 +27,7 @@ userName = ""
 
 cmd = """
 export LD_LIBRARY_PATH=/home/agnext/Documents/flc/
-./uselib cfg/jorhat_Dec.names cfg/jorhat_Dec.cfg weights/jorhat_Dec_final.weights web_camera
+./uselib cfg/jorhat_Dec.names cfg/jorhat_Dec.cfg weights/jorhat_Dec_final.weights web_camera > output.txt
 """
 
 pwd = configparser.get('gui-config', 'sys_password')
@@ -160,21 +160,52 @@ def vp_start_gui():
             print("Exception during login: ", e)
         return status
 
+    def get_class_count():
+        txt_file = open("result.txt", "r").read()
+        li = txt_file.split("\n")
+        _1lb = int(li[1].split(": ")[1])
+        _2lb = int(li[2].split(": ")[1])
+        _3lb = int(li[3].split(": ")[1]) 
+        _1bj = int(li[4].split(": ")[1])
+        _2bj = int(li[5].split(": ")[1])
+        _cluster = int(li[6].split(": ")[1])
+        _coarse = int(li[7].split(": ")[1])
+        # _perc = round(float(li[8].split(": ")[1]), 2)
+        # _perc = _perc if math.isnan(float(_perc)) == False else 0
+
+        totalCount = int(_1lb + _2lb + _3lb + _1bj + _2bj + _coarse)
+
+        _1lb = int(round(_1lb * 1.1346, 0))
+        _2lb = int(round(_2lb * 1.2006, 0))
+        _1bj = int(round(_1bj * 1.3288, 0))
+        _3lb = int(round(_3lb * 1.4213, 0))
+        _2bj = int(round(_2bj * 0.85, 0))
+
+        _coarse = int(round(_coarse - totalCount * 0.012, 0))
+
+        totalCount = _1lb + _2lb + _3lb + _1bj + _2bj + _coarse
+        try:
+            _perc = round(((_1lb + _2lb + (_3lb/2) + _1bj) / totalCount)*100, 2)
+        except:
+            _perc = 0
+
+        with open("factor.txt", "w") as factor:
+            factor.write("1LB " + str(_1lb) + "\n")
+            factor.write("2LB " + str(_2lb) + "\n")
+            factor.write("3LB " + str(_3lb) + "\n")
+            factor.write("1Bj " + str(_1bj) + "\n")
+            factor.write("2Bj " + str(_2bj) + "\n")
+            factor.write("Coarse " + str(_coarse) + "\n")
+            factor.write("Total " + str(totalCount) + "\n")
+            factor.write("FLC % " + str(_perc) + "\n")
+        
+        return _1lb, _2lb, _3lb, _1bj, _2bj, _coarse, totalCount, _perc
+
 
     def send_data_api():
         if configparser.get('gui-config', 'internet') == 'true':
-            txt_file = open("result.txt", "r").read()
-            li = txt_file.split("\n")
-            _1lb = int(li[1].split(": ")[1])
-            _2lb = int(li[2].split(": ")[1])
-            _3lb = int(li[3].split(": ")[1])
-            _1bj = int(li[4].split(": ")[1])
-            _2bj = int(li[5].split(": ")[1])
-            _cluster = int(li[6].split(": ")[1])
-            _coarse = int(li[7].split(": ")[1])
-            _perc = round(float(li[8].split(": ")[1]), 2)
-            _perc = _perc if math.isnan(float('nan')) == False else 0
-            totalCount = _1lb + _2lb + _3lb + _1bj + _2bj + _coarse
+            
+            _1lb, _2lb, _3lb, _1bj, _2bj, _coarse, totalCount, _perc = get_class_count()
 
             head = {
                 "Content-Type": "application/json",
@@ -231,45 +262,36 @@ def vp_start_gui():
         pass
 
     def show_results_on_display():
-        txt_file = open("result.txt", "r").read()
-        li = txt_file.split("\n")
-        _1lb = int(li[1].split(": ")[1])
-        _2lb = int(li[2].split(": ")[1])
-        _3lb = int(li[3].split(": ")[1]) / 2
-        _1bj = int(li[4].split(": ")[1])
-        _2bj = int(li[5].split(": ")[1])
-        _cluster = int(li[6].split(": ")[1])
-        _coarse = int(li[7].split(": ")[1])
-        _perc = round(float(li[8].split(": ")[1]), 2)
-        _perc = _perc if math.isnan(float(_perc)) == False else 0
-        totalCount = int(_1lb + _2lb + _3lb + _1bj + _2bj + _coarse)
+
+        _1lb, _2lb, _3lb, _1bj, _2bj, _coarse, totalCount, _perc = get_class_count()
+
 
         _flc_btn.configure(text="FLC % " + str(_perc))
         _total_btn.configure(text="Total " + str(totalCount))
         try:
             _1lb_btn.configure(text="1LB % " + str(math.ceil(_1lb*100/totalCount)))
         except:
-            _1lb_btn.configure(text="1LB % 0.0")
+            _1lb_btn.configure(text="1LB % 0")
         try:
             _2lb_btn.configure(text="2LB % " + str(math.ceil(_2lb*100/totalCount)))
         except:
-            _2lb_btn.configure(text="2LB % 0.0")
+            _2lb_btn.configure(text="2LB % 0")
         try:
             _1bj_btn.configure(text="1Banjhi % " + str(math.ceil(_1bj*100/totalCount)))
         except:
-            _1bj_btn.configure(text="1Banjhi % 0.0")
+            _1bj_btn.configure(text="1Banjhi % 0")
         try:
-            _3lb_btn.configure(text="3LB % " + str(math.ceil(_3lb*100/totalCount)))
+            _3lb_btn.configure(text="3LB % " + str(math.ceil(_3lb*50/totalCount)))
         except:
-            _3lb_btn.configure(text="3LB % 0.0")
+            _3lb_btn.configure(text="3LB % 0")
         try:
             _coarse_btn.configure(text="Coarse % " + str(math.ceil(_coarse*100/totalCount)))
         except:
-            _coarse_btn.configure(text="Coarse % 0.0")
+            _coarse_btn.configure(text="Coarse % 0")
         try:
             _2bj_btn.configure(text="2Banjhi % " + str(math.ceil(_2bj*100/totalCount)))
         except:
-            _2bj_btn.configure(text="2Banjhi % 0.0")
+            _2bj_btn.configure(text="2Banjhi % 0")
 
         _flc_btn.place(x=150,y=140)
         _total_btn.place(x=300,y=140)

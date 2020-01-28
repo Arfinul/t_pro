@@ -219,7 +219,11 @@ int seconds, minutes, hours; // Agnext
 cv::Mat black_image(480, 640, CV_8UC3); // Agnext black image
 bool black_background = false;
 bool clean_video = false;
+
+
 int tap_count = 0;
+int image_width = 0;
+int image_height = 0;
 
 void draw_boxes(cv::Mat mat_img, std::vector<bbox_t> result_vec, std::vector<std::string> obj_names,
     int current_det_fps = -1, int current_cap_fps = -1, bool black_screen=false)
@@ -272,12 +276,14 @@ void draw_boxes(cv::Mat mat_img, std::vector<bbox_t> result_vec, std::vector<std
 
 
 void show_console_result(std::vector<bbox_t> const result_vec, std::vector<std::string> const obj_names, int frame_id = -1) {
-    if (frame_id >= 0 && result_vec.size() > 0) std::cout << "Frame: " << frame_id << std::endl;
     for (auto &i : result_vec) {
-        if (obj_names.size() > i.obj_id) std::cout << obj_names[i.obj_id] << " - ";
-        std::cout << "track_id = " << i.track_id << ", obj_id = " << i.obj_id << ", x = " << i.x << ", y = " << i.y
-            << ", w = " << i.w << ", h = " << i.h
-            << std::setprecision(3) << ", prob = " << i.prob << std::endl;
+        if (i.obj_id == 6){
+            if (frame_id >= 0 && result_vec.size() > 0) std::cout << "Frame: " << frame_id << std::endl;
+            if (obj_names.size() > i.obj_id) std::cout << obj_names[i.obj_id] << " - ";
+            std::cout << "track_id = " << i.track_id << ", obj_id = " << i.obj_id << ", x = " << i.x << ", y = " << i.y
+                << ", w = " << i.w/float(image_width) << ", h = " << i.h/float(image_height)
+                << std::setprecision(3) << ", prob = " << i.prob << std::endl;
+        }
     }
 }
 
@@ -390,7 +396,7 @@ int main(int argc, char *argv[])
     }
     else if (argc > 1) filename = argv[1];
 
-    float const thresh = (argc > 5) ? std::stof(argv[5]) : 0.55;
+    float const thresh = (argc > 5) ? std::stof(argv[5]) : 0.60;
 
     Detector detector(cfg_file, weights_file);
 
@@ -484,6 +490,8 @@ int main(int argc, char *argv[])
                 video_fps = cap.get(cv::CAP_PROP_FPS);
 #endif
                 cv::Size const frame_size = cur_frame.size(); // Original
+                image_width = frame_size.width;
+                image_height = frame_size.height;
                 // cv::Size const frame_size(cap.get(CV_CAP_PROP_FRAME_WIDTH), cap.get(CV_CAP_PROP_FRAME_HEIGHT));
                 // cv::Size const frame_size(1280, 720);    // Agnext FRAME RESIZE
                 // cv::Size const frame_size(1920, 1080); // Agnext FRAME RESIZE
@@ -660,7 +668,7 @@ int main(int argc, char *argv[])
                         }
                         // resize(draw_frame, draw_frame, cv::Size(680, 480), 0, 0, CV_INTER_CUBIC);  // Agnext FRAME RESIZE
                         draw_boxes(draw_frame, result_vec, obj_names, current_fps_det, current_fps_cap, black_background);
-                        // show_console_result(result_vec, obj_names, detection_data.frame_id); // Agnext, originall was commented // UNCOMMENTED FOR DEVELOPER MODE
+                        show_console_result(result_vec, obj_names, detection_data.frame_id); // Agnext, originall was commented // UNCOMMENTED FOR DEVELOPER MODE
                         for (auto &i : result_vec) {        // Agnext, added for counting fine counts
                             if (obj_names.size() > i.obj_id) 
                                 if (obj_names[i.obj_id] == "1LB"){
