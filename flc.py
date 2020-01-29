@@ -67,6 +67,8 @@ def vp_start_gui():
         # tuneCamera.place_forget()
         refresh_button.place_forget()
         logout_button.place_forget()
+        restart_button.place_forget()
+        shutdown_button.place_forget()
         if is_admin:
             startCamRecord.place_forget() 
         try:
@@ -91,6 +93,8 @@ def vp_start_gui():
         # tuneCamera.place_forget()
         refresh_button.place_forget()
         logout_button.place_forget()
+        restart_button.place_forget()
+        shutdown_button.place_forget()
         if is_admin:
             startCamRecord.place_forget() 
         try:
@@ -302,38 +306,38 @@ def vp_start_gui():
         _1lb, _2lb, _3lb, _1bj, _2bj, _coarse, totalCount, _perc = get_class_count()
 
 
-        _flc_btn.configure(text="FLC % " + str(_perc))
-        _total_btn.configure(text="Total " + str(totalCount))
+        _flc_btn.configure(text="FLC %      " + str(_perc))
+        _total_btn.configure(text="Total Leaves     " + str(totalCount))
         try:
-            _1lb_btn.configure(text="1LB % " + str(round(_1lb*100/totalCount, 2)))
+            _1lb_btn.configure(text="1LB %         " + str(round(_1lb*100/totalCount, 2)))
         except Exception as e:
             print(e)
-            _1lb_btn.configure(text="1LB % 0")
+            _1lb_btn.configure(text="1LB %          0")
         try:
-            _2lb_btn.configure(text="2LB % " + str(round(_2lb*100/totalCount, 2)))
+            _2lb_btn.configure(text="2LB %         " + str(round(_2lb*100/totalCount, 2)))
         except Exception as e:
             print(e)
-            _2lb_btn.configure(text="2LB % 0")
+            _2lb_btn.configure(text="2LB %        0")
         try:
-            _1bj_btn.configure(text="1Banjhi % " + str(round(_1bj*100/totalCount, 2)))
+            _1bj_btn.configure(text="1Banjhi %      " + str(round(_1bj*100/totalCount, 2)))
         except Exception as e:
             print(e)
-            _1bj_btn.configure(text="1Banjhi % 0")
+            _1bj_btn.configure(text="1Banjhi %     0")
         try:
-            _3lb_btn.configure(text="3LB % " + str(round(_3lb*50/totalCount, 2)))
+            _3lb_btn.configure(text="3LB %        " + str(round(_3lb*50/totalCount, 2)))
         except Exception as e:
             print(e)
-            _3lb_btn.configure(text="3LB % 0")
+            _3lb_btn.configure(text="3LB %       0")
         try:
-            _coarse_btn.configure(text="Coarse % " + str(round(_coarse*100/totalCount, 2)))
+            _coarse_btn.configure(text="Coarse %      " + str(round(_coarse*100/totalCount, 2)))
         except Exception as e:
             print(e)
-            _coarse_btn.configure(text="Coarse % 0")
+            _coarse_btn.configure(text="Coarse %      0")
         try:
-            _2bj_btn.configure(text="2Banjhi % " + str(round(_2bj*100/totalCount, 2)))
+            _2bj_btn.configure(text="2Banjhi %     " + str(round(_2bj*100/totalCount, 2)))
         except Exception as e:
             print(e)
-            _2bj_btn.configure(text="2Banjhi % 0")
+            _2bj_btn.configure(text="2Banjhi %     0")
 
         _flc_btn.place(x=150,y=140)
         _total_btn.place(x=300,y=140)
@@ -354,7 +358,6 @@ def vp_start_gui():
         refresh_button.place(x=int(configparser.get('gui-config', 'refresh_x')), y=int(configparser.get('gui-config', 'refresh_y')), height=30, width=70)
         logout_button.place(x=int(configparser.get('gui-config', 'logout_x')), y=int(configparser.get('gui-config', 'logout_y')), height=30, width=70)
 
-
         startRecord.place(x=int(configparser.get('gui-config', 'startrecord_btn_x')), y=int(configparser.get('gui-config', 'startrecord_btn_y')), height=35, width=140)
         startDemo.place(x=int(configparser.get('gui-config', 'tunecamera_btn_x')), y=int(configparser.get('gui-config', 'tunecamera_btn_y')), height=35, width=140)
         # tuneCamera.place(x=int(configparser.get('gui-config', 'tunecamera_btn_x')), y=int(configparser.get('gui-config', 'tunecamera_btn_y')), height=35, width=140)
@@ -362,6 +365,8 @@ def vp_start_gui():
         if is_admin:
             startCamRecord.place(x=int(configparser.get('gui-config', 'cam_record_start_x')), y=int(configparser.get('gui-config', 'cam_record_start_y')), height=35, width=140)
 
+        restart_button.place(x=int(configparser.get('gui-config', 'logout_x')), y=int(configparser.get('gui-config', 'restart_y')))
+        shutdown_button.place(x=int(configparser.get('gui-config', 'logout_x')), y=int(configparser.get('gui-config', 'shutdown_y')))
 
     def place_on_screen():
         try:
@@ -483,6 +488,9 @@ def vp_start_gui():
         entered.place(x=400, y=135)
 
         logout_button.place(x=int(configparser.get('gui-config', 'logout_x')), y=int(configparser.get('gui-config', 'logout_y')))
+        restart_button.place(x=int(configparser.get('gui-config', 'logout_x')), y=int(configparser.get('gui-config', 'restart_y')))
+        shutdown_button.place(x=int(configparser.get('gui-config', 'logout_x')), y=int(configparser.get('gui-config', 'shutdown_y')))
+
 
     # Designing popup for login success
      
@@ -545,7 +553,12 @@ def vp_start_gui():
             set_camera("reset")
         else:
             pass
-          
+
+    def restart():
+        subprocess.Popen("exec " + "reboot", stdout= subprocess.PIPE, shell=True)
+
+    def shutdown():
+        subprocess.Popen("exec " + "poweroff", stdout= subprocess.PIPE, shell=True)
 
     window.protocol("WM_DELETE_WINDOW", on_closing)
 
@@ -566,6 +579,9 @@ def vp_start_gui():
 
     refresh_button = tk.Button(window, text="Refresh", command=refresh, fg="white", bg="#539051", width=int(configparser.get('gui-config', 'refresh_width')),font=('times', 12, 'bold'))
     logout_button = tk.Button(window, text="Logout", command=logout, fg="white", bg="#539051", width=int(configparser.get('gui-config', 'refresh_width')), font=('times', 12, 'bold'))
+
+    restart_button = tk.Button(window, text="Restart", command=restart, fg="white", bg="#DC461D", width=7,font=('times', 12, 'bold'))
+    shutdown_button = tk.Button(window, text="ShutDown", command=shutdown, fg="white", bg="#DC461D", width=7, font=('times', 12, 'bold'))
 
     startRecord = tk.Button(window, text="Start", command=video_stream, fg="white", bg="#539051", font=('times', 15, 'bold'))
     startDemo = tk.Button(window, text="Demo Sample", command=demo_video, fg="white", bg="#539051", font=('times', 15, 'bold'))
@@ -618,6 +634,8 @@ def vp_start_gui():
         username_login_entry.place_forget()
         password_login_entry.place_forget()
         place_on_screen()
+        restart_button.place(x=int(configparser.get('gui-config', 'logout_x')), y=int(configparser.get('gui-config', 'restart_y')))
+        shutdown_button.place(x=int(configparser.get('gui-config', 'logout_x')), y=int(configparser.get('gui-config', 'shutdown_y')))
 
     else:
         username_login_entry.place(x=570, y=140, width=130, height=25)
