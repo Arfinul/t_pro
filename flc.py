@@ -15,6 +15,13 @@ import json
 import signal
 import configparser
 import math
+import gc
+import pandas as pd
+import matplotlib.pyplot as plt
+import pyautogui
+import sys
+import seaborn as sns
+import threading
 
 configparser = configparser.RawConfigParser()   
 os.chdir("/home/agnext/Documents/flc")  # Agnext
@@ -40,35 +47,49 @@ cmd_camera_setting = "/usr/local/ecam_tk1/bin/ecam_tk1_guvcview"
 reset_camera_setting = "/usr/local/ecam_tk1/bin/ecam_tk1_guvcview --profile=flc_utils/guvcview-config/default.gpfl"
 jetson_clock_cmd = 'jetson_clocks'
 record_cam_cmd = "python3 flc_utils/guiHelpers/record_cam_gui.py"
+gc.collect()
 
-
-def testVal(inStr,acttyp):
-    if acttyp == '1': #insert
-        if not inStr.isdigit():
-            return False
-    return True
+def code(value):
+    if farmer_verify.get() == "Enter farmer ID":
+        farmer_entry.delete(0, tk.END)
+    farmer_entry.insert('end', value)
+    
 
 def vp_start_gui():
     global window
     window = tk.Tk()
     # window.attributes("-fullscreen", True)
     window.title("Fine Leaf Count")
-
     window.geometry(configparser.get('gui-config', 'window_geometry'))
     window.configure(background='snow')
     subprocess.Popen("exec " + "onboard", stdout= subprocess.PIPE, shell=True)
 
+    def remove_numpad():
+        _one.place_forget()
+        _two.place_forget()
+        _three.place_forget()
+        _four.place_forget()
+        _five.place_forget()
+        _six.place_forget()
+        _seven.place_forget()
+        _eight.place_forget()
+        _nine.place_forget()
+        _clear.place_forget()
+        _zero.place_forget()
+        _back.place_forget()
+
     # function for video streaming
     def video_stream():
         msg_sent.place_forget()
-        startRecord.place_forget()
         startDemo.place_forget()  
         endRecord.place_forget()
         # tuneCamera.place_forget()
-        refresh_button.place_forget()
         logout_button.place_forget()
-        restart_button.place_forget()
-        shutdown_button.place_forget()
+        # restart_button.place_forget()
+        # shutdown_button.place_forget()
+
+        remove_numpad()
+
         if is_admin:
             startCamRecord.place_forget() 
         try:
@@ -80,45 +101,56 @@ def vp_start_gui():
         except:
             p.kill()
             endRecord.place_forget()
-            startRecord.configure(bg="#539051", state="active")
             startDemo.configure(bg="#539051", state="active")
             refresh()
 
     # function for video streaming
     def demo_video():
-        msg_sent.place_forget()
-        startRecord.place_forget()
-        startDemo.place_forget()
-        endRecord.place_forget()
-        # tuneCamera.place_forget()
-        refresh_button.place_forget()
-        logout_button.place_forget()
-        restart_button.place_forget()
-        shutdown_button.place_forget()
-        if is_admin:
-            startCamRecord.place_forget() 
-        try:
-            global q
-            q = subprocess.Popen("exec " + cmd_demo, stdout= subprocess.PIPE, shell=True)
-            q.wait()
-            show_results_on_display()
-            endRecord.place(x=int(configparser.get('gui-config', 'endrecord_btn_x')), y=int(configparser.get('gui-config', 'endrecord_btn_y')))
-        except:
-            q.kill()
+        farmer = farmer_verify.get()
+        sector = section_verify.get()      
+        if farmer not in ["154"] and sector not in ["", "Select section ID"]:
+            enter_correct_details()
+        elif farmer not in ["", "Enter farmer ID"] and sector not in ["", "Select section ID"]:
+            global details_filled
+            details_filled = True
+            jetson_clock = subprocess.Popen("exec " + 'echo {} | sudo -S {}'.format(pwd, jetson_clock_cmd), stdout= subprocess.PIPE, shell=True)
+            msg_sent.place_forget()
+            logout_button.place_forget()
+            # restart_button.place_forget()
+            # shutdown_button.place_forget()
+
+            remove_numpad()
+            startDemo.place_forget()  
             endRecord.place_forget()
-            startRecord.configure(bg="#539051", state="active")
-            startDemo.configure(bg="#539051", state="active")
-            refresh()
+            entered.place_forget()
+            farmer_entry.place_forget()
+            sector_entry.place_forget()
+
+            if is_admin:
+                startCamRecord.place_forget() 
+            try:
+                global q
+                q = subprocess.Popen("exec " + cmd_demo, stdout= subprocess.PIPE, shell=True)
+                q.wait()
+                show_results_on_display()
+                endRecord.place(x=int(configparser.get('gui-config', 'endrecord_btn_x')), y=int(configparser.get('gui-config', 'endrecord_btn_y')))
+            except:
+                q.kill()
+                endRecord.place_forget()
+                startDemo.configure(bg="#539051", state="active")
+                refresh()
+        else:
+            show_error_msg()
+        
 
     def end_video():
         formula.place_forget()
         endRecord.place_forget()
         send_data_api()       #send data to api
-        sleep(2)
         if os.path.exists("result.txt"):
             os.remove("result.txt")
-        place_all_buttons()
-
+        msg_sent.place(x=int(configparser.get('gui-config', 'data_saved_notification_x')), y=int(configparser.get('gui-config', 'data_saved_notification_y')))
+        enter_details()
 
     def start_record_video():
         startCamRecord.configure(bg='silver', state="disabled")
@@ -142,22 +174,78 @@ def vp_start_gui():
         if messagebox.askokcancel("Quit", "Do you want to quit?"):
             if os.path.exists("result.txt"):
                 os.remove("result.txt")
+            gc.collect()
             window.destroy()
+            sys.exit()
 
     def clear_search_1(event):
-        username_login_entry.delete(0, tk.END)
+        if username_verify.get() == "Enter username":
+            username_login_entry.delete(0, tk.END)
 
     def clear_search_2(event):
-        password_login_entry.delete(0, tk.END)
+        if password_verify.get() == "Enter password":
+            password_login_entry.delete(0, tk.END)
             
 
     def popup_keyboard(event):
         global pop
         pop = subprocess.Popen("exec " + "onboard", stdout= subprocess.PIPE, shell=True)
 
-    def clear_farmer(event):
+    def force_clear_farmer():
         farmer_entry.delete(0, tk.END)
-        popup_keyboard(event)
+
+    def show_numpad():
+        pyautogui.press('ctrl')
+        gc.collect()
+        startDemo.place_forget()  
+        endRecord.place_forget()
+        sector_entry.place_forget()
+        entered.place_forget()
+        _back.place(x=640, y=350)
+        _zero.place(x=585, y=350)
+        _clear.place(x=530, y=350)
+        _one.place(x=640, y=300)
+        _two.place(x=585, y=300)
+        _three.place(x=530, y=300)
+        _four.place(x=640, y=250)
+        _five.place(x=585, y=250)
+        _six.place(x=530, y=250)
+        _seven.place(x=640, y=200)
+        _eight.place(x=585, y=200)
+        _nine.place(x=530, y=200)
+
+        if farmer_verify.get() == "Enter farmer ID":
+            farmer_entry.delete(0, tk.END)
+        pyautogui.press('ctrl')
+
+    def threading_function(event):
+        global submit_thread
+        submit_thread = threading.Thread(target=show_numpad)
+        submit_thread.daemon = True
+        submit_thread.start()
+
+
+    def hide_numpad():
+        pyautogui.press('ctrl')
+        gc.collect()
+        remove_numpad()
+
+        startDemo.place(x=520, y=360)
+        sector_entry.place(x=520, y=185, height=40)
+        entered.place(x=520, y=280)
+        pyautogui.press('ctrl')
+
+
+    def load_graph():
+        graph.place(x=int(configparser.get('gui-config', 'graph_image_x')), y=int(configparser.get('gui-config', 'graph_image_y')))
+
+    def forget_graph():
+        graph.place_forget()
+
+    def back_farmer():
+        original =  farmer_verify.get()
+        farmer_entry.delete(0, tk.END)
+        farmer_entry.insert('end', original[:-1])
 
     def action_1(event):
         clear_search_1(event)
@@ -238,6 +326,7 @@ def vp_start_gui():
             factor.write("Total: " + str(totalCount) + "\n")
             factor.write("FLC % " + str(_perc) + "\n")
             factor.write("Time: " + time_taken + "\n")
+        gc.collect()
         
         return _1lb, _2lb, _3lb, _1bj, _2bj, _coarse, totalCount, _perc
 
@@ -284,10 +373,8 @@ def vp_start_gui():
 
         if saved == "true":
             msg_sent.configure(text="Data saved", fg="green")
-            msg_sent.place(x=int(configparser.get('gui-config', 'data_saved_notification_x')), y=int(configparser.get('gui-config', 'data_saved_notification_y')))
         else:
             msg_sent.configure(text="Couldn't save to servers", fg="red")
-            msg_sent.place(x=int(configparser.get('gui-config', 'data_saved_notification_x')), y=int(configparser.get('gui-config', 'data_saved_notification_y')))
         _1lb_btn.place_forget()
         _2lb_btn.place_forget()
         _1bj_btn.place_forget()
@@ -297,11 +384,31 @@ def vp_start_gui():
         _flc_btn.place_forget()
         _total_btn.place_forget()
 
+        f = open('flc_utils/records.csv','a')
+        f.write(section_verify.get() + ',' + str(_perc)+ ',' + datetime.datetime.now().strftime("%d-%m-%Y %H:%M:%S") + '\n')
+        f.close()
+
+        df = pd.read_csv("flc_utils/records.csv")
+        rows = df.shape[0]
+        if rows > 9:
+            rows = 10
+            df = df.iloc[-10:, :]
+        fig = plt.figure(figsize=(7,5))
+        plot = sns.barplot(df.index, df.FLC)
+        fig.savefig('flc_utils/result.png')
+        cv2_img = cv2.imread("flc_utils/result.png")
+        new_img = cv2.resize(cv2_img, (400, 270))
+        gc.collect()
+        cv2.imwrite("flc_utils/result.png", new_img)
+        pyautogui.press('ctrl')
+        pyautogui.press('ctrl')
+
 
     def do_nothing():
         pass
 
     def show_results_on_display():
+        forget_graph()
 
         _1lb, _2lb, _3lb, _1bj, _2bj, _coarse, totalCount, _perc = get_class_count()
 
@@ -339,40 +446,36 @@ def vp_start_gui():
             print(e)
             _2bj_btn.configure(text="2Banjhi %     0")
 
-        _flc_btn.place(x=150,y=140)
-        _total_btn.place(x=300,y=140)
-        _1lb_btn.place(x=150,y=215)
-        _2lb_btn.place(x=300,y=215)
-        _1bj_btn.place(x=150,y=270)
+        _flc_btn.place(x=60,y=130)
+        _total_btn.place(x=300,y=130)
+        _1lb_btn.place(x=60,y=210)
+        _2lb_btn.place(x=300,y=210)
+        _1bj_btn.place(x=60,y=270)
         _3lb_btn.place(x=300,y=270)
-        _coarse_btn.place(x=150,y=325)
-        _2bj_btn.place(x=300,y=325)
+        _coarse_btn.place(x=60,y=330)
+        _2bj_btn.place(x=300,y=330)
 
         global formula
         formula = Label(window, text="FLC = 1LB + 2LB + 1Banjhi + (0.5 * 3LB)", font=("Helvetica", 15), background='white')
-        formula.place(x=50,y=425)
+        formula.place(x=60,y=415)
+        pyautogui.press('ctrl')
+        gc.collect()
 
 
 
     def place_all_buttons():
-        refresh_button.place(x=int(configparser.get('gui-config', 'refresh_x')), y=int(configparser.get('gui-config', 'refresh_y')), height=30, width=70)
         logout_button.place(x=int(configparser.get('gui-config', 'logout_x')), y=int(configparser.get('gui-config', 'logout_y')), height=30, width=70)
+        # restart_button.place(x=int(configparser.get('gui-config', 'logout_x')), y=int(configparser.get('gui-config', 'restart_y')))
+        # shutdown_button.place(x=int(configparser.get('gui-config', 'logout_x')), y=int(configparser.get('gui-config', 'shutdown_y')))
 
-        startRecord.place(x=int(configparser.get('gui-config', 'startrecord_btn_x')), y=int(configparser.get('gui-config', 'startrecord_btn_y')), height=35, width=140)
         startDemo.place(x=int(configparser.get('gui-config', 'tunecamera_btn_x')), y=int(configparser.get('gui-config', 'tunecamera_btn_y')), height=35, width=140)
         # tuneCamera.place(x=int(configparser.get('gui-config', 'tunecamera_btn_x')), y=int(configparser.get('gui-config', 'tunecamera_btn_y')), height=35, width=140)
 
         if is_admin:
             startCamRecord.place(x=int(configparser.get('gui-config', 'cam_record_start_x')), y=int(configparser.get('gui-config', 'cam_record_start_y')), height=35, width=140)
 
-        restart_button.place(x=int(configparser.get('gui-config', 'logout_x')), y=int(configparser.get('gui-config', 'restart_y')))
-        shutdown_button.place(x=int(configparser.get('gui-config', 'logout_x')), y=int(configparser.get('gui-config', 'shutdown_y')))
-
+        
     def place_on_screen():
-        try:
-            subprocess.Popen("exec " + "killall onboard", stdout= subprocess.PIPE, shell=True)
-        except:
-            pass
         try:
             farmer_entry.place_forget()
             sector_entry.place_forget()
@@ -408,6 +511,7 @@ def vp_start_gui():
 
             else:
                 user_not_found()
+        gc.collect()
 
     def show_error_msg():
         x = window.winfo_x()
@@ -441,22 +545,34 @@ def vp_start_gui():
     def enter_correct_details_destroy():
         enter_correct_details_screen.destroy()
 
-    def details_verify():
+    def details_verify(): 
+        gc.collect() 
         farmer = farmer_verify.get()
-        sector = section_verify.get()
-        
-        if farmer not in ["154"] and sector not in ["", "Enter section ID"]:
+        sector = section_verify.get()      
+        if farmer not in ["154"] and sector not in ["", "Select section ID"]:
             enter_correct_details()
-        elif farmer not in ["", "Enter farmer ID"] and sector not in ["", "Enter section ID"]:
+        elif farmer not in ["", "Enter farmer ID"] and sector not in ["", "Select section ID"]:
+            startDemo.place_forget()  
+            endRecord.place_forget()
+            entered.place_forget()
+            farmer_entry.place_forget()
+            sector_entry.place_forget()
+
             global details_filled
             details_filled = True
             jetson_clock = subprocess.Popen("exec " + 'echo {} | sudo -S {}'.format(pwd, jetson_clock_cmd), stdout= subprocess.PIPE, shell=True)
-            place_on_screen()
+            video_stream()
         else:
             show_error_msg()
 
      
     def enter_details():
+        load_graph()
+        gc.collect()
+        try:
+            subprocess.Popen("exec " + "killall onboard", stdout= subprocess.PIPE, shell=True)
+        except:
+            pass
 
         txt = "Welcome, " + userName.title()
         global welcome_text
@@ -465,31 +581,61 @@ def vp_start_gui():
 
         global farmer_verify
         global section_verify
-        OPTIONS = ["Enter section ID", "1","2","3", "4"] 
+        OPTIONS = ["Select section ID", "1","2","3", "4"] 
          
         farmer_verify = StringVar()
         section_verify = StringVar(window)
-        section_verify.set("Enter section ID")
+        section_verify.set("Select section ID")
          
         global farmer_entry
         global sector_entry
        
         farmer_entry = Entry(window, textvariable=farmer_verify)
         farmer_entry.insert(1, "Enter farmer ID")
-        farmer_entry.bind("<Button-1>", clear_farmer)
-        farmer_entry.place(x=60,y=135, height=30)
+        farmer_entry.bind("<Button-1>", threading_function)
+        farmer_entry.place(x=520,y=140, height=40, width=190)
         
         sector_entry = OptionMenu(window, section_verify, *OPTIONS)
-        sector_entry.configure(width=15)
-        sector_entry.place(x=220, y=135, height=30)
+        sector_entry.configure(width=24)
+        sector_entry.place(x=520, y=185, height=40)
         
         global entered
-        entered = tk.Button(window, text="Submit", command=details_verify, fg="white", bg="#539051", width=18,height=1, font=('times', 15, 'bold'))
-        entered.place(x=400, y=135)
+        entered = tk.Button(window, text="Start FLC", command=details_verify, fg="white", bg="#539051", width=int(configparser.get('gui-config', 'signin_btn_width')),height=int(configparser.get('gui-config', 'signin_btn_height')), font=('times', 15, 'bold'))
+        entered.place(x=520, y=280)
+
+        startDemo.place(x=520, y=360)
+
+        global _one
+        global _two
+        global _three
+        global _four
+        global _five
+        global _six
+        global _seven
+        global _eight
+        global _nine
+        global _clear
+        global _zero
+        global _back
+
+        _one = tk.Button(window, text="1", height=3, width=5, command=lambda val=1:code(val))
+        _two = tk.Button(window, text="2", height=3, width=5, command=lambda val=2:code(val))
+        _three = tk.Button(window, text="3", height=3, width=5, command=lambda val=3:code(val))
+        _four = tk.Button(window, text="4", height=3, width=5, command=lambda val=4:code(val))
+        _five = tk.Button(window, text="5", height=3, width=5, command=lambda val=5:code(val))
+        _six = tk.Button(window, text="6", height=3, width=5, command=lambda val=6:code(val))
+        _seven = tk.Button(window, text="7", height=3, width=5, command=lambda val=7:code(val))
+        _eight = tk.Button(window, text="8", height=3, width=5, command=lambda val=8:code(val))
+        _nine = tk.Button(window, text="9", height=3, width=5, command=lambda val=9:code(val))
+        _clear = tk.Button(window, text="OK", height=3, width=5, command=hide_numpad)
+        _zero = tk.Button(window, text="0", height=3, width=5, command=lambda val=0:code(val))
+        _back = tk.Button(window, text="<--", height=3, width=5, command=back_farmer)
 
         logout_button.place(x=int(configparser.get('gui-config', 'logout_x')), y=int(configparser.get('gui-config', 'logout_y')))
-        restart_button.place(x=int(configparser.get('gui-config', 'logout_x')), y=int(configparser.get('gui-config', 'restart_y')))
-        shutdown_button.place(x=int(configparser.get('gui-config', 'logout_x')), y=int(configparser.get('gui-config', 'shutdown_y')))
+        # restart_button.place(x=int(configparser.get('gui-config', 'logout_x')), y=int(configparser.get('gui-config', 'restart_y')))
+        # shutdown_button.place(x=int(configparser.get('gui-config', 'logout_x')), y=int(configparser.get('gui-config', 'shutdown_y')))
+        pyautogui.press('ctrl')
+        gc.collect()
 
 
     # Designing popup for login success
@@ -565,9 +711,18 @@ def vp_start_gui():
     message = tk.Label(window, text="                                         Fine Leaf Count System", fg="white", bg="#539051", width=int(configparser.get('gui-config', 'title_width')), height=int(configparser.get('gui-config', 'title_height')), font=('times', 30, 'bold'))
     message.place(x=int(configparser.get('gui-config', 'title_x')), y=int(configparser.get('gui-config', 'title_y')))
 
+    footer = tk.Label(window, text="                                                  © 2020 Agnext Technologies. All Rights Reserved                                                          ", fg="white", bg="#2b2c28", width=160, height=2, font=('times', 10, 'bold'))
+    footer.place(x=0, y=437) # 435
+
     img = ImageTk.PhotoImage(Image.open(configparser.get('gui-config', 'logo')))
     panel = Label(window, image = img, bg='#539051')
     panel.place(x=int(configparser.get('gui-config', 'login_image_x')), y=int(configparser.get('gui-config', 'login_image_y')))
+
+    gc.collect()
+    gph = ImageTk.PhotoImage(Image.open(configparser.get('gui-config', 'graph')))
+
+    global graph
+    graph = Label(window, image = gph)
     
     # global camera_verify
     # OPTION = ["Camera Settings", "Default", "Manual"] 
@@ -577,29 +732,27 @@ def vp_start_gui():
     # tuneCamera = OptionMenu(window, camera_verify, *OPTION, command=check_cam_selected_option)
     # tuneCamera.configure(width=15)
 
-    refresh_button = tk.Button(window, text="Refresh", command=refresh, fg="white", bg="#539051", width=int(configparser.get('gui-config', 'refresh_width')),font=('times', 12, 'bold'))
     logout_button = tk.Button(window, text="Logout", command=logout, fg="white", bg="#539051", width=int(configparser.get('gui-config', 'refresh_width')), font=('times', 12, 'bold'))
 
-    restart_button = tk.Button(window, text="Restart", command=restart, fg="white", bg="#DC461D", width=7,font=('times', 12, 'bold'))
-    shutdown_button = tk.Button(window, text="ShutDown", command=shutdown, fg="white", bg="#DC461D", width=7, font=('times', 12, 'bold'))
+    # restart_button = tk.Button(window, text="Restart", command=restart, fg="white", bg="#DC461D", width=7,font=('times', 12, 'bold'))
+    # shutdown_button = tk.Button(window, text="ShutDown", command=shutdown, fg="white", bg="#DC461D", width=7, font=('times', 12, 'bold'))
 
-    startRecord = tk.Button(window, text="Start", command=video_stream, fg="white", bg="#539051", font=('times', 15, 'bold'))
-    startDemo = tk.Button(window, text="Demo Sample", command=demo_video, fg="white", bg="#539051", font=('times', 15, 'bold'))
-    endRecord = tk.Button(window, text="Submit", command=end_video, fg="white", bg="#539051", font=('times', 15, 'bold'))
+    startDemo = tk.Button(window, text="Demo Sample", command=demo_video, fg="black", bg="#FFE77A", font=('times', 15, 'bold'), width=int(configparser.get('gui-config', 'signin_btn_width')),height=int(configparser.get('gui-config', 'signin_btn_height')))
+    endRecord = tk.Button(window, text="Save", command=end_video, fg="white", bg="#539051", font=('times', 17, 'bold'), width=10, height=2)
 
     if is_admin:
         startCamRecord = tk.Button(window, text="Record training video", command=start_record_video, fg="white", bg="#539051", font=('times', 15, 'bold'))
 
     msg_sent = Label(window, text="Data sent status", font=('times', 15), fg="green", bg='white')
 
-    _flc_btn = tk.Button(window, text="flc", command=do_nothing, fg="white", bg="#318FCC", width=int(configparser.get('gui-config', 'result_btn_width')),height=int(configparser.get('gui-config', 'result_btn_height')), font=('times', 15, 'bold'))
-    _total_btn = tk.Button(window, text="total", command=do_nothing, fg="white", bg="#318FCC", width=int(configparser.get('gui-config', 'result_btn_width')),height=int(configparser.get('gui-config', 'result_btn_height')), font=('times', 15, 'bold'))
-    _1lb_btn = tk.Button(window, text="1lb", command=do_nothing, fg="white", bg="#12B653", width=int(configparser.get('gui-config', 'result_btn_width')),height=int(configparser.get('gui-config', 'result_btn_height')), font=('times', 15, 'bold'))
-    _2lb_btn = tk.Button(window, text="2lb", command=do_nothing, fg="white", bg="#12B653", width=int(configparser.get('gui-config', 'result_btn_width')),height=int(configparser.get('gui-config', 'result_btn_height')), font=('times', 15, 'bold'))
-    _1bj_btn = tk.Button(window, text="1bj", command=do_nothing, fg="white", bg="#12B653", width=int(configparser.get('gui-config', 'result_btn_width')),height=int(configparser.get('gui-config', 'result_btn_height')), font=('times', 15, 'bold'))
-    _3lb_btn = tk.Button(window, text="3lb", command=do_nothing, fg="black", bg="#F3EF62", width=int(configparser.get('gui-config', 'result_btn_width')),height=int(configparser.get('gui-config', 'result_btn_height')), font=('times', 15, 'bold'))
-    _coarse_btn = tk.Button(window, text="coarse", command=do_nothing, fg="white", bg="#F37C62", width=int(configparser.get('gui-config', 'result_btn_width')),height=int(configparser.get('gui-config', 'result_btn_height')), font=('times', 15, 'bold'))
-    _2bj_btn = tk.Button(window, text="2bj", command=do_nothing, fg="white", bg="#F37C62", width=int(configparser.get('gui-config', 'result_btn_width')),height=int(configparser.get('gui-config', 'result_btn_height')), font=('times', 15, 'bold'))
+    _flc_btn = tk.Button(window, text="flc", command=do_nothing, fg="white", bg="#318FCC", width=int(configparser.get('gui-config', 'result_btn_width')),height=int(configparser.get('gui-config', 'result_btn_height')), font=('times', 20, 'bold'))
+    _total_btn = tk.Button(window, text="total", command=do_nothing, fg="white", bg="#318FCC", width=int(configparser.get('gui-config', 'result_btn_width')),height=int(configparser.get('gui-config', 'result_btn_height')), font=('times', 20, 'bold'))
+    _1lb_btn = tk.Button(window, text="1lb", command=do_nothing, fg="white", bg="#12B653", width=int(configparser.get('gui-config', 'result_btn_width')),height=int(configparser.get('gui-config', 'result_btn_height')), font=('times', 20, 'bold'))
+    _2lb_btn = tk.Button(window, text="2lb", command=do_nothing, fg="white", bg="#12B653", width=int(configparser.get('gui-config', 'result_btn_width')),height=int(configparser.get('gui-config', 'result_btn_height')), font=('times', 20, 'bold'))
+    _1bj_btn = tk.Button(window, text="1bj", command=do_nothing, fg="white", bg="#12B653", width=int(configparser.get('gui-config', 'result_btn_width')),height=int(configparser.get('gui-config', 'result_btn_height')), font=('times', 20, 'bold'))
+    _3lb_btn = tk.Button(window, text="3lb", command=do_nothing, fg="black", bg="#F3EF62", width=int(configparser.get('gui-config', 'result_btn_width')),height=int(configparser.get('gui-config', 'result_btn_height')), font=('times', 20, 'bold'))
+    _coarse_btn = tk.Button(window, text="coarse", command=do_nothing, fg="white", bg="#F37C62", width=int(configparser.get('gui-config', 'result_btn_width')),height=int(configparser.get('gui-config', 'result_btn_height')), font=('times', 20, 'bold'))
+    _2bj_btn = tk.Button(window, text="2bj", command=do_nothing, fg="white", bg="#F37C62", width=int(configparser.get('gui-config', 'result_btn_width')),height=int(configparser.get('gui-config', 'result_btn_height')), font=('times', 20, 'bold'))
 
 
     def detail_fxn():
@@ -617,29 +770,29 @@ def vp_start_gui():
     global username_login_entry
     global password_login_entry
    
-    username_login_entry = Entry(window, textvariable=username_verify)
+    username_login_entry = Entry(window, textvariable=username_verify, font = "Helvetica 15")
     username_login_entry.insert(1, "Enter username")
     username_login_entry.bind("<Button-1>", action_1)
     
-    password_login_entry = Entry(window, textvariable=password_verify, show= '*')
+    password_login_entry = Entry(window, textvariable=password_verify, show= '*', font = "Helvetica 15")
     password_login_entry.insert(1, "Enter password")
     password_login_entry.bind("<Button-1>", action_2)
     
     
-    signin = tk.Button(window, text="Login", command=login_verify, fg="white", bg="#539051", width=int(configparser.get('gui-config', 'signin_btn_width')),height=int(configparser.get('gui-config', 'signin_btn_height')), font=('times', 15, 'bold'))
+    signin = tk.Button(window, text="Login", command=login_verify, fg="white", bg="#539051", width=int(configparser.get('gui-config', 'signin_btn_width')),height=int(configparser.get('gui-config', 'signin_btn_height')), font=("Helvetica 15 bold"))
     
     if is_login == True and details_filled == True:
 
         signin.place_forget()
         username_login_entry.place_forget()
         password_login_entry.place_forget()
-        place_on_screen()
-        restart_button.place(x=int(configparser.get('gui-config', 'logout_x')), y=int(configparser.get('gui-config', 'restart_y')))
-        shutdown_button.place(x=int(configparser.get('gui-config', 'logout_x')), y=int(configparser.get('gui-config', 'shutdown_y')))
+        enter_details()
+        # restart_button.place(x=int(configparser.get('gui-config', 'logout_x')), y=int(configparser.get('gui-config', 'restart_y')))
+        # shutdown_button.place(x=int(configparser.get('gui-config', 'logout_x')), y=int(configparser.get('gui-config', 'shutdown_y')))
 
     else:
-        username_login_entry.place(x=570, y=140, width=130, height=25)
-        password_login_entry.place(x=570, y=170, width=130, height=25)
+        username_login_entry.place(x=545, y=130, width=180, height=30)
+        password_login_entry.place(x=545, y=165, width=180, height=30)
 
         global panel_bg
         img_bg = ImageTk.PhotoImage(Image.open(configparser.get('gui-config', 'bg_image')))
@@ -648,7 +801,6 @@ def vp_start_gui():
 
         signin.place(x=int(configparser.get('gui-config', 'signin_btn_x')), y=int(configparser.get('gui-config', 'signin_btn_y')))
 
-        startRecord.place_forget()
         startDemo.place_forget()
         endRecord.place_forget()
         if is_admin:
@@ -660,6 +812,7 @@ if __name__ == '__main__':
     def refresh():
         window.destroy()
         vp_start_gui()
+        pyautogui.press('ctrl')
 
     def logout():
         global is_login
@@ -667,7 +820,6 @@ if __name__ == '__main__':
         refresh()
 
     vp_start_gui()
-
-
+    pyautogui.press('ctrl')
 
 
