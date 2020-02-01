@@ -1,16 +1,14 @@
 import tkinter as tk
 from tkinter import *
+from tkinter import messagebox
 import cv2
 import os
-import numpy as np
 from PIL import Image,ImageTk
 import datetime
-import time
 import sys
 import subprocess   
 import requests
 import json
-import signal
 import configparser
 import math
 import gc
@@ -46,7 +44,7 @@ jetson_clock_cmd = 'jetson_clocks'
 record_cam_cmd = "python3 flc_utils/guiHelpers/record_cam_gui.py"
 
 
-class MyTkApp():
+class MyTkApp(threading.Thread):
 
     def __init__(self, master):  
         super().__init__()    
@@ -68,15 +66,14 @@ class MyTkApp():
         self.header = tk.Label(self.window, text="                                         Fine Leaf Count System", fg="white", bg="#539051", width=int(configparser.get('gui-config', 'title_width')), height=int(configparser.get('gui-config', 'title_height')), font=('times', 30, 'bold'))
         self.footer = tk.Label(self.window, text="                                                  © 2020 Agnext Technologies. All Rights Reserved                                                          ", fg="white", bg="#2b2c28", width=160, height=2, font=('times', 10, 'bold'))
 
-        
         self.panel = Label(self.window, bg='#539051')
-
         self.graph = Label(self.window)
+        self.panel_bg = Label(self.window, bg='white')
 
         self.logout_button = tk.Button(self.window, text="Logout", command=self.logout, fg="white", bg="#539051", width=int(configparser.get('gui-config', 'refresh_width')), font=('times', 12, 'bold'))
         
-        # self.restart_button = tk.Button(self.window, text="Restart", command=self.restart, fg="white", bg="#DC461D", width=7,font=('times', 12, 'bold'))
-        # self.shutdown_button = tk.Button(self.window, text="ShutDown", command=self.shutdown, fg="white", bg="#DC461D", width=7, font=('times', 12, 'bold'))
+        self.restart_button = tk.Button(self.window, text="Restart", command=self.restart, fg="white", bg="#DC461D", width=7,font=('times', 12, 'bold'))
+        self.shutdown_button = tk.Button(self.window, text="ShutDown", command=self.shutdown, fg="white", bg="#DC461D", width=7, font=('times', 12, 'bold'))
         self.startDemo = tk.Button(self.window, text="Demo Sample", command=self.demo_video, fg="black", bg="#FFE77A", font=('times', 15, 'bold'), width=int(configparser.get('gui-config', 'signin_btn_width')),height=int(configparser.get('gui-config', 'signin_btn_height')))
         self.endRecord = tk.Button(self.window, text="Save", command=self.end_video, fg="white", bg="#539051", font=('times', 17, 'bold'), width=10, height=2)
         if is_admin:
@@ -103,9 +100,7 @@ class MyTkApp():
         self.password_login_entry.insert(1, "Enter password")
         
         self.signin = tk.Button(self.window, text="Login", command=self.login_verify, fg="white", bg="#539051", width=int(configparser.get('gui-config', 'signin_btn_width')),height=int(configparser.get('gui-config', 'signin_btn_height')), font=("Helvetica 15 bold"))
-
-        self.panel_bg = Label(self.window, bg='white')
-
+        
         self._one = tk.Button(self.window, text="1", height=3, width=5, command=lambda val=1:self.code(val))
         self._two = tk.Button(self.window, text="2", height=3, width=5, command=lambda val=2:self.code(val))
         self._three = tk.Button(self.window, text="3", height=3, width=5, command=lambda val=3:self.code(val))
@@ -115,7 +110,7 @@ class MyTkApp():
         self._seven = tk.Button(self.window, text="7", height=3, width=5, command=lambda val=7:self.code(val))
         self._eight = tk.Button(self.window, text="8", height=3, width=5, command=lambda val=8:self.code(val))
         self._nine = tk.Button(self.window, text="9", height=3, width=5, command=lambda val=9:self.code(val))
-        self._clear = tk.Button(self.window, text="OK", height=3, width=5, command=self.hide_numpad)
+        self._clear = tk.Button(self.window, text="OK", height=3, width=5, command=self.hide_numpad, fg="white", bg="#539051", font=("Helvetica 10 bold"))
         self._zero = tk.Button(self.window, text="0", height=3, width=5, command=lambda val=0:self.code(val))
         self._back = tk.Button(self.window, text="<--", height=3, width=5, command=self.back_farmer)
      
@@ -165,17 +160,22 @@ class MyTkApp():
 
 
     def restart(self):
-        subprocess.Popen("exec reboot", stdout= subprocess.PIPE, shell=True)
+        if messagebox.askokcancel("Quit", "Do you really want to restart the system?"):
+            self.window.destroy()
+            sys.exit()
+            subprocess.Popen("exec reboot", stdout= subprocess.PIPE, shell=True)
 
 
     def shutdown(self):
-        subprocess.Popen("exec poweroff", stdout= subprocess.PIPE, shell=True)
+        if messagebox.askokcancel("Quit", "Do you really want to shutdown the system?"):
+            self.window.destroy()
+            sys.exit()
+            subprocess.Popen("exec poweroff", stdout= subprocess.PIPE, shell=True)
 
 
     def logout(self):
-        self.is_login = False
         self.window.destroy()
-        # open ui again
+        launchApp()
 
     def start_jetson_fan(self):
         subprocess.Popen("exec " + 'echo {} | sudo -S {}'.format(pwd, jetson_clock_cmd), stdout= subprocess.PIPE, shell=True)
@@ -201,18 +201,25 @@ class MyTkApp():
         self._zero.place_forget()
         self._back.place_forget()
 
-    
-    def video_stream(self):
-        self.msg_sent.place_forget()
+
+    def details_entered_success(self):
         self.startDemo.place_forget()  
         self.endRecord.place_forget()
+        self.entered.place_forget()
+        self.farmer_entry.place_forget()
+        self.sector_entry.place_forget()
+        self.msg_sent.place_forget()
         self.logout_button.place_forget()
-        self.remove_numpad()
         # self.tuneCamera.place_forget()
-        # self.restart_button.place_forget()
-        # self.shutdown_button.place_forget()
         if is_admin:
             self.startCamRecord.place_forget() 
+        self.restart_button.place_forget()
+        self.shutdown_button.place_forget()
+        self.remove_numpad()
+        self.start_jetson_fan()
+    
+
+    def video_stream(self):
         try:
             p = subprocess.Popen("exec " + cmd, stdout= subprocess.PIPE, shell=True)
             p.wait()
@@ -229,19 +236,7 @@ class MyTkApp():
         if farmer not in ["154"] and sector not in ["", "Select section ID"]:
             self.enter_correct_details()
         elif farmer not in ["", "Enter farmer ID"] and sector not in ["", "Select section ID"]:
-            self.start_jetson_fan()
-            self.msg_sent.place_forget()
-            self.logout_button.place_forget()
-            self.remove_numpad()
-            self.startDemo.place_forget()  
-            self.endRecord.place_forget()
-            self.entered.place_forget()
-            self.farmer_entry.place_forget()
-            self.sector_entry.place_forget()
-            # self.restart_button.place_forget()
-            # self.shutdown_button.place_forget()
-            if is_admin:
-                self.startCamRecord.place_forget() 
+            self.details_entered_success()
             try:
                 q = subprocess.Popen("exec " + cmd_demo, stdout= subprocess.PIPE, shell=True)
                 q.wait()
@@ -270,7 +265,6 @@ class MyTkApp():
 
 
     def on_closing(self):
-        from tkinter import messagebox
         if messagebox.askokcancel("Quit", "Do you want to quit?"):
             if os.path.exists("result.txt"):
                 os.remove("result.txt")
@@ -554,27 +548,6 @@ class MyTkApp():
         self.formula.place(x=60,y=415)
         pyautogui.press('ctrl')
         gc.collect()
-
-
-    def place_all_buttons(self):
-        self.logout_button.place(x=int(configparser.get('gui-config', 'logout_x')), y=int(configparser.get('gui-config', 'logout_y')), height=30, width=70)
-        # restart_button.place(x=int(configparser.get('gui-config', 'logout_x')), y=int(configparser.get('gui-config', 'restart_y')))
-        # shutdown_button.place(x=int(configparser.get('gui-config', 'logout_x')), y=int(configparser.get('gui-config', 'shutdown_y')))
-        # tuneCamera.place(x=int(configparser.get('gui-config', 'tunecamera_btn_x')), y=int(configparser.get('gui-config', 'tunecamera_btn_y')), height=35, width=140)
-        self.startDemo.place(x=int(configparser.get('gui-config', 'tunecamera_btn_x')), y=int(configparser.get('gui-config', 'tunecamera_btn_y')), height=35, width=140)
-        if is_admin:
-            self.startCamRecord.place(x=int(configparser.get('gui-config', 'cam_record_start_x')), y=int(configparser.get('gui-config', 'cam_record_start_y')), height=35, width=140)
-
-        
-    def place_on_screen(self):
-        try:
-            self.farmer_entry.place_forget()
-            self.sector_entry.place_forget()
-            self.entered.place_forget()
-            self.welcome_text.place_forget()
-        except:
-            pass
-        self.place_all_buttons()
              
      
     def login_verify(self):
@@ -647,6 +620,7 @@ class MyTkApp():
     def delete_user_not_found_screen(self):
         self.user_not_found_screen.destroy()
 
+
     def details_verify(self): 
         gc.collect() 
         farmer = self.farmer_verify.get()
@@ -654,12 +628,7 @@ class MyTkApp():
         if farmer not in ["154"] and sector not in ["", "Select section ID"]:
             self.enter_correct_details()
         elif farmer not in ["", "Enter farmer ID"] and sector not in ["", "Select section ID"]:
-            self.startDemo.place_forget()  
-            self.endRecord.place_forget()
-            self.entered.place_forget()
-            self.farmer_entry.place_forget()
-            self.sector_entry.place_forget()
-            self.start_jetson_fan()
+            self.details_entered_success()
             self.video_stream()
         else:
             self.show_error_msg()
@@ -684,8 +653,8 @@ class MyTkApp():
         self.entered.place(x=520, y=280)
         self.startDemo.place(x=520, y=360)
         self.logout_button.place(x=int(configparser.get('gui-config', 'logout_x')), y=int(configparser.get('gui-config', 'logout_y')))
-        # restart_button.place(x=int(configparser.get('gui-config', 'logout_x')), y=int(configparser.get('gui-config', 'restart_y')))
-        # shutdown_button.place(x=int(configparser.get('gui-config', 'logout_x')), y=int(configparser.get('gui-config', 'shutdown_y')))
+        self.restart_button.place(x=int(configparser.get('gui-config', 'restart_x')), y=int(configparser.get('gui-config', 'restart_y')))
+        self.shutdown_button.place(x=int(configparser.get('gui-config', 'shutdown_x')), y=int(configparser.get('gui-config', 'shutdown_y')))
 
         pyautogui.press('ctrl')
 
