@@ -286,8 +286,7 @@ class MyTkApp(threading.Thread):
     def popup_keyboard(self, event):
         subprocess.Popen("exec " + "onboard", stdout= subprocess.PIPE, shell=True)
 
-
-    def show_numpad(self, event):
+    def show_numpad(self):
         pyautogui.press('ctrl')
         gc.collect()
         self.startDemo.place_forget()  
@@ -307,9 +306,13 @@ class MyTkApp(threading.Thread):
         self._eight.place(x=585, y=200)
         self._nine.place(x=530, y=200)
 
+
+    def start_thread(self, event):
         if self.farmer_verify.get() == "Enter farmer ID":
             self.farmer_entry.delete(0, tk.END)
         pyautogui.press('ctrl')
+        thread = threading.Thread(target = self.show_numpad)
+        thread.start()
 
 
     def hide_numpad(self):
@@ -646,7 +649,7 @@ class MyTkApp(threading.Thread):
 
         self.welcome_text.place(x=int(configparser.get('gui-config', 'welcome_text_x')), y=int(configparser.get('gui-config', 'welcome_text_y')))
         
-        self.farmer_entry.bind("<Button-1>", self.show_numpad)
+        self.farmer_entry.bind("<Button-1>", self.start_thread)
 
         self.farmer_entry.place(x=520,y=140, height=40, width=190)
         self.sector_entry.place(x=520, y=185, height=40)
