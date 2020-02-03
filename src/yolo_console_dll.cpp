@@ -827,7 +827,7 @@ int main(int argc, char *argv[])
                     // resize(draw_frame, draw_frame, cv::Size(1280, 720), 0, 0, CV_INTER_CUBIC);   // Agnext FRAME RESIZE
                     // resize(draw_frame, draw_frame, cv::Size(1920, 1080), 0, 0, CV_INTER_CUBIC); 
                     cv::imshow("window", draw_frame);
-                    cv::moveWindow("window", 100, 100);     // Agnext (move window for tkinter interface)
+                    cv::moveWindow("window", 70, 100);     // Agnext (move window for tkinter interface)
 
 
                     int key = cv::waitKey(3);    // 3 or 16ms
@@ -907,5 +907,3 @@ int main(int argc, char *argv[])
 
     return 0;
 }
-
-
