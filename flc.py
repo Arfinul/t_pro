@@ -14,7 +14,6 @@ import math
 import gc
 import pandas as pd
 import matplotlib.pyplot as plt
-import pyautogui
 import sys
 import seaborn as sns
 import threading
@@ -44,10 +43,10 @@ jetson_clock_cmd = 'jetson_clocks'
 record_cam_cmd = "python3 flc_utils/guiHelpers/record_cam_gui.py"
 
 
-class MyTkApp(threading.Thread):
+class MyTkApp(tk.Frame):
 
     def __init__(self, master):  
-        super().__init__()    
+        tk.Frame.__init__(self, master)   
         self.userID = ""
         self.token = ""
 
@@ -127,8 +126,6 @@ class MyTkApp(threading.Thread):
         self.entered = tk.Button(self.window, text="Start FLC", command=self.details_verify, fg="white", bg="#539051", width=int(configparser.get('gui-config', 'signin_btn_width')),height=int(configparser.get('gui-config', 'signin_btn_height')), font=('times', 15, 'bold'))
         self.formula = Label(self.window, text="FLC = 1LB + 2LB + 1Banjhi + (0.5 * 3LB)", font=("Helvetica", 15), background='white')
 
-        subprocess.Popen("exec " + "onboard", stdout= subprocess.PIPE, shell=True)
-
         img = ImageTk.PhotoImage(Image.open(configparser.get('gui-config', 'logo')))
         self.panel.configure(image=img)
         self.panel.image = img
@@ -154,9 +151,6 @@ class MyTkApp(threading.Thread):
         if is_admin:
             self.startCamRecord.place_forget()
 
-
-    def callback(self):
-        self.window.quit()
 
 
     def restart(self):
@@ -285,44 +279,47 @@ class MyTkApp(threading.Thread):
 
     def popup_keyboard(self, event):
         subprocess.Popen("exec " + "onboard", stdout= subprocess.PIPE, shell=True)
+    
 
-    def show_numpad(self):
-        pyautogui.press('ctrl')
+    def show_numpad(self, event):
         gc.collect()
-        self.startDemo.place_forget()  
-        self.endRecord.place_forget()
-        self.sector_entry.place_forget()
-        self.entered.place_forget()
-        self._back.place(x=640, y=350)
-        self._zero.place(x=585, y=350)
-        self._clear.place(x=530, y=350)
-        self._one.place(x=640, y=300)
-        self._two.place(x=585, y=300)
-        self._three.place(x=530, y=300)
-        self._four.place(x=640, y=250)
-        self._five.place(x=585, y=250)
-        self._six.place(x=530, y=250)
-        self._seven.place(x=640, y=200)
-        self._eight.place(x=585, y=200)
-        self._nine.place(x=530, y=200)
-
-
-    def start_thread(self, event):
-        if self.farmer_verify.get() == "Enter farmer ID":
-            self.farmer_entry.delete(0, tk.END)
-        pyautogui.press('ctrl')
-        thread = threading.Thread(target = self.show_numpad)
-        thread.start()
+        def callback():
+            print("Thread started.")
+            if self.farmer_verify.get() == "Enter farmer ID":
+                self.farmer_entry.delete(0, tk.END)
+            try:
+                self.startDemo.place_forget()  
+                self.endRecord.place_forget()
+                self.sector_entry.place_forget()
+                self.entered.place_forget()
+            except:
+                pass
+            try:
+                self._back.place(x=640, y=350)
+                self._zero.place(x=585, y=350)
+                self._clear.place(x=530, y=350)
+                self._one.place(x=640, y=300)
+                self._two.place(x=585, y=300)
+                self._three.place(x=530, y=300)
+                self._four.place(x=640, y=250)
+                self._five.place(x=585, y=250)
+                self._six.place(x=530, y=250)
+                self._seven.place(x=640, y=200)
+                self._eight.place(x=585, y=200)
+                self._nine.place(x=530, y=200)
+            except:
+                pass
+            print("Thread ended.")
+        t = threading.Thread(target=callback)
+        t.start()
 
 
     def hide_numpad(self):
-        pyautogui.press('ctrl')
         gc.collect()
         self.remove_numpad()
         self.startDemo.place(x=520, y=360)
         self.sector_entry.place(x=520, y=185, height=40)
         self.entered.place(x=520, y=280)
-        pyautogui.press('ctrl')
 
 
     def load_graph(self):
@@ -492,8 +489,6 @@ class MyTkApp(threading.Thread):
         new_img = cv2.resize(cv2_img, (400, 270))
         gc.collect()
         cv2.imwrite("flc_utils/result.png", new_img)
-        pyautogui.press('ctrl')
-        pyautogui.press('ctrl')
 
 
     def do_nothing(self):
@@ -549,7 +544,6 @@ class MyTkApp(threading.Thread):
         self._2bj_btn.place(x=300,y=330)
 
         self.formula.place(x=60,y=415)
-        pyautogui.press('ctrl')
         gc.collect()
              
      
@@ -649,7 +643,7 @@ class MyTkApp(threading.Thread):
 
         self.welcome_text.place(x=int(configparser.get('gui-config', 'welcome_text_x')), y=int(configparser.get('gui-config', 'welcome_text_y')))
         
-        self.farmer_entry.bind("<Button-1>", self.start_thread)
+        self.farmer_entry.bind("<Button-1>", self.show_numpad)
 
         self.farmer_entry.place(x=520,y=140, height=40, width=190)
         self.sector_entry.place(x=520, y=185, height=40)
@@ -658,8 +652,6 @@ class MyTkApp(threading.Thread):
         self.logout_button.place(x=int(configparser.get('gui-config', 'logout_x')), y=int(configparser.get('gui-config', 'logout_y')))
         self.restart_button.place(x=int(configparser.get('gui-config', 'restart_x')), y=int(configparser.get('gui-config', 'restart_y')))
         self.shutdown_button.place(x=int(configparser.get('gui-config', 'shutdown_x')), y=int(configparser.get('gui-config', 'shutdown_y')))
-
-        pyautogui.press('ctrl')
 
      
     def login_sucess(self):
