@@ -62,8 +62,8 @@ class MyTkApp(tk.Frame):
         self.window.configure(background='snow')
         self.window.protocol("WM_DELETE_WINDOW", self.on_closing)
 
-        self.header = tk.Label(self.window, text="                                         Fine Leaf Count System", fg="white", bg="#539051", width=int(configparser.get('gui-config', 'title_width')), height=int(configparser.get('gui-config', 'title_height')), font=('times', 30, 'bold'))
-        self.footer = tk.Label(self.window, text="                                                  © 2020 Agnext Technologies. All Rights Reserved                                                          ", fg="white", bg="#2b2c28", width=160, height=2, font=('times', 10, 'bold'))
+        self.header = tk.Label(self.window, text="                                 Fine Leaf Count System", fg="white", bg="#539051", width=int(configparser.get('gui-config', 'title_width')), height=int(configparser.get('gui-config', 'title_height')), font=('times', 30, 'bold'))
+        self.footer = tk.Label(self.window, text="                                                    © 2020 Agnext Technologies. All Rights Reserved                                                          ", fg="white", bg="#2b2c28", width=160, height=2, font=('times', 10, 'bold'))
 
         self.panel = Label(self.window, bg='#539051')
         self.graph = Label(self.window)
@@ -139,8 +139,8 @@ class MyTkApp(tk.Frame):
         self.panel_bg.image = img_bg
         self.panel_bg.place(x=int(configparser.get('gui-config', 'panel_bg_x')), y=int(configparser.get('gui-config', 'panel_bg_y')))
 
-        self.username_login_entry.place(x=545, y=130, width=180, height=30)
-        self.password_login_entry.place(x=545, y=165, width=180, height=30)
+        self.username_login_entry.place(x=565, y=130, width=184, height=30)
+        self.password_login_entry.place(x=565, y=165, width=184, height=30)
         self.signin.place(x=int(configparser.get('gui-config', 'signin_btn_x')), y=int(configparser.get('gui-config', 'signin_btn_y')))
 
         self.username_login_entry.bind("<Button-1>", self.action_1)
@@ -295,18 +295,18 @@ class MyTkApp(tk.Frame):
             except:
                 pass
             try:
-                self._back.place(x=640, y=350)
-                self._zero.place(x=585, y=350)
-                self._clear.place(x=530, y=350)
-                self._one.place(x=640, y=300)
-                self._two.place(x=585, y=300)
-                self._three.place(x=530, y=300)
-                self._four.place(x=640, y=250)
-                self._five.place(x=585, y=250)
-                self._six.place(x=530, y=250)
-                self._seven.place(x=640, y=200)
-                self._eight.place(x=585, y=200)
-                self._nine.place(x=530, y=200)
+                self._back.place(x=660, y=350)
+                self._zero.place(x=605, y=350)
+                self._clear.place(x=550, y=350)
+                self._one.place(x=660, y=300)
+                self._two.place(x=605, y=300)
+                self._three.place(x=550, y=300)
+                self._four.place(x=660, y=250)
+                self._five.place(x=605, y=250)
+                self._six.place(x=550, y=250)
+                self._seven.place(x=660, y=200)
+                self._eight.place(x=605, y=200)
+                self._nine.place(x=550, y=200)
             except:
                 pass
             print("Thread ended.")
@@ -317,9 +317,9 @@ class MyTkApp(tk.Frame):
     def hide_numpad(self):
         gc.collect()
         self.remove_numpad()
-        self.startDemo.place(x=520, y=360)
-        self.sector_entry.place(x=520, y=185, height=40)
-        self.entered.place(x=520, y=280)
+        self.startDemo.place(x=540, y=360)
+        self.sector_entry.place(x=540, y=185, height=40)
+        self.entered.place(x=540, y=280)
 
 
     def load_graph(self):
@@ -645,10 +645,10 @@ class MyTkApp(tk.Frame):
         
         self.farmer_entry.bind("<Button-1>", self.show_numpad)
 
-        self.farmer_entry.place(x=520,y=140, height=40, width=190)
-        self.sector_entry.place(x=520, y=185, height=40)
-        self.entered.place(x=520, y=280)
-        self.startDemo.place(x=520, y=360)
+        self.farmer_entry.place(x=540,y=140, height=40, width=190)
+        self.sector_entry.place(x=540, y=185, height=40)
+        self.entered.place(x=540, y=280)
+        self.startDemo.place(x=540, y=360)
         self.logout_button.place(x=int(configparser.get('gui-config', 'logout_x')), y=int(configparser.get('gui-config', 'logout_y')))
         self.restart_button.place(x=int(configparser.get('gui-config', 'restart_x')), y=int(configparser.get('gui-config', 'restart_y')))
         self.shutdown_button.place(x=int(configparser.get('gui-config', 'shutdown_x')), y=int(configparser.get('gui-config', 'shutdown_y')))
