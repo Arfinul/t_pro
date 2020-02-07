@@ -218,7 +218,7 @@ int seconds, minutes, hours; // Agnext
 
 cv::Mat black_image(480, 640, CV_8UC3); // Agnext black image
 bool black_background = false;
-bool clean_video = false;
+bool clean_video = true;
 
 
 int tap_count = 0;
