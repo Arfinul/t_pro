@@ -409,7 +409,7 @@ int main(int argc, char *argv[])
     oss << std::put_time(&tm, "%d-%m-%Y %H-%M-%S");
     auto str = oss.str();
 
-    std::string out_videofile = "flc_utils/trainVideo/testing/result_" + str + ".avi";
+    std::string out_videofile = "flc_utils/trainVideo/testing/result.avi";
     bool const save_output_videofile = true;   // true - for history
     bool const send_network = false;        // true - for remote detection
     bool const use_kalman_filter = true;   // true - for stationary camera
@@ -699,7 +699,7 @@ int main(int argc, char *argv[])
                         putText(draw_frame, "Double Tap to Exit", cv::Point2f(200, 350), cv::FONT_HERSHEY_COMPLEX_SMALL, 1.2, cv::Scalar(0, 0, 255), 2); // Agnext
 
                         frame_str = "FRAME : " + std::to_string(detection_data.frame_id); // Agnext
-                        putText(draw_frame, frame_str, cv::Point2f(10, 50), cv::FONT_HERSHEY_COMPLEX_SMALL, 1.2, cv::Scalar(50, 255, 0), 2); // Agnext
+                        // putText(draw_frame, frame_str, cv::Point2f(10, 50), cv::FONT_HERSHEY_COMPLEX_SMALL, 1.2, cv::Scalar(50, 255, 0), 2); // Agnext
 
                         perc_count_1lb = (float(count_1lb)*100)/total;
                         _1lb_count_str = "1LB : " + std::to_string(count_1lb); // Agnext
@@ -907,3 +907,4 @@ int main(int argc, char *argv[])
 
     return 0;
 }
+
