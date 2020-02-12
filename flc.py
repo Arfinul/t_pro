@@ -217,9 +217,11 @@ class MyTkApp(tk.Frame):
         try:
             p = subprocess.Popen("exec " + cmd, stdout= subprocess.PIPE, shell=True)
             p.wait()
+            os.rename("flc_utils/trainVideo/testing/result.avi", "flc_utils/trainVideo/testing/" + str(self.userID) + "_" + datetime.datetime.now().strftime("%d-%m-%Y %H:%M:%S") + ".avi")
             self.show_results_on_display()
             self.endRecord.place(x=int(configparser.get('gui-config', 'endrecord_btn_x')), y=int(configparser.get('gui-config', 'endrecord_btn_y')))
-        except:
+        except Exception as e:
+            print(e)
             self.endRecord.place_forget()
             self.startDemo.configure(bg="#539051", state="active")
 
@@ -234,9 +236,11 @@ class MyTkApp(tk.Frame):
             try:
                 q = subprocess.Popen("exec " + cmd_demo, stdout= subprocess.PIPE, shell=True)
                 q.wait()
+                os.rename("flc_utils/trainVideo/testing/result.avi", "flc_utils/trainVideo/testing/" + str(self.userID) + "_" + datetime.datetime.now().strftime("%d-%m-%Y %H:%M:%S") + ".avi")
                 self.show_results_on_display()
                 self.endRecord.place(x=int(configparser.get('gui-config', 'endrecord_btn_x')), y=int(configparser.get('gui-config', 'endrecord_btn_y')))
-            except:
+            except Exception as e:
+                print(e)
                 self.endRecord.place_forget()
                 self.startDemo.configure(bg="#539051", state="active")
         else:

@@ -216,6 +216,14 @@ std::string _timer = "";    // Agnext
 double duration;    // Agnext
 int seconds, minutes, hours; // Agnext
 
+<<<<<<< HEAD
+=======
+cv::Mat black_image(480, 640, CV_8UC3); // Agnext black image
+bool black_background = false;
+bool clean_video = true;
+
+
+>>>>>>> eece3e808213512c6e9bde46978abf9fff688f7a
 int tap_count = 0;
 int image_width = 0;
 int image_height = 0;
