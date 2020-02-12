@@ -216,14 +216,22 @@ std::string _timer = "";    // Agnext
 double duration;    // Agnext
 int seconds, minutes, hours; // Agnext
 
-cv::Mat black_image(480, 640, CV_8UC3); // Agnext black image
-bool black_background = false;
-bool clean_video = true;
-
-
 int tap_count = 0;
 int image_width = 0;
 int image_height = 0;
+bool double_tap = false;
+bool countdown_started = false;
+auto start_tap_sec_count = std::chrono::high_resolution_clock::now();
+auto end_tap_sec_count = std::chrono::high_resolution_clock::now();
+auto start_no_frame_sec_count = std::chrono::high_resolution_clock::now();
+auto end_no_frame_sec_count = std::chrono::high_resolution_clock::now();
+
+cv::Mat black_image(480, 640, CV_8UC3); // Agnext black image
+bool black_background = false;
+bool clean_video = true;
+int sec_for_empty_frame = 30;
+int double_tap_seconds_close = 15;	
+
 
 void draw_boxes(cv::Mat mat_img, std::vector<bbox_t> result_vec, std::vector<std::string> obj_names,
     int current_det_fps = -1, int current_cap_fps = -1, bool black_screen=false)
@@ -322,12 +330,8 @@ struct detection_data_t {
 
 static void onMouse( int event, int x, int y, int, void* param)
 {
-    if (tap_count > 4){
-        detection_data_t* dt = (detection_data_t*)param;
-        bool & exit_flag = dt -> exit_flag;
-        writeFile(frame_str, _1lb_count_str, _2lb_count_str, _3lb_count_str, _1Banjhi_count_str, _2Banjhi_count_str, _coarse_count_str, _cluster_count_str, fine_per.substr(0,12), _timer); // Agnext write to file
-        exit_flag = true;  
-        cv::destroyWindow("window");
+    if (tap_count > 1){
+    	double_tap = true; 
     }
     else{
         tap_count ++;
@@ -669,34 +673,47 @@ int main(int argc, char *argv[])
                         // resize(draw_frame, draw_frame, cv::Size(680, 480), 0, 0, CV_INTER_CUBIC);  // Agnext FRAME RESIZE
                         draw_boxes(draw_frame, result_vec, obj_names, current_fps_det, current_fps_cap, black_background);
                         show_console_result(result_vec, obj_names, detection_data.frame_id); // Agnext, originall was commented // UNCOMMENTED FOR DEVELOPER MODE
+                        
                         for (auto &i : result_vec) {        // Agnext, added for counting fine counts
                             if (obj_names.size() > i.obj_id) 
                                 if (obj_names[i.obj_id] == "1LB"){
                                     count_1lb = i.track_id;
+                                    start_no_frame_sec_count = std::chrono::high_resolution_clock::now();
                                 }
                                 else if (obj_names[i.obj_id] == "2LB"){
                                     count_2lb = i.track_id;
+                                    start_no_frame_sec_count = std::chrono::high_resolution_clock::now();
                                 }
                                 else if (obj_names[i.obj_id] == "3LB"){
                                     count_3lb = i.track_id;
+                                    start_no_frame_sec_count = std::chrono::high_resolution_clock::now();
                                 }
                                 else if (obj_names[i.obj_id] == "1Banjhi"){ 
                                     count_1Banjhi = i.track_id; 
+                                    start_no_frame_sec_count = std::chrono::high_resolution_clock::now();
                                 }   
                                 else if (obj_names[i.obj_id] == "2Banjhi"){ 
                                     count_2Banjhi = i.track_id; 
+                                    start_no_frame_sec_count = std::chrono::high_resolution_clock::now();
                                 }
                                 else if (obj_names[i.obj_id] == "Coarse"){
                                     count_coarse = i.track_id;
+                                    start_no_frame_sec_count = std::chrono::high_resolution_clock::now();
                                 }
                                 else if (obj_names[i.obj_id] == "Cluster"){
                                     count_cluster = i.track_id;
+                                    start_no_frame_sec_count = std::chrono::high_resolution_clock::now();
                                 }
                         }
                         
                         total = (count_1lb + count_2lb + count_3lb + count_1Banjhi + count_2Banjhi + count_coarse);
 
-                        putText(draw_frame, "Double Tap to Exit", cv::Point2f(200, 350), cv::FONT_HERSHEY_COMPLEX_SMALL, 1.2, cv::Scalar(0, 0, 255), 2); // Agnext
+                        if (double_tap == true){
+                        	putText(draw_frame, "Exiting...", cv::Point2f(250, 350), cv::FONT_HERSHEY_COMPLEX_SMALL, 1.2, cv::Scalar(0, 0, 255), 2); // Agnext
+                        }
+                        else{
+                        	putText(draw_frame, "Double Tap to Exit", cv::Point2f(200, 350), cv::FONT_HERSHEY_COMPLEX_SMALL, 1.2, cv::Scalar(0, 0, 255), 2); // Agnext
+                        }
 
                         frame_str = "FRAME : " + std::to_string(detection_data.frame_id); // Agnext
                         // putText(draw_frame, frame_str, cv::Point2f(10, 50), cv::FONT_HERSHEY_COMPLEX_SMALL, 1.2, cv::Scalar(50, 255, 0), 2); // Agnext
@@ -828,8 +845,29 @@ int main(int argc, char *argv[])
                     // resize(draw_frame, draw_frame, cv::Size(1920, 1080), 0, 0, CV_INTER_CUBIC); 
                     cv::imshow("window", draw_frame);
                     cv::moveWindow("window", 70, 100);     // Agnext (move window for tkinter interface)
+                	
+                    // AUTO-CLOSE AFTER 30 SEC ON EMPTY FRAME
+                    end_no_frame_sec_count = std::chrono::high_resolution_clock::now();
+                	if (int(std::chrono::duration<double, std::milli>(end_no_frame_sec_count-start_no_frame_sec_count).count() / 1000) > (sec_for_empty_frame*1)){
+                		writeFile(frame_str, _1lb_count_str, _2lb_count_str, _3lb_count_str, _1Banjhi_count_str, _2Banjhi_count_str, _coarse_count_str, _cluster_count_str, fine_per.substr(0,12), _timer); // Agnext write to file
+                    	exit_flag = true;
+                	}
 
+                	// CLOSE AFTER "double_tap_seconds_close" SEC OF DOUBLE TAP
+                	if (double_tap == true){
+                		end_tap_sec_count = std::chrono::high_resolution_clock::now();
 
+                		if (countdown_started == false){
+                			countdown_started = true;
+                			start_tap_sec_count = std::chrono::high_resolution_clock::now();
+                		}
+
+                		if ((int(std::chrono::duration<double, std::milli>(end_tap_sec_count-start_tap_sec_count).count() / 1000) > (double_tap_seconds_close * 1)) && (countdown_started == true)){
+                			writeFile(frame_str, _1lb_count_str, _2lb_count_str, _3lb_count_str, _1Banjhi_count_str, _2Banjhi_count_str, _coarse_count_str, _cluster_count_str, fine_per.substr(0,12), _timer); // Agnext write to file
+				        	exit_flag = true;
+                		}
+                	}
+                    
                     int key = cv::waitKey(3);    // 3 or 16ms
                     if (key == 'f') show_small_boxes = !show_small_boxes;
                     if (key == 'p') while (true) if (cv::waitKey(100) == 'p') break;
