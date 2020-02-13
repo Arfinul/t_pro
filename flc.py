@@ -23,8 +23,6 @@ os.chdir("/home/agnext/Documents/flc")  # Agnext
 
 configparser.read('flc_utils/screens/touchScreen/gui.cfg')
 is_admin = False
-OPTIONS = ["Select section ID", "1","2","3", "4"] 
-
 
 cmd = """
 export LD_LIBRARY_PATH=/home/agnext/Documents/flc/
@@ -49,6 +47,9 @@ class MyTkApp(tk.Frame):
         tk.Frame.__init__(self, master)   
         self.userID = ""
         self.token = ""
+        self.farmer_id = ""
+        self.id_name_dict = {}
+        self.OPTIONS = ["Select section ID"] 
 
         self.window = master
 
@@ -109,7 +110,7 @@ class MyTkApp(tk.Frame):
         self._seven = tk.Button(self.window, text="7", height=3, width=5, command=lambda val=7:self.code(val))
         self._eight = tk.Button(self.window, text="8", height=3, width=5, command=lambda val=8:self.code(val))
         self._nine = tk.Button(self.window, text="9", height=3, width=5, command=lambda val=9:self.code(val))
-        self._clear = tk.Button(self.window, text="OK", height=3, width=5, command=self.hide_numpad, fg="white", bg="#539051", font=("Helvetica 10 bold"))
+        self._clear = tk.Button(self.window, text="OK", height=3, width=5, command=self.get_farmer_id, fg="white", bg="#539051", font=("Helvetica 10 bold"))
         self._zero = tk.Button(self.window, text="0", height=3, width=5, command=lambda val=0:self.code(val))
         self._back = tk.Button(self.window, text="<--", height=3, width=5, command=self.back_farmer)
      
@@ -118,9 +119,8 @@ class MyTkApp(tk.Frame):
         self.section_verify.set("Select section ID")
          
         self.farmer_entry = Entry(self.window, textvariable=self.farmer_verify)
-        self.farmer_entry.insert(1, "Enter farmer ID")
-        self.sector_entry = OptionMenu(self.window, self.section_verify, *OPTIONS)
-        self.sector_entry.configure(width=24)
+        self.sector_entry = OptionMenu(self.window, self.section_verify, *self.OPTIONS)
+        self.sector_entry.configure(width=24, state="disabled")
 
         self.welcome_text = Label(self.window, text="Welcome, ", font=('times', 15, 'bold'), bg='white')
         self.entered = tk.Button(self.window, text="Start FLC", command=self.details_verify, fg="white", bg="#539051", width=int(configparser.get('gui-config', 'signin_btn_width')),height=int(configparser.get('gui-config', 'signin_btn_height')), font=('times', 15, 'bold'))
@@ -176,7 +176,7 @@ class MyTkApp(tk.Frame):
 
 
     def code(self, value):
-        if self.farmer_verify.get() == "Enter farmer ID":
+        if self.farmer_verify.get() == "Enter farmer Code":
             self.farmer_entry.delete(0, tk.END)
         self.farmer_entry.insert('end', value)
 
@@ -213,9 +213,9 @@ class MyTkApp(tk.Frame):
         self.start_jetson_fan()
     
 
-    def video_stream(self):
+    def start_testing(self, command):
         try:
-            p = subprocess.Popen("exec " + cmd, stdout= subprocess.PIPE, shell=True)
+            p = subprocess.Popen("exec " + command, stdout= subprocess.PIPE, shell=True)
             p.wait()
             os.rename("flc_utils/trainVideo/testing/result.avi", "flc_utils/trainVideo/testing/" + str(self.userID) + "_" + datetime.datetime.now().strftime("%d-%m-%Y %H:%M:%S") + ".avi")
             self.show_results_on_display()
@@ -226,23 +226,16 @@ class MyTkApp(tk.Frame):
             self.startDemo.configure(bg="#539051", state="active")
 
 
+    def video_stream(self):
+        self.start_testing(cmd)
+
+
     def demo_video(self):
         farmer = self.farmer_verify.get()
         sector = self.section_verify.get()      
-        if farmer not in ["154"] and sector not in ["", "Select section ID"]:
-            self.enter_correct_details()
-        elif farmer not in ["", "Enter farmer ID"] and sector not in ["", "Select section ID"]:
+        if farmer not in ["", "Enter farmer Code"] and sector not in ["", "Select section ID"]:
             self.details_entered_success()
-            try:
-                q = subprocess.Popen("exec " + cmd_demo, stdout= subprocess.PIPE, shell=True)
-                q.wait()
-                os.rename("flc_utils/trainVideo/testing/result.avi", "flc_utils/trainVideo/testing/" + str(self.userID) + "_" + datetime.datetime.now().strftime("%d-%m-%Y %H:%M:%S") + ".avi")
-                self.show_results_on_display()
-                self.endRecord.place(x=int(configparser.get('gui-config', 'endrecord_btn_x')), y=int(configparser.get('gui-config', 'endrecord_btn_y')))
-            except Exception as e:
-                print(e)
-                self.endRecord.place_forget()
-                self.startDemo.configure(bg="#539051", state="active")
+            self.start_testing(cmd_demo)
         else:
             self.show_error_msg()
         
@@ -289,7 +282,7 @@ class MyTkApp(tk.Frame):
         gc.collect()
         def callback():
             print("Thread started.")
-            if self.farmer_verify.get() == "Enter farmer ID":
+            if self.farmer_verify.get() == "Enter farmer Code":
                 self.farmer_entry.delete(0, tk.END)
             try:
                 self.startDemo.place_forget()  
@@ -316,6 +309,37 @@ class MyTkApp(tk.Frame):
             print("Thread ended.")
         t = threading.Thread(target=callback)
         t.start()
+
+    def get_sections(self):
+        url = configparser.get('gui-config', 'ip') + "/api/sections"
+        headers = {
+            'Authorization': "Bearer " + self.token
+            }
+        resp = requests.request("GET", url, headers=headers)
+        data = resp.json()['data']
+        section_id_list = [i["sectionId"] for i in data]
+        section_name_list = [i["name"] for i in data]
+
+        self.id_name_dict = dict(zip(section_name_list, section_id_list))
+
+        self.OPTIONS = ["Select section ID"] + section_name_list
+        self.sector_entry = OptionMenu(self.window, self.section_verify, *self.OPTIONS)
+        self.sector_entry.configure(width=24, state="active")
+
+    def get_farmer_id(self):
+        try:
+            farmer_code = self.farmer_verify.get()
+            url = configparser.get('gui-config', 'ip') + "/api/users/code/" + farmer_code
+            headers = {
+                'Authorization': "Bearer " + self.token
+                }
+            resp = requests.request("GET", url, headers=headers)
+            self.farmer_id = resp.json()['data'][0]['id']
+            self.get_sections()
+            self.hide_numpad()
+        except Exception as e:
+            print(e)
+            self.enter_correct_details()
 
 
     def hide_numpad(self):
@@ -433,8 +457,8 @@ class MyTkApp(tk.Frame):
             }
             load = {
                 "userId": int(self.userID),
-                "ccId": int(self.section_verify.get()),
-                "assistId": int(self.farmer_verify.get()),
+                "ccId": int(self.id_name_dict[self.section_verify.get()]),
+                "assistId": int(self.farmer_id),
                 "oneLeafBud": _1lb,
                 "twoLeafBud": _2lb,
                 "threeLeafBud": _3lb,
@@ -592,7 +616,7 @@ class MyTkApp(tk.Frame):
         self.enter_correct_details_screen = Toplevel(self.window)
         self.enter_correct_details_screen.geometry("%dx%d+%d+%d" % (self.w, self.h, self.x + 300, self.y + 200))
         self.enter_correct_details_screen.title("Error")
-        Label(self.enter_correct_details_screen, text="Please enter correct details.").pack()
+        Label(self.enter_correct_details_screen, text="Please enter correct code.").pack()
         Button(self.enter_correct_details_screen, text="OK", command=self.enter_correct_details_destroy).pack()
 
 
@@ -626,9 +650,7 @@ class MyTkApp(tk.Frame):
         gc.collect() 
         farmer = self.farmer_verify.get()
         sector = self.section_verify.get()      
-        if farmer not in ["154"] and sector not in ["", "Select section ID"]:
-            self.enter_correct_details()
-        elif farmer not in ["", "Enter farmer ID"] and sector not in ["", "Select section ID"]:
+        if farmer not in ["", "Enter farmer Code"] and sector not in ["", "Select section ID"]:
             self.details_entered_success()
             self.video_stream()
         else:
@@ -648,9 +670,14 @@ class MyTkApp(tk.Frame):
         self.welcome_text.place(x=int(configparser.get('gui-config', 'welcome_text_x')), y=int(configparser.get('gui-config', 'welcome_text_y')))
         
         self.farmer_entry.bind("<Button-1>", self.show_numpad)
-
         self.farmer_entry.place(x=540,y=140, height=40, width=190)
+        self.farmer_entry.delete(0, tk.END)
+        self.farmer_entry.insert(1, "Enter farmer Code")
+
+        self.OPTIONS = ["Select section ID"]
         self.sector_entry.place(x=540, y=185, height=40)
+        self.sector_entry.configure(width=24, state="disabled")
+
         self.entered.place(x=540, y=280)
         self.startDemo.place(x=540, y=360)
         self.logout_button.place(x=int(configparser.get('gui-config', 'logout_x')), y=int(configparser.get('gui-config', 'logout_y')))
