@@ -378,7 +378,7 @@ class MyTkApp(tk.Frame):
             "username": usr,
             "password": pwd,
             "entity": "mobile",
-            "deviceToken": "1"
+            "deviceToken": "",
         }
         headers = {
             "Content-Type": "application/json"
