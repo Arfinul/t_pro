@@ -457,7 +457,8 @@ class MyTkApp(tk.Frame):
             }
             load = {
                 "userId": int(self.userID),
-                "ccId": int(self.id_name_dict[self.section_verify.get()]),
+                "ccId": 1,
+                "sectionId": int(self.id_name_dict[self.section_verify.get()]),
                 "assistId": int(self.farmer_id),
                 "oneLeafBud": _1lb,
                 "twoLeafBud": _2lb,
