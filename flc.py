@@ -217,7 +217,7 @@ class MyTkApp(tk.Frame):
         try:
             p = subprocess.Popen("exec " + command, stdout= subprocess.PIPE, shell=True)
             p.wait()
-            os.rename("flc_utils/trainVideo/testing/result.avi", "flc_utils/trainVideo/testing/" + str(self.userID) + "_" + datetime.datetime.now().strftime("%d-%m-%Y %H:%M:%S") + ".avi")
+            os.rename("flc_utils/trainVideo/testing/result.avi", "flc_utils/trainVideo/testing/u-" + str(self.userID) + "_f-" + str(self.farmer_id) + "_s-" + str(self.id_name_dict[self.section_verify.get()]) + "_" + datetime.datetime.now().strftime("%d-%m-%Y %H:%M:%S") + ".avi")
             self.show_results_on_display()
             self.endRecord.place(x=int(configparser.get('gui-config', 'endrecord_btn_x')), y=int(configparser.get('gui-config', 'endrecord_btn_y')))
         except Exception as e:
@@ -701,5 +701,4 @@ def launchApp():
 
 if __name__=='__main__':
     launchApp()
-
 
