@@ -1,6 +1,7 @@
 import tkinter as tk
 from tkinter import *
 from tkinter import messagebox
+from tkinter import font
 import cv2
 import os
 from PIL import Image,ImageTk
@@ -48,11 +49,16 @@ class MyTkApp(tk.Frame):
         self.userID = ""
         self.token = ""
         self.farmer_id = ""
-        self.id_name_dict = {}
-        self.OPTIONS = ["Select section ID"] 
+        self.factory_id_name_dict = {}
+        self.section_id_name_dict = {}
+        self.division_id_name_dict = {}
+        self.SECTION_OPTIONS = ["Select section ID"]
+        self.FACTORY_OPTIONS = ["Select factory"]
+        self.DIVISION_OPTIONS = ["Select division ID"] 
+        self.options_displayed = False
+        self.data = {}
 
         self.window = master
-
         self.x = self.window.winfo_x()
         self.y = self.window.winfo_y()
         self.w = 150
@@ -70,11 +76,23 @@ class MyTkApp(tk.Frame):
         self.graph = Label(self.window)
         self.panel_bg = Label(self.window, bg='white')
 
-        self.logout_button = tk.Button(self.window, text="Logout", command=self.logout, fg="white", bg="#539051", width=int(configparser.get('gui-config', 'refresh_width')), font=('times', 12, 'bold'))
-        
-        self.restart_button = tk.Button(self.window, text="Restart", command=self.restart, fg="white", bg="#DC461D", width=7,font=('times', 12, 'bold'))
-        self.shutdown_button = tk.Button(self.window, text="ShutDown", command=self.shutdown, fg="white", bg="#DC461D", width=7, font=('times', 12, 'bold'))
-        self.startDemo = tk.Button(self.window, text="Demo Sample", command=self.demo_video, fg="black", bg="#FFE77A", font=('times', 15, 'bold'), width=int(configparser.get('gui-config', 'signin_btn_width')),height=int(configparser.get('gui-config', 'signin_btn_height')))
+        options_icon = PhotoImage(file = "flc_utils/screens/touchScreen/options.png")
+        self.poweroff = tk.Button(self.window, text="Click me!", command=self.display_all_options, image = options_icon, bg="#f7f0f5")
+        self.poweroff.image = options_icon
+
+        shutdown_icon = PhotoImage(file = "flc_utils/screens/touchScreen/shutdown.png")
+        self.shutdown_button = tk.Button(self.window, command=self.shutdown, image = shutdown_icon, bg="#f7f0f5")
+        self.shutdown_button.image = shutdown_icon
+
+        logout_icon = PhotoImage(file = "flc_utils/screens/touchScreen/logout.png")
+        self.logout_button = tk.Button(self.window, command=self.logout, image = logout_icon, bg="#f7f0f5")
+        self.logout_button.image = logout_icon
+
+        restart_icon = PhotoImage(file = "flc_utils/screens/touchScreen/restart.png")
+        self.restart_button = tk.Button(self.window, command=self.restart, image = restart_icon, bg="#f7f0f5")
+        self.restart_button.image = restart_icon
+
+        self.startDemo = tk.Button(self.window, text="Demo Sample", command=self.demo_video, fg="black", bg="#FFE77A", font=('times', 16, 'bold'), width=int(configparser.get('gui-config', 'signin_btn_width')),height=int(configparser.get('gui-config', 'signin_btn_height')))
         self.endRecord = tk.Button(self.window, text="Save", command=self.end_video, fg="white", bg="#539051", font=('times', 17, 'bold'), width=10, height=2)
         if is_admin:
             self.startCamRecord = tk.Button(self.window, text="Record training video", command=self.start_record_video, fg="white", bg="#539051", font=('times', 15, 'bold'))
@@ -116,14 +134,25 @@ class MyTkApp(tk.Frame):
      
         self.farmer_verify = StringVar()
         self.section_verify = StringVar()
+        self.factory_verify = StringVar()
+        self.division_verify = StringVar()
         self.section_verify.set("Select section ID")
+        self.factory_verify.set("Select factory")
+        self.division_verify.set("Select division ID")
          
         self.farmer_entry = Entry(self.window, textvariable=self.farmer_verify)
-        self.sector_entry = OptionMenu(self.window, self.section_verify, *self.OPTIONS)
-        self.sector_entry.configure(width=24, state="disabled")
+        self.farmer_entry.configure(font=font.Font(family='Helvetica', size=16))
+        self.factory_entry = OptionMenu(self.window, self.factory_verify, *self.FACTORY_OPTIONS)
+        self.factory_entry.configure(width=24, state="disabled", font=font.Font(family='Helvetica', size=16))
+        self.division_entry = OptionMenu(self.window, self.division_verify, *self.DIVISION_OPTIONS)
+        self.division_verify.trace("w", self.get_sections)
+        self.division_entry.configure(width=24, state="disabled", font=font.Font(family='Helvetica', size=16))
+        self.sector_entry = OptionMenu(self.window, self.section_verify, *self.SECTION_OPTIONS)
+        self.sector_entry.configure(width=24, state="disabled", font=font.Font(family='Helvetica', size=16))
+        
 
-        self.welcome_text = Label(self.window, text="Welcome, ", font=('times', 15, 'bold'), bg='white')
-        self.entered = tk.Button(self.window, text="Start FLC", command=self.details_verify, fg="white", bg="#539051", width=int(configparser.get('gui-config', 'signin_btn_width')),height=int(configparser.get('gui-config', 'signin_btn_height')), font=('times', 15, 'bold'))
+        self.welcome_text = Label(self.window, text="Welcome, ", font=('times', 15, 'bold'), bg="#f7f0f5")
+        self.entered = tk.Button(self.window, text="Start FLC", command=self.details_verify, fg="white", bg="#539051", width=int(configparser.get('gui-config', 'signin_btn_width')),height=int(configparser.get('gui-config', 'signin_btn_height')), font=('times', 16, 'bold'))
         self.formula = Label(self.window, text="FLC = 1LB + 2LB + 1Banjhi + (0.5 * 3LB)", font=("Helvetica", 15), background='white')
 
         img = ImageTk.PhotoImage(Image.open(configparser.get('gui-config', 'logo')))
@@ -202,7 +231,10 @@ class MyTkApp(tk.Frame):
         self.entered.place_forget()
         self.farmer_entry.place_forget()
         self.sector_entry.place_forget()
+        self.factory_entry.place_forget()
+        self.division_entry.place_forget()
         self.msg_sent.place_forget()
+        self.poweroff.place_forget()
         self.logout_button.place_forget()
         # self.tuneCamera.place_forget()
         if is_admin:
@@ -212,12 +244,24 @@ class MyTkApp(tk.Frame):
         self.remove_numpad()
         self.start_jetson_fan()
     
+    def display_all_options(self):
+        if self.options_displayed == False:
+            self.logout_button.place(x=int(configparser.get('gui-config', 'logout_x')), y=int(configparser.get('gui-config', 'logout_y')))
+            self.restart_button.place(x=int(configparser.get('gui-config', 'restart_x')), y=int(configparser.get('gui-config', 'restart_y')))
+            self.shutdown_button.place(x=int(configparser.get('gui-config', 'shutdown_x')), y=int(configparser.get('gui-config', 'shutdown_y')))
+            self.options_displayed = True
+        else:
+            self.logout_button.place_forget()
+            self.restart_button.place_forget()
+            self.shutdown_button.place_forget()
+            self.options_displayed = False
+
 
     def start_testing(self, command):
         try:
             p = subprocess.Popen("exec " + command, stdout= subprocess.PIPE, shell=True)
             p.wait()
-            os.rename("flc_utils/trainVideo/testing/result.avi", "flc_utils/trainVideo/testing/u-" + str(self.userID) + "_f-" + str(self.farmer_id) + "_s-" + str(self.id_name_dict[self.section_verify.get()]) + "_" + datetime.datetime.now().strftime("%d-%m-%Y %H:%M:%S") + ".avi")
+            os.rename("flc_utils/trainVideo/testing/result.avi", "flc_utils/trainVideo/testing/" + str(self.userID) + "_" + datetime.datetime.now().strftime("%d-%m-%Y %H:%M:%S") + ".avi")
             self.show_results_on_display()
             self.endRecord.place(x=int(configparser.get('gui-config', 'endrecord_btn_x')), y=int(configparser.get('gui-config', 'endrecord_btn_y')))
         except Exception as e:
@@ -232,8 +276,10 @@ class MyTkApp(tk.Frame):
 
     def demo_video(self):
         farmer = self.farmer_verify.get()
-        sector = self.section_verify.get()      
-        if farmer not in ["", "Enter farmer Code"] and sector not in ["", "Select section ID"]:
+        sector = self.section_verify.get()  
+        factory = self.factory_verify.get()
+        division = self.division_verify.get()    
+        if farmer not in ["", "Enter farmer Code"] and sector not in ["", "Select section ID"] and factory not in ["", "Select factory"] and division not in ["", "Select division ID"]:
             self.details_entered_success()
             self.start_testing(cmd_demo)
         else:
@@ -281,50 +327,88 @@ class MyTkApp(tk.Frame):
     def show_numpad(self, event):
         gc.collect()
         def callback():
-            print("Thread started.")
             if self.farmer_verify.get() == "Enter farmer Code":
                 self.farmer_entry.delete(0, tk.END)
             try:
                 self.startDemo.place_forget()  
                 self.endRecord.place_forget()
                 self.sector_entry.place_forget()
+                self.factory_entry.place_forget()
+                self.division_entry.place_forget()
                 self.entered.place_forget()
             except:
                 pass
             try:
-                self._back.place(x=660, y=350)
-                self._zero.place(x=605, y=350)
-                self._clear.place(x=550, y=350)
-                self._one.place(x=660, y=300)
-                self._two.place(x=605, y=300)
-                self._three.place(x=550, y=300)
-                self._four.place(x=660, y=250)
-                self._five.place(x=605, y=250)
-                self._six.place(x=550, y=250)
-                self._seven.place(x=660, y=200)
-                self._eight.place(x=605, y=200)
-                self._nine.place(x=550, y=200)
+                self._back.place(x=640, y=330)
+                self._zero.place(x=585, y=330)
+                self._clear.place(x=530, y=330)
+                self._one.place(x=640, y=280)
+                self._two.place(x=585, y=280)
+                self._three.place(x=530, y=280)
+                self._four.place(x=640, y=230)
+                self._five.place(x=585, y=230)
+                self._six.place(x=530, y=230)
+                self._seven.place(x=640, y=180)
+                self._eight.place(x=585, y=180)
+                self._nine.place(x=530, y=180)
             except:
                 pass
-            print("Thread ended.")
         t = threading.Thread(target=callback)
         t.start()
 
-    def get_sections(self):
-        url = configparser.get('gui-config', 'ip') + "/api/sections"
+    def get_factories(self):
+        url = configparser.get('gui-config', 'ip') + "/api/collections?p=0&l=10"
         headers = {
             'Authorization': "Bearer " + self.token
             }
         resp = requests.request("GET", url, headers=headers)
         data = resp.json()['data']
-        section_id_list = [i["sectionId"] for i in data]
-        section_name_list = [i["name"] for i in data]
+        factory_id_list = [i["id"] for i in data]
+        factory_name_list = [i["name"] for i in data]
 
-        self.id_name_dict = dict(zip(section_name_list, section_id_list))
+        self.factory_id_name_dict = dict(zip(factory_name_list, factory_id_list))
+        if len(factory_name_list) == 1:
+            self.FACTORY_OPTIONS = factory_name_list
+        else:
+            self.FACTORY_OPTIONS = ["Select factory"] + factory_name_list
+        self.factory_entry.place_forget()
+        self.factory_entry = OptionMenu(self.window, self.factory_verify, *self.FACTORY_OPTIONS)
+        self.factory_entry.configure(width=24, state="active", font=font.Font(family='Helvetica', size=16))
+        self.factory_entry.place(x=520, y=155, height=40, width=190)  
+        menu = self.nametowidget(self.factory_entry.menuname)
+        menu.config(font=font.Font(family='Helvetica', size=15)) 
 
-        self.OPTIONS = ["Select section ID"] + section_name_list
-        self.sector_entry = OptionMenu(self.window, self.section_verify, *self.OPTIONS)
-        self.sector_entry.configure(width=24, state="active")
+
+    def get_sections(self, *args):
+        for i in self.data['divisionList']:
+            if i['divisionName'] == self.division_verify.get():
+                sec_data = i['sectionVO']
+        section_id_list = [i["sectionId"] for i in sec_data]
+        section_name_list = [i["name"] for i in sec_data]
+
+        self.section_id_name_dict = dict(zip(section_name_list, section_id_list))
+        self.SECTION_OPTIONS = ["Select section ID"] + section_name_list
+        self.sector_entry.place_forget()
+        self.sector_entry = OptionMenu(self.window, self.section_verify, *self.SECTION_OPTIONS)
+        self.sector_entry.configure(width=24, state="active", font=font.Font(family='Helvetica', size=16))
+        self.sector_entry.place(x=520, y=245, height=40, width=190)
+        menu = self.nametowidget(self.sector_entry.menuname)
+        menu.config(font=font.Font(family='Helvetica', size=15))
+
+
+    def get_divisions(self):
+        div_data = self.data['divisionList']
+        division_id_list = [i["divisionId"] for i in div_data]
+        division_name_list = [i["divisionName"] for i in div_data]
+
+        self.division_id_name_dict = dict(zip(division_name_list, division_id_list))
+        self.DIVISION_OPTIONS = division_name_list
+        self.division_entry = OptionMenu(self.window, self.division_verify, *self.DIVISION_OPTIONS)
+        self.division_verify.trace("w", self.get_sections)
+        self.division_entry.configure(width=24, state="active", font=font.Font(family='Helvetica', size=16))
+        menu = self.nametowidget(self.division_entry.menuname)
+        menu.config(font=font.Font(family='Helvetica', size=15))
+
 
     def get_farmer_id(self):
         try:
@@ -334,20 +418,28 @@ class MyTkApp(tk.Frame):
                 'Authorization': "Bearer " + self.token
                 }
             resp = requests.request("GET", url, headers=headers)
-            self.farmer_id = resp.json()['data'][0]['id']
-            self.get_sections()
+            self.data = resp.json()['data'][0]
+            self.farmer_id = self.data['id']
+            self.get_factories()
+            self.get_divisions()
             self.hide_numpad()
         except Exception as e:
             print(e)
             self.enter_correct_details()
 
+    def place_inputs(self):
+        self.farmer_entry.place(x=520,y=110, height=40, width=190)
+        self.factory_entry.place(x=520, y=155, height=40, width=190)
+        self.division_entry.place(x=520, y=200, height=40, width=190)
+        self.sector_entry.place(x=520, y=245, height=40, width=190)
+        self.entered.place(x=520, y=305)
+        self.startDemo.place(x=520, y=360)
+
 
     def hide_numpad(self):
         gc.collect()
         self.remove_numpad()
-        self.startDemo.place(x=540, y=360)
-        self.sector_entry.place(x=540, y=185, height=40)
-        self.entered.place(x=540, y=280)
+        self.place_inputs()
 
 
     def load_graph(self):
@@ -457,8 +549,8 @@ class MyTkApp(tk.Frame):
             }
             load = {
                 "userId": int(self.userID),
-                "ccId": 1,
-                "sectionId": int(self.id_name_dict[self.section_verify.get()]),
+                "ccId": int(self.factory_id_name_dict[self.factory_verify.get()]),
+                "sectionId": int(self.section_id_name_dict[self.section_verify.get()]),
                 "assistId": int(self.farmer_id),
                 "oneLeafBud": _1lb,
                 "twoLeafBud": _2lb,
@@ -466,7 +558,7 @@ class MyTkApp(tk.Frame):
                 "oneLeafBanjhi": _1bj,
                 "twoLeafBanjhi": _2bj,
                 "oneBudCount": "0",
-                "oneBanjhiCount": 0,
+                "oneBanjhiCount": "0",
                 "oneLeafCount": "0",
                 "twoLeafCount": "0",
                 "threeLeafCount": "0",
@@ -650,8 +742,10 @@ class MyTkApp(tk.Frame):
     def details_verify(self): 
         gc.collect() 
         farmer = self.farmer_verify.get()
-        sector = self.section_verify.get()      
-        if farmer not in ["", "Enter farmer Code"] and sector not in ["", "Select section ID"]:
+        sector = self.section_verify.get()  
+        factory = self.factory_verify.get()
+        division = self.division_verify.get()    
+        if farmer not in ["", "Enter farmer Code"] and sector not in ["", "Select section ID"] and factory not in ["", "Select factory"] and division not in ["", "Select division ID"]:
             self.details_entered_success()
             self.video_stream()
         else:
@@ -671,19 +765,21 @@ class MyTkApp(tk.Frame):
         self.welcome_text.place(x=int(configparser.get('gui-config', 'welcome_text_x')), y=int(configparser.get('gui-config', 'welcome_text_y')))
         
         self.farmer_entry.bind("<Button-1>", self.show_numpad)
-        self.farmer_entry.place(x=540,y=140, height=40, width=190)
         self.farmer_entry.delete(0, tk.END)
         self.farmer_entry.insert(1, "Enter farmer Code")
 
-        self.OPTIONS = ["Select section ID"]
-        self.sector_entry.place(x=540, y=185, height=40)
+        self.SECTION_OPTIONS = ["Select section ID"]
         self.sector_entry.configure(width=24, state="disabled")
 
-        self.entered.place(x=540, y=280)
-        self.startDemo.place(x=540, y=360)
-        self.logout_button.place(x=int(configparser.get('gui-config', 'logout_x')), y=int(configparser.get('gui-config', 'logout_y')))
-        self.restart_button.place(x=int(configparser.get('gui-config', 'restart_x')), y=int(configparser.get('gui-config', 'restart_y')))
-        self.shutdown_button.place(x=int(configparser.get('gui-config', 'shutdown_x')), y=int(configparser.get('gui-config', 'shutdown_y')))
+        self.FACTORY_OPTIONS = ["Select factory"]
+        self.factory_entry.configure(width=24, state="disabled")
+
+        self.DIVISION_OPTIONS = ["Select division"]
+        self.division_entry.configure(width=24, state="disabled")
+
+        self.place_inputs()
+
+        self.poweroff.place(x=750, y=80)
 
      
     def login_sucess(self):
@@ -701,4 +797,5 @@ def launchApp():
 
 if __name__=='__main__':
     launchApp()
+
 
