@@ -18,6 +18,15 @@ import matplotlib.pyplot as plt
 import sys
 import seaborn as sns
 import threading
+import shutil
+import glob
+
+PATH = 'reports/*'
+
+create_folders = ['reports', 'reports/1lb', 'reports/2lb', 'reports/3lb', 'reports/1bj', 'reports/2bj', 'reports/coarse', 'reports/cluster']
+for folder in create_folders:
+    if not os.path.exists(folder):
+        os.mkdir(folder)
 
 configparser = configparser.RawConfigParser()   
 os.chdir("/home/agnext/Documents/flc")  # Agnext
@@ -181,7 +190,6 @@ class MyTkApp(tk.Frame):
             self.startCamRecord.place_forget()
 
 
-
     def restart(self):
         if messagebox.askokcancel("Quit", "Do you really want to restart the system?"):
             self.window.destroy()
@@ -258,6 +266,10 @@ class MyTkApp(tk.Frame):
 
 
     def start_testing(self, command):
+        for i in glob.glob(PATH):
+            files = glob.glob(i + '/*')
+            for file in files:
+                os.remove(file)
         try:
             p = subprocess.Popen("exec " + command, stdout= subprocess.PIPE, shell=True)
             p.wait()
@@ -797,5 +809,6 @@ def launchApp():
 
 if __name__=='__main__':
     launchApp()
+
 
 

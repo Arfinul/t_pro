@@ -15,6 +15,7 @@
 #include <sstream>      // Agnext video timestamp
 
 
+
 // It makes sense only for video-Camera (not for video-File)
 // To use - uncomment the following line. Optical-flow is supported only by OpenCV 3.x - 4.x
 //define TRACK_OPTFLOW
@@ -230,50 +231,79 @@ cv::Mat black_image(480, 640, CV_8UC3); // Agnext black image
 bool black_background = false;
 bool clean_video = true;
 int sec_for_empty_frame = 45;
-int double_tap_seconds_close = 5;	
+int double_tap_seconds_close = 5;   
 
 
 void draw_boxes(cv::Mat mat_img, std::vector<bbox_t> result_vec, std::vector<std::string> obj_names,
     int current_det_fps = -1, int current_cap_fps = -1, bool black_screen=false)
 {
     // UNCOMMENTED FOR DEVELOPER MODE
-    // int const colors[6][3] = { { 1,0,1 },{ 0,0,1 },{ 0,1,1 },{ 0,1,0 },{ 1,1,0 },{ 1,0,0 } };       // Agnext
-    // if (black_screen == false)
-    // {
-    //     for (auto &i : result_vec) {
-    //         cv::Scalar color = obj_id_to_color(i.obj_id);
-    //         cv::rectangle(mat_img, cv::Rect(i.x, i.y, i.w, i.h), color, 2);
-    //         // if (obj_names.size() > i.obj_id) {
-    //         if (obj_names.size() > i.obj_id && result_vec.size() > 0) {
-    //             std::string obj_name = obj_names[i.obj_id];
-    //             if (i.track_id > 0) obj_name += " - " + std::to_string(i.track_id);
-    //             cv::Size const text_size = getTextSize(obj_name, cv::FONT_HERSHEY_COMPLEX_SMALL, 1.2, 2, 0);
-    //             int max_width = (text_size.width > i.w + 2) ? text_size.width : (i.w + 2);
-    //             max_width = std::max(max_width, (int)i.w + 2);
-    //             //max_width = std::max(max_width, 283);
-    //             std::string coords_3d;
-    //             if (!std::isnan(i.z_3d)) {
-    //                 std::stringstream ss;
-    //                 // ss << std::fixed << std::setprecision(2) << "x:" << i.x_3d << "m y:" << i.y_3d << "m z:" << i.z_3d << "m ";  // Agnext, originall uncommented
-    //                 coords_3d = ss.str();
-    //                 cv::Size const text_size_3d = getTextSize(ss.str(), cv::FONT_HERSHEY_COMPLEX_SMALL, 0.8, 1, 0);
-    //                 int const max_width_3d = (text_size_3d.width > i.w + 2) ? text_size_3d.width : (i.w + 2);
-    //                 if (max_width_3d > max_width) max_width = max_width_3d;
-    //             }
+    int const colors[6][3] = { { 1,0,1 },{ 0,0,1 },{ 0,1,1 },{ 0,1,0 },{ 1,1,0 },{ 1,0,0 } };       // Agnext
+    if (black_screen == false)
+    {
+        for (auto &i : result_vec) {
+            cv::Scalar color = obj_id_to_color(i.obj_id);
+            // cv::rectangle(mat_img, cv::Rect(i.x, i.y, i.w, i.h), color, 2);
+            // if (obj_names.size() > i.obj_id) {
+            if (obj_names.size() > i.obj_id && result_vec.size() > 0) {
+                std::string obj_name = obj_names[i.obj_id];
+                if (i.track_id > 0) obj_name += " - " + std::to_string(i.track_id);
+                cv::Size const text_size = getTextSize(obj_name, cv::FONT_HERSHEY_COMPLEX_SMALL, 1.2, 2, 0);
+                int max_width = (text_size.width > i.w + 2) ? text_size.width : (i.w + 2);
+                max_width = std::max(max_width, (int)i.w + 2);
+                //max_width = std::max(max_width, 283);
+                std::string coords_3d;
+                if (!std::isnan(i.z_3d)) {
+                    std::stringstream ss;
+                    // ss << std::fixed << std::setprecision(2) << "x:" << i.x_3d << "m y:" << i.y_3d << "m z:" << i.z_3d << "m ";  // Agnext, originall uncommented
+                    coords_3d = ss.str();
+                    cv::Size const text_size_3d = getTextSize(ss.str(), cv::FONT_HERSHEY_COMPLEX_SMALL, 0.8, 1, 0);
+                    int const max_width_3d = (text_size_3d.width > i.w + 2) ? text_size_3d.width : (i.w + 2);
+                    if (max_width_3d > max_width) max_width = max_width_3d;
+                }
+                std::string folder_name = "";
+                if (obj_names[i.obj_id] == "1Banjhi"){
+                    folder_name = "1bj/";
+                }
+                else if (obj_names[i.obj_id] == "2Banjhi"){
+                    folder_name = "2bj/";
+                }
+                else if (obj_names[i.obj_id] == "1LB"){
+                    folder_name = "1lb/";
+                }
+                else if (obj_names[i.obj_id] == "2LB"){
+                    folder_name = "2lb/";
+                }
+                else if (obj_names[i.obj_id] == "3LB"){
+                    folder_name = "3lb/";
+                }
+                else if (obj_names[i.obj_id] == "Coarse"){
+                    folder_name = "coarse/";
+                }
+                else if (obj_names[i.obj_id] == "Cluster"){
+                    folder_name = "cluster/";
+                }
+                std::string img_name = "reports/" + folder_name + obj_name + ".png";
+                std::ifstream infile(img_name);
+                if (infile.good()){}
+                else{
+                    cv::Mat crop = mat_img(cv::Rect(i.x, i.y, i.w, i.h));
+                    cv::imwrite(img_name, crop);
+                }
 
-    //             cv::rectangle(mat_img, cv::Point2f(std::max((int)i.x - 1, 0), std::max((int)i.y - 35, 0)),
-    //                 cv::Point2f(std::min((int)i.x + max_width, mat_img.cols - 1), std::min((int)i.y, mat_img.rows - 1)),
-    //                 color, CV_FILLED, 8, 0);
-    //             // putText(mat_img, obj_name, cv::Point2f(i.x, i.y - 16), cv::FONT_HERSHEY_COMPLEX_SMALL, 1.2, cv::Scalar(0, 0, 0), 2); // original
+                // cv::rectangle(mat_img, cv::Point2f(std::max((int)i.x - 1, 0), std::max((int)i.y - 35, 0)),
+                //     cv::Point2f(std::min((int)i.x + max_width, mat_img.cols - 1), std::min((int)i.y, mat_img.rows - 1)),
+                //     color, CV_FILLED, 8, 0);
+                // putText(mat_img, obj_name, cv::Point2f(i.x, i.y - 16), cv::FONT_HERSHEY_COMPLEX_SMALL, 1.2, cv::Scalar(0, 0, 0), 2); // original
 
-    //             // std::string frame_str = "FRAME: " + std::to_string(frame_id);
-    //             // putText(mat_img, frame_str, cv::Point2f(10, 50), cv::FONT_HERSHEY_COMPLEX_SMALL, 1.2, cv::Scalar(0, 255, 255), 1);  // Agnext
+                // std::string frame_str = "FRAME: " + std::to_string(frame_id);
+                // putText(mat_img, frame_str, cv::Point2f(10, 50), cv::FONT_HERSHEY_COMPLEX_SMALL, 1.2, cv::Scalar(0, 255, 255), 1);  // Agnext
 
-    //             putText(mat_img, obj_name, cv::Point2f(i.x, i.y - 16), cv::FONT_HERSHEY_COMPLEX_SMALL, 1, cv::Scalar(0, 0, 0), 2); // Agnext
-    //             if(!coords_3d.empty()) putText(mat_img, coords_3d, cv::Point2f(i.x, i.y-1), cv::FONT_HERSHEY_COMPLEX_SMALL, 0.8, cv::Scalar(0, 0, 0), 1);
-    //         }
-    //     }
-    // }
+                // putText(mat_img, obj_name, cv::Point2f(i.x, i.y - 16), cv::FONT_HERSHEY_COMPLEX_SMALL, 1, cv::Scalar(0, 0, 0), 2); // Agnext
+                if(!coords_3d.empty()) putText(mat_img, coords_3d, cv::Point2f(i.x, i.y-1), cv::FONT_HERSHEY_COMPLEX_SMALL, 0.8, cv::Scalar(0, 0, 0), 1);
+            }
+        }
+    }
     if (current_det_fps >= 0 && current_cap_fps >= 0) {
 
         std::string fps_str = "FPS detection: " + std::to_string(current_det_fps) + "   FPS capture: " + std::to_string(current_cap_fps);
@@ -331,7 +361,7 @@ struct detection_data_t {
 static void onMouse( int event, int x, int y, int, void* param)
 {
     if (tap_count > 1){
-    	double_tap = true; 
+        double_tap = true; 
     }
     else{
         tap_count ++;
@@ -709,10 +739,10 @@ int main(int argc, char *argv[])
                         total = (count_1lb + count_2lb + count_3lb + count_1Banjhi + count_2Banjhi + count_coarse);
 
                         if (double_tap == true){
-                        	putText(draw_frame, "Exiting...", cv::Point2f(250, 350), cv::FONT_HERSHEY_COMPLEX_SMALL, 1.2, cv::Scalar(0, 0, 255), 2); // Agnext
+                            putText(draw_frame, "Exiting...", cv::Point2f(250, 350), cv::FONT_HERSHEY_COMPLEX_SMALL, 1.2, cv::Scalar(0, 0, 255), 2); // Agnext
                         }
                         else{
-                        	putText(draw_frame, "Double Tap to Exit", cv::Point2f(200, 350), cv::FONT_HERSHEY_COMPLEX_SMALL, 1.2, cv::Scalar(0, 0, 255), 2); // Agnext
+                            putText(draw_frame, "Double Tap to Exit", cv::Point2f(200, 350), cv::FONT_HERSHEY_COMPLEX_SMALL, 1.2, cv::Scalar(0, 0, 255), 2); // Agnext
                         }
 
                         frame_str = "FRAME : " + std::to_string(detection_data.frame_id); // Agnext
@@ -845,28 +875,28 @@ int main(int argc, char *argv[])
                     // resize(draw_frame, draw_frame, cv::Size(1920, 1080), 0, 0, CV_INTER_CUBIC); 
                     cv::imshow("window", draw_frame);
                     cv::moveWindow("window", 70, 100);     // Agnext (move window for tkinter interface)
-                	
+                    
                     // AUTO-CLOSE AFTER 30 SEC ON EMPTY FRAME
                     end_no_frame_sec_count = std::chrono::high_resolution_clock::now();
-                	if (int(std::chrono::duration<double, std::milli>(end_no_frame_sec_count-start_no_frame_sec_count).count() / 1000) > (sec_for_empty_frame*1)){
-                		writeFile(frame_str, _1lb_count_str, _2lb_count_str, _3lb_count_str, _1Banjhi_count_str, _2Banjhi_count_str, _coarse_count_str, _cluster_count_str, fine_per.substr(0,12), _timer); // Agnext write to file
-                    	exit_flag = true;
-                	}
+                    if (int(std::chrono::duration<double, std::milli>(end_no_frame_sec_count-start_no_frame_sec_count).count() / 1000) > (sec_for_empty_frame*1)){
+                        writeFile(frame_str, _1lb_count_str, _2lb_count_str, _3lb_count_str, _1Banjhi_count_str, _2Banjhi_count_str, _coarse_count_str, _cluster_count_str, fine_per.substr(0,12), _timer); // Agnext write to file
+                        exit_flag = true;
+                    }
 
-                	// CLOSE AFTER "double_tap_seconds_close" SEC OF DOUBLE TAP
-                	if (double_tap == true){
-                		end_tap_sec_count = std::chrono::high_resolution_clock::now();
+                    // CLOSE AFTER "double_tap_seconds_close" SEC OF DOUBLE TAP
+                    if (double_tap == true){
+                        end_tap_sec_count = std::chrono::high_resolution_clock::now();
 
-                		if (countdown_started == false){
-                			countdown_started = true;
-                			start_tap_sec_count = std::chrono::high_resolution_clock::now();
-                		}
+                        if (countdown_started == false){
+                            countdown_started = true;
+                            start_tap_sec_count = std::chrono::high_resolution_clock::now();
+                        }
 
-                		if ((int(std::chrono::duration<double, std::milli>(end_tap_sec_count-start_tap_sec_count).count() / 1000) > (double_tap_seconds_close * 1)) && (countdown_started == true)){
-                			writeFile(frame_str, _1lb_count_str, _2lb_count_str, _3lb_count_str, _1Banjhi_count_str, _2Banjhi_count_str, _coarse_count_str, _cluster_count_str, fine_per.substr(0,12), _timer); // Agnext write to file
-				        	exit_flag = true;
-                		}
-                	}
+                        if ((int(std::chrono::duration<double, std::milli>(end_tap_sec_count-start_tap_sec_count).count() / 1000) > (double_tap_seconds_close * 1)) && (countdown_started == true)){
+                            writeFile(frame_str, _1lb_count_str, _2lb_count_str, _3lb_count_str, _1Banjhi_count_str, _2Banjhi_count_str, _coarse_count_str, _cluster_count_str, fine_per.substr(0,12), _timer); // Agnext write to file
+                            exit_flag = true;
+                        }
+                    }
                     
                     int key = cv::waitKey(3);    // 3 or 16ms
                     if (key == 'f') show_small_boxes = !show_small_boxes;
