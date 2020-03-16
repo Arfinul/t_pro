@@ -41,8 +41,8 @@ export LD_LIBRARY_PATH=/home/agnext/Documents/flc/
 
 cmd_demo = """
 export LD_LIBRARY_PATH=/home/agnext/Documents/flc/
-./uselib cfg/jorhat_Dec.names cfg/jorhat_Dec.cfg weights/jorhat_Dec_final.weights z_testData/57_11Dec_Mix.mp4 > output.txt
-"""
+./uselib cfg/jorhat_Dec.names cfg/jorhat_Dec.cfg weights/jorhat_Dec_final.weights z_testData/{0} > output.txt
+""".format(configparser.get('gui-config', 'demo_video'))
 
 pwd = configparser.get('gui-config', 'sys_password')
 cmd_camera_setting = "/usr/local/ecam_tk1/bin/ecam_tk1_guvcview"
