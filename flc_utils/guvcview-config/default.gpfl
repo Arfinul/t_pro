@@ -4,7 +4,7 @@ APP{"guvcview 2.0.5"}
 #Brightness
 ID{0x00980900};CHK{-15:15:1:0}=VAL{0}
 #Contrast
-ID{0x00980901};CHK{0:30:1:4}=VAL{22}
+ID{0x00980901};CHK{0:30:1:4}=VAL{15}
 #Saturation
 ID{0x00980902};CHK{0:60:1:30}=VAL{60}
 #Hue
@@ -12,9 +12,9 @@ ID{0x00980903};CHK{-2000:2000:1:0}=VAL{0}
 #White Balance Automatic
 ID{0x0098090c};CHK{0:1:1:1}=VAL{1}
 #Gamma
-ID{0x00980910};CHK{40:500:1:220}=VAL{220}
+ID{0x00980910};CHK{40:500:1:220}=VAL{180}
 #Gain
-ID{0x00980913};CHK{1:100:1:4}=VAL{8}
+ID{0x00980913};CHK{1:100:1:4}=VAL{11}
 #Horizontal Flip
 ID{0x00980914};CHK{0:1:1:0}=VAL{0}
 #Vertical Flip
@@ -26,7 +26,7 @@ ID{0x0098091b};CHK{0:127:1:16}=VAL{127}
 #Auto Exposure
 ID{0x009a0901};CHK{0:2:1:0}=VAL{1}
 #Exposure Time Absolute
-ID{0x009a0902};CHK{1:10000:1:50}=VAL{30}
+ID{0x009a0902};CHK{1:10000:1:50}=VAL{35}
 #Pan Absolute
 ID{0x009a0908};CHK{-648000:648000:1:0}=VAL{0}
 #Tilt Absolute
