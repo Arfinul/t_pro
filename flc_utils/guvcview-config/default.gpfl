@@ -26,7 +26,7 @@ ID{0x0098091b};CHK{0:127:1:16}=VAL{127}
 #Auto Exposure
 ID{0x009a0901};CHK{0:2:1:0}=VAL{1}
 #Exposure Time Absolute
-ID{0x009a0902};CHK{1:10000:1:50}=VAL{35}
+ID{0x009a0902};CHK{1:10000:1:290}=VAL{35}
 #Pan Absolute
 ID{0x009a0908};CHK{-648000:648000:1:0}=VAL{0}
 #Tilt Absolute
