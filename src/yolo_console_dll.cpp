@@ -739,10 +739,10 @@ int main(int argc, char *argv[])
                         total = (count_1lb + count_2lb + count_3lb + count_1Banjhi + count_2Banjhi + count_coarse);
 
                         if (double_tap == true){
-                            putText(draw_frame, "Exiting...", cv::Point2f(250, 350), cv::FONT_HERSHEY_COMPLEX_SMALL, 1.2, cv::Scalar(0, 0, 255), 2); // Agnext
+                            putText(draw_frame, "Exiting...", cv::Point2f(250, 360), cv::FONT_HERSHEY_COMPLEX_SMALL, 1.2, cv::Scalar(0, 0, 255), 2); // Agnext
                         }
                         else{
-                            putText(draw_frame, "Double Tap to Exit", cv::Point2f(200, 350), cv::FONT_HERSHEY_COMPLEX_SMALL, 1.2, cv::Scalar(0, 0, 255), 2); // Agnext
+                            putText(draw_frame, "Double Tap to Exit", cv::Point2f(200, 360), cv::FONT_HERSHEY_COMPLEX_SMALL, 1.2, cv::Scalar(0, 0, 255), 2); // Agnext
                         }
 
                         frame_str = "FRAME : " + std::to_string(detection_data.frame_id); // Agnext
@@ -785,6 +785,9 @@ int main(int argc, char *argv[])
                         fine_per = "FLC % : " + std::to_string(fine_percnt); // Agnext
                         putText(draw_frame, fine_per.substr(0,12), cv::Point2f(10, 280), cv::FONT_HERSHEY_COMPLEX_SMALL, 1.2, cv::Scalar(0, 255, 255), 2);  // Agnext
 
+                        total_str = "Total : " + std::to_string(total); // Agnext
+                        putText(draw_frame, total_str, cv::Point2f(10, 310), cv::FONT_HERSHEY_COMPLEX_SMALL, 1.2, cv::Scalar(0, 255, 255), 1);  // Agnext
+                        
                         // TIMER
                         auto t_end = std::chrono::high_resolution_clock::now(); // Agnext
                         duration = std::chrono::duration<double, std::milli>(t_end-t_start).count(); // Agnext
@@ -794,7 +797,7 @@ int main(int argc, char *argv[])
                         hours = minutes / 60;// Agnext
 
                         _timer = "TIMER : " + std::to_string(int(hours)) + "H " + std::to_string(int(minutes%60)) + "M " + std::to_string(seconds%60) + "S"; // Agnext
-                        putText(draw_frame, _timer, cv::Point2f(10, 310), cv::FONT_HERSHEY_COMPLEX_SMALL, 1.2, cv::Scalar(0, 255, 255), 1);  // Agnext
+                        putText(draw_frame, _timer, cv::Point2f(10, 340), cv::FONT_HERSHEY_COMPLEX_SMALL, 1.2, cv::Scalar(0, 255, 255), 1);  // Agnext
 
                         //large_preview.draw(draw_frame);
                         //small_preview.draw(draw_frame, true);
