@@ -212,6 +212,7 @@ std::string _coarse_count_str = "";    // Agnext
 std::string _cluster_count_str = "";    // Agnext
 std::string fine_per = "";  // Agnext
 std::string _timer = "";    // Agnext
+std::string total_str = "";    // Agnext
 
 // Agnext (timer)  
 double duration;    // Agnext
