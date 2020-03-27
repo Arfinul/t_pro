@@ -140,7 +140,10 @@ class MyTkApp(tk.Frame):
         self._clear = tk.Button(self.window, text="OK", height=3, width=5, command=self.get_farmer_id, fg="white", bg="#539051", font=("Helvetica 10 bold"))
         self._zero = tk.Button(self.window, text="0", height=3, width=5, command=lambda val=0:self.code(val))
         self._back = tk.Button(self.window, text="<--", height=3, width=5, command=self.back_farmer)
-     
+
+        self.rainy_season = IntVar()
+        self.rainy_season_checkbox = Checkbutton(self.window, text = "Rainy Season", variable = self.rainy_season, onvalue = 1, offvalue = 0, height=3, width = 25)
+        
         self.farmer_verify = StringVar()
         self.section_verify = StringVar()
         self.factory_verify = StringVar()
@@ -249,6 +252,7 @@ class MyTkApp(tk.Frame):
             self.startCamRecord.place_forget() 
         self.restart_button.place_forget()
         self.shutdown_button.place_forget()
+        self.rainy_season_checkbox.place_forget()
         self.remove_numpad()
         self.start_jetson_fan()
     
@@ -280,10 +284,6 @@ class MyTkApp(tk.Frame):
             print(e)
             self.endRecord.place_forget()
             self.startDemo.configure(bg="#539051", state="active")
-
-
-    def video_stream(self):
-        self.start_testing(cmd)
 
 
     def demo_video(self):
@@ -348,6 +348,7 @@ class MyTkApp(tk.Frame):
                 self.factory_entry.place_forget()
                 self.division_entry.place_forget()
                 self.entered.place_forget()
+                self.rainy_season_checkbox.place_forget()
             except:
                 pass
             try:
@@ -446,6 +447,7 @@ class MyTkApp(tk.Frame):
         self.sector_entry.place(x=520, y=245, height=40, width=190)
         self.entered.place(x=520, y=305)
         self.startDemo.place(x=520, y=360)
+        self.rainy_season_checkbox.place(x=520, y=80)
 
 
     def hide_numpad(self):
@@ -528,9 +530,17 @@ class MyTkApp(tk.Frame):
         _coarse = _coarse if _coarse > 0 else 0
 
         totalCount = _1lb + _2lb + _3lb + _1bj + _2bj + _coarse
+        rainy = int(self.rainy_season.get())
+
         try:
-            _perc = round(((_1lb + _2lb + (_3lb/2) + _1bj) / totalCount)*100, 2)
-        except:
+            if rainy == 0:
+                print("Non - Rainy season")
+                _perc = round(((_1lb + _2lb + (_3lb/2) + _1bj) / totalCount)*100, 2)
+            else:
+                print("Rainy season")
+                _perc = round(((_1lb + _2lb + (_3lb*3/4) + _1bj) / totalCount)*100, 2)
+        except Exception as e:
+            print(e)
             _perc = 0
 
         with open("factor.txt", "w") as factor:
@@ -759,7 +769,7 @@ class MyTkApp(tk.Frame):
         division = self.division_verify.get()    
         if farmer not in ["", "Enter farmer Code"] and sector not in ["", "Select section ID"] and factory not in ["", "Select factory"] and division not in ["", "Select division ID"]:
             self.details_entered_success()
-            self.video_stream()
+            self.start_testing(cmd)
         else:
             self.show_error_msg()
 
@@ -773,6 +783,8 @@ class MyTkApp(tk.Frame):
             subprocess.Popen("exec " + "killall onboard", stdout= subprocess.PIPE, shell=True)
         except:
             pass
+
+        self.rainy_season_checkbox.place(x=520, y=80)
 
         self.welcome_text.place(x=int(configparser.get('gui-config', 'welcome_text_x')), y=int(configparser.get('gui-config', 'welcome_text_y')))
         
