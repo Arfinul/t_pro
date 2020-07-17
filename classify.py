@@ -228,10 +228,10 @@ def get_fine_count_as_per_best_among_7_rotation_by_priotising_leaf_def(userId, s
         for line in file:
             lines.append(line)
         chunks = [lines[x:x + 7] for x in range(0, len(lines), 7)]
-        for chunk in chunks:
+        for chunk_p in chunks:
             fine_cases_in_7 = []
             all_coarse_in_7 = []
-            for line in chunk:
+            for line in chunk_p:
                 words = line.split()
                 if words[-2] in priority_list:
                     fine_cases_in_7.append(words[-2])
@@ -250,6 +250,7 @@ def get_fine_count_as_per_best_among_7_rotation_by_priotising_leaf_def(userId, s
                             continue
             frequent_fine_cases_conf = []
             conf = 0
+            chunk = [i.replace("%", '') for i in chunk_p]
             for line in chunk:
                 words = line.split()
                 if words[-2] == result:
@@ -342,7 +343,7 @@ def get_fine_count_as_per_best_among_7_rotation_by_priotising_leaf_def(userId, s
                 if each in line:
                     coarse_index_trapped.append(num)
     fine_and_coarse = [fine_index_trapped, coarse_index_trapped]
-    print(fine_and_coarse)
+    total = lb_1 + lb_2 + lb_3 + lbj_1 + lbj_2 + lbj_3 + b_1 + bj_1 + l_1 + l_2 + l_3 + len(coarse_index_trapped)
     print('Fine = ', len(fine_index_trapped))
     print('Coarse = ', len(coarse_index_trapped))
     print("lb_1 = %d" % lb_1)
@@ -356,8 +357,10 @@ def get_fine_count_as_per_best_among_7_rotation_by_priotising_leaf_def(userId, s
     print("l_1 = %d" % l_1)
     print("l_2 = %d" % l_2)
     print("l_3 = %d" % l_3)
-    print("total = %d" % (len(fine_index_trapped) + len(coarse_index_trapped)))
-    return lb_1, lb_2, lb_3, lbj_1, lbj_2, lbj_3, b_1, bj_1, l_1, l_2, l_3, (len(fine_index_trapped) + len(coarse_index_trapped))
+    print("total = %d" % total)
+    # print("total = %d" % (len(fine_index_trapped) + len(coarse_index_trapped)))
+    # return lb_1, lb_2, lb_3, lbj_1, lbj_2, lbj_3, b_1, bj_1, l_1, l_2, l_3, (len(fine_index_trapped) + len(coarse_index_trapped))
+    return lb_1, lb_2, lb_3, lbj_1, lbj_2, lbj_3, b_1, bj_1, l_1, l_2, l_3, total
 
 
 def yolo_classify_one_by_one(userId, sectionId):

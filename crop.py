@@ -76,6 +76,7 @@ CONTOUR_AREA = 700
 
 # ============================================================
 def as_per_shape(image_path, frame_count, cropped_path):
+
     org_image = cv2.imread(image_path)
     org_image = cv2.addWeighted(org_image, 2, org_image, 0, 0)
     org_image = imutils.resize(org_image, width=1000)
@@ -96,8 +97,10 @@ def as_per_shape(image_path, frame_count, cropped_path):
     ret, thresh = cv2.threshold(blur, 0, 255, cv2.THRESH_OTSU)
     print(ret)
     # thresh = cv2.dilate(thresh, None, iterations=3)
-    _, contours, hier = cv2.findContours(thresh, cv2.RETR_TREE, cv2.CHAIN_APPROX_NONE)
-
+    try:
+        _, contours, hier = cv2.findContours(thresh, cv2.RETR_TREE, cv2.CHAIN_APPROX_NONE)
+    except:
+        contours, hier = cv2.findContours(thresh, cv2.RETR_TREE, cv2.CHAIN_APPROX_NONE)
     # ============================================================
 
     first_image = -1

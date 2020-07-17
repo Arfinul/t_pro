@@ -131,6 +131,8 @@ test_data/*
 reports/*
 !reports/ignore_me
 
+archive/images.csv
+
 test_data_backup/*
 !test_data_backup/ignore_me
 
@@ -144,5 +146,6 @@ cfg/data/*
 !cfg/data/txt_command
 
 .idea/*
+splitss1
 
 1/*

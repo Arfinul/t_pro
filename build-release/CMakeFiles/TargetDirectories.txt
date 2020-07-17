@@ -1,0 +1,9 @@
+/home/amc012/Music/flc_without_ref/build-release/CMakeFiles/install/strip.dir
+/home/amc012/Music/flc_without_ref/build-release/CMakeFiles/install/local.dir
+/home/amc012/Music/flc_without_ref/build-release/CMakeFiles/install.dir
+/home/amc012/Music/flc_without_ref/build-release/CMakeFiles/uselib.dir
+/home/amc012/Music/flc_without_ref/build-release/CMakeFiles/edit_cache.dir
+/home/amc012/Music/flc_without_ref/build-release/CMakeFiles/rebuild_cache.dir
+/home/amc012/Music/flc_without_ref/build-release/CMakeFiles/darknet.dir
+/home/amc012/Music/flc_without_ref/build-release/CMakeFiles/dark.dir
+/home/amc012/Music/flc_without_ref/build-release/CMakeFiles/list_install_components.dir

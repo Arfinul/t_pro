@@ -7,7 +7,7 @@ import time
 import zipfile
 import jsonpickle, configparser
 from flask import Flask, request, Response, send_file
-from gevent import wsgi
+from gevent import pywsgi
 from werkzeug.utils import secure_filename
 import PIL.Image
 import cv2
@@ -16,13 +16,12 @@ import io, numpy as np
 #####################
 import fastai
 import sys
-
 from fastai.vision import *
 import warnings
 
 warnings.filterwarnings("ignore")
 
-PATH = '/home/agnext/Documents/tea_infer/'  # Location of .pkl file file
+PATH = '/home/amc012/Documents/tea_infer/'  # Location of .pkl file file
 
 learn = load_learner(PATH, test=ImageList.from_folder('test'))
 
@@ -365,12 +364,12 @@ def post():
 
 @app.route('/api/live-status', methods=['GET'])
 def live_status():
-	return Response(jsonpickle.encode({"message": "website is live and running"}), status=200, mimetype="application/json")
+    return Response(jsonpickle.encode({"message": "website is live and running"}), status=200, mimetype="application/json")
 
 
 # start flask app
-app.run(host="0.0.0.0", port=9000, threaded=True)  # Server
+app.run(host="0.0.0.0", port=9000, threaded=True, debug=True)  # Server
 # sapp.run(port=6000)  # Local
 
-# server = wsgi.WSGIServer(('0.0.0.0', 6000), app)
+# server = pywsgi.WSGIServer(('0.0.0.0', 6000), app)
 # server.serve_forever()

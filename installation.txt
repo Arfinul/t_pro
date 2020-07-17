@@ -1,0 +1,5 @@
+1. conda create -n tea
+2. conda activate tea
+3. pip install imutils reportlab pypdf2 gevent
+4. make
+5. 

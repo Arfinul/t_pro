@@ -1,0 +1,9 @@
+/home/amc012/Music/flc_without_ref/libdark.so
+/home/amc012/Music/flc_without_ref/include/darknet/darknet.h
+/home/amc012/Music/flc_without_ref/include/darknet/yolo_v2_class.hpp
+/home/amc012/Music/flc_without_ref/uselib
+/home/amc012/Music/flc_without_ref/darknet
+/home/amc012/Music/flc_without_ref/share/darknet/DarknetTargets.cmake
+/home/amc012/Music/flc_without_ref/share/darknet/DarknetTargets-noconfig.cmake
+/home/amc012/Music/flc_without_ref/share/darknet/DarknetConfig.cmake
+/home/amc012/Music/flc_without_ref/share/darknet/DarknetConfigVersion.cmake

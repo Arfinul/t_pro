@@ -35,12 +35,10 @@ def segmentation_and_rotation_shape_wise(userId, sectionId):
         frame_count += 1
         print("\n==================== Image {}=================\n".format(frame_count))
         crop.as_per_shape(file, frame_count, cropped_path)
-
     print("Total bunches = %d" % len(
         [name for name in os.listdir(cropped_path) if os.path.isfile(os.path.join(cropped_path, name))]))
 
     rotate.rotate_image(user_dir)
-
     print("Total rotated bunches = %d" % len(
         [name for name in os.listdir(cropped_path) if os.path.isfile(os.path.join(cropped_path, name))]))
 
@@ -79,7 +77,10 @@ def segmentation_and_rotation_without_white_image(userId, sectionId):
         gray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
         thresh = cv2.threshold(gray, 128, 255, cv2.THRESH_BINARY_INV + cv2.THRESH_OTSU)[1]
         thresh = cv2.dilate(thresh, None, iterations=3)
-        _, contours, hier = cv2.findContours(thresh, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_NONE)
+        try:
+            _, contours, hier = cv2.findContours(thresh, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_NONE)
+        except:
+            contours, hier = cv2.findContours(thresh, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_NONE)
 
         i = 1
 
@@ -244,10 +245,9 @@ def flc_as_per_best_among_7_rotation_by_priotising_leaf_def(userId, sectionId):
     os.chdir(root_folder)
     classify.create_test_list(userId, sectionId)
     print("Generating Fine Leaf count only ... wait !!!")
-    classify.yolo_classify_full(userId, sectionId)
+    classify.yolo_classify_full(userId, sectionId)    
     lb_1, lb_2, lb_3, lbj_1, lbj_2, lbj_3, b_1, bj_1, l_1, l_2, l_3, total = classify.get_fine_count_as_per_best_among_7_rotation_by_priotising_leaf_def(
         userId, sectionId)
-
     shutil.rmtree(test_data_dir + '/u-' + userId + '/s-' + sectionId + '/')
 
     # r = glob.glob(input_images)
