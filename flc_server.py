@@ -5,26 +5,26 @@ import os, shutil
 import flc
 import time
 import zipfile
+import json
 import jsonpickle, configparser
 from flask import Flask, request, Response, send_file
-from gevent import wsgi
 from werkzeug.utils import secure_filename
 import PIL.Image
 import cv2
 import io, numpy as np
 # Initialize the Flask application
 #####################
-import fastai
+# import fastai
 import sys
 
-from fastai.vision import *
+# from fastai.vision import *
 import warnings
 
 warnings.filterwarnings("ignore")
 
-PATH = '/home/agnext/Documents/tea_infer/'  # Location of .pkl file file
+# PATH = '/home/agnext/Downloads/tea_infer/'  # Location of .pkl file file
 
-learn = load_learner(PATH, test=ImageList.from_folder('test'))
+# learn = load_learner(PATH, test=ImageList.from_folder('test'))
 
 ###################
 
@@ -81,11 +81,13 @@ def upload_white():
 
 
 # Route http posts to this method
-@app.route('/api/image', methods=['POST'])
+@app.route('/api/image', methods=['GET'])
 def upload_image():
     try:
-        userId = request.form['userId']
-        sectionId = request.form['sectionId']
+        data = json.loads(request.data)
+
+        userId = data['userId']
+        sectionId = data['sectionId']
         user_dir = test_data_dir + '/u-' + userId + '/s-' + sectionId
 
         test_images = user_dir + image_dir
@@ -103,65 +105,37 @@ def upload_image():
         pdf_path = user_dir + pdf_dir
         os.makedirs(pdf_path, exist_ok=True)
 
-        os.chdir(test_images)
-        start = time.time()
 
         # Upload multiple images
-        if request.method == 'POST':
-            file = request.files['image']
-            if file and allowed_file(file.filename):
-                print('...............................\nImage Checking ... Wait !!!\n')
-                file.save(file.filename)
-                print('Uploaded tea image - ', file.filename)
-                end = time.time()
-                print('leaf image upload time = ', round((end - start), 2), ' seconds')
-                img = open_image(file.filename)
-                pred_class, pred_idx, outputs = learn.predict(img)
-                print("Predicted Class = ", pred_class)
-                print("Prediction Probability = %.2f" % (outputs.numpy()[1] * 100))
+        filename = data['image']
 
-                if str(pred_class) == 'Normal':
-                    responses = {'tea_image_uploaded': file.filename,
-                                 'success': 'true',
-                                 'message': 'image accepted',
-                                 'status': 'pass'
-                                 }
-                if str(pred_class) == 'Abnormal':
-                    os.remove(test_data_dir + '/u-' + userId + '/s-' + sectionId + image_dir + '/' + file.filename)
-                    responses = {'success': 'true',
-                                 'message': 'image rejected',
-                                 'status': 'fail'
-                                 }
-
-            if not allowed_file(file.filename):
-                print('unsupported file')
-                wrong_extension = '.' in file.filename and file.filename.rsplit('.', 1)[1].lower()
-                responses = {'success': 'false',
-                             'message': str(wrong_extension) + ' not supported',
-                             'status': 'fail'
-                             }
-
-        # Upload single image
-        # file = request.files['image']
-        # file.save(file.filename)
-        # print('Uploaded - ', file.filename, '\n')
-
+        os.system(f"cp {filename} {test_images}/" )
+        # pred_class, pred_idx, outputs = learn.predict(img)
+        # print("Predicted Class = ", pred_class)
+        # print("Prediction Probability = %.2f" % (outputs.numpy()[1] * 100))
+        responses = {'tea_image_uploaded': filename,
+                     'success': 'true',
+                     'message': 'image accepted',
+                     'status': 'pass'
+                     }
         response_pickled = jsonpickle.encode(responses)
         return Response(response=response_pickled, status=200, mimetype="application/json")
     except Exception as e:
+        print(e)
         responses_fail = {'success': 'false',
                           'message': str(e),
                           'status': 'fail'
                           }
         response_pickled = jsonpickle.encode(responses_fail)
-        return Response(response=response_pickled, status=200, mimetype="application/json")
+        return Response(response=response_pickled, status=400, mimetype="application/json")
 
 
-@app.route('/api/flc', methods=['POST'])
+@app.route('/api/flc', methods=['GET'])
 def classification_flc_only():
     try:
-        userId = request.form['userId']
-        sectionId = request.form['sectionId']
+        data = json.loads(request.data)
+        userId = data['userId']
+        sectionId = data['sectionId']
 
         start = time.time()
         lb_1, lb_2, lb_3, lbj_1, lbj_2, lbj_3, b_1, bj_1, l_1, l_2, l_3, total = flc.flc_as_per_best_among_7_rotation_by_priotising_leaf_def(
@@ -194,19 +168,19 @@ def classification_flc_only():
                 responses = {'status': 'Images must have same resolution'
                              }
                 response_pickled = jsonpickle.encode(responses)
-                return Response(response=response_pickled, status=200, mimetype="application/json")
+                return Response(response=response_pickled, status=400, mimetype="application/json")
             if 'assignment' in str(e):
                 shutil.rmtree(test_data_dir + '/u-' + userId + '/s-' + sectionId + '/')
                 responses = {'status': 'GPU Memory Error'
                              }
                 response_pickled = jsonpickle.encode(responses)
-                return Response(response=response_pickled, status=200, mimetype="application/json")
+                return Response(response=response_pickled, status=400, mimetype="application/json")
             else:
                 shutil.rmtree(test_data_dir + '/u-' + userId + '/s-' + sectionId + '/')
                 responses = {'status': 'Error - Try Again'
                              }
                 response_pickled = jsonpickle.encode(responses)
-                return Response(response=response_pickled, status=200, mimetype="application/json")
+                return Response(response=response_pickled, status=400, mimetype="application/json")
         except Exception as e:
             return str(e)
 
