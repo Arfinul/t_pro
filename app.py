@@ -733,15 +733,15 @@ class MyTkApp(tk.Frame):
 
     def details_verify(self): 
         gc.collect() 
-        farmer = self.farmer_verify.get()
-        sector = self.section_verify.get()  
-        factory = self.factory_verify.get()
-        division = self.division_verify.get()    
-        if farmer not in ["", "Enter farmer Code"] and sector not in ["", "Select section ID"] and factory not in ["", "Select factory"] and division not in ["", "Select division ID"]:
-            self.details_entered_success()
-            self.start_testing(cmd)
-        else:
-            self.show_error_msg()
+        # farmer = self.farmer_verify.get()
+        # sector = self.section_verify.get()  
+        # factory = self.factory_verify.get()
+        # division = self.division_verify.get()    
+        # if farmer not in ["", "Enter farmer Code"] and sector not in ["", "Select section ID"] and factory not in ["", "Select factory"] and division not in ["", "Select division ID"]:
+        self.details_entered_success()
+        self.start_testing(cmd)
+        # else:
+        #     self.show_error_msg()
 
      
     def enter_details(self):
