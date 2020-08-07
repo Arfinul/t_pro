@@ -658,7 +658,7 @@ class MyTkApp(tk.Frame):
         text_result = ''
         for i in result:
             text_result += i + ': ' + result[i] + '\n'
-        self._flc_btn.configure(text="Result    " + json.dumps(result))
+        self._flc_btn.configure(text="Result    " + result)
         self._flc_btn.place(x=60,y=130)
         gc.collect()
              
