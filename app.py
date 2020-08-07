@@ -308,12 +308,10 @@ class MyTkApp(tk.Frame):
         
 
     def end_video(self):
-        self.formula.place_forget()
+        # self.formula.place_forget()
         self.endRecord.place_forget()
-        self.send_data_api()
-        if os.path.exists("result.txt"):
-            os.remove("result.txt")
-        self.msg_sent.place(x=int(configparser.get('gui-config', 'data_saved_notification_x')), y=int(configparser.get('gui-config', 'data_saved_notification_y')))
+        # self.send_data_api()
+        # self.msg_sent.place(x=int(configparser.get('gui-config', 'data_saved_notification_x')), y=int(configparser.get('gui-config', 'data_saved_notification_y')))
         self.enter_details()
 
 
@@ -654,10 +652,11 @@ class MyTkApp(tk.Frame):
         pass
 
 
-    def show_results_on_display(self, display):
+    def show_results_on_display(self, result):
         self.forget_graph()
 
-        self._flc_btn.configure(text="FLC %      " + json.dumps(display))
+        self._flc_btn.configure(text="Result    " + json.dumps(result))
+        self._flc_btn.place(x=60,y=130)
         gc.collect()
              
      
