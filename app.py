@@ -285,7 +285,9 @@ class MyTkApp(tk.Frame):
             img_name = "capture/{}.png".format(img_counter)
             cv2.imwrite(img_name, frame)
             result = server(img_name)
-            print(result)
+            import pdb
+            pdb.set_trace()
+            print(type(result), result)
 
             self.show_results_on_display(result)
             self.endRecord.place(x=int(configparser.get('gui-config', 'endrecord_btn_x')), y=int(configparser.get('gui-config', 'endrecord_btn_y')))
