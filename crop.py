@@ -72,41 +72,43 @@ import os, imutils
 #                     Config
 # ============================================================
 
-CONTOUR_AREA = 700
+CONTOUR_AREA = 100
 
 # ============================================================
 def as_per_shape(image_path, frame_count, cropped_path):
     org_image = cv2.imread(image_path)
-    org_image = cv2.addWeighted(org_image, 2, org_image, 0, 0)
-    org_image = imutils.resize(org_image, width=1000)
-    frame = org_image.copy()
-    hsv_img = cv2.cvtColor(frame, cv2.COLOR_BGR2HSV)
+    gray = cv2.cvtColor(org_image, cv2.COLOR_BGR2GRAY)
+    ret, thresh = cv2.threshold(gray, 160, 255, cv2.THRESH_BINARY_INV)
+    thresh = cv2.morphologyEx(thresh, cv2.MORPH_CLOSE, np.ones((3,3), dtype=np.uint8))
+    thresh = cv2.morphologyEx(thresh, cv2.MORPH_CLOSE, np.ones((3,3), dtype=np.uint8))
+  
+    # org_image = cv2.imread(image_path)
+    # org_image = cv2.addWeighted(org_image, 2, org_image, 0, 0)
+    # org_image = imutils.resize(org_image, width=1000)
+    # frame = org_image.copy()
+    # hsv_img = cv2.cvtColor(frame, cv2.COLOR_BGR2HSV)
 
-    green_low = np.array([45, 100, 50])
-    green_high = np.array([75, 255, 255])
-    curr_mask = cv2.inRange(hsv_img, green_low, green_high)
-    hsv_img[curr_mask > 0] = ([75, 255, 200])
+    # green_low = np.array([45, 100, 50])
+    # green_high = np.array([75, 255, 255])
+    # curr_mask = cv2.inRange(hsv_img, green_low, green_high)
+    # hsv_img[curr_mask > 0] = ([75, 255, 200])
 
-    # converting the HSV image to Gray in order to be able to apply contouring
-    RGB_again = cv2.cvtColor(hsv_img, cv2.COLOR_HSV2RGB)
-    gray = cv2.cvtColor(RGB_again, cv2.COLOR_RGB2GRAY)
-    # ret, threshold = cv2.threshold(gray, 120, 255, 0)
+    # # converting the HSV image to Gray in order to be able to apply contouring
+    # RGB_again = cv2.cvtColor(hsv_img, cv2.COLOR_HSV2RGB)
+    # gray = cv2.cvtColor(RGB_again, cv2.COLOR_RGB2GRAY)
+    # # ret, threshold = cv2.threshold(gray, 120, 255, 0)
 
-    blur = cv2.GaussianBlur(gray, (5, 5), 0)
-    ret, thresh = cv2.threshold(blur, 0, 255, cv2.THRESH_OTSU)
-    print(ret)
+    # # blur = cv2.GaussianBlur(gray, (5, 5), 0)
+    # ret, thresh = cv2.threshold(gray, 0, 255, cv2.THRESH_OTSU)
+    # print(ret)
     # thresh = cv2.dilate(thresh, None, iterations=3)
     _, contours, hier = cv2.findContours(thresh, cv2.RETR_TREE, cv2.CHAIN_APPROX_NONE)
 
     # ============================================================
 
-    first_image = -1
     i = 0
     for c in contours:
         if cv2.contourArea(c) >= CONTOUR_AREA:
-            first_image += 1
-            if first_image == 0:
-                continue
             x, y, w, h = cv2.boundingRect(c)
             if (x != 0) & (y != 0) & ((x + w) != 1000) & ((y + h) != 562):
                 print('Image {}: x: {}, y: {}, w: {}, h: {}'.format(i + 1, x, y, w, h))
@@ -132,4 +134,3 @@ def as_per_shape(image_path, frame_count, cropped_path):
 
                 # out = cv2.addWeighted(out, 2, out, 0, 0)
                 cv2.imwrite(outfile, out)
-
