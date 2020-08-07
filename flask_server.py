@@ -28,4 +28,4 @@ def server(image):
 
 	response = requests.request("GET", url, data=json.dumps(payload), headers=headers)
 
-	return response.text
+	return response.json()
