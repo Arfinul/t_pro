@@ -112,7 +112,7 @@ class MyTkApp(tk.Frame):
 
         self.msg_sent = Label(self.window, text="Data sent status", font=('times', 15), fg="green", bg='white')
 
-        self._flc_btn = tk.Button(self.window, text="flc", command=self.do_nothing, fg="white", bg="#318FCC", width=int(configparser.get('gui-config', 'result_btn_width')),height=int(configparser.get('gui-config', 'result_btn_height')), font=('times', 20, 'bold'))
+        self._flc_btn = tk.Button(self.window, text="flc", command=self.do_nothing, fg="white", bg="#318FCC", width=100,height=100), font=('times', 20, 'bold'))
         self._total_btn = tk.Button(self.window, text="total", command=self.do_nothing, fg="white", bg="#318FCC", width=int(configparser.get('gui-config', 'result_btn_width')),height=int(configparser.get('gui-config', 'result_btn_height')), font=('times', 20, 'bold'))
         self._1lb_btn = tk.Button(self.window, text="1lb", command=self.do_nothing, fg="white", bg="#12B653", width=int(configparser.get('gui-config', 'result_btn_width')),height=int(configparser.get('gui-config', 'result_btn_height')), font=('times', 20, 'bold'))
         self._2lb_btn = tk.Button(self.window, text="2lb", command=self.do_nothing, fg="white", bg="#12B653", width=int(configparser.get('gui-config', 'result_btn_width')),height=int(configparser.get('gui-config', 'result_btn_height')), font=('times', 20, 'bold'))
@@ -310,6 +310,7 @@ class MyTkApp(tk.Frame):
     def end_video(self):
         # self.formula.place_forget()
         self.endRecord.place_forget()
+        self._flc_btn.place_forget()
         # self.send_data_api()
         # self.msg_sent.place(x=int(configparser.get('gui-config', 'data_saved_notification_x')), y=int(configparser.get('gui-config', 'data_saved_notification_y')))
         self.enter_details()
@@ -654,7 +655,9 @@ class MyTkApp(tk.Frame):
 
     def show_results_on_display(self, result):
         self.forget_graph()
-
+        text_result = ''
+        for i in result:
+            text_result += i + ': ' + result[i] + '\n'
         self._flc_btn.configure(text="Result    " + json.dumps(result))
         self._flc_btn.place(x=60,y=130)
         gc.collect()
