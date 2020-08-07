@@ -1,0 +1,11 @@
+#! /bin/bash
+[Desktop Entry]
+Version=1.0
+Name=FLC App
+Comment=FLC desktop icon
+Exec=python3 /home/agnext/Documents/flc/flc.py
+Icon=/home/agnext/Documents/flc/flc_utils/launcher/logo.png
+Terminal=false
+Type=Application
+Categories=Application;
+StartupWMClass=tk
