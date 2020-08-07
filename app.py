@@ -106,7 +106,7 @@ class MyTkApp(tk.Frame):
         self.restart_button.image = restart_icon
 
         # self.startDemo = tk.Button(self.window, text="Demo Sample", command=self.demo_video, fg="black", bg="#FFE77A", font=('times', 16, 'bold'), width=int(configparser.get('gui-config', 'signin_btn_width')),height=int(configparser.get('gui-config', 'signin_btn_height')))
-        # self.endRecord = tk.Button(self.window, text="Save", command=self.end_video, fg="white", bg="#539051", font=('times', 17, 'bold'), width=10, height=2)
+        self.endRecord = tk.Button(self.window, text="Save", command=self.end_video, fg="white", bg="#539051", font=('times', 17, 'bold'), width=10, height=2)
         if is_admin:
             self.startCamRecord = tk.Button(self.window, text="Record training video", command=self.start_record_video, fg="white", bg="#539051", font=('times', 15, 'bold'))
 
@@ -192,7 +192,7 @@ class MyTkApp(tk.Frame):
         self.password_login_entry.bind("<Button-1>", self.action_2)
 
         # self.startDemo.place_forget()
-        # self.endRecord.place_forget()
+        self.endRecord.place_forget()
         if is_admin:
             self.startCamRecord.place_forget()
         ser = threading.Thread(target=start_server)
@@ -244,7 +244,7 @@ class MyTkApp(tk.Frame):
 
     def details_entered_success(self):
         # self.startDemo.place_forget()  
-        # self.endRecord.place_forget()
+        self.endRecord.place_forget()
         self.entered.place_forget()
         self.farmer_entry.place_forget()
         self.sector_entry.place_forget()
@@ -285,8 +285,10 @@ class MyTkApp(tk.Frame):
             img_name = "capture/{}.png".format(img_counter)
             cv2.imwrite(img_name, frame)
             result = server(img_name)
+            print(result)
 
             self.show_results_on_display(result)
+            self.endRecord.place(x=int(configparser.get('gui-config', 'endrecord_btn_x')), y=int(configparser.get('gui-config', 'endrecord_btn_y')))
         except Exception as e:
             print(e)
             # self.endRecord.place_forget()
@@ -351,7 +353,7 @@ class MyTkApp(tk.Frame):
                 self.farmer_entry.delete(0, tk.END)
             try:
                 # self.startDemo.place_forget()  
-                # self.endRecord.place_forget()
+                self.endRecord.place_forget()
                 self.sector_entry.place_forget()
                 self.factory_entry.place_forget()
                 self.division_entry.place_forget()
