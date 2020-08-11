@@ -82,7 +82,7 @@ class MyTkApp(tk.Frame):
         self.window.configure(background='snow')
         self.window.protocol("WM_DELETE_WINDOW", self.on_closing)
 
-        self.header = tk.Label(self.window, text="                                 Fine Leaf Count System", fg="white", bg="#539051", width=int(configparser.get('gui-config', 'title_width')), height=int(configparser.get('gui-config', 'title_height')), font=('times', 30, 'bold'))
+        self.header = tk.Label(self.window, text="                                 Fine Leaf Count Nano", fg="white", bg="#539051", width=int(configparser.get('gui-config', 'title_width')), height=int(configparser.get('gui-config', 'title_height')), font=('times', 30, 'bold'))
         self.footer = tk.Label(self.window, text="                                                    © 2020 Agnext Technologies. All Rights Reserved                                                          ", fg="white", bg="#2b2c28", width=160, height=2, font=('times', 10, 'bold'))
 
         self.panel = Label(self.window, bg='#539051')
@@ -105,7 +105,7 @@ class MyTkApp(tk.Frame):
         self.restart_button = tk.Button(self.window, command=self.restart, image = restart_icon, bg="#f7f0f5")
         self.restart_button.image = restart_icon
 
-        # self.startDemo = tk.Button(self.window, text="Demo Sample", command=self.demo_video, fg="black", bg="#FFE77A", font=('times', 16, 'bold'), width=int(configparser.get('gui-config', 'signin_btn_width')),height=int(configparser.get('gui-config', 'signin_btn_height')))
+        self.startDemo = tk.Button(self.window, text="Demo Image", command=self.demo_video, fg="black", bg="#FFE77A", font=('times', 16, 'bold'), width=int(configparser.get('gui-config', 'signin_btn_width')),height=int(configparser.get('gui-config', 'signin_btn_height')))
         self.endRecord = tk.Button(self.window, text="Save", command=self.end_video, fg="white", bg="#539051", font=('times', 17, 'bold'), width=10, height=2)
         if is_admin:
             self.startCamRecord = tk.Button(self.window, text="Record training video", command=self.start_record_video, fg="white", bg="#539051", font=('times', 15, 'bold'))
@@ -191,7 +191,7 @@ class MyTkApp(tk.Frame):
         self.username_login_entry.bind("<Button-1>", self.action_1)
         self.password_login_entry.bind("<Button-1>", self.action_2)
 
-        # self.startDemo.place_forget()
+        self.startDemo.place_forget()
         self.endRecord.place_forget()
         if is_admin:
             self.startCamRecord.place_forget()
@@ -243,7 +243,7 @@ class MyTkApp(tk.Frame):
 
 
     def details_entered_success(self):
-        # self.startDemo.place_forget()  
+        self.startDemo.place_forget()  
         self.endRecord.place_forget()
         self.entered.place_forget()
         self.farmer_entry.place_forget()
@@ -275,24 +275,29 @@ class MyTkApp(tk.Frame):
             self.options_displayed = False
 
 
-    def start_testing(self, command):
+    def start_testing(self, capture_image):
         try:
             import cv2
             os.makedirs('capture', exist_ok=True)
-            img_counter = len(os.listdir('capture'))
-            cam = cv2.VideoCapture(0)
-            ret, frame = cam.read()
-            img_name = "capture/{}.png".format(img_counter)
-            cv2.imwrite(img_name, frame)
-            result = server(img_name)
-            print(result)
 
-            self.show_results_on_display(result)
+            if capture_image:
+                img_name = "capture/{}.png"
+            else:
+                img_counter = len(os.listdir('capture'))
+                cam = cv2.VideoCapture(0)
+                ret, frame = cam.read()
+                img_name = "capture/{}.png".format(img_counter)
+                cv2.imwrite(img_name, frame)
+            global result_dict
+            result_dict = server(img_name)
+            print(result_dict)
+
+            self.show_results_on_display(result_dict)
             self.endRecord.place(x=int(configparser.get('gui-config', 'endrecord_btn_x')), y=int(configparser.get('gui-config', 'endrecord_btn_y')))
         except Exception as e:
             print(e)
-            # self.endRecord.place_forget()
-            # self.startDemo.configure(bg="#539051", state="active")
+            self.endRecord.place_forget()
+            self.startDemo.configure(bg="#539051", state="active")
 
 
     def demo_video(self):
@@ -302,7 +307,7 @@ class MyTkApp(tk.Frame):
         division = self.division_verify.get()    
         if farmer not in ["", "Enter farmer Code"] and sector not in ["", "Select section ID"] and factory not in ["", "Select factory"] and division not in ["", "Select division ID"]:
             self.details_entered_success()
-            self.start_testing(cmd_demo)
+            self.start_testing(False)
         else:
             self.show_error_msg()
         
@@ -311,8 +316,8 @@ class MyTkApp(tk.Frame):
         # self.formula.place_forget()
         self.endRecord.place_forget()
         self._flc_btn.place_forget()
-        # self.send_data_api()
-        # self.msg_sent.place(x=int(configparser.get('gui-config', 'data_saved_notification_x')), y=int(configparser.get('gui-config', 'data_saved_notification_y')))
+        self.send_data_api()
+        self.msg_sent.place(x=int(configparser.get('gui-config', 'data_saved_notification_x')), y=int(configparser.get('gui-config', 'data_saved_notification_y')))
         self.enter_details()
 
 
@@ -351,7 +356,7 @@ class MyTkApp(tk.Frame):
             if self.farmer_verify.get() == "Enter farmer Code":
                 self.farmer_entry.delete(0, tk.END)
             try:
-                # self.startDemo.place_forget()  
+                self.startDemo.place_forget()  
                 self.endRecord.place_forget()
                 self.sector_entry.place_forget()
                 self.factory_entry.place_forget()
@@ -455,7 +460,7 @@ class MyTkApp(tk.Frame):
         self.division_entry.place(x=520, y=200, height=40, width=190)
         self.sector_entry.place(x=520, y=245, height=40, width=190)
         self.entered.place(x=520, y=305)
-        # self.startDemo.place(x=520, y=360)
+        self.startDemo.place(x=520, y=360)
         # self.rainy_season_checkbox.place(x=520, y=80)
 
 
@@ -513,72 +518,27 @@ class MyTkApp(tk.Frame):
 
 
     def get_class_count(self):
-        txt_file = open("result.txt", "r").read()
-        li = txt_file.split("\n")
-        frame_count = li[0].split(": ")[1]
-        _1lb = int(li[1].split(": ")[1])
-        _2lb = int(li[2].split(": ")[1])
-        _3lb = int(li[3].split(": ")[1]) 
-        _1bj = int(li[4].split(": ")[1])
-        _2bj = int(li[5].split(": ")[1])
-        _cluster = int(li[6].split(": ")[1])
-        _coarse = int(li[7].split(": ")[1])
-        time_taken = li[9].split(": ")[1]
-        # _perc = round(float(li[8].split(": ")[1]), 2)
-        # _perc = _perc if math.isnan(float(_perc)) == False else 0
+        _1lb = result_dict['1LeafBud_Count']
+        _2lb = result_dict['2LeafBud_Count']
+        _3lb = result_dict['3LeafBud_Count']
+        _1bj = result_dict['1LeafBanjhi_Count']
+        _2bj = result_dict['2LeafBanjhi_Count']
+        _3bj = result_dict['3LeafBanjhi_Count']
+        _1bud = result_dict['1Bud_Count']
+        _1banjhi = result_dict['1Banjhi_Count']
+        _1leaf = result_dict['1Leaf_Count']
+        _2leaf = result_dict['2Leaf_Count']
+        _3leaf = result_dict['3Leaf_Count']
+        _total = result_dict['Total_Bunches']
+        _perc = (int(_total) - (_1lb + _2lb + _3lb + _1bj + _2bj + _3bj + _1bud + _1banjhi + _1leaf + _2leaf + _3leaf)) / int(_total)
 
-        totalCount = int(_1lb + _2lb + _3lb + _1bj + _2bj + _coarse)
-
-        _1lb = int(round(_1lb * 1.1346, 0))
-        _2lb = int(round(_2lb * 1.2006, 0))
-        _1bj = int(round(_1bj * 1.3288, 0))
-        _3lb = int(round(_3lb * 1.4213, 0))
-        _2bj = int(round(_2bj * 0.85, 0))
-
-        _coarse = int(round(_coarse - totalCount * 0.012, 0))
-        _coarse = _coarse if _coarse > 0 else 0
-
-        totalCount = _1lb + _2lb + _3lb + _1bj + _2bj + _coarse
-        # rainy = int(self.rainy_season.get())
-
-        # try:
-        #     if rainy == 0:
-        #         print("Non - Rainy season")
-        #         _perc = round(((_1lb + _2lb + (_3lb/2) + _1bj) / totalCount)*100, 2)
-        #     else:
-        #         print("Rainy season")
-        #         _perc = round(((_1lb + _2lb + (_3lb*3/4) + _1bj) / totalCount)*100, 2)
-        # except Exception as e:
-        #     print(e)
-        #     _perc = 0
-
-        try:
-            _perc = round(((_1lb + _2lb + (_3lb/2) + _1bj) / totalCount)*100, 2)
-        except Exception as e:
-            print(e)
-            _perc = 0
-
-        with open("factor.txt", "w") as factor:
-            factor.write("Frame: "+ frame_count + "\n")
-            factor.write("1LB: " + str(_1lb) + "\n")
-            factor.write("2LB: " + str(_2lb) + "\n")
-            factor.write("3LB: " + str(_3lb) + "\n")
-            factor.write("1Bj: " + str(_1bj) + "\n")
-            factor.write("2Bj: " + str(_2bj) + "\n")
-            factor.write("Coarse: " + str(_coarse) + "\n")
-            factor.write("Cluster: " + str(_cluster) + "\n")
-            factor.write("Total: " + str(totalCount) + "\n")
-            factor.write("FLC % " + str(_perc) + "\n")
-            factor.write("Time: " + time_taken + "\n")
-        gc.collect()
-        
-        return _1lb, _2lb, _3lb, _1bj, _2bj, _coarse, totalCount, _perc
+        return _1lb, _2lb, _3lb, _1bj, _2bj,_3bj, _1bud, _1banjhi, _1leaf, _2leaf, _3leaf, _perc, _total
 
 
     def send_data_api(self):
         if configparser.get('gui-config', 'internet') == 'true':
             
-            _1lb, _2lb, _3lb, _1bj, _2bj, _coarse, totalCount, _perc = self.get_class_count()
+            _1lb, _2lb, _3lb, _1bj, _2bj, _3bj, _1bud, _1banjhi, _1leaf, _2leaf, _3leaf, _perc, _total = self.get_class_count()
 
             head = {
                 "Content-Type": "application/json",
@@ -594,13 +554,14 @@ class MyTkApp(tk.Frame):
                 "threeLeafBud": _3lb,
                 "oneLeafBanjhi": _1bj,
                 "twoLeafBanjhi": _2bj,
-                "oneBudCount": "0",
-                "oneBanjhiCount": "0",
-                "oneLeafCount": "0",
-                "twoLeafCount": "0",
-                "threeLeafCount": "0",
+                "threeLeafBanjhi": _3bj,
+                "oneBudCount": _1bud,
+                "oneBanjhiCount": _1banjhi,
+                "oneLeafCount": _1leaf,
+                "twoLeafCount": _2leaf,
+                "threeLeafCount": _3leaf,
                 "qualityScore": _perc,
-                "totalCount": totalCount,
+                "totalCount": _total,
             }
             resp = requests.request("POST", configparser.get('gui-config', 'ip') + "/api/user/scans", data=json.dumps(load), headers=head)
             print(load)
@@ -736,15 +697,15 @@ class MyTkApp(tk.Frame):
 
     def details_verify(self): 
         gc.collect() 
-        # farmer = self.farmer_verify.get()
-        # sector = self.section_verify.get()  
-        # factory = self.factory_verify.get()
-        # division = self.division_verify.get()    
-        # if farmer not in ["", "Enter farmer Code"] and sector not in ["", "Select section ID"] and factory not in ["", "Select factory"] and division not in ["", "Select division ID"]:
-        self.details_entered_success()
-        self.start_testing(cmd)
-        # else:
-        #     self.show_error_msg()
+        farmer = self.farmer_verify.get()
+        sector = self.section_verify.get()  
+        factory = self.factory_verify.get()
+        division = self.division_verify.get()    
+        if farmer not in ["", "Enter farmer Code"] and sector not in ["", "Select section ID"] and factory not in ["", "Select factory"] and division not in ["", "Select division ID"]:
+            self.details_entered_success()
+            self.start_testing(True)
+        else:
+            self.show_error_msg()
 
      
     def enter_details(self):
