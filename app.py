@@ -108,7 +108,7 @@ class MyTkApp(tk.Frame):
         self.startDemo = tk.Button(self.window, text="Demo Image", command=self.demo_video, fg="black", bg="#FFE77A", font=('times', 16, 'bold'), width=int(configparser.get('gui-config', 'signin_btn_width')),height=int(configparser.get('gui-config', 'signin_btn_height')))
         self.endRecord = tk.Button(self.window, text="Save", command=self.end_video, fg="white", bg="#539051", font=('times', 17, 'bold'), width=10, height=2)
         if is_admin:
-            self.startCamRecord = tk.Button(self.window, text="Record training video", command=self.start_record_video, fg="white", bg="#539051", font=('times', 15, 'bold'))
+            self.startCamRecord = tk.Button(self.window, text="Record training video", command=self.start_record_video, fg="white", bg="#539051", font=('times', 17, 'bold'))
 
         self.msg_sent = Label(self.window, text="Data sent status", font=('times', 15), fg="green", bg='white')
 
@@ -277,11 +277,9 @@ class MyTkApp(tk.Frame):
 
     def start_testing(self, capture_image):
         try:
-            import cv2
             os.makedirs('capture', exist_ok=True)
-
             if capture_image:
-                img_name = "capture/{}.png"
+                img_name = "capture/demo_image.png"
             else:
                 img_counter = len(os.listdir('capture'))
                 cam = cv2.VideoCapture(0)
