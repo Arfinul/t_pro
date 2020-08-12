@@ -112,7 +112,7 @@ class MyTkApp(tk.Frame):
 
         self.msg_sent = Label(self.window, text="Data sent status", font=('times', 15), fg="green", bg='white')
 
-        self._flc_btn = tk.Button(self.window, text="flc", command=self.do_nothing, fg="white", bg="#318FCC", width=40,height=20, font=('times', 10, 'bold'))
+        self._flc_btn = tk.Button(self.window, text="flc", command=self.do_nothing, fg="white", bg="#318FCC", width=50,height=15, font=('times', 13, 'bold'))
         self._total_btn = tk.Button(self.window, text="total", command=self.do_nothing, fg="white", bg="#318FCC", width=int(configparser.get('gui-config', 'result_btn_width')),height=int(configparser.get('gui-config', 'result_btn_height')), font=('times', 20, 'bold'))
         self._1lb_btn = tk.Button(self.window, text="1lb", command=self.do_nothing, fg="white", bg="#12B653", width=int(configparser.get('gui-config', 'result_btn_width')),height=int(configparser.get('gui-config', 'result_btn_height')), font=('times', 20, 'bold'))
         self._2lb_btn = tk.Button(self.window, text="2lb", command=self.do_nothing, fg="white", bg="#12B653", width=int(configparser.get('gui-config', 'result_btn_width')),height=int(configparser.get('gui-config', 'result_btn_height')), font=('times', 20, 'bold'))
@@ -528,7 +528,7 @@ class MyTkApp(tk.Frame):
         _2leaf = result_dict['2Leaf_Count']
         _3leaf = result_dict['3Leaf_Count']
         _total = result_dict['Total_Bunches']
-        _perc = (int(_total) - (_1lb + _2lb + _3lb + _1bj + _2bj + _3bj + _1bud + _1banjhi + _1leaf + _2leaf + _3leaf)) / int(_total)
+        _perc = ((_1lb + _2lb + (_3lb/2) + _1bj + _2bj + _1bud + _1banjhi) / _total) * 100
 
         return _1lb, _2lb, _3lb, _1bj, _2bj,_3bj, _1bud, _1banjhi, _1leaf, _2leaf, _3leaf, _perc, _total
 
