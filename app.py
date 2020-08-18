@@ -70,6 +70,7 @@ class MyTkApp(tk.Frame):
         self.DIVISION_OPTIONS = ["Select division ID"] 
         self.options_displayed = False
         self.data = {}
+        self.result_dict = {}
 
         self.window = master
         self.x = self.window.winfo_x()
@@ -279,18 +280,18 @@ class MyTkApp(tk.Frame):
         try:
             os.makedirs('capture', exist_ok=True)
             if capture_image:
-                img_name = "capture/demo_image.png"
-            else:
                 img_counter = len(os.listdir('capture'))
                 cam = cv2.VideoCapture(0)
                 ret, frame = cam.read()
                 img_name = "capture/{}.png".format(img_counter)
                 cv2.imwrite(img_name, frame)
-            global result_dict
-            result_dict = server(img_name)
-            print(result_dict)
+            else:
+                img_name = "capture/demo_image.png"
+            print(img_name)
+            self.result_dict = server(img_name)
+            print(self.result_dict)
 
-            self.show_results_on_display(result_dict)
+            self.show_results_on_display()
             self.endRecord.place(x=int(configparser.get('gui-config', 'endrecord_btn_x')), y=int(configparser.get('gui-config', 'endrecord_btn_y')))
         except Exception as e:
             print(e)
@@ -516,18 +517,18 @@ class MyTkApp(tk.Frame):
 
 
     def get_class_count(self):
-        _1lb = result_dict['1LeafBud_Count']
-        _2lb = result_dict['2LeafBud_Count']
-        _3lb = result_dict['3LeafBud_Count']
-        _1bj = result_dict['1LeafBanjhi_Count']
-        _2bj = result_dict['2LeafBanjhi_Count']
-        _3bj = result_dict['3LeafBanjhi_Count']
-        _1bud = result_dict['1Bud_Count']
-        _1banjhi = result_dict['1Banjhi_Count']
-        _1leaf = result_dict['1Leaf_Count']
-        _2leaf = result_dict['2Leaf_Count']
-        _3leaf = result_dict['3Leaf_Count']
-        _total = result_dict['Total_Bunches']
+        _1lb = self.result_dict['1LeafBud_Count']
+        _2lb = self.result_dict['2LeafBud_Count']
+        _3lb = self.result_dict['3LeafBud_Count']
+        _1bj = self.result_dict['1LeafBanjhi_Count']
+        _2bj = self.result_dict['2LeafBanjhi_Count']
+        _3bj = self.result_dict['3LeafBanjhi_Count']
+        _1bud = self.result_dict['1Bud_Count']
+        _1banjhi = self.result_dict['1Banjhi_Count']
+        _1leaf = self.result_dict['1Leaf_Count']
+        _2leaf = self.result_dict['2Leaf_Count']
+        _3leaf = self.result_dict['3Leaf_Count']
+        _total = self.result_dict['Total_Bunches']
         _perc = ((_1lb + _2lb + (_3lb/2) + _1bj + _2bj + _1bud + _1banjhi) / _total) * 100
 
         return _1lb, _2lb, _3lb, _1bj, _2bj,_3bj, _1bud, _1banjhi, _1leaf, _2leaf, _3leaf, _perc, _total
@@ -612,11 +613,11 @@ class MyTkApp(tk.Frame):
         pass
 
 
-    def show_results_on_display(self, result):
+    def show_results_on_display(self):
         self.forget_graph()
         text_result = ''
-        for i in result:
-            text_result += i + ': ' + str(result[i]) + '\n'
+        for i in self.result_dict:
+            text_result += i + ': ' + str(self.result_dict[i]) + '\n'
         self._flc_btn.configure(text=text_result)
         self._flc_btn.place(x=60,y=130)
         gc.collect()
@@ -753,6 +754,5 @@ def launchApp():
 
 if __name__=='__main__':
     launchApp()
-
 
 

@@ -2,7 +2,7 @@
 APP{"guvcview 2.0.5"}
 # control data
 #Brightness
-ID{0x00980900};CHK{-15:15:1:0}=VAL{2}
+ID{0x00980900};CHK{-15:15:1:0}=VAL{1}
 #Contrast
 ID{0x00980901};CHK{0:30:1:4}=VAL{16}
 #Saturation
@@ -14,7 +14,7 @@ ID{0x0098090c};CHK{0:1:1:1}=VAL{1}
 #Gamma
 ID{0x00980910};CHK{40:500:1:220}=VAL{180}
 #Gain
-ID{0x00980913};CHK{1:100:1:4}=VAL{10}
+ID{0x00980913};CHK{1:100:1:4}=VAL{9}
 #Horizontal Flip
 ID{0x00980914};CHK{0:1:1:0}=VAL{0}
 #Vertical Flip
@@ -26,7 +26,7 @@ ID{0x0098091b};CHK{0:127:1:16}=VAL{127}
 #Auto Exposure
 ID{0x009a0901};CHK{0:2:1:0}=VAL{1}
 #Exposure Time Absolute
-ID{0x009a0902};CHK{1:10000:1:290}=VAL{98}
+ID{0x009a0902};CHK{1:10000:1:290}=VAL{90}
 #Pan Absolute
 ID{0x009a0908};CHK{-648000:648000:1:0}=VAL{0}
 #Tilt Absolute
