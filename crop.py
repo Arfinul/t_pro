@@ -77,10 +77,10 @@ CONTOUR_AREA = 100
 # ============================================================
 def as_per_shape(image_path, frame_count, cropped_path):
     org_image = cv2.imread(image_path)
-    gray = cv2.cvtColor(org_image, cv2.COLOR_BGR2GRAY)
-    ret, thresh = cv2.threshold(gray, 160, 255, cv2.THRESH_BINARY_INV)
-    thresh = cv2.morphologyEx(thresh, cv2.MORPH_CLOSE, np.ones((3,3), dtype=np.uint8))
-    thresh = cv2.morphologyEx(thresh, cv2.MORPH_CLOSE, np.ones((3,3), dtype=np.uint8))
+    hsv = cv2.cvtColor(org_image, cv2.COLOR_BGR2HSV)
+    w_low = np.array([0, 15, 0],np.uint8)
+    w_high = np.array([179, 255, 255],np.uint8)
+    thresh = cv2.inRange(hsv,w_low,w_high)
   
     # org_image = cv2.imread(image_path)
     # org_image = cv2.addWeighted(org_image, 2, org_image, 0, 0)
