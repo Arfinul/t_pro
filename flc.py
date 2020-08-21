@@ -59,9 +59,12 @@ class MyTkApp(tk.Frame):
         self.userID = ""
         self.token = ""
         self.farmer_id = ""
+        self.customer_id = ''
         self.factory_id_name_dict = {}
         self.section_id_name_dict = {}
         self.division_id_name_dict = {}
+        self.region_id_name_dict = {}
+        self.center_id_name_dict = {}
         self.SECTION_OPTIONS = ["Select section ID"]
         self.FACTORY_OPTIONS = ["Select factory"]
         self.DIVISION_OPTIONS = ["Select division ID"] 
@@ -92,6 +95,10 @@ class MyTkApp(tk.Frame):
         options_icon = PhotoImage(file = "flc_utils/screens/touchScreen/options.png")
         self.poweroff = tk.Button(self.window, text="Click me!", command=self.display_all_options, image = options_icon, bg="#f7f0f5")
         self.poweroff.image = options_icon
+
+        back_icon = PhotoImage(file = "flc_utils/screens/touchScreen/back.png")
+        self.back_button = tk.Button(self.window, command=self.second_screen_place, image = back_icon, bg="#f7f0f5")
+        self.back_button.image = back_icon
 
         shutdown_icon = PhotoImage(file = "flc_utils/screens/touchScreen/shutdown.png")
         self.shutdown_button = tk.Button(self.window, command=self.shutdown, image = shutdown_icon, bg="#f7f0f5")
@@ -206,43 +213,51 @@ class MyTkApp(tk.Frame):
         self.region_verify.set("Select Region")
         self.inst_center_verify.set("Select Inst Center")
 
+        label_font_size = 15
+        entry_font_size = 12
+        self.area_covered_label = Label(self.window, text="Area covered:", font=('times', label_font_size, 'bold'), bg="#f7f0f5")
         self.area_covered_entry = Entry(self.window, textvariable=self.area_covered_verify)
-        self.area_covered_entry.configure(font=font.Font(family='Helvetica', size=16))
+        self.area_covered_entry.configure(font=font.Font(family='Helvetica', size=entry_font_size))
         self.area_covered_entry.bind("<Button-1>", self.action_area)
         self.area_covered_entry.bind("<FocusOut>", self.lost_focus_area_covered)
 
+        self.weight_label = Label(self.window, text="Weight:", font=('times', label_font_size, 'bold'), bg="#f7f0f5")
         self.weight_entry = Entry(self.window, textvariable=self.weight_verify)
-        self.weight_entry.configure(font=font.Font(family='Helvetica', size=16))
+        self.weight_entry.configure(font=font.Font(family='Helvetica', size=entry_font_size))
         self.weight_entry.bind("<Button-1>", self.action_weight)
         self.weight_entry.bind("<FocusOut>", self.lost_focus_weight)
 
+        self.sample_id_label = Label(self.window, text="Sample ID:", font=('times', label_font_size, 'bold'), bg="#f7f0f5")
         self.sample_id_entry = Entry(self.window, textvariable=self.sample_id_verify)
-        self.sample_id_entry.configure(font=font.Font(family='Helvetica', size=16))
+        self.sample_id_entry.configure(font=font.Font(family='Helvetica', size=entry_font_size))
         self.sample_id_entry.bind("<Button-1>", self.action_sampleid)
         self.sample_id_entry.bind("<FocusOut>", self.lost_focus_sample_id)
 
+        self.lot_id_label = Label(self.window, text="Lot ID:", font=('times', label_font_size, 'bold'), bg="#f7f0f5")
         self.lot_id_entry = Entry(self.window, textvariable=self.lot_id_verify)
-        self.lot_id_entry.configure(font=font.Font(family='Helvetica', size=16))
+        self.lot_id_entry.configure(font=font.Font(family='Helvetica', size=entry_font_size))
         self.lot_id_entry.bind("<Button-1>", self.action_lotid)
         self.lot_id_entry.bind("<FocusOut>", self.lost_focus_lot_id)
 
+        self.device_serial_no_label = Label(self.window, text="Device Serial No.:", font=('times', label_font_size, 'bold'), bg="#f7f0f5")
         self.device_serial_no_entry = Entry(self.window, textvariable=self.device_serial_no_verify)
-        self.device_serial_no_entry.configure(font=font.Font(family='Helvetica', size=16))
+        self.device_serial_no_entry.configure(font=font.Font(family='Helvetica', size=entry_font_size))
         self.device_serial_no_entry.bind("<Button-1>", self.action_deviceserialno)
         self.device_serial_no_entry.bind("<FocusOut>", self.lost_focus_device_serial_no)
 
+        self.batch_id_label = Label(self.window, text="Batch ID:", font=('times', label_font_size, 'bold'), bg="#f7f0f5")
         self.batch_id_entry = Entry(self.window, textvariable=self.batch_id_verify)
-        self.batch_id_entry.configure(font=font.Font(family='Helvetica', size=16))
+        self.batch_id_entry.configure(font=font.Font(family='Helvetica', size=entry_font_size))
         self.batch_id_entry.bind("<Button-1>", self.action_batchid)
         self.batch_id_entry.bind("<FocusOut>", self.lost_focus_batch_id)
 
+        self.region_label = Label(self.window, text="Region:", font=('times', label_font_size, 'bold'), bg="#f7f0f5")
         self.region_entry = OptionMenu(self.window, self.region_verify, *self.REGIONS_OPTIONS)
-        self.region_verify.trace("w", self.get_regions)
-        self.region_entry.configure(width=24, state="active", font=font.Font(family='Helvetica', size=16))
+        self.region_entry.configure(width=24, state="active", font=font.Font(family='times', size=16))
 
+        self.inst_center_label = Label(self.window, text="Installation Center:", font=('times', label_font_size, 'bold'), bg="#f7f0f5")
         self.inst_center_entry = OptionMenu(self.window, self.inst_center_verify, *self.INSTCENTER_OPTIONS)
-        self.inst_center_verify.trace("w", self.get_instcenter)
-        self.inst_center_entry.configure(width=24, state="active", font=font.Font(family='Helvetica', size=16))
+        self.inst_center_entry.configure(width=24, state="active", font=font.Font(family='times', size=16))
 
         self.nextBtn = tk.Button(self.window, text="Next", command=self.main_screen, fg="white", bg="#F37C62", width=12,height=2, font=('times', 16, 'bold'))
 
@@ -300,24 +315,23 @@ class MyTkApp(tk.Frame):
         self.factory_entry.place_forget()
         self.division_entry.place_forget()
         self.msg_sent.place_forget()
-        self.poweroff.place_forget()
-        self.logout_button.place_forget()
-        # self.tuneCamera.place_forget()
-        if is_admin:
-            self.startCamRecord.place_forget() 
-        self.restart_button.place_forget()
-        self.shutdown_button.place_forget()
+        # self.poweroff.place_forget()
+        # self.back_button.place_forget()
+        # self.logout_button.place_forget()
+        # self.restart_button.place_forget()
+        # self.shutdown_button.place_forget()
         # self.rainy_season_checkbox.place_forget()
         self.remove_numpad()
-        self.start_jetson_fan()
     
     def display_all_options(self):
         if self.options_displayed == False:
+            self.back_button.place(x=int(configparser.get('gui-config', 'back_x')), y=int(configparser.get('gui-config', 'back_y')))
             self.logout_button.place(x=int(configparser.get('gui-config', 'logout_x')), y=int(configparser.get('gui-config', 'logout_y')))
             self.restart_button.place(x=int(configparser.get('gui-config', 'restart_x')), y=int(configparser.get('gui-config', 'restart_y')))
             self.shutdown_button.place(x=int(configparser.get('gui-config', 'shutdown_x')), y=int(configparser.get('gui-config', 'shutdown_y')))
             self.options_displayed = True
         else:
+            self.back_button.place_forget()
             self.logout_button.place_forget()
             self.restart_button.place_forget()
             self.shutdown_button.place_forget()
@@ -468,10 +482,34 @@ class MyTkApp(tk.Frame):
 
 
     def get_regions(self):
-        pass
+        # helper.token_api_qualix()
+        # success, token, self.customer_id = helper.login_api_qualix()
+        customer_id, token = 91, "eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2VtYWlsIjoiZGVtb29wZXJhdG9yQGdtYWlsLmNvbSIsInVzZXJfZm5hbWUiOiJPcGVyYXRvciIsInVzZXJfbmFtZSI6ImRlbW9vcGVyYXRvckBnbWFpbC5jb20iLCJjdXN0b21lcl91dWlkIjoiOGE1YTU2YTAtNGY0MS00YTFjLWFiMTQtNmQ1MWFlNjIyZDBiIiwicm9sZXMiOlsib3BlcmF0b3IiXSwiaXNzIjoiUXVhbGl4IiwidXNlcl9sbmFtZSI6Ik9wZXJhdG9yIiwiY2xpZW50X2lkIjoiY2xpZW50LW1vYmlsZSIsInVzZXJfdXVpZCI6Ijc3Nzk3NTkwLTlmMzYtNDM5Ni1iMTA2LTcwNThiZjFkMTc3ZiIsInVzZXJfdHlwZSI6IkNVU1RPTUVSIiwidXNlcl9pZCI6MTg4LCJ1c2VyX21vYmlsZSI6Ijk2NTY1ODU2OTUiLCJzY29wZSI6WyJhbGwiXSwidXNlcl9oaWVyYXJjaHkiOm51bGwsImN1c3RvbWVyX25hbWUiOiJEZW1vIGN1c3RvbWVyIiwiZXhwIjoxNjAxMDAxMDA2LCJjdXN0b21lcl9pZCI6OTEsImp0aSI6IjQ4YTZmZGI5LTcxZTgtNDEwMi04ZTQ5LTRjOGU2ZDVlY2YzYyJ9.PVmAvB5fqQD2qSiT3pHzqNfuShQ2P5Ly9heBrY02Ldpn9X4Q3ciPwx7LV7md1t871wuRylTAjS-_VHEDlGjKDo3Q1ZkhR8fDWT7jWPKLPbX0SX2pCZtCzHKFbTk4giGP1W1QACvVi-VKBUZw5fHglk8V7uqDyqJ80N-8ouSofLfwdoaZhFzrAaLT3jVuevRqQGDE5D2Asysx2lUH1-bQNWF3AzaTipqE6fWF9uF0RA0evDve5vQXLpTDEyc4C8DpIWj5ol0-X723cI549ZDYIjrKGIoF2rYSWXGCwTA2gEJ_t8dv4V1xDCPSJ1kQ_VSPpVkUSdpjbEB25OWm7OIr5w"
+        region_names, region_ids = helper.regions_list_qualix(customer_id, token)
+        self.REGIONS_OPTIONS = ["Select Region"] + region_names
 
-    def get_instcenter(self):
-        pass
+        self.region_id_name_dict = dict(zip(region_names, region_ids))
+        self.region_entry.place_forget()
+        self.region_entry = OptionMenu(self.window, self.region_verify, *self.REGIONS_OPTIONS)
+        self.region_verify.trace("w", self.get_instcenter)
+        self.region_entry.configure(width=24, state="active", font=font.Font(family='Helvetica', size=16))
+        menu = self.nametowidget(self.region_entry.menuname)
+        menu.config(font=font.Font(family='Helvetica', size=16))
+
+
+    def get_instcenter(self, *args):
+        customer_id, token = 91, "eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2VtYWlsIjoiZGVtb29wZXJhdG9yQGdtYWlsLmNvbSIsInVzZXJfZm5hbWUiOiJPcGVyYXRvciIsInVzZXJfbmFtZSI6ImRlbW9vcGVyYXRvckBnbWFpbC5jb20iLCJjdXN0b21lcl91dWlkIjoiOGE1YTU2YTAtNGY0MS00YTFjLWFiMTQtNmQ1MWFlNjIyZDBiIiwicm9sZXMiOlsib3BlcmF0b3IiXSwiaXNzIjoiUXVhbGl4IiwidXNlcl9sbmFtZSI6Ik9wZXJhdG9yIiwiY2xpZW50X2lkIjoiY2xpZW50LW1vYmlsZSIsInVzZXJfdXVpZCI6Ijc3Nzk3NTkwLTlmMzYtNDM5Ni1iMTA2LTcwNThiZjFkMTc3ZiIsInVzZXJfdHlwZSI6IkNVU1RPTUVSIiwidXNlcl9pZCI6MTg4LCJ1c2VyX21vYmlsZSI6Ijk2NTY1ODU2OTUiLCJzY29wZSI6WyJhbGwiXSwidXNlcl9oaWVyYXJjaHkiOm51bGwsImN1c3RvbWVyX25hbWUiOiJEZW1vIGN1c3RvbWVyIiwiZXhwIjoxNjAxMDAxMDA2LCJjdXN0b21lcl9pZCI6OTEsImp0aSI6IjQ4YTZmZGI5LTcxZTgtNDEwMi04ZTQ5LTRjOGU2ZDVlY2YzYyJ9.PVmAvB5fqQD2qSiT3pHzqNfuShQ2P5Ly9heBrY02Ldpn9X4Q3ciPwx7LV7md1t871wuRylTAjS-_VHEDlGjKDo3Q1ZkhR8fDWT7jWPKLPbX0SX2pCZtCzHKFbTk4giGP1W1QACvVi-VKBUZw5fHglk8V7uqDyqJ80N-8ouSofLfwdoaZhFzrAaLT3jVuevRqQGDE5D2Asysx2lUH1-bQNWF3AzaTipqE6fWF9uF0RA0evDve5vQXLpTDEyc4C8DpIWj5ol0-X723cI549ZDYIjrKGIoF2rYSWXGCwTA2gEJ_t8dv4V1xDCPSJ1kQ_VSPpVkUSdpjbEB25OWm7OIr5w"
+        region_id = self.region_id_name_dict[self.region_verify.get()]
+        center_names, center_ids = helper.inst_centers_list_qualix(region_id, customer_id, token)
+        self.INSTCENTER_OPTIONS = ["Select Region"] + center_names
+
+        self.center_id_name_dict = dict(zip(center_names, center_ids))
+        self.inst_center_entry.place_forget()
+        self.inst_center_entry = OptionMenu(self.window, self.inst_center_verify, *self.INSTCENTER_OPTIONS)
+        self.inst_center_entry.configure(width=24, state="active", font=font.Font(family='Helvetica', size=16))
+        self.inst_center_entry.place(x=400, y=290)
+        menu = self.nametowidget(self.inst_center_entry.menuname)
+        menu.config(font=font.Font(family='Helvetica', size=16))
 
     def get_farmer_id(self):
         try:
@@ -782,10 +820,20 @@ class MyTkApp(tk.Frame):
         self.user_not_found_screen.title("Error")
         Label(self.user_not_found_screen, text="User Not Found").pack()
         Button(self.user_not_found_screen, text="OK", command=self.delete_user_not_found_screen).pack()
-  
      
     def delete_user_not_found_screen(self):
         self.user_not_found_screen.destroy()
+
+    def empty_field_error_msg(self):
+        self.empty_field_screen = Toplevel(self.window)
+        self.empty_field_screen.geometry("%dx%d+%d+%d" % (self.w, self.h, self.x + 300, self.y + 200))
+        self.empty_field_screen.title("Error")
+        Label(self.empty_field_screen, text="Please fill all details.").pack()
+        Button(self.empty_field_screen, text="OK", command=self.delete_empty_field_error_msg_screen).pack()
+
+
+    def delete_empty_field_error_msg_screen(self):
+        self.empty_field_screen.destroy()
 
 
     def details_verify(self): 
@@ -833,50 +881,80 @@ class MyTkApp(tk.Frame):
         self.poweroff.place(x=750, y=80)
 
     def second_screen_place(self):
+        self.forget_graph()
+        self.details_entered_success()
         try:
             subprocess.Popen("exec " + "killall onboard", stdout= subprocess.PIPE, shell=True)
         except:
             pass
-        x_col1, x_col2, x_col3, x_col4 = 70, 300, 520, 650
-        y_row1, y_row2, y_row3, y_row4 = 150, 200, 250, 290
+        self.welcome_text.place(x=int(configparser.get('gui-config', 'welcome_text_x')), y=int(configparser.get('gui-config', 'welcome_text_y')))
 
+        x_col1, x_col2, x_col3, x_col4 = 70, 300, 520, 650
+        y_row1, y_row2, y_row3, y_row4 = 150, 210, 290, 330
+
+        self.area_covered_label.place(x=x_col1, y=y_row1-22)
         self.area_covered_entry.place(x=x_col1, y=y_row1)
         self.area_covered_entry.delete(0, tk.END)
-        self.area_covered_entry.insert(1, "Enter Area Covered")
+        area_covered = self.new_fields['area_covered'] if 'area_covered' in self.new_fields else "Enter Area Covered"
+        self.area_covered_entry.insert(1, area_covered)
 
+        self.weight_label.place(x=x_col2, y=y_row1-22)
         self.weight_entry.place(x=x_col2, y=y_row1)
         self.weight_entry.delete(0, tk.END)
-        self.weight_entry.insert(1, "Enter Weight")
+        weight = self.new_fields['weight'] if 'weight' in self.new_fields else "Enter Weight"
+        self.weight_entry.insert(1, weight)
 
+        self.sample_id_label.place(x=x_col3, y=y_row1-22)
         self.sample_id_entry.place(x=x_col3, y=y_row1)
         self.sample_id_entry.delete(0, tk.END)
-        self.sample_id_entry.insert(1, "Enter Sample ID")
+        sample_id = self.new_fields['sample_id'] if 'sample_id' in self.new_fields else "Enter Sample ID"
+        self.sample_id_entry.insert(1, sample_id)
 
+        self.lot_id_label.place(x=x_col1, y=y_row2-22)
         self.lot_id_entry.place(x=x_col1, y=y_row2)
         self.lot_id_entry.delete(0, tk.END)
-        self.lot_id_entry.insert(1, "Enter Lot ID")
+        lot_id = self.new_fields['lot_id'] if 'lot_id' in self.new_fields else "Enter Lot ID"
+        self.lot_id_entry.insert(1, lot_id)
 
+        self.device_serial_no_label.place(x=x_col2, y=y_row2-22)
         self.device_serial_no_entry.place(x=x_col2, y=y_row2)
         self.device_serial_no_entry.delete(0, tk.END)
-        self.device_serial_no_entry.insert(1, "Enter Device SerialNo")
+        device_serial_no = self.new_fields['device_serial_no'] if 'device_serial_no' in self.new_fields else "Enter Device SerialNo"
+        self.device_serial_no_entry.insert(1, device_serial_no)
 
+        self.batch_id_label.place(x=x_col3, y=y_row2-22)
         self.batch_id_entry.place(x=x_col3, y=y_row2)
         self.batch_id_entry.delete(0, tk.END)
-        self.batch_id_entry.insert(1, "Enter Batch ID")
+        batch_id = self.new_fields['batch_id'] if 'batch_id' in self.new_fields else "Enter Batch ID"
+        self.batch_id_entry.insert(1, batch_id)
 
+        self.get_regions()
+        self.region_label.place(x=100, y=y_row3-22)
         self.region_entry.place(x=100, y=y_row3)
+
+        self.inst_center_label.place(x=400, y=y_row3-22)
+        self.inst_center_entry.configure(width=24, state="disabled")
         self.inst_center_entry.place(x=400, y=y_row3)
 
-        self.nextBtn.place(x=350,y=300)        
+        self.nextBtn.place(x=350,y=330)  
+        self.poweroff.place(x=750, y=80)      
 
     def second_screen_forget(self):
+        self.area_covered_label.place_forget()
         self.area_covered_entry.place_forget()
+        self.weight_label.place_forget()
         self.weight_entry.place_forget()
+        self.sample_id_label.place_forget()
         self.sample_id_entry.place_forget()
+        self.lot_id_label.place_forget()
         self.lot_id_entry.place_forget()
+        self.region_label.place_forget()
         self.region_entry.place_forget()
+        self.inst_center_label.place_forget()
         self.inst_center_entry.place_forget()
+        self.device_serial_no_label.place_forget()
         self.device_serial_no_entry.place_forget()
+        self.batch_id_label.place_forget()
         self.batch_id_entry.place_forget()
 
         self.nextBtn.place_forget()
@@ -886,12 +964,23 @@ class MyTkApp(tk.Frame):
         self.new_fields['weight'] = self.weight_verify.get()
         self.new_fields['sample_id'] = self.sample_id_verify.get()
         self.new_fields['lot_id'] = self.lot_id_verify.get()
-        self.new_fields['region_id'] = self.region_verify.get() # need to get id from api
-        self.new_fields['inst_center_id'] = self.inst_center_verify.get() # need to get id from api
+        self.new_fields['region_id'] = self.region_id_name_dict[self.region_verify.get()] if self.region_verify.get() != 'Select Region' else self.region_verify.get()
+        self.new_fields['inst_center_id'] = self.center_id_name_dict[self.inst_center_verify.get()] if self.inst_center_verify.get() != 'Select Inst Center' else self.inst_center_verify.get()
         self.new_fields['device_serial_no'] = self.device_serial_no_verify.get()
         self.new_fields['batch_id'] = self.batch_id_verify.get()
-        self.second_screen_forget()
-        self.enter_details()      
+        if (self.new_fields['area_covered'] == 'Enter Area Covered') or \
+            (self.new_fields['weight'] == "Enter Weight") or \
+            (self.new_fields['sample_id'] == "Enter Sample ID")  or \
+            (self.new_fields['lot_id'] == "Enter Lot ID") or \
+            (self.new_fields['region_id'] == "Select Region") or \
+            (self.new_fields['inst_center_id'] == "Select Inst Center") or \
+            (self.new_fields['device_serial_no'] == "Enter Device SerialNo") or \
+            (self.new_fields['batch_id'] == "Enter Batch ID"):
+            self.empty_field_error_msg()
+        else:
+            self.second_screen_forget()
+            self.enter_details()      
+            self.start_jetson_fan()
 
     def login_success(self):
         self.username_login_entry.place_forget()

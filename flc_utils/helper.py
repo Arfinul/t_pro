@@ -94,9 +94,11 @@ def get_saved_status(token, userID, ccId, sectionId, farmer_id):
             "totalCount": totalCount,
         }
         payload = {'one_leaf_bud': _1lb, 'two_leaf_bud': _2lb, 'three_leaf_bud': _3lb, 
-                    'one_leaf_banjhi': _1bj, 'two_leaf_banjhi': _2bj, 'total_count': totalCount, 'quality_score': _perc}
+                    'one_leaf_banjhi': _1bj, 'two_leaf_banjhi': _2bj, 
+                    'one_bud_count': 0, 'one_leaf_count': 0, 'two_leaf_count': 0,
+                    'three_leaf_count': 0, 'one_banjhi_count': 0, 
+                    'total_count': totalCount, 'quality_score': _perc}
         resp = requests.request("POST", configparser.get('gui-config', 'ip') + "/api/user/scans", data=json.dumps(load), headers=head)
-        print(load)
         print(resp.json())
         saved = resp.json()['success']
     else:
@@ -111,18 +113,10 @@ def get_saved_status(token, userID, ccId, sectionId, farmer_id):
     return saved, payload
 
 def qualix_api(payload, sectionId, farmer_code, new_fields):
-    # [{"analysisName":"one_banjhi_count","totalAmount":"5"},
-   # {"analysisName":"one_bud_count","totalAmount":"34"},
-   # {"analysisName":"one_leaf_banjhi","totalAmount":"33"},
-   # {"analysisName":"one_leaf_bud","totalAmount":"32"},
-   # {"analysisName":"one_leaf_count","totalAmount":"23"},
-   # {"analysisName":"quality_score","totalAmount":"44"},
-   # {"analysisName":"three_leaf_bud","totalAmount":"34"}
-   # ]
     li = []
-        for i in payload:
-            li.append({"analysisName": i, "totalAmount": payload[i]})
-        print(li)
+    for i in payload:
+        li.append({"analysisName": i, "totalAmount": payload[i]})
+    print(li)
     mp_encoder = MultipartEncoder(
             fields={
                 "data": json.dumps({
@@ -160,3 +154,62 @@ def qualix_api(payload, sectionId, farmer_code, new_fields):
         )
     print(response.text)
     return response.status_code
+
+def token_api_qualix():
+    url = "http://23.98.216.140:8071/oauth/authorize"
+    querystring = {"response_type":"code","client_id":"client-mobile"}
+    response = requests.request("GET", url, params=querystring)
+    print(response.status_code)
+
+def login_api_qualix():
+    success = False
+    token = ''
+    customer_id = 0
+    mp_encoder = MultipartEncoder(
+            fields={
+                "Signin": "Sign+In",
+                "bearer": "mobile",
+                "username": "demooperator@gmail.com",
+                "password": "Specx123!"
+                }
+                )
+    querystring = {"bearer":"mobile"}
+    response = requests.post(
+            'http://23.98.216.140:8085/api/scan',
+            data=mp_encoder,
+            headers={'Content-Type': mp_encoder.content_type},
+            params=querystring
+        )
+    print(response.status_code)
+    if response.status_code == 200:
+        token = response.json()['access_token']
+        customer_id = response.json()['user']['customer_id']
+    return success, token, customer_id
+
+def regions_list_qualix(customer_id, token):
+    region_names, region_ids = [], []
+    url = "http://23.98.216.140:8072/api/regions"
+    querystring = {"p":"0","l":"10","customer_id":str(customer_id)}
+    headers = {'Authorization': "Bearer " + token}
+    response = requests.request("GET", url, headers=headers, params=querystring)
+    print("Regions list API", response.status_code)
+    if response.status_code == 200:
+        for i in response.json():
+            region_names.append(i['region_name'])
+            region_ids.append(i['region_id'])
+    return region_names, region_ids
+
+def inst_centers_list_qualix(region_id, customer_id, token):
+    center_names, center_ids = [], []
+    url = "http://23.98.216.140:8072/api/commercials/location"
+    querystring = {"p":"0","l":"1000","customer_id":str(customer_id),"region_id":str(region_id)}
+    headers = {'Authorization': "Bearer " + token}
+    response = requests.request("GET", url, headers=headers, params=querystring)
+    print("Centers list API", response.status_code)
+    if response.status_code == 200:
+        for i in response.json():
+            center_names.append(i['inst_center_name'])
+            center_ids.append(i['installation_center_id'])
+    if len(center_names) == 0:
+        center_names, center_ids = ['Demo Installation center'], ['13']
+    return center_names, center_ids
