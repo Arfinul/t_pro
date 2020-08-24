@@ -78,7 +78,7 @@ CONTOUR_AREA = 100
 def as_per_shape(image_path, frame_count, cropped_path):
     org_image = cv2.imread(image_path)
     hsv = cv2.cvtColor(org_image, cv2.COLOR_BGR2HSV)
-    w_low = np.array([0, 15, 0],np.uint8)
+    w_low = np.array([0, 13, 0],np.uint8)
     w_high = np.array([179, 255, 255],np.uint8)
     thresh = cv2.inRange(hsv,w_low,w_high)
   
