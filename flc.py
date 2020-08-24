@@ -30,7 +30,7 @@ for folder in create_folders:
         os.mkdir(folder)
 
 configparser = configparser.RawConfigParser()   
-# os.chdir("/home/agnext/Documents/flc")  # Agnext
+os.chdir("/home/agnext/Documents/flc")
 
 configparser.read('flc_utils/screens/touchScreen/gui.cfg')
 is_admin = False
