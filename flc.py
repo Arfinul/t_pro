@@ -434,6 +434,7 @@ class MyTkApp(tk.Frame):
             }
         resp = requests.request("GET", url, headers=headers)
         data = resp.json()['data']
+        print(data)
         factory_id_list = [i["id"] for i in data]
         factory_name_list = [i["name"] for i in data]
 
