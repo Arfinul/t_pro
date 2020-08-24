@@ -72,6 +72,7 @@ def get_class_count():
     return _1lb, _2lb, _3lb, _1bj, _2bj, _coarse, totalCount, _perc
 
 def get_saved_status(token, userID, ccId, sectionId, farmer_id):
+    print(token, userID, ccId, sectionId, farmer_id)
     payload = {}
     if configparser.get('gui-config', 'internet') == 'true':
         _1lb, _2lb, _3lb, _1bj, _2bj, _coarse, totalCount, _perc = get_class_count()
