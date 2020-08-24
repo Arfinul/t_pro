@@ -927,7 +927,7 @@ class MyTkApp(tk.Frame):
         self.batch_id_label.place(x=x_col3, y=y_row2-22)
         self.batch_id_entry.place(x=x_col3, y=y_row2)
         self.batch_id_entry.delete(0, tk.END)
-        batch_id = self.new_fields['batch_id'] if 'batch_id' in self.new_fields else "Enter Batch ID"
+        batch_id = self.new_fields['batchId'] if 'batchId' in self.new_fields else "Enter Batch ID"
         self.batch_id_entry.insert(1, batch_id)
 
         self.get_regions()
@@ -969,7 +969,7 @@ class MyTkApp(tk.Frame):
         self.new_fields['region_id'] = self.region_id_name_dict[self.region_verify.get()] if self.region_verify.get() != 'Select Region' else self.region_verify.get()
         self.new_fields['inst_center_id'] = self.center_id_name_dict[self.inst_center_verify.get()] if self.inst_center_verify.get() != 'Select Inst Center' else self.inst_center_verify.get()
         self.new_fields['device_serial_no'] = self.device_serial_no_verify.get()
-        self.new_fields['batch_id'] = self.batch_id_verify.get()
+        self.new_fields['batchId'] = self.batch_id_verify.get()
         if (self.new_fields['area_covered'] == 'Enter Area Covered') or \
             (self.new_fields['weight'] == "Enter Weight") or \
             (self.new_fields['sample_id'] == "Enter Sample ID")  or \
@@ -977,7 +977,7 @@ class MyTkApp(tk.Frame):
             (self.new_fields['region_id'] == "Select Region") or \
             (self.new_fields['inst_center_id'] == "Select Inst Center") or \
             (self.new_fields['device_serial_no'] == "Enter Device SerialNo") or \
-            (self.new_fields['batch_id'] == "Enter Batch ID"):
+            (self.new_fields['batchId'] == "Enter Batch ID"):
             self.empty_field_error_msg()
         else:
             self.second_screen_forget()
