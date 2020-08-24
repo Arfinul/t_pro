@@ -434,11 +434,12 @@ class MyTkApp(tk.Frame):
             }
         resp = requests.request("GET", url, headers=headers)
         data = resp.json()['data']
-        print(data)
+
         factory_id_list = [i["id"] for i in data]
         factory_name_list = [i["name"] for i in data]
 
         self.factory_id_name_dict = dict(zip(factory_name_list, factory_id_list))
+        print(self.factory_id_name_dict)
         if len(factory_name_list) == 1:
             self.FACTORY_OPTIONS = factory_name_list
         else:
