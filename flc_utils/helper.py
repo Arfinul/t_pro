@@ -126,27 +126,27 @@ def qualix_api(payload, sectionId, farmer_code, new_fields):
     mp_encoder = MultipartEncoder(
             fields={
                 "data": json.dumps({
-                    "section_id": sectionId,
-                    "batch_id": new_fields['batchId'],
+                    "section_id": str(sectionId),
+                    "batch_id": str(new_fields['batchId']),
                     "commodity_id": "4",
-                    "device_serial_no": new_fields['device_serial_no'],
+                    "device_serial_no": str(new_fields['device_serial_no']),
                     "device_type": "FLC",
                     "device_type_id": "5",
-                    "farmer_code": farmer_code,
+                    "farmer_code": "QX1409936521", # str(farmer_code)
                     "location": "30.703239_76.692094",
-                    "lot_id": new_fields['lot_id'],
-                    "quantity": new_fields['weight'],
+                    "lot_id": str(new_fields['lot_id']),
+                    "quantity": str(new_fields['weight']),
                     "quantity_unit": "tonnes",
-                    "sample_id": new_fields['sample_id'],
+                    "sample_id": str(new_fields['sample_id']),
                     "scan_by_user_code": "128",
                     "vendor_code": "1",
                     "inst_center_type_Id":"2",
-                    "inst_center_id": new_fields['inst_center_id'],
-                    "region_id": new_fields['region_id'],
-                    "weight": new_fields['weight'],
+                    "inst_center_id": str(new_fields['inst_center_id']),
+                    "region_id": str(new_fields['region_id']),
+                    "weight": str(new_fields['weight']),
                     "commodity_category_id":"2",
                     "commodity_name":"Tea",
-                    "area_covered": new_fields['area_covered']
+                    "area_covered": str(new_fields['area_covered'])
                     }),
                 "analyses": json.dumps(li),
                    }
