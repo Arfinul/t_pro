@@ -278,6 +278,8 @@ class MyTkApp(tk.Frame):
                     df = pd.DataFrame(combined_result)
                     df = df.astype(int)
                     self.result_dict = dict(zip(df.sum().keys(), df.sum().values))
+                    for key in self.result_dict:
+                        self.result_dict[key] = str(self.result_dict[key])
                 else:
                     self.show_error_msg("Capture atleast 1 image")
                     return False
