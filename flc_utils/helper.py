@@ -3,7 +3,11 @@ import requests
 import datetime
 import json
 import gc
+import configparser
 from requests_toolbelt.multipart.encoder import MultipartEncoder
+
+configparser = configparser.RawConfigParser()
+configparser.read('flc_utils/screens/touchScreen/gui.cfg')
 
 def get_class_count():
     txt_file = open("result.txt", "r").read()
