@@ -229,7 +229,6 @@ class MyTkApp(tk.Frame):
     def details_entered_success(self):
         self.startDemo.place_forget() 
         self.capture.place_forget()
-        self.entered.place_forget()
         self.farmer_entry.place_forget()
         self.sector_entry.place_forget()
         self.factory_entry.place_forget()
