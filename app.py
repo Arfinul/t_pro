@@ -245,7 +245,6 @@ class MyTkApp(tk.Frame):
         self.shutdown_button.place_forget()
         # self.rainy_season_checkbox.place_forget()
         self.remove_numpad()
-        self.start_jetson_fan()
     
     def display_all_options(self):
         if self.options_displayed == False:
@@ -514,6 +513,7 @@ class MyTkApp(tk.Frame):
                 userName = response.json()["user"]["name"]
                 self.welcome_text.configure(text="Welcome, " + userName.title())
                 status = True
+                self.start_jetson_fan()
         except Exception as e:
             print("Exception during login: ", e)
         return status
