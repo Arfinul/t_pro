@@ -183,7 +183,7 @@ class MyTkApp(tk.Frame):
 
         self.header.place(x=int(configparser.get('gui-config', 'title_x')), y=int(configparser.get('gui-config', 'title_y')))
         self.panel.place(x=int(configparser.get('gui-config', 'login_image_x')), y=int(configparser.get('gui-config', 'login_image_y')))
-        self.footer.place(x=0, y=440)
+        self.footer.place(x=0, y=450)
 
         img_bg = ImageTk.PhotoImage(Image.open(configparser.get('gui-config', 'bg_image')))
         self.panel_bg.configure(image=img_bg)
