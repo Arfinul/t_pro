@@ -661,9 +661,7 @@ class MyTkApp(tk.Frame):
 
 
     def send_data_api(self):
-        import pdb
-        pdb.set_trace()
-        ccId = int(self.factory_id_name_dict[self.factory_verify.get()]),
+        ccId = int(self.factory_id_name_dict[self.factory_verify.get()])
         sectionId = int(self.section_id_name_dict[self.section_verify.get()])
         farmer_code = self.farmer_verify.get()
 
