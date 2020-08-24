@@ -439,7 +439,7 @@ class MyTkApp(tk.Frame):
         factory_name_list = [i["name"] for i in data]
 
         self.factory_id_name_dict = dict(zip(factory_name_list, factory_id_list))
-        print(self.factory_id_name_dict)
+
         if len(factory_name_list) == 1:
             self.FACTORY_OPTIONS = factory_name_list
         else:
@@ -661,6 +661,8 @@ class MyTkApp(tk.Frame):
 
 
     def send_data_api(self):
+        import pdb
+        pdb.set_trace()
         ccId = int(self.factory_id_name_dict[self.factory_verify.get()]),
         sectionId = int(self.section_id_name_dict[self.section_verify.get()])
         farmer_code = self.farmer_verify.get()
