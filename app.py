@@ -520,18 +520,18 @@ class MyTkApp(tk.Frame):
 
 
     def get_class_count(self):
-        _1lb = self.result_dict['1LeafBud_Count']
-        _2lb = self.result_dict['2LeafBud_Count']
-        _3lb = self.result_dict['3LeafBud_Count']
-        _1bj = self.result_dict['1LeafBanjhi_Count']
-        _2bj = self.result_dict['2LeafBanjhi_Count']
-        _3bj = self.result_dict['3LeafBanjhi_Count']
-        _1bud = self.result_dict['1Bud_Count']
-        _1banjhi = self.result_dict['1Banjhi_Count']
-        _1leaf = self.result_dict['1Leaf_Count']
-        _2leaf = self.result_dict['2Leaf_Count']
-        _3leaf = self.result_dict['3Leaf_Count']
-        _total = self.result_dict['Total_Bunches']
+        _1lb = int(self.result_dict['1LeafBud_Count'])
+        _2lb = int(self.result_dict['2LeafBud_Count'])
+        _3lb = int(self.result_dict['3LeafBud_Count'])
+        _1bj = int(self.result_dict['1LeafBanjhi_Count'])
+        _2bj = int(self.result_dict['2LeafBanjhi_Count'])
+        _3bj = int(self.result_dict['3LeafBanjhi_Count'])
+        _1bud = int(self.result_dict['1Bud_Count'])
+        _1banjhi = int(self.result_dict['1Banjhi_Count'])
+        _1leaf = int(self.result_dict['1Leaf_Count'])
+        _2leaf = int(self.result_dict['2Leaf_Count'])
+        _3leaf = int(self.result_dict['3Leaf_Count'])
+        _total = int(self.result_dict['Total_Bunches'])
         _perc = ((_1lb + _2lb + (_3lb/2) + _1bj + _2bj + _1bud + _1banjhi) / _total) * 100
 
         return _1lb, _2lb, _3lb, _1bj, _2bj,_3bj, _1bud, _1banjhi, _1leaf, _2leaf, _3leaf, _perc, _total
