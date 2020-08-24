@@ -57,7 +57,7 @@ class MyTkApp(tk.Frame):
         self.window = master
         self.x = self.window.winfo_x()
         self.y = self.window.winfo_y()
-        self.w = 150
+        self.w = 300
         self.h = 60
 
         self.window.title("Fine Leaf Count")
@@ -151,8 +151,8 @@ class MyTkApp(tk.Frame):
         
 
         self.welcome_text = Label(self.window, text="Welcome, ", font=('times', 15, 'bold'), bg="#f7f0f5")
-        self.capture = tk.Button(self.window, text="Capture", command=self.capture_image, fg="white", bg="#539051", width=int(configparser.get('gui-config', 'signin_btn_width'))/2,height=int(configparser.get('gui-config', 'signin_btn_height')), font=('times', 16, 'bold'))
-        self.entered = tk.Button(self.window, text="Test", command=self.details_verify, fg="white", bg="#539051", width=int(configparser.get('gui-config', 'signin_btn_width'))/2,height=int(configparser.get('gui-config', 'signin_btn_height')), font=('times', 16, 'bold'))
+        self.capture = tk.Button(self.window, text="Capture", command=self.capture_image, fg="white", bg="#539051", width=10,height=int(configparser.get('gui-config', 'signin_btn_height')), font=('times', 16, 'bold'))
+        self.entered = tk.Button(self.window, text="Test", command=self.details_verify, fg="white", bg="#539051", width=10,height=int(configparser.get('gui-config', 'signin_btn_height')), font=('times', 16, 'bold'))
         self.formula = Label(self.window, text="FLC = 1LB + 2LB + 1Banjhi + (0.5 * 3LB)", font=("Helvetica", 15), background='white')
 
         img = ImageTk.PhotoImage(Image.open(configparser.get('gui-config', 'logo')))
@@ -267,6 +267,9 @@ class MyTkApp(tk.Frame):
         img_name = "capture/{}.png".format(img_counter)
         cv2.imwrite(img_name, frame)
         self.image_list.append(img_name)
+        count = str(len(self.image_list))
+        name = f"Test ({count})"
+        self.entered.configure(text=name)
 
 
     def start_testing(self, capture_image):
@@ -279,7 +282,8 @@ class MyTkApp(tk.Frame):
                     df = df.astype(int)
                     self.result_dict = dict(zip(df.sum().keys(), df.sum().values))
                 else:
-                    self.show_error_msg("Capture atleat 1 image")
+                    self.show_error_msg("Capture atleast 1 image")
+                    return False
             else:
                 img_name = "capture/demo_image.png"
                 self.result_dict = server(img_name)
@@ -287,10 +291,12 @@ class MyTkApp(tk.Frame):
             self.image_list = []
             self.show_results_on_display()
             self.endRecord.place(x=int(configparser.get('gui-config', 'endrecord_btn_x')), y=int(configparser.get('gui-config', 'endrecord_btn_y')))
+            return True
         except Exception as e:
             print(e)
             self.endRecord.place_forget()
             self.startDemo.configure(bg="#539051", state="active")
+            return False
 
 
     def demo_video(self):
@@ -299,8 +305,9 @@ class MyTkApp(tk.Frame):
         factory = self.factory_verify.get()
         division = self.division_verify.get()    
         if farmer not in ["", "Enter farmer Code"] and sector not in ["", "Select section ID"] and factory not in ["", "Select factory"] and division not in ["", "Select division ID"]:
-            self.details_entered_success()
-            self.start_testing(False)
+            status = self.start_testing(False)
+            if status:
+                self.details_entered_success()
         else:
             self.show_error_msg("Please fill all details.")
         
@@ -453,8 +460,8 @@ class MyTkApp(tk.Frame):
         self.factory_entry.place(x=520, y=155, height=40, width=190)
         self.division_entry.place(x=520, y=200, height=40, width=190)
         self.sector_entry.place(x=520, y=245, height=40, width=190)
-        self.capture.place(x=520, y=305)
-        self.entered.place(x=600, y=305)
+        self.capture.place(x=495, y=305)
+        self.entered.place(x=615, y=305)
         self.startDemo.place(x=520, y=360)
         # self.rainy_season_checkbox.place(x=520, y=80)
 
@@ -648,7 +655,7 @@ class MyTkApp(tk.Frame):
         self.details_not_filled_screen = Toplevel(self.window)
         self.details_not_filled_screen.geometry("%dx%d+%d+%d" % (self.w, self.h, self.x + 300, self.y + 200))
         self.details_not_filled_screen.title("Error")
-        Label(self.details_not_filled_screen, text=message).pack()
+        Label(self.details_not_filled_screen, text=message, font=("Helvetica", 15)).pack()
         Button(self.details_not_filled_screen, text="OK", command=self.delete_details_not_filled_screen).pack()
 
 
@@ -663,8 +670,9 @@ class MyTkApp(tk.Frame):
         factory = self.factory_verify.get()
         division = self.division_verify.get()    
         if farmer not in ["", "Enter farmer Code"] and sector not in ["", "Select section ID"] and factory not in ["", "Select factory"] and division not in ["", "Select division ID"]:
-            self.details_entered_success()
-            self.start_testing(True)
+            status = self.start_testing(True)
+            if status:
+                self.details_entered_success()
         else:
             self.show_error_msg("Please fill all details.")
 
