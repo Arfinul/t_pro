@@ -289,7 +289,6 @@ class MyTkApp(tk.Frame):
             print(self.result_dict)
             self.image_list = []
             self.show_results_on_display()
-            self.endRecord.place(x=int(configparser.get('gui-config', 'endrecord_btn_x')), y=int(configparser.get('gui-config', 'endrecord_btn_y')))
             return True
         except Exception as e:
             print(e)
@@ -623,6 +622,7 @@ class MyTkApp(tk.Frame):
             text_result += i + ': ' + str(self.result_dict[i]) + '\n'
         self._flc_btn.configure(text=text_result)
         self._flc_btn.place(x=60,y=130)
+        self.endRecord.place(x=int(configparser.get('gui-config', 'endrecord_btn_x')), y=int(configparser.get('gui-config', 'endrecord_btn_y')))
         gc.collect()
              
      
