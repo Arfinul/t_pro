@@ -2,6 +2,7 @@ import os
 import requests
 import datetime
 import json
+import gc
 from requests_toolbelt.multipart.encoder import MultipartEncoder
 
 def get_class_count():
