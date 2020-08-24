@@ -66,7 +66,7 @@ class MyTkApp(tk.Frame):
         self.window.protocol("WM_DELETE_WINDOW", self.on_closing)
 
         self.header = tk.Label(self.window, text="                                 Fine Leaf Count Nano", fg="white", bg="#539051", width=int(configparser.get('gui-config', 'title_width')), height=int(configparser.get('gui-config', 'title_height')), font=('times', 30, 'bold'))
-        self.footer = tk.Label(self.window, text="                                                    © 2020 Agnext Technologies. All Rights Reserved                                                          ", fg="white", bg="#2b2c28", width=160, height=2, font=('times', 10, 'bold'))
+        self.footer = tk.Label(self.window, text="                                                    © 2020 AgNext Technologies. All Rights Reserved                                                          ", fg="white", bg="#2b2c28", width=160, height=2, font=('times', 10, 'bold'))
 
         self.panel = Label(self.window, bg='#539051')
         self.graph = Label(self.window)
@@ -161,7 +161,7 @@ class MyTkApp(tk.Frame):
 
         self.header.place(x=int(configparser.get('gui-config', 'title_x')), y=int(configparser.get('gui-config', 'title_y')))
         self.panel.place(x=int(configparser.get('gui-config', 'login_image_x')), y=int(configparser.get('gui-config', 'login_image_y')))
-        self.footer.place(x=0, y=437)
+        self.footer.place(x=0, y=450)
 
         img_bg = ImageTk.PhotoImage(Image.open(configparser.get('gui-config', 'bg_image')))
         self.panel_bg.configure(image=img_bg)
@@ -227,8 +227,7 @@ class MyTkApp(tk.Frame):
 
 
     def details_entered_success(self):
-        self.startDemo.place_forget()  
-        self.endRecord.place_forget()
+        self.startDemo.place_forget() 
         self.capture.place_forget()
         self.entered.place_forget()
         self.farmer_entry.place_forget()
@@ -288,6 +287,7 @@ class MyTkApp(tk.Frame):
                 self.result_dict = server(img_name)
             print(self.result_dict)
             self.image_list = []
+            self.entered.configure(text="Test")
             self.show_results_on_display()
             return True
         except Exception as e:
@@ -623,7 +623,6 @@ class MyTkApp(tk.Frame):
         self._flc_btn.configure(text=text_result)
         self._flc_btn.place(x=60,y=130)
         self.endRecord.place(x=int(configparser.get('gui-config', 'endrecord_btn_x')), y=int(configparser.get('gui-config', 'endrecord_btn_y')))
-        gc.collect()
              
      
     def login_verify(self):
