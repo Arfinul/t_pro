@@ -72,7 +72,8 @@ def get_class_count():
     return _1lb, _2lb, _3lb, _1bj, _2bj, _coarse, totalCount, _perc
 
 def get_saved_status(token, userID, ccId, sectionId, farmer_id):
-    payload = {}
+    payload = {},
+    _perc = 0.0
     if configparser.get('gui-config', 'internet') == 'true':
         _1lb, _2lb, _3lb, _1bj, _2bj, _coarse, totalCount, _perc = get_class_count()
 
@@ -115,7 +116,7 @@ def get_saved_status(token, userID, ccId, sectionId, farmer_id):
             out_file.write(txt_file)
             out_file.write("\n")
         saved = "true"
-    return saved, payload
+    return saved, payload, _perc
 
 def qualix_api(payload, sectionId, farmer_code, new_fields):
     li = []

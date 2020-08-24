@@ -665,7 +665,7 @@ class MyTkApp(tk.Frame):
         sectionId = int(self.section_id_name_dict[self.section_verify.get()])
         farmer_code = self.farmer_verify.get()
 
-        saved, payload = helper.get_saved_status(self.token, self.userID, ccId, sectionId, self.farmer_id)
+        saved, payload, _perc = helper.get_saved_status(self.token, self.userID, ccId, sectionId, self.farmer_id)
         qualix = helper.qualix_api(payload, sectionId, farmer_code, self.new_fields)
 
         if saved == "true" and qualix == 200:
