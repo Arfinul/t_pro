@@ -22,32 +22,13 @@ import shutil
 import glob
 from flask_server import server
 
-PATH = 'reports/*'
-
-create_folders = ['reports', 'reports/1lb', 'reports/2lb', 'reports/3lb', 'reports/1bj', 'reports/2bj', 'reports/coarse', 'reports/cluster']
-for folder in create_folders:
-    if not os.path.exists(folder):
-        os.mkdir(folder)
-
 configparser = configparser.RawConfigParser()   
 #os.chdir("/home/agnext/Documents/flc")  # Agnext
 
 configparser.read('flc_utils/screens/touchScreen/gui.cfg')
 is_admin = False
 
-cmd = """
-export LD_LIBRARY_PATH=/home/agnext/Documents/flc/
-./uselib cfg/jorhat_Dec.names cfg/jorhat_Dec.cfg weights/jorhat_Dec_final.weights web_camera > output.txt
-"""
-
-cmd_demo = """
-export LD_LIBRARY_PATH=/home/agnext/Documents/flc/
-./uselib cfg/jorhat_Dec.names cfg/jorhat_Dec.cfg weights/jorhat_Dec_final.weights z_testData/{0} > output.txt
-""".format(configparser.get('gui-config', 'demo_video'))
-
 pwd = configparser.get('gui-config', 'sys_password')
-cmd_camera_setting = "/usr/local/ecam_tk1/bin/ecam_tk1_guvcview"
-reset_camera_setting = "/usr/local/ecam_tk1/bin/ecam_tk1_guvcview --profile=flc_utils/guvcview-config/default.gpfl"
 jetson_clock_cmd = 'jetson_clocks'
 record_cam_cmd = "python3 flc_utils/guiHelpers/record_cam_gui.py"
 
@@ -71,6 +52,7 @@ class MyTkApp(tk.Frame):
         self.options_displayed = False
         self.data = {}
         self.result_dict = {}
+        self.image_list = []
 
         self.window = master
         self.x = self.window.winfo_x()
@@ -169,7 +151,8 @@ class MyTkApp(tk.Frame):
         
 
         self.welcome_text = Label(self.window, text="Welcome, ", font=('times', 15, 'bold'), bg="#f7f0f5")
-        self.entered = tk.Button(self.window, text="Test Image", command=self.details_verify, fg="white", bg="#539051", width=int(configparser.get('gui-config', 'signin_btn_width')),height=int(configparser.get('gui-config', 'signin_btn_height')), font=('times', 16, 'bold'))
+        self.capture = tk.Button(self.window, text="Capture", command=self.capture_image, fg="white", bg="#539051", width=int(configparser.get('gui-config', 'signin_btn_width'))/2,height=int(configparser.get('gui-config', 'signin_btn_height')), font=('times', 16, 'bold'))
+        self.entered = tk.Button(self.window, text="Test", command=self.details_verify, fg="white", bg="#539051", width=int(configparser.get('gui-config', 'signin_btn_width'))/2,height=int(configparser.get('gui-config', 'signin_btn_height')), font=('times', 16, 'bold'))
         self.formula = Label(self.window, text="FLC = 1LB + 2LB + 1Banjhi + (0.5 * 3LB)", font=("Helvetica", 15), background='white')
 
         img = ImageTk.PhotoImage(Image.open(configparser.get('gui-config', 'logo')))
@@ -246,6 +229,7 @@ class MyTkApp(tk.Frame):
     def details_entered_success(self):
         self.startDemo.place_forget()  
         self.endRecord.place_forget()
+        self.capture.place_forget()
         self.entered.place_forget()
         self.farmer_entry.place_forget()
         self.sector_entry.place_forget()
@@ -276,21 +260,31 @@ class MyTkApp(tk.Frame):
             self.options_displayed = False
 
 
+    def capture_image(self):
+        img_counter = len(os.listdir('capture'))
+        cam = cv2.VideoCapture(0)
+        ret, frame = cam.read()
+        img_name = "capture/{}.png".format(img_counter)
+        cv2.imwrite(img_name, frame)
+        self.image_list.append(img_name)
+
+
     def start_testing(self, capture_image):
         try:
             os.makedirs('capture', exist_ok=True)
             if capture_image:
-                img_counter = len(os.listdir('capture'))
-                cam = cv2.VideoCapture(0)
-                ret, frame = cam.read()
-                img_name = "capture/{}.png".format(img_counter)
-                cv2.imwrite(img_name, frame)
+                if self.image_list:
+                    combined_result = [server(img) for img in self.image_list]
+                    df = pd.DataFrame(combined_result)
+                    df = df.astype(int)
+                    self.result_dict = dict(zip(df.sum().keys(), df.sum().values))
+                else:
+                    self.show_error_msg("Capture atleat 1 image")
             else:
                 img_name = "capture/demo_image.png"
-            print(img_name)
-            self.result_dict = server(img_name)
+                self.result_dict = server(img_name)
             print(self.result_dict)
-
+            self.image_list = []
             self.show_results_on_display()
             self.endRecord.place(x=int(configparser.get('gui-config', 'endrecord_btn_x')), y=int(configparser.get('gui-config', 'endrecord_btn_y')))
         except Exception as e:
@@ -308,7 +302,7 @@ class MyTkApp(tk.Frame):
             self.details_entered_success()
             self.start_testing(False)
         else:
-            self.show_error_msg()
+            self.show_error_msg("Please fill all details.")
         
 
     def end_video(self):
@@ -360,6 +354,7 @@ class MyTkApp(tk.Frame):
                 self.sector_entry.place_forget()
                 self.factory_entry.place_forget()
                 self.division_entry.place_forget()
+                self.capture.place_forget()
                 self.entered.place_forget()
                 # self.rainy_season_checkbox.place_forget()
             except:
@@ -451,14 +446,15 @@ class MyTkApp(tk.Frame):
             self.hide_numpad()
         except Exception as e:
             print(e)
-            self.enter_correct_details()
+            self.show_error_msg("Please enter correct code.")
 
     def place_inputs(self):
         self.farmer_entry.place(x=520,y=110, height=40, width=190)
         self.factory_entry.place(x=520, y=155, height=40, width=190)
         self.division_entry.place(x=520, y=200, height=40, width=190)
         self.sector_entry.place(x=520, y=245, height=40, width=190)
-        self.entered.place(x=520, y=305)
+        self.capture.place(x=520, y=305)
+        self.entered.place(x=600, y=305)
         self.startDemo.place(x=520, y=360)
         # self.rainy_season_checkbox.place(x=520, y=80)
 
@@ -631,7 +627,7 @@ class MyTkApp(tk.Frame):
             if status == True:
                 self.login_sucess()
             else:
-                self.user_not_found()
+                self.show_error_msg("User Not Found")
         else:
             list_of_files = os.listdir("flc_utils/noInternetFiles/")
             if username1 in list_of_files:
@@ -641,57 +637,23 @@ class MyTkApp(tk.Frame):
                     self.welcome_text.configure(text="Welcome, " + username1.title())
                     self.login_sucess()
                 else:
-                    self.password_not_recognised()
+                    self.show_error_msg("Invalid Password.")
 
             else:
-                self.user_not_found()
+                self.show_error_msg("User Not Found")
         gc.collect()
 
 
-    def show_error_msg(self):
+    def show_error_msg(self, message):
         self.details_not_filled_screen = Toplevel(self.window)
         self.details_not_filled_screen.geometry("%dx%d+%d+%d" % (self.w, self.h, self.x + 300, self.y + 200))
         self.details_not_filled_screen.title("Error")
-        Label(self.details_not_filled_screen, text="Please fill all details.").pack()
+        Label(self.details_not_filled_screen, text=message).pack()
         Button(self.details_not_filled_screen, text="OK", command=self.delete_details_not_filled_screen).pack()
 
 
     def delete_details_not_filled_screen(self):
         self.details_not_filled_screen.destroy()
-
-
-    def enter_correct_details(self):
-        self.enter_correct_details_screen = Toplevel(self.window)
-        self.enter_correct_details_screen.geometry("%dx%d+%d+%d" % (self.w, self.h, self.x + 300, self.y + 200))
-        self.enter_correct_details_screen.title("Error")
-        Label(self.enter_correct_details_screen, text="Please enter correct code.").pack()
-        Button(self.enter_correct_details_screen, text="OK", command=self.enter_correct_details_destroy).pack()
-
-
-    def enter_correct_details_destroy(self):
-        self.enter_correct_details_screen.destroy()
-
-    def password_not_recognised(self):
-        self.password_not_recog_screen = Toplevel(self.window)
-        self.password_not_recog_screen.geometry("%dx%d+%d+%d" % (self.w, self.h, self.x + 300, self.y + 200))
-        self.password_not_recog_screen.title("Error")
-        Label(self.password_not_recog_screen, text="Invalid Password ").pack()
-        Button(self.password_not_recog_screen, text="OK", command=self.delete_password_not_recognised).pack()
-
-     
-    def delete_password_not_recognised(self):
-        self.password_not_recog_screen.destroy()
-
-    def user_not_found(self):
-        self.user_not_found_screen = Toplevel(self.window)
-        self.user_not_found_screen.geometry("%dx%d+%d+%d" % (self.w, self.h, self.x + 300, self.y + 200))
-        self.user_not_found_screen.title("Error")
-        Label(self.user_not_found_screen, text="User Not Found").pack()
-        Button(self.user_not_found_screen, text="OK", command=self.delete_user_not_found_screen).pack()
-  
-     
-    def delete_user_not_found_screen(self):
-        self.user_not_found_screen.destroy()
 
 
     def details_verify(self): 
@@ -704,7 +666,7 @@ class MyTkApp(tk.Frame):
             self.details_entered_success()
             self.start_testing(True)
         else:
-            self.show_error_msg()
+            self.show_error_msg("Please fill all details.")
 
      
     def enter_details(self):
