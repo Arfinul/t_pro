@@ -695,7 +695,6 @@ class MyTkApp(tk.Frame):
         fig.savefig('flc_utils/result.png')
         cv2_img = cv2.imread("flc_utils/result.png")
         new_img = cv2.resize(cv2_img, (400, 270))
-        gc.collect()
         cv2.imwrite("flc_utils/result.png", new_img)
 
 
@@ -752,7 +751,6 @@ class MyTkApp(tk.Frame):
         self._2bj_btn.place(x=300,y=330)
 
         self.formula.place(x=60,y=415)
-        gc.collect()
              
      
     def login_verify(self):
