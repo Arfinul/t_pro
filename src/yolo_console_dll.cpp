@@ -400,7 +400,7 @@ int main(int argc, char *argv[])
     }
     else if (argc > 1) filename = argv[1];
 
-    float const thresh = (argc > 5) ? std::stof(argv[5]) : 0.50;
+    float const thresh = (argc > 5) ? std::stof(argv[5]) : 0.60;
 
     Detector detector(cfg_file, weights_file);
 
@@ -418,10 +418,10 @@ int main(int argc, char *argv[])
     bool const send_network = false;        // true - for remote detection
     bool const use_kalman_filter = true;   // true - for stationary camera
 
-    bool detection_sync = true;             // true - for video-file
+    bool detection_sync = false;             // true - for video-file
     //bool detection_sync = false;   //Agnext commented, for detection on each frame, this solve blinking issue
 #ifdef TRACK_OPTFLOW    // for slow GPU
-    //detection_sync = false;   //Agnext commented, for detection on each frame, this solve blinking issue
+    detection_sync = false;   //Agnext commented, for detection on each frame, this solve blinking issue
     Tracker_optflow tracker_flow;
     //detector.wait_stream = true;
 #endif  // TRACK_OPTFLOW
