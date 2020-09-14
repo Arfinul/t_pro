@@ -467,36 +467,35 @@ class MyTkApp(tk.Frame):
 
         _1lb, _2lb, _3lb, _1bj, _2bj, _coarse, totalCount, _perc = helper.get_class_count()
 
-        updated_count = totalCount + 40
         self._flc_btn.configure(text="FLC %      " + str(_perc))
-        self._total_btn.configure(text="Total Leaves     " + str(updated_count))
+        self._total_btn.configure(text="Total Leaves     " + str(totalCount))
         try:
-            self._1lb_btn.configure(text="1LB %         " + str(round(_1lb*100/updated_count, 2)))
+            self._1lb_btn.configure(text="1LB %         " + str(round(_1lb*100/totalCount, 2)))
         except Exception as e:
             print(e)
             self._1lb_btn.configure(text="1LB %          0")
         try:
-            self._2lb_btn.configure(text="2LB %         " + str(round(_2lb*100/updated_count, 2)))
+            self._2lb_btn.configure(text="2LB %         " + str(round(_2lb*100/totalCount, 2)))
         except Exception as e:
             print(e)
             self._2lb_btn.configure(text="2LB %        0")
         try:
-            self._1bj_btn.configure(text="1Banjhi %      " + str(round(_1bj*100/updated_count, 2)))
+            self._1bj_btn.configure(text="1Banjhi %      " + str(round(_1bj*100/totalCount, 2)))
         except Exception as e:
             print(e)
             self._1bj_btn.configure(text="1Banjhi %     0")
         try:
-            self._3lb_btn.configure(text="3LB %        " + str(round(_3lb*50/updated_count, 2)))
+            self._3lb_btn.configure(text="3LB %        " + str(round(_3lb*50/totalCount, 2)))
         except Exception as e:
             print(e)
             self._3lb_btn.configure(text="3LB %       0")
         try:
-            self._coarse_btn.configure(text="Coarse %      " + str(round(_coarse*100/updated_count, 2)))
+            self._coarse_btn.configure(text="Coarse %      " + str(round(_coarse*100/totalCount, 2)))
         except Exception as e:
             print(e)
             self._coarse_btn.configure(text="Coarse %      0")
         try:
-            self._2bj_btn.configure(text="2Banjhi %     " + str(round(_2bj*100/updated_count, 2)))
+            self._2bj_btn.configure(text="2Banjhi %     " + str(round(_2bj*100/totalCount, 2)))
         except Exception as e:
             print(e)
             self._2bj_btn.configure(text="2Banjhi %     0")
