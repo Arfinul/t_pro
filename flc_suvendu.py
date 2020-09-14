@@ -619,15 +619,15 @@ class MyTkApp(tk.Frame):
         return status
 
     def send_data_api(self):
-        ccId = int(self.factory_id_name_dict[self.factory_verify.get()])
-        sectionId = int(self.section_id_name_dict[self.section_verify.get()])
-        farmer_code = self.farmer_verify.get()
-        qualix_status = 0
-        if helper.is_internet_available():
-            # saved, payload, _perc = helper.get_saved_status(self.token, self.userID, ccId, sectionId, self.farmer_id)
-            _1lb, _2lb, _3lb, _1bj, _2bj, _coarse, totalCount, _perc, payload = helper.get_payload()
-            qualix_status = helper.qualix_api(payload, sectionId, farmer_code, self.new_fields)
-
+        # ccId = int(self.factory_id_name_dict[self.factory_verify.get()])
+        # sectionId = int(self.section_id_name_dict[self.section_verify.get()])
+        # farmer_code = self.farmer_verify.get()
+        
+        _1lb, _2lb, _3lb, _1bj, _2bj, _coarse, totalCount, _perc, payload = helper.get_payload()
+        # qualix_status = 0
+        # if helper.is_internet_available():
+        #     qualix_status = helper.qualix_api(payload, sectionId, farmer_code, self.new_fields)
+        qualix_status = 200
         if qualix_status == 200:
             self.msg_sent.configure(text="Data saved", fg="green")
             helper.maintain_spreadsheet(_1lb, _2lb, _3lb, _1bj, _2bj, _coarse, totalCount, _perc)
@@ -744,15 +744,15 @@ class MyTkApp(tk.Frame):
 
     def details_verify(self): 
         gc.collect() 
-        farmer = self.farmer_verify.get()
-        sector = self.section_verify.get()  
-        factory = self.factory_verify.get()
-        division = self.division_verify.get()    
-        if farmer not in ["", "Enter farmer Code"] and sector not in ["", "Select section ID"] and factory not in ["", "Select factory"] and division not in ["", "Select division ID"]:
-            self.details_entered_success()
-            self.start_testing(cmd)
-        else:
-            self.show_error_msg("Please fill all details.")
+        # farmer = self.farmer_verify.get()
+        # sector = self.section_verify.get()  
+        # factory = self.factory_verify.get()
+        # division = self.division_verify.get()    
+        # if farmer not in ["", "Enter farmer Code"] and sector not in ["", "Select section ID"] and factory not in ["", "Select factory"] and division not in ["", "Select division ID"]:
+        self.details_entered_success()
+        self.start_testing(cmd)
+        # else:
+        #     self.show_error_msg("Please fill all details.")
 
      
     def enter_details(self):
@@ -872,19 +872,19 @@ class MyTkApp(tk.Frame):
         self.new_fields['inst_center_id'] = self.center_id_name_dict[self.inst_center_verify.get()] if self.inst_center_verify.get() != 'Select Inst Center' else self.inst_center_verify.get()
         self.new_fields['device_serial_no'] = self.device_serial_no_verify.get()
         self.new_fields['batchId'] = self.batch_id_verify.get()
-        if (self.new_fields['area_covered'] == 'Enter Area Covered') or \
-            (self.new_fields['weight'] == "Enter Weight") or \
-            (self.new_fields['sample_id'] == "Enter Sample ID")  or \
-            (self.new_fields['lot_id'] == "Enter Lot ID") or \
-            (self.new_fields['region_id'] == "Select Region") or \
-            (self.new_fields['inst_center_id'] == "Select Inst Center") or \
-            (self.new_fields['device_serial_no'] == "Enter Device SerialNo") or \
-            (self.new_fields['batchId'] == "Enter Batch ID"):
-            self.show_error_msg("Please fill all details.")
-        else:
-            self.second_screen_forget()
-            self.enter_details()      
-            self.start_jetson_fan()
+        # if (self.new_fields['area_covered'] == 'Enter Area Covered') or \
+        #     (self.new_fields['weight'] == "Enter Weight") or \
+        #     (self.new_fields['sample_id'] == "Enter Sample ID")  or \
+        #     (self.new_fields['lot_id'] == "Enter Lot ID") or \
+        #     (self.new_fields['region_id'] == "Select Region") or \
+        #     (self.new_fields['inst_center_id'] == "Select Inst Center") or \
+        #     (self.new_fields['device_serial_no'] == "Enter Device SerialNo") or \
+        #     (self.new_fields['batchId'] == "Enter Batch ID"):
+        #     self.show_error_msg("Please fill all details.")
+        # else:
+        self.second_screen_forget()
+        self.enter_details()      
+        self.start_jetson_fan()
 
     def login_success(self):
         self.username_login_entry.place_forget()

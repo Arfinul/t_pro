@@ -3,8 +3,15 @@ import requests
 import datetime
 import json
 import gc
+from urllib.request import urlopen
 import configparser
 from requests_toolbelt.multipart.encoder import MultipartEncoder
+
+import pickle
+import os.path
+from googleapiclient.discovery import build
+from google_auth_oauthlib.flow import InstalledAppFlow
+from google.auth.transport.requests import Request
 
 configparser = configparser.RawConfigParser()
 configparser.read('flc_utils/screens/touchScreen/gui.cfg')
@@ -20,61 +27,16 @@ def get_class_count():
     _2bj = int(li[5].split(": ")[1])
     _cluster = int(li[6].split(": ")[1])
     _coarse = int(li[7].split(": ")[1])
-    time_taken = li[9].split(": ")[1]
-    # _perc = round(float(li[8].split(": ")[1]), 2)
-    # _perc = _perc if math.isnan(float(_perc)) == False else 0
+    _perc = round(float(li[8].split(": ")[1]), 2)
+    _perc = _perc if math.isnan(float(_perc)) == False else 0
 
     totalCount = int(_1lb + _2lb + _3lb + _1bj + _2bj + _coarse)
-
-    _1lb = int(round(_1lb * 1.1346, 0))
-    _2lb = int(round(_2lb * 1.2006, 0))
-    _1bj = int(round(_1bj * 1.3288, 0))
-    _3lb = int(round(_3lb * 1.4213, 0))
-    _2bj = int(round(_2bj * 0.85, 0))
-
-    _coarse = int(round(_coarse - totalCount * 0.012, 0))
-    _coarse = _coarse if _coarse > 0 else 0
-
-    totalCount = _1lb + _2lb + _3lb + _1bj + _2bj + _coarse
-    # rainy = int(self.rainy_season.get())
-
-    # try:
-    #     if rainy == 0:
-    #         print("Non - Rainy season")
-    #         _perc = round(((_1lb + _2lb + (_3lb/2) + _1bj) / totalCount)*100, 2)
-    #     else:
-    #         print("Rainy season")
-    #         _perc = round(((_1lb + _2lb + (_3lb*3/4) + _1bj) / totalCount)*100, 2)
-    # except Exception as e:
-    #     print(e)
-    #     _perc = 0
-
-    try:
-        _perc = round(((_1lb + _2lb + (_3lb/2) + _1bj) / totalCount)*100, 2)
-    except Exception as e:
-        print(e)
-        _perc = 0
-
-    with open("factor.txt", "w") as factor:
-        factor.write("Frame: "+ frame_count + "\n")
-        factor.write("1LB: " + str(_1lb) + "\n")
-        factor.write("2LB: " + str(_2lb) + "\n")
-        factor.write("3LB: " + str(_3lb) + "\n")
-        factor.write("1Bj: " + str(_1bj) + "\n")
-        factor.write("2Bj: " + str(_2bj) + "\n")
-        factor.write("Coarse: " + str(_coarse) + "\n")
-        factor.write("Cluster: " + str(_cluster) + "\n")
-        factor.write("Total: " + str(totalCount) + "\n")
-        factor.write("FLC % " + str(_perc) + "\n")
-        factor.write("Time: " + time_taken + "\n")
-    gc.collect()
-    
     return _1lb, _2lb, _3lb, _1bj, _2bj, _coarse, totalCount, _perc
 
 def get_saved_status(token, userID, ccId, sectionId, farmer_id):
-    payload = {},
+    payload = {}
     _perc = 0.0
-    if configparser.get('gui-config', 'internet') == 'true':
+    if is_internet_available():
         _1lb, _2lb, _3lb, _1bj, _2bj, _coarse, totalCount, _perc = get_class_count()
 
         head = {
@@ -118,11 +80,19 @@ def get_saved_status(token, userID, ccId, sectionId, farmer_id):
         saved = "true"
     return saved, payload, _perc
 
+def get_payload():
+    _1lb, _2lb, _3lb, _1bj, _2bj, _coarse, totalCount, _perc = get_class_count()
+    payload = {'one_leaf_bud': _1lb, 'two_leaf_bud': _2lb, 'three_leaf_bud': _3lb, 
+                'one_leaf_banjhi': _1bj, 'two_leaf_banjhi': _2bj, 
+                'one_bud_count': 0, 'one_leaf_count': 0, 'two_leaf_count': 0,
+                'three_leaf_count': 0, 'one_banjhi_count': 0, 
+                'total_count': totalCount, 'quality_score': _perc}
+    return _1lb, _2lb, _3lb, _1bj, _2bj, _coarse, totalCount, _perc, payload
+
 def qualix_api(payload, sectionId, farmer_code, new_fields):
     li = []
     for i in payload:
         li.append({"analysisName": i, "totalAmount": payload[i]})
-    print(li)
     mp_encoder = MultipartEncoder(
             fields={
                 "data": json.dumps({
@@ -161,36 +131,40 @@ def qualix_api(payload, sectionId, farmer_code, new_fields):
     print(response.text)
     return response.status_code
 
-def token_api_qualix():
-    url = "http://23.98.216.140:8071/oauth/authorize"
-    querystring = {"response_type":"code","client_id":"client-mobile"}
-    response = requests.request("GET", url, params=querystring)
-    print(response.status_code)
+def login_api_qualix(username, password):
+    access_token = ""
+    customer_id = ""
+    try:
+        session = requests.Session()
+        session.headers['User-Agent'] = 'Mozilla/5'
 
-def login_api_qualix():
-    success = False
-    token = ''
-    customer_id = 0
-    mp_encoder = MultipartEncoder(
-            fields={
-                "Signin": "Sign+In",
-                "bearer": "mobile",
-                "username": "demooperator@gmail.com",
-                "password": "Specx123!"
-                }
+        querystring = {"response_type":"code",
+                        "client_id": "client-mobile"
+                        }
+        response = session.get("http://23.98.216.140:8071/oauth/authorize", params=querystring)
+        cookie = session.cookies
+
+        mp_encoder =  MultipartEncoder(
+                    fields={
+                        "Signin": "Sign+In",
+                        "bearer": "mobile",
+                        "username": username,
+                        "password": password
+                    })
+        headers={'Content-Type': mp_encoder.content_type}
+        querystring = {"bearer":"mobile"}
+        response = session.post(
+                    'http://23.98.216.140:8071/login',
+                    data=mp_encoder,
+                    params=querystring,
+                    headers=headers,
+                    cookies=cookie
                 )
-    querystring = {"bearer":"mobile"}
-    response = requests.post(
-            'http://23.98.216.140:8085/api/scan',
-            data=mp_encoder,
-            headers={'Content-Type': mp_encoder.content_type},
-            params=querystring
-        )
-    print(response.status_code)
-    if response.status_code == 200:
-        token = response.json()['access_token']
+        access_token = response.json()['access_token']
         customer_id = response.json()['user']['customer_id']
-    return success, token, customer_id
+        return True, access_token, customer_id
+    except:
+        return False, access_token, customer_id
 
 def regions_list_qualix(customer_id, token):
     region_names, region_ids = [], []
@@ -219,3 +193,54 @@ def inst_centers_list_qualix(region_id, customer_id, token):
     if len(center_names) == 0:
         center_names, center_ids = ['Demo Installation center'], ['13']
     return center_names, center_ids
+
+def is_internet_available():
+    try:
+        urlopen("http://216.58.192.142", timeout=3)
+        return True
+    except Exception as e:
+        return False
+
+def maintain_spreadsheet(_1lb, _2lb, _3lb, _1bj, _2bj, _coarse, totalCount, _perc):
+    # If modifying these scopes, delete the file token.pickle.
+    SCOPES = ['https://www.googleapis.com/auth/spreadsheets']
+
+    # The ID and range of a sample spreadsheet.
+    SPREADSHEET_ID = '1l21D2Da4BgEwE4abb-wYFRoW6jUoQ_F4aY93htVVGo0'
+    RANGE_NAME = 'Sheet1!A:H'
+
+    creds = None
+    # The file token.pickle stores the user's access and refresh tokens, and is
+    # created automatically when the authorization flow completes for the first
+    # time.
+    if os.path.exists('flc_utils/token.pickle'):
+        with open('flc_utils/token.pickle', 'rb') as token:
+            creds = pickle.load(token)
+    # If there are no (valid) credentials available, let the user log in.
+    if not creds or not creds.valid:
+        if creds and creds.expired and creds.refresh_token:
+            creds.refresh(Request())
+        else:
+            flow = InstalledAppFlow.from_client_secrets_file(
+                'flc_utils/credentials.json', SCOPES)
+            creds = flow.run_local_server(port=0)
+        # Save the credentials for the next run
+        with open('flc_utils/token.pickle', 'wb') as token:
+            pickle.dump(creds, token)
+
+    service = build('sheets', 'v4', credentials=creds)
+    
+    values = [
+            [
+                _1lb, _2lb, _3lb, _1bj, _2bj, _coarse, totalCount, _perc
+            ],
+        ]
+    body = {
+        'values': values
+    }
+    result = service.spreadsheets().values().append(
+        spreadsheetId=SPREADSHEET_ID, range=RANGE_NAME, 
+        valueInputOption="USER_ENTERED", body=body).execute()
+    print('{0} cells appended.'.format(result \
+                                           .get('updates') \
+                                           .get('updatedCells')))

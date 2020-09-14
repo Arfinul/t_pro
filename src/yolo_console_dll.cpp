@@ -449,7 +449,7 @@ int main(int argc, char *argv[])
     bool const send_network = false;        // true - for remote detection
     bool const use_kalman_filter = true;   // true - for stationary camera
 
-    bool detection_sync = true;             // true - for video-file
+    bool detection_sync = false;             // true - for video-file
     //bool detection_sync = false;   //Agnext commented, for detection on each frame, this solve blinking issue
 #ifdef TRACK_OPTFLOW    // for slow GPU
     //detection_sync = false;   //Agnext commented, for detection on each frame, this solve blinking issue
