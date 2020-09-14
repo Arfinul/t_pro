@@ -16,7 +16,7 @@ import gc
 from flc_utils import helper
 
 configparser = configparser.RawConfigParser()   
-# os.chdir("/home/agnext/Documents/flc")
+os.chdir("/home/agnext/Documents/flc")
 
 configparser.read('flc_utils/screens/touchScreen/gui.cfg')
 
@@ -88,7 +88,7 @@ class MyTkApp(tk.Frame):
 
         self.endRecord = tk.Button(self.window, text="Save", command=self.end_video, fg="white", bg="#539051", font=('times', 17, 'bold'), width=10, height=2)
 
-        self.msg_sent = Label(self.window, text="Data sent status", font=('times', 15), fg="green", bg='white')
+        self.msg_sent = Label(self.window, text="", font=('times', 15), fg="green", bg='white')
 
         self._flc_btn = tk.Button(self.window, text="flc", command=self.do_nothing, fg="white", bg="#318FCC", width=int(configparser.get('gui-config', 'result_btn_width')),height=int(configparser.get('gui-config', 'result_btn_height')), font=('times', 20, 'bold'))
         self._total_btn = tk.Button(self.window, text="total", command=self.do_nothing, fg="white", bg="#318FCC", width=int(configparser.get('gui-config', 'result_btn_width')),height=int(configparser.get('gui-config', 'result_btn_height')), font=('times', 20, 'bold'))
@@ -204,7 +204,6 @@ class MyTkApp(tk.Frame):
 
         self.nextBtn = tk.Button(self.window, text="Next", command=self.main_screen, fg="white", bg="#F37C62", width=12,height=2, font=('times', 16, 'bold'))
 
-
     def restart(self):
         if messagebox.askokcancel("Quit", "Do you really want to restart the system?"):
             self.window.destroy()
@@ -247,7 +246,6 @@ class MyTkApp(tk.Frame):
             self.restart_button.place_forget()
             self.shutdown_button.place_forget()
             self.options_displayed = False
-
 
     def start_testing(self, command):
         try:
@@ -414,7 +412,6 @@ class MyTkApp(tk.Frame):
             self.area_covered_entry.delete(0, tk.END)
         self.popup_keyboard(event)
 
-
     def action_weight(self, event):
         if self.weight_verify.get() == "Enter Weight":
             self.weight_entry.delete(0, tk.END)
@@ -452,14 +449,6 @@ class MyTkApp(tk.Frame):
             helper.update_spreadsheet(_1lb, _2lb, _3lb, _1bj, _2bj, _coarse, totalCount, _perc)
         else:
             self.msg_sent.configure(text="Couldn't save to servers", fg="red")
-        self._1lb_btn.place_forget()
-        self._2lb_btn.place_forget()
-        self._1bj_btn.place_forget()
-        self._3lb_btn.place_forget()
-        self._coarse_btn.place_forget()
-        self._2bj_btn.place_forget()
-        self._flc_btn.place_forget()
-        self._total_btn.place_forget()
 
         f = open('flc_utils/records.csv','a')
         f.write(self.section_verify.get() + ',' + str(_perc)+ ',' + datetime.datetime.now().strftime("%d-%m-%Y %H:%M:%S") + '\n')
@@ -559,7 +548,6 @@ class MyTkApp(tk.Frame):
             self.start_testing(cmd)
         else:
             self.show_error_msg("Please fill all details.")
-
      
     def enter_details(self):
         gph = ImageTk.PhotoImage(Image.open(configparser.get('gui-config', 'graph')))
