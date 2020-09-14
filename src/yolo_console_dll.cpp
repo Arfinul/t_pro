@@ -820,7 +820,7 @@ int main(int argc, char *argv[])
                         coarse_str = "Coarse %: " + std::to_string(perc_count_coarse); // Agnext
                         putText(draw_frame, coarse_str.substr(0,14), cv::Point2f(10, 250), cv::FONT_HERSHEY_COMPLEX_SMALL, 1.2, cv::Scalar(0, 255, 255), 1);  // Agnext
 
-                        fine_percnt = (float(count_1lb) + float(count_2lb) + float(count_3lb/2) + float(count_1Banjhi)) * 100 / total; // Agnext
+                        fine_percnt = (float(count_1lb) + float(count_2lb) + float(count_1Banjhi)) * 100 / total; // Agnext
 
                         fine_per = "FLC % : " + std::to_string(fine_percnt); // Agnext
                         putText(draw_frame, fine_per.substr(0,12), cv::Point2f(10, 280), cv::FONT_HERSHEY_COMPLEX_SMALL, 1.2, cv::Scalar(0, 255, 255), 2);  // Agnext
