@@ -13,13 +13,6 @@ import json
 import configparser
 import math
 import gc
-import pandas as pd
-import matplotlib.pyplot as plt
-import sys
-import seaborn as sns
-import threading
-import shutil
-import glob
 from flc_utils import helper
 
 configparser = configparser.RawConfigParser()   
@@ -32,11 +25,6 @@ export LD_LIBRARY_PATH=/home/agnext/Documents/flc/
 ./uselib cfg/jorhat_Dec.names cfg/jorhat_Dec.cfg weights/jorhat_Dec_final.weights web_camera > output.txt
 """
 
-cmd_demo = """
-export LD_LIBRARY_PATH=/home/agnext/Documents/flc/
-./uselib cfg/jorhat_Dec.names cfg/jorhat_Dec.cfg weights/jorhat_Dec_final.weights z_testData/{0} > output.txt
-""".format(configparser.get('gui-config', 'demo_video'))
-
 pwd = configparser.get('gui-config', 'sys_password')
 jetson_clock_cmd = 'jetson_clocks'
 
@@ -45,29 +33,26 @@ class MyTkApp(tk.Frame):
 
     def __init__(self, master):  
         tk.Frame.__init__(self, master)   
-        self.userID = ""
         self.token = ""
-        self.farmer_id = ""
         self.customer_id = ''
-        self.factory_id_name_dict = {}
+        self.garden_id_name_dict = {}
         self.section_id_name_dict = {}
         self.division_id_name_dict = {}
         self.region_id_name_dict = {}
         self.center_id_name_dict = {}
         self.SECTION_OPTIONS = ["Select section ID"]
-        self.FACTORY_OPTIONS = ["Select factory"]
+        self.GARDEN_OPTIONS = ["Select garden ID"]
         self.DIVISION_OPTIONS = ["Select division ID"] 
         self.REGIONS_OPTIONS = ['Select Region']
         self.INSTCENTER_OPTIONS = ['Select Inst Center']
         self.options_displayed = False
-        self.data = {}
         self.new_fields = {}
 
         self.window = master
         self.x = self.window.winfo_x()
         self.y = self.window.winfo_y()
         self.w = 300
-        self.h = 120
+        self.h = 100
 
         self.window.title("Fine Leaf Count")
         self.window.geometry(configparser.get('gui-config', 'window_geometry'))
@@ -101,7 +86,6 @@ class MyTkApp(tk.Frame):
         self.restart_button = tk.Button(self.window, command=self.restart, image = restart_icon, bg="#f7f0f5")
         self.restart_button.image = restart_icon
 
-        self.startDemo = tk.Button(self.window, text="Demo Sample", command=self.demo_video, fg="black", bg="#FFE77A", font=('times', 16, 'bold'), width=int(configparser.get('gui-config', 'signin_btn_width')),height=int(configparser.get('gui-config', 'signin_btn_height')))
         self.endRecord = tk.Button(self.window, text="Save", command=self.end_video, fg="white", bg="#539051", font=('times', 17, 'bold'), width=10, height=2)
 
         self.msg_sent = Label(self.window, text="Data sent status", font=('times', 15), fg="green", bg='white')
@@ -125,32 +109,16 @@ class MyTkApp(tk.Frame):
         self.password_login_entry.insert(1, "Enter password")
         
         self.signin = tk.Button(self.window, text="Login", command=self.login_verify, fg="white", bg="#539051", width=int(configparser.get('gui-config', 'signin_btn_width')),height=int(configparser.get('gui-config', 'signin_btn_height')), font=("Helvetica 15 bold"))
-        
-        self._one = tk.Button(self.window, text="1", height=3, width=5, command=lambda val=1:self.code(val))
-        self._two = tk.Button(self.window, text="2", height=3, width=5, command=lambda val=2:self.code(val))
-        self._three = tk.Button(self.window, text="3", height=3, width=5, command=lambda val=3:self.code(val))
-        self._four = tk.Button(self.window, text="4", height=3, width=5, command=lambda val=4:self.code(val))
-        self._five = tk.Button(self.window, text="5", height=3, width=5, command=lambda val=5:self.code(val))
-        self._six = tk.Button(self.window, text="6", height=3, width=5, command=lambda val=6:self.code(val))
-        self._seven = tk.Button(self.window, text="7", height=3, width=5, command=lambda val=7:self.code(val))
-        self._eight = tk.Button(self.window, text="8", height=3, width=5, command=lambda val=8:self.code(val))
-        self._nine = tk.Button(self.window, text="9", height=3, width=5, command=lambda val=9:self.code(val))
-        self._clear = tk.Button(self.window, text="OK", height=3, width=5, command=self.get_farmer_id, fg="white", bg="#539051", font=("Helvetica 10 bold"))
-        self._zero = tk.Button(self.window, text="0", height=3, width=5, command=lambda val=0:self.code(val))
-        self._back = tk.Button(self.window, text="<--", height=3, width=5, command=self.back_farmer)
 
-        self.farmer_verify = StringVar()
         self.section_verify = StringVar()
-        self.factory_verify = StringVar()
+        self.garden_verify = StringVar()
         self.division_verify = StringVar()
         self.section_verify.set("Select section ID")
-        self.factory_verify.set("Select factory")
+        self.garden_verify.set("Select garden ID")
         self.division_verify.set("Select division ID")
          
-        self.farmer_entry = Entry(self.window, textvariable=self.farmer_verify)
-        self.farmer_entry.configure(font=font.Font(family='Helvetica', size=16))
-        self.factory_entry = OptionMenu(self.window, self.factory_verify, *self.FACTORY_OPTIONS)
-        self.factory_entry.configure(width=24, state="disabled", font=font.Font(family='Helvetica', size=16))
+        self.garden_entry = OptionMenu(self.window, self.garden_verify, *self.GARDEN_OPTIONS)
+        self.garden_entry.configure(width=24, state="disabled", font=font.Font(family='Helvetica', size=16))
         self.division_entry = OptionMenu(self.window, self.division_verify, *self.DIVISION_OPTIONS)
         self.division_verify.trace("w", self.get_sections)
         self.division_entry.configure(width=24, state="disabled", font=font.Font(family='Helvetica', size=16))
@@ -181,7 +149,6 @@ class MyTkApp(tk.Frame):
         self.username_login_entry.bind("<Button-1>", self.action_1)
         self.password_login_entry.bind("<Button-1>", self.action_2)
 
-        self.startDemo.place_forget()
         self.endRecord.place_forget()
 
         self.area_covered_verify = StringVar()
@@ -238,7 +205,6 @@ class MyTkApp(tk.Frame):
         self.nextBtn = tk.Button(self.window, text="Next", command=self.main_screen, fg="white", bg="#F37C62", width=12,height=2, font=('times', 16, 'bold'))
 
 
-
     def restart(self):
         if messagebox.askokcancel("Quit", "Do you really want to restart the system?"):
             self.window.destroy()
@@ -260,38 +226,13 @@ class MyTkApp(tk.Frame):
     def start_jetson_fan(self):
         subprocess.Popen("exec " + 'echo {} | sudo -S {}'.format(pwd, jetson_clock_cmd), stdout= subprocess.PIPE, shell=True)
 
-
-    def code(self, value):
-        if self.farmer_verify.get() == "Enter farmer Code":
-            self.farmer_entry.delete(0, tk.END)
-        self.farmer_entry.insert('end', value)
-
-
-    def remove_numpad(self):
-        self._one.place_forget()
-        self._two.place_forget()
-        self._three.place_forget()
-        self._four.place_forget()
-        self._five.place_forget()
-        self._six.place_forget()
-        self._seven.place_forget()
-        self._eight.place_forget()
-        self._nine.place_forget()
-        self._clear.place_forget()
-        self._zero.place_forget()
-        self._back.place_forget()
-
-
     def details_entered_success(self):
-        self.startDemo.place_forget()  
         self.endRecord.place_forget()
         self.entered.place_forget()
-        self.farmer_entry.place_forget()
         self.sector_entry.place_forget()
-        self.factory_entry.place_forget()
+        self.garden_entry.place_forget()
         self.division_entry.place_forget()
         self.msg_sent.place_forget()
-        self.remove_numpad()
     
     def display_all_options(self):
         if self.options_displayed == False:
@@ -312,26 +253,12 @@ class MyTkApp(tk.Frame):
         try:
             p = subprocess.Popen("exec " + command, stdout= subprocess.PIPE, shell=True)
             p.wait()
-            os.rename("flc_utils/trainVideo/testing/result.avi", "flc_utils/trainVideo/testing/" + str(self.userID) + "_" + datetime.datetime.now().strftime("%d-%m-%Y %H:%M:%S") + ".avi")
+            os.rename("flc_utils/trainVideo/testing/result.avi", "flc_utils/trainVideo/testing/" + str(self.customer_id) + "_" + datetime.datetime.now().strftime("%d-%m-%Y %H:%M:%S") + ".avi")
             self.show_results_on_display()
             self.endRecord.place(x=int(configparser.get('gui-config', 'endrecord_btn_x')), y=int(configparser.get('gui-config', 'endrecord_btn_y')))
         except Exception as e:
             print(e)
             self.endRecord.place_forget()
-            self.startDemo.configure(bg="#539051", state="active")
-
-
-    def demo_video(self):
-        farmer = self.farmer_verify.get()
-        sector = self.section_verify.get()  
-        factory = self.factory_verify.get()
-        division = self.division_verify.get()    
-        if farmer not in ["", "Enter farmer Code"] and sector not in ["", "Select section ID"] and factory not in ["", "Select factory"] and division not in ["", "Select division ID"]:
-            self.details_entered_success()
-            self.start_testing(cmd_demo)
-        else:
-            self.show_error_msg("Please fill all details.")
-        
 
     def end_video(self):
         self.formula.place_forget()
@@ -354,70 +281,67 @@ class MyTkApp(tk.Frame):
     def popup_keyboard(self, event):
         subprocess.Popen("exec " + "onboard", stdout= subprocess.PIPE, shell=True)
     
+    def get_locations(self):
+        url = "http://23.98.216.140:8072/api/locations"
+        headers = {'Authorization': "Bearer " + self.token}
+        response = requests.request("GET", url, headers=headers)
+        return response.json()[0]['location_id']
 
-    def show_numpad(self, event):
-        gc.collect()
-        def callback():
-            if self.farmer_verify.get() == "Enter farmer Code":
-                self.farmer_entry.delete(0, tk.END)
-            try:
-                self.startDemo.place_forget()  
-                self.endRecord.place_forget()
-                self.sector_entry.place_forget()
-                self.factory_entry.place_forget()
-                self.division_entry.place_forget()
-                self.entered.place_forget()
-            except:
-                pass
-            try:
-                self._back.place(x=640, y=330)
-                self._zero.place(x=585, y=330)
-                self._clear.place(x=530, y=330)
-                self._one.place(x=640, y=280)
-                self._two.place(x=585, y=280)
-                self._three.place(x=530, y=280)
-                self._four.place(x=640, y=230)
-                self._five.place(x=585, y=230)
-                self._six.place(x=530, y=230)
-                self._seven.place(x=640, y=180)
-                self._eight.place(x=585, y=180)
-                self._nine.place(x=530, y=180)
-            except:
-                pass
-        t = threading.Thread(target=callback)
-        t.start()
+    def get_gardens(self):
+        url = "http://23.98.216.140:8072/api/gardens"
+        headers = {'Authorization': "Bearer " + self.token}
+        querystring = {"locationId": self.get_locations()}
+        response = requests.request("GET", url, headers=headers, params=querystring)
+        data = response.json()
 
-    def get_factories(self):
-        url = configparser.get('gui-config', 'ip') + "/api/collections?p=0&l=10"
-        headers = {
-            'Authorization': "Bearer " + self.token
-            }
-        resp = requests.request("GET", url, headers=headers)
-        data = resp.json()['data']
+        garden_id_list = [i["garden_id"] for i in data]
+        garden_name_list = [i["name"] for i in data]
 
-        factory_id_list = [i["id"] for i in data]
-        factory_name_list = [i["name"] for i in data]
+        self.garden_id_name_dict = dict(zip(garden_name_list, garden_id_list))
 
-        self.factory_id_name_dict = dict(zip(factory_name_list, factory_id_list))
-
-        if len(factory_name_list) == 1:
-            self.FACTORY_OPTIONS = factory_name_list
+        if len(garden_name_list) == 1:
+            self.GARDEN_OPTIONS = garden_name_list
         else:
-            self.FACTORY_OPTIONS = ["Select factory"] + factory_name_list
-        self.factory_entry.place_forget()
-        self.factory_entry = OptionMenu(self.window, self.factory_verify, *self.FACTORY_OPTIONS)
-        self.factory_entry.configure(width=24, state="active", font=font.Font(family='Helvetica', size=16))
-        self.factory_entry.place(x=520, y=155, height=40, width=190)  
-        menu = self.nametowidget(self.factory_entry.menuname)
+            self.GARDEN_OPTIONS = ["Select garden ID"] + garden_name_list
+        self.garden_entry.place_forget()
+        self.garden_entry = OptionMenu(self.window, self.garden_verify, *self.GARDEN_OPTIONS)
+        self.garden_verify.trace("w", self.get_divisions)
+        self.garden_entry.configure(width=24, state="active", font=font.Font(family='Helvetica', size=16))
+        self.garden_entry.place(x=520, y=155, height=40, width=190)  
+        menu = self.nametowidget(self.garden_entry.menuname)
         menu.config(font=font.Font(family='Helvetica', size=15)) 
 
+    def get_divisions(self, *args):
+        url = "http://23.98.216.140:8072/api/divisions"
+        headers = {'Authorization': "Bearer " + self.token}
+        garden_id = self.garden_id_name_dict[self.garden_verify.get()]
+        querystring = {"gardenId": garden_id}
+        response = requests.request("GET", url, headers=headers, params=querystring)
+        data = response.json()
 
+        division_id_list = [i["division_id"] for i in data]
+        division_name_list = [i["name"] for i in data]
+
+        self.division_id_name_dict = dict(zip(division_name_list, division_id_list))
+        self.DIVISION_OPTIONS = division_name_list
+        self.division_entry.place_forget()
+        self.division_entry = OptionMenu(self.window, self.division_verify, *self.DIVISION_OPTIONS)
+        self.division_verify.trace("w", self.get_sections)
+        self.division_entry.configure(width=24, state="active", font=font.Font(family='Helvetica', size=16))
+        self.division_entry.place(x=520, y=200, height=40, width=190)
+        menu = self.nametowidget(self.division_entry.menuname)
+        menu.config(font=font.Font(family='Helvetica', size=15))
+    
     def get_sections(self, *args):
-        for i in self.data['divisionList']:
-            if i['divisionName'] == self.division_verify.get():
-                sec_data = i['sectionVO']
-        section_id_list = [i["sectionId"] for i in sec_data]
-        section_name_list = [i["name"] for i in sec_data]
+        url = "http://23.98.216.140:8072/api/sections"
+        headers = {'Authorization': "Bearer " + self.token}
+        division_id = self.division_id_name_dict[self.division_verify.get()]
+        querystring = {"divisionId": division_id}
+        response = requests.request("GET", url, headers=headers, params=querystring)
+        data = response.json()
+
+        section_id_list = [i["section_id"] for i in data]
+        section_name_list = [i["name"] for i in data]
 
         self.section_id_name_dict = dict(zip(section_name_list, section_id_list))
         self.SECTION_OPTIONS = ["Select section ID"] + section_name_list
@@ -428,24 +352,8 @@ class MyTkApp(tk.Frame):
         menu = self.nametowidget(self.sector_entry.menuname)
         menu.config(font=font.Font(family='Helvetica', size=15))
 
-
-    def get_divisions(self):
-        div_data = self.data['divisionList']
-        division_id_list = [i["divisionId"] for i in div_data]
-        division_name_list = [i["divisionName"] for i in div_data]
-
-        self.division_id_name_dict = dict(zip(division_name_list, division_id_list))
-        self.DIVISION_OPTIONS = division_name_list
-        self.division_entry = OptionMenu(self.window, self.division_verify, *self.DIVISION_OPTIONS)
-        self.division_verify.trace("w", self.get_sections)
-        self.division_entry.configure(width=24, state="active", font=font.Font(family='Helvetica', size=16))
-        menu = self.nametowidget(self.division_entry.menuname)
-        menu.config(font=font.Font(family='Helvetica', size=15))
-
-
     def get_regions(self):
         region_names, region_ids = [], []
-        # self.customer_id, self.token = 91, "eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2VtYWlsIjoiZGVtb29wZXJhdG9yQGdtYWlsLmNvbSIsInVzZXJfZm5hbWUiOiJPcGVyYXRvciIsInVzZXJfbmFtZSI6ImRlbW9vcGVyYXRvckBnbWFpbC5jb20iLCJjdXN0b21lcl91dWlkIjoiOGE1YTU2YTAtNGY0MS00YTFjLWFiMTQtNmQ1MWFlNjIyZDBiIiwicm9sZXMiOlsib3BlcmF0b3IiXSwiaXNzIjoiUXVhbGl4IiwidXNlcl9sbmFtZSI6Ik9wZXJhdG9yIiwiY2xpZW50X2lkIjoiY2xpZW50LW1vYmlsZSIsInVzZXJfdXVpZCI6Ijc3Nzk3NTkwLTlmMzYtNDM5Ni1iMTA2LTcwNThiZjFkMTc3ZiIsInVzZXJfdHlwZSI6IkNVU1RPTUVSIiwidXNlcl9pZCI6MTg4LCJ1c2VyX21vYmlsZSI6Ijk2NTY1ODU2OTUiLCJzY29wZSI6WyJhbGwiXSwidXNlcl9oaWVyYXJjaHkiOm51bGwsImN1c3RvbWVyX25hbWUiOiJEZW1vIGN1c3RvbWVyIiwiZXhwIjoxNjAxMDAxMDA2LCJjdXN0b21lcl9pZCI6OTEsImp0aSI6IjQ4YTZmZGI5LTcxZTgtNDEwMi04ZTQ5LTRjOGU2ZDVlY2YzYyJ9.PVmAvB5fqQD2qSiT3pHzqNfuShQ2P5Ly9heBrY02Ldpn9X4Q3ciPwx7LV7md1t871wuRylTAjS-_VHEDlGjKDo3Q1ZkhR8fDWT7jWPKLPbX0SX2pCZtCzHKFbTk4giGP1W1QACvVi-VKBUZw5fHglk8V7uqDyqJ80N-8ouSofLfwdoaZhFzrAaLT3jVuevRqQGDE5D2Asysx2lUH1-bQNWF3AzaTipqE6fWF9uF0RA0evDve5vQXLpTDEyc4C8DpIWj5ol0-X723cI549ZDYIjrKGIoF2rYSWXGCwTA2gEJ_t8dv4V1xDCPSJ1kQ_VSPpVkUSdpjbEB25OWm7OIr5w"
         if helper.is_internet_available():
             region_names, region_ids = helper.regions_list_qualix(self.customer_id, self.token)
         self.REGIONS_OPTIONS = ["Select Region"] + region_names
@@ -457,10 +365,8 @@ class MyTkApp(tk.Frame):
         menu = self.nametowidget(self.region_entry.menuname)
         menu.config(font=font.Font(family='Helvetica', size=16))
 
-
     def get_instcenter(self, *args):
         center_names, center_ids = [], []
-        # customer_id, token = 91, "eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2VtYWlsIjoiZGVtb29wZXJhdG9yQGdtYWlsLmNvbSIsInVzZXJfZm5hbWUiOiJPcGVyYXRvciIsInVzZXJfbmFtZSI6ImRlbW9vcGVyYXRvckBnbWFpbC5jb20iLCJjdXN0b21lcl91dWlkIjoiOGE1YTU2YTAtNGY0MS00YTFjLWFiMTQtNmQ1MWFlNjIyZDBiIiwicm9sZXMiOlsib3BlcmF0b3IiXSwiaXNzIjoiUXVhbGl4IiwidXNlcl9sbmFtZSI6Ik9wZXJhdG9yIiwiY2xpZW50X2lkIjoiY2xpZW50LW1vYmlsZSIsInVzZXJfdXVpZCI6Ijc3Nzk3NTkwLTlmMzYtNDM5Ni1iMTA2LTcwNThiZjFkMTc3ZiIsInVzZXJfdHlwZSI6IkNVU1RPTUVSIiwidXNlcl9pZCI6MTg4LCJ1c2VyX21vYmlsZSI6Ijk2NTY1ODU2OTUiLCJzY29wZSI6WyJhbGwiXSwidXNlcl9oaWVyYXJjaHkiOm51bGwsImN1c3RvbWVyX25hbWUiOiJEZW1vIGN1c3RvbWVyIiwiZXhwIjoxNjAxMDAxMDA2LCJjdXN0b21lcl9pZCI6OTEsImp0aSI6IjQ4YTZmZGI5LTcxZTgtNDEwMi04ZTQ5LTRjOGU2ZDVlY2YzYyJ9.PVmAvB5fqQD2qSiT3pHzqNfuShQ2P5Ly9heBrY02Ldpn9X4Q3ciPwx7LV7md1t871wuRylTAjS-_VHEDlGjKDo3Q1ZkhR8fDWT7jWPKLPbX0SX2pCZtCzHKFbTk4giGP1W1QACvVi-VKBUZw5fHglk8V7uqDyqJ80N-8ouSofLfwdoaZhFzrAaLT3jVuevRqQGDE5D2Asysx2lUH1-bQNWF3AzaTipqE6fWF9uF0RA0evDve5vQXLpTDEyc4C8DpIWj5ol0-X723cI549ZDYIjrKGIoF2rYSWXGCwTA2gEJ_t8dv4V1xDCPSJ1kQ_VSPpVkUSdpjbEB25OWm7OIr5w"
         region_id = self.region_id_name_dict[self.region_verify.get()]
         if helper.is_internet_available():
             center_names, center_ids = helper.inst_centers_list_qualix(region_id, self.customer_id, self.token)
@@ -474,36 +380,11 @@ class MyTkApp(tk.Frame):
         menu = self.nametowidget(self.inst_center_entry.menuname)
         menu.config(font=font.Font(family='Helvetica', size=16))
 
-    def get_farmer_id(self):
-        try:
-            farmer_code = self.farmer_verify.get()
-            url = configparser.get('gui-config', 'ip') + "/api/users/code/" + farmer_code
-            headers = {
-                'Authorization': "Bearer " + self.token
-                }
-            resp = requests.request("GET", url, headers=headers)
-            self.data = resp.json()['data'][0]
-            self.farmer_id = self.data['id']
-            self.get_factories()
-            self.get_divisions()
-            self.hide_numpad()
-        except Exception as e:
-            print(e)
-            self.show_error_msg("Please enter correct code.")
-
     def place_inputs(self):
-        self.farmer_entry.place(x=520,y=110, height=40, width=190)
-        self.factory_entry.place(x=520, y=155, height=40, width=190)
+        self.garden_entry.place(x=520, y=155, height=40, width=190)
         self.division_entry.place(x=520, y=200, height=40, width=190)
         self.sector_entry.place(x=520, y=245, height=40, width=190)
         self.entered.place(x=520, y=305)
-        self.startDemo.place(x=520, y=360)
-
-    def hide_numpad(self):
-        gc.collect()
-        self.remove_numpad()
-        self.place_inputs()
-
 
     def load_graph(self):
         self.graph.place(x=int(configparser.get('gui-config', 'graph_image_x')), y=int(configparser.get('gui-config', 'graph_image_y')))
@@ -511,12 +392,6 @@ class MyTkApp(tk.Frame):
 
     def forget_graph(self):
         self.graph.place_forget()
-
-
-    def back_farmer(self):
-        val = self.farmer_verify.get()[:-1]
-        self.farmer_entry.delete(0, tk.END)
-        self.farmer_entry.insert('end', val)
 
     def action_1(self, event):
         if self.username_verify.get() == "Enter username":
@@ -539,98 +414,42 @@ class MyTkApp(tk.Frame):
             self.area_covered_entry.delete(0, tk.END)
         self.popup_keyboard(event)
 
-    def lost_focus_area_covered(self, event):
-        if self.area_covered_verify.get() == "":
-            self.area_covered_entry.insert(1, "Enter Area Covered")
-        self.kill_keyboard(event)
 
     def action_weight(self, event):
         if self.weight_verify.get() == "Enter Weight":
             self.weight_entry.delete(0, tk.END)
         self.popup_keyboard(event)
 
-    def lost_focus_weight(self, event):
-        if self.weight_verify.get() == "":
-            self.weight_entry.insert(1, "Enter Weight")
-        self.kill_keyboard(event)
-
     def action_sampleid(self, event):
         if self.sample_id_verify.get() == "Enter Sample ID":
             self.sample_id_entry.delete(0, tk.END)
         self.popup_keyboard(event)
-
-    def lost_focus_sample_id(self, event):
-        if self.sample_id_verify.get() == "":
-            self.sample_id_entry.insert(1, "Enter Sample ID")
-        self.kill_keyboard(event)
 
     def action_lotid(self, event):
         if self.lot_id_verify.get() == "Enter Lot ID":
             self.lot_id_entry.delete(0, tk.END)
         self.popup_keyboard(event)
 
-    def lost_focus_lot_id(self, event):
-        if self.lot_id_verify.get() == "":
-            self.lot_id_entry.insert(1, "Enter Lot ID")
-        self.kill_keyboard(event)
-
     def action_deviceserialno(self, event):
         if self.device_serial_no_verify.get() == "Enter Device SerialNo":
             self.device_serial_no_entry.delete(0, tk.END)
         self.popup_keyboard(event)
-
-    def lost_focus_device_serial_no(self, event):
-        if self.device_serial_no_verify.get() == "":
-            self.device_serial_no_entry.insert(1, "Enter Device SerialNo")
-        self.kill_keyboard(event)
 
     def action_batchid(self, event):
         if self.batch_id_verify.get() == "Enter Batch ID":
             self.batch_id_entry.delete(0, tk.END)
         self.popup_keyboard(event)
 
-    def lost_focus_batch_id(self, event):
-        if self.batch_id_verify.get() == "":
-            self.batch_id_entry.insert(1, "Enter Batch ID")
-        self.kill_keyboard(event)
-
-
-    def login_api(self, usr, pwd):
-        payload = {
-            "username": usr,
-            "password": pwd,
-            "entity": "mobile",
-            "deviceToken": "",
-        }
-        headers = {
-            "Content-Type": "application/json"
-        }
-        response = requests.request("POST", configparser.get('gui-config', 'ip') + "/api/auth/login", data=json.dumps(payload), headers=headers)
-        status = False
-        try:
-            if response.json()['success'] == True:
-                self.userID = response.json()["user"]["id"]
-                self.token = response.json()['token']
-                userName = response.json()["user"]["name"]
-                self.welcome_text.configure(text="Welcome, " + userName.title())
-                status = True
-        except Exception as e:
-            print("Exception during login: ", e)
-        return status
 
     def send_data_api(self):
-        ccId = int(self.factory_id_name_dict[self.factory_verify.get()])
         sectionId = int(self.section_id_name_dict[self.section_verify.get()])
-        farmer_code = self.farmer_verify.get()
-        qualix_status = 0
+        
+        _1lb, _2lb, _3lb, _1bj, _2bj, _coarse, totalCount, _perc, payload = helper.get_payload()
         if helper.is_internet_available():
-            # saved, payload, _perc = helper.get_saved_status(self.token, self.userID, ccId, sectionId, self.farmer_id)
-            _1lb, _2lb, _3lb, _1bj, _2bj, _coarse, totalCount, _perc, payload = helper.get_payload()
-            qualix_status = helper.qualix_api(payload, sectionId, farmer_code, self.new_fields)
-
+            qualix_status = helper.qualix_api(payload, sectionId, self.new_fields)
         if qualix_status == 200:
             self.msg_sent.configure(text="Data saved", fg="green")
-            helper.maintain_spreadsheet(_1lb, _2lb, _3lb, _1bj, _2bj, _coarse, totalCount, _perc)
+            helper.update_spreadsheet(_1lb, _2lb, _3lb, _1bj, _2bj, _coarse, totalCount, _perc)
         else:
             self.msg_sent.configure(text="Couldn't save to servers", fg="red")
         self._1lb_btn.place_forget()
@@ -646,20 +465,7 @@ class MyTkApp(tk.Frame):
         f.write(self.section_verify.get() + ',' + str(_perc)+ ',' + datetime.datetime.now().strftime("%d-%m-%Y %H:%M:%S") + '\n')
         f.close()
 
-        df = pd.read_csv("flc_utils/records.csv")
-        rows = df.shape[0]
-        if rows > 9:
-            rows = 10
-            df = df.iloc[-10:, :]
-        fig = plt.figure(figsize=(7,5))
-        plot = sns.barplot(df.index, df.FLC)
-        plot.set(ylabel='FLC %')
-        plt.title("Last " + str(rows) + " FLC results", fontsize=15)
-        fig.savefig('flc_utils/result.png')
-        cv2_img = cv2.imread("flc_utils/result.png")
-        new_img = cv2.resize(cv2_img, (400, 270))
-        gc.collect()
-        cv2.imwrite("flc_utils/result.png", new_img)
+        helper.update_graph()
 
 
     def do_nothing(self):
@@ -722,9 +528,10 @@ class MyTkApp(tk.Frame):
         username = self.username_verify.get()
         password = self.password_verify.get()
         if helper.is_internet_available():
-            success, self.token, self.customer_id = helper.login_api_qualix(username, password)
+            success, self.token, self.customer_id, name = helper.login_api_qualix(username, password)
             if success:
                 self.login_success()
+                self.welcome_text.configure(text="Welcome, " + name.title())
             else:
                 self.show_error_msg("User Not Found")
         else:
@@ -736,19 +543,18 @@ class MyTkApp(tk.Frame):
         self.error_screen = Toplevel(self.window)
         self.error_screen.geometry("%dx%d+%d+%d" % (self.w, self.h, self.x + 300, self.y + 200))
         self.error_screen.title("Error")
-        Label(self.error_screen, text=msg, font=('times', 15, 'bold')).pack()
-        Button(self.error_screen, text="OK", command=self.delete_error_screen).pack()
+        Label(self.error_screen, text=msg, font=('times', 18, 'bold')).pack()
+        Button(self.error_screen, text="OK", command=self.delete_error_screen, width=15, font=('times', 16, 'bold')).pack()
 
     def delete_error_screen(self):
         self.error_screen.destroy()
 
     def details_verify(self): 
         gc.collect() 
-        farmer = self.farmer_verify.get()
         sector = self.section_verify.get()  
-        factory = self.factory_verify.get()
+        garden = self.garden_verify.get()
         division = self.division_verify.get()    
-        if farmer not in ["", "Enter farmer Code"] and sector not in ["", "Select section ID"] and factory not in ["", "Select factory"] and division not in ["", "Select division ID"]:
+        if sector not in ["", "Select section ID"] and garden not in ["", "Select garden ID"] and division not in ["", "Select division ID"]:
             self.details_entered_success()
             self.start_testing(cmd)
         else:
@@ -765,20 +571,15 @@ class MyTkApp(tk.Frame):
         except:
             pass
 
-        self.welcome_text.place(x=int(configparser.get('gui-config', 'welcome_text_x')), y=int(configparser.get('gui-config', 'welcome_text_y')))
-        
-        self.farmer_entry.bind("<Button-1>", self.show_numpad)
-        self.farmer_entry.delete(0, tk.END)
-        self.farmer_entry.insert(1, "Enter farmer Code")
+        self.GARDEN_OPTIONS = ["Select garden ID"]
+        self.garden_entry.configure(width=24, state="active")
+        self.get_gardens()
+
+        self.DIVISION_OPTIONS = ["Select division ID"]
+        self.division_entry.configure(width=24, state="disabled")
 
         self.SECTION_OPTIONS = ["Select section ID"]
         self.sector_entry.configure(width=24, state="disabled")
-
-        self.FACTORY_OPTIONS = ["Select factory"]
-        self.factory_entry.configure(width=24, state="disabled")
-
-        self.DIVISION_OPTIONS = ["Select division"]
-        self.division_entry.configure(width=24, state="disabled")
 
         self.place_inputs()
 

@@ -2,7 +2,9 @@ import os
 import requests
 import datetime
 import json
-import gc
+import pandas as pd
+import matplotlib.pyplot as plt
+import seaborn as sns
 from urllib.request import urlopen
 import configparser
 from requests_toolbelt.multipart.encoder import MultipartEncoder
@@ -89,7 +91,7 @@ def get_payload():
                 'total_count': totalCount, 'quality_score': _perc}
     return _1lb, _2lb, _3lb, _1bj, _2bj, _coarse, totalCount, _perc, payload
 
-def qualix_api(payload, sectionId, farmer_code, new_fields):
+def qualix_api(payload, sectionId, new_fields):
     li = []
     for i in payload:
         li.append({"analysisName": i, "totalAmount": payload[i]})
@@ -134,6 +136,7 @@ def qualix_api(payload, sectionId, farmer_code, new_fields):
 def login_api_qualix(username, password):
     access_token = ""
     customer_id = ""
+    first_name = ""
     try:
         session = requests.Session()
         session.headers['User-Agent'] = 'Mozilla/5'
@@ -162,9 +165,10 @@ def login_api_qualix(username, password):
                 )
         access_token = response.json()['access_token']
         customer_id = response.json()['user']['customer_id']
-        return True, access_token, customer_id
+        first_name = response.json()['user']['first_name']
+        return True, access_token, customer_id, first_name
     except:
-        return False, access_token, customer_id
+        return False, access_token, customer_id, first_name
 
 def regions_list_qualix(customer_id, token):
     region_names, region_ids = [], []
@@ -201,7 +205,7 @@ def is_internet_available():
     except Exception as e:
         return False
 
-def maintain_spreadsheet(_1lb, _2lb, _3lb, _1bj, _2bj, _coarse, totalCount, _perc):
+def update_spreadsheet(_1lb, _2lb, _3lb, _1bj, _2bj, _coarse, totalCount, _perc):
     # If modifying these scopes, delete the file token.pickle.
     SCOPES = ['https://www.googleapis.com/auth/spreadsheets']
 
@@ -244,3 +248,19 @@ def maintain_spreadsheet(_1lb, _2lb, _3lb, _1bj, _2bj, _coarse, totalCount, _per
     print('{0} cells appended.'.format(result \
                                            .get('updates') \
                                            .get('updatedCells')))
+
+
+def update_graph():
+    df = pd.read_csv("flc_utils/records.csv")
+    rows = df.shape[0]
+    if rows > 9:
+        rows = 10
+        df = df.iloc[-10:, :]
+    fig = plt.figure(figsize=(7,5))
+    plot = sns.barplot(df.index, df.FLC)
+    plot.set(ylabel='FLC %')
+    plt.title("Last " + str(rows) + " FLC results", fontsize=15)
+    fig.savefig('flc_utils/result.png')
+    cv2_img = cv2.imread("flc_utils/result.png")
+    new_img = cv2.resize(cv2_img, (400, 270))
+    cv2.imwrite("flc_utils/result.png", new_img)
