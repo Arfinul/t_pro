@@ -20,12 +20,19 @@ import seaborn as sns
 import threading
 import shutil
 import glob
-from flc_utils import helper
+
+PATH = 'reports/*'
+
+create_folders = ['reports', 'reports/1lb', 'reports/2lb', 'reports/3lb', 'reports/1bj', 'reports/2bj', 'reports/coarse', 'reports/cluster']
+for folder in create_folders:
+    if not os.path.exists(folder):
+        os.mkdir(folder)
 
 configparser = configparser.RawConfigParser()   
-# os.chdir("/home/agnext/Documents/flc")
+os.chdir("/home/agnext/Documents/flc")  # Agnext
 
 configparser.read('flc_utils/screens/touchScreen/gui.cfg')
+is_admin = False
 
 cmd = """
 export LD_LIBRARY_PATH=/home/agnext/Documents/flc/
@@ -38,7 +45,10 @@ export LD_LIBRARY_PATH=/home/agnext/Documents/flc/
 """.format(configparser.get('gui-config', 'demo_video'))
 
 pwd = configparser.get('gui-config', 'sys_password')
+cmd_camera_setting = "/usr/local/ecam_tk1/bin/ecam_tk1_guvcview"
+reset_camera_setting = "/usr/local/ecam_tk1/bin/ecam_tk1_guvcview --profile=flc_utils/guvcview-config/default.gpfl"
 jetson_clock_cmd = 'jetson_clocks'
+record_cam_cmd = "python3 flc_utils/guiHelpers/record_cam_gui.py"
 
 
 class MyTkApp(tk.Frame):
@@ -48,26 +58,20 @@ class MyTkApp(tk.Frame):
         self.userID = ""
         self.token = ""
         self.farmer_id = ""
-        self.customer_id = ''
         self.factory_id_name_dict = {}
         self.section_id_name_dict = {}
         self.division_id_name_dict = {}
-        self.region_id_name_dict = {}
-        self.center_id_name_dict = {}
         self.SECTION_OPTIONS = ["Select section ID"]
         self.FACTORY_OPTIONS = ["Select factory"]
         self.DIVISION_OPTIONS = ["Select division ID"] 
-        self.REGIONS_OPTIONS = ['Select Region']
-        self.INSTCENTER_OPTIONS = ['Select Inst Center']
         self.options_displayed = False
         self.data = {}
-        self.new_fields = {}
 
         self.window = master
         self.x = self.window.winfo_x()
         self.y = self.window.winfo_y()
-        self.w = 300
-        self.h = 120
+        self.w = 150
+        self.h = 60
 
         self.window.title("Fine Leaf Count")
         self.window.geometry(configparser.get('gui-config', 'window_geometry'))
@@ -85,10 +89,6 @@ class MyTkApp(tk.Frame):
         self.poweroff = tk.Button(self.window, text="Click me!", command=self.display_all_options, image = options_icon, bg="#f7f0f5")
         self.poweroff.image = options_icon
 
-        back_icon = PhotoImage(file = "flc_utils/screens/touchScreen/back.png")
-        self.back_button = tk.Button(self.window, command=self.second_screen_place, image = back_icon, bg="#f7f0f5")
-        self.back_button.image = back_icon
-
         shutdown_icon = PhotoImage(file = "flc_utils/screens/touchScreen/shutdown.png")
         self.shutdown_button = tk.Button(self.window, command=self.shutdown, image = shutdown_icon, bg="#f7f0f5")
         self.shutdown_button.image = shutdown_icon
@@ -101,8 +101,10 @@ class MyTkApp(tk.Frame):
         self.restart_button = tk.Button(self.window, command=self.restart, image = restart_icon, bg="#f7f0f5")
         self.restart_button.image = restart_icon
 
-        self.startDemo = tk.Button(self.window, text="Demo Sample", command=self.demo_video, fg="black", bg="#FFE77A", font=('times', 16, 'bold'), width=int(configparser.get('gui-config', 'signin_btn_width')),height=int(configparser.get('gui-config', 'signin_btn_height')))
+        # self.startDemo = tk.Button(self.window, text="Demo Sample", command=self.demo_video, fg="black", bg="#FFE77A", font=('times', 16, 'bold'), width=int(configparser.get('gui-config', 'signin_btn_width')),height=int(configparser.get('gui-config', 'signin_btn_height')))
         self.endRecord = tk.Button(self.window, text="Save", command=self.end_video, fg="white", bg="#539051", font=('times', 17, 'bold'), width=10, height=2)
+        if is_admin:
+            self.startCamRecord = tk.Button(self.window, text="Record training video", command=self.start_record_video, fg="white", bg="#539051", font=('times', 15, 'bold'))
 
         self.msg_sent = Label(self.window, text="Data sent status", font=('times', 15), fg="green", bg='white')
 
@@ -156,6 +158,7 @@ class MyTkApp(tk.Frame):
         self.division_entry.configure(width=24, state="disabled", font=font.Font(family='Helvetica', size=16))
         self.sector_entry = OptionMenu(self.window, self.section_verify, *self.SECTION_OPTIONS)
         self.sector_entry.configure(width=24, state="disabled", font=font.Font(family='Helvetica', size=16))
+        
 
         self.welcome_text = Label(self.window, text="Welcome, ", font=('times', 15, 'bold'), bg="#f7f0f5")
         self.entered = tk.Button(self.window, text="Start FLC", command=self.details_verify, fg="white", bg="#539051", width=int(configparser.get('gui-config', 'signin_btn_width')),height=int(configparser.get('gui-config', 'signin_btn_height')), font=('times', 16, 'bold'))
@@ -167,7 +170,7 @@ class MyTkApp(tk.Frame):
 
         self.header.place(x=int(configparser.get('gui-config', 'title_x')), y=int(configparser.get('gui-config', 'title_y')))
         self.panel.place(x=int(configparser.get('gui-config', 'login_image_x')), y=int(configparser.get('gui-config', 'login_image_y')))
-        self.footer.place(x=0, y=450)
+        self.footer.place(x=0, y=437)
 
         img_bg = ImageTk.PhotoImage(Image.open(configparser.get('gui-config', 'bg_image')))
         self.panel_bg.configure(image=img_bg)
@@ -181,62 +184,10 @@ class MyTkApp(tk.Frame):
         self.username_login_entry.bind("<Button-1>", self.action_1)
         self.password_login_entry.bind("<Button-1>", self.action_2)
 
-        self.startDemo.place_forget()
+        # self.startDemo.place_forget()
         self.endRecord.place_forget()
-
-        self.area_covered_verify = StringVar()
-        self.weight_verify = StringVar()
-        self.sample_id_verify = StringVar()
-        self.lot_id_verify = StringVar()
-        self.device_serial_no_verify = StringVar()
-        self.batch_id_verify = StringVar()
-        self.region_verify = StringVar()
-        self.inst_center_verify = StringVar()
-        self.region_verify.set("Select Region")
-        self.inst_center_verify.set("Select Inst Center")
-
-        label_font_size = 15
-        entry_font_size = 12
-        self.area_covered_label = Label(self.window, text="Area covered:", font=('times', label_font_size, 'bold'), bg="#f7f0f5")
-        self.area_covered_entry = Entry(self.window, textvariable=self.area_covered_verify)
-        self.area_covered_entry.configure(font=font.Font(family='Helvetica', size=entry_font_size))
-        self.area_covered_entry.bind("<Button-1>", self.action_area)
-
-        self.weight_label = Label(self.window, text="Weight:", font=('times', label_font_size, 'bold'), bg="#f7f0f5")
-        self.weight_entry = Entry(self.window, textvariable=self.weight_verify)
-        self.weight_entry.configure(font=font.Font(family='Helvetica', size=entry_font_size))
-        self.weight_entry.bind("<Button-1>", self.action_weight)
-
-        self.sample_id_label = Label(self.window, text="Sample ID:", font=('times', label_font_size, 'bold'), bg="#f7f0f5")
-        self.sample_id_entry = Entry(self.window, textvariable=self.sample_id_verify)
-        self.sample_id_entry.configure(font=font.Font(family='Helvetica', size=entry_font_size))
-        self.sample_id_entry.bind("<Button-1>", self.action_sampleid)
-
-        self.lot_id_label = Label(self.window, text="Lot ID:", font=('times', label_font_size, 'bold'), bg="#f7f0f5")
-        self.lot_id_entry = Entry(self.window, textvariable=self.lot_id_verify)
-        self.lot_id_entry.configure(font=font.Font(family='Helvetica', size=entry_font_size))
-        self.lot_id_entry.bind("<Button-1>", self.action_lotid)
-
-        self.device_serial_no_label = Label(self.window, text="Device Serial No.:", font=('times', label_font_size, 'bold'), bg="#f7f0f5")
-        self.device_serial_no_entry = Entry(self.window, textvariable=self.device_serial_no_verify)
-        self.device_serial_no_entry.configure(font=font.Font(family='Helvetica', size=entry_font_size))
-        self.device_serial_no_entry.bind("<Button-1>", self.action_deviceserialno)
-
-        self.batch_id_label = Label(self.window, text="Batch ID:", font=('times', label_font_size, 'bold'), bg="#f7f0f5")
-        self.batch_id_entry = Entry(self.window, textvariable=self.batch_id_verify)
-        self.batch_id_entry.configure(font=font.Font(family='Helvetica', size=entry_font_size))
-        self.batch_id_entry.bind("<Button-1>", self.action_batchid)
-
-        self.region_label = Label(self.window, text="Region:", font=('times', label_font_size, 'bold'), bg="#f7f0f5")
-        self.region_entry = OptionMenu(self.window, self.region_verify, *self.REGIONS_OPTIONS)
-        self.region_entry.configure(width=24, state="active", font=font.Font(family='times', size=16))
-
-        self.inst_center_label = Label(self.window, text="Installation Center:", font=('times', label_font_size, 'bold'), bg="#f7f0f5")
-        self.inst_center_entry = OptionMenu(self.window, self.inst_center_verify, *self.INSTCENTER_OPTIONS)
-        self.inst_center_entry.configure(width=24, state="active", font=font.Font(family='times', size=16))
-
-        self.nextBtn = tk.Button(self.window, text="Next", command=self.main_screen, fg="white", bg="#F37C62", width=12,height=2, font=('times', 16, 'bold'))
-
+        if is_admin:
+            self.startCamRecord.place_forget()
 
 
     def restart(self):
@@ -283,7 +234,7 @@ class MyTkApp(tk.Frame):
 
 
     def details_entered_success(self):
-        self.startDemo.place_forget()  
+        # self.startDemo.place_forget()  
         self.endRecord.place_forget()
         self.entered.place_forget()
         self.farmer_entry.place_forget()
@@ -291,17 +242,23 @@ class MyTkApp(tk.Frame):
         self.factory_entry.place_forget()
         self.division_entry.place_forget()
         self.msg_sent.place_forget()
+        self.poweroff.place_forget()
+        self.logout_button.place_forget()
+        # self.tuneCamera.place_forget()
+        if is_admin:
+            self.startCamRecord.place_forget() 
+        self.restart_button.place_forget()
+        self.shutdown_button.place_forget()
         self.remove_numpad()
+        self.start_jetson_fan()
     
     def display_all_options(self):
         if self.options_displayed == False:
-            self.back_button.place(x=int(configparser.get('gui-config', 'back_x')), y=int(configparser.get('gui-config', 'back_y')))
             self.logout_button.place(x=int(configparser.get('gui-config', 'logout_x')), y=int(configparser.get('gui-config', 'logout_y')))
             self.restart_button.place(x=int(configparser.get('gui-config', 'restart_x')), y=int(configparser.get('gui-config', 'restart_y')))
             self.shutdown_button.place(x=int(configparser.get('gui-config', 'shutdown_x')), y=int(configparser.get('gui-config', 'shutdown_y')))
             self.options_displayed = True
         else:
-            self.back_button.place_forget()
             self.logout_button.place_forget()
             self.restart_button.place_forget()
             self.shutdown_button.place_forget()
@@ -309,6 +266,10 @@ class MyTkApp(tk.Frame):
 
 
     def start_testing(self, command):
+        for i in glob.glob(PATH):
+            files = glob.glob(i + '/*')
+            for file in files:
+                os.remove(file)
         try:
             p = subprocess.Popen("exec " + command, stdout= subprocess.PIPE, shell=True)
             p.wait()
@@ -318,7 +279,7 @@ class MyTkApp(tk.Frame):
         except Exception as e:
             print(e)
             self.endRecord.place_forget()
-            self.startDemo.configure(bg="#539051", state="active")
+            # self.startDemo.configure(bg="#539051", state="active")
 
 
     def demo_video(self):
@@ -330,26 +291,42 @@ class MyTkApp(tk.Frame):
             self.details_entered_success()
             self.start_testing(cmd_demo)
         else:
-            self.show_error_msg("Please fill all details.")
+            self.show_error_msg()
         
 
     def end_video(self):
         self.formula.place_forget()
         self.endRecord.place_forget()
         self.send_data_api()
+        # if os.path.exists("result.txt"):
+        #     os.remove("result.txt")
         self.msg_sent.place(x=int(configparser.get('gui-config', 'data_saved_notification_x')), y=int(configparser.get('gui-config', 'data_saved_notification_y')))
         self.enter_details()
 
 
+    def start_record_video(self):
+        self.startCamRecord.configure(bg='silver', state="disabled")
+        subprocess.Popen("exec " + record_cam_cmd, stdout= subprocess.PIPE, shell=True)
+
+
     def on_closing(self):
         if messagebox.askokcancel("Quit", "Do you want to quit?"):
+            # if os.path.exists("result.txt"):
+            #     os.remove("result.txt")
             gc.collect()
-            try:
-                subprocess.Popen("exec " + "killall onboard", stdout= subprocess.PIPE, shell=True)
-            except:
-                pass
             self.window.destroy()
             sys.exit()
+
+
+    def clear_search_1(self, event):
+        if self.username_verify.get() == "Enter username":
+            self.username_login_entry.delete(0, tk.END)
+
+
+    def clear_search_2(self, event):
+        if self.password_verify.get() == "Enter password":
+            self.password_login_entry.delete(0, tk.END)
+
 
     def popup_keyboard(self, event):
         subprocess.Popen("exec " + "onboard", stdout= subprocess.PIPE, shell=True)
@@ -361,7 +338,7 @@ class MyTkApp(tk.Frame):
             if self.farmer_verify.get() == "Enter farmer Code":
                 self.farmer_entry.delete(0, tk.END)
             try:
-                self.startDemo.place_forget()  
+                # self.startDemo.place_forget()  
                 self.endRecord.place_forget()
                 self.sector_entry.place_forget()
                 self.factory_entry.place_forget()
@@ -394,12 +371,10 @@ class MyTkApp(tk.Frame):
             }
         resp = requests.request("GET", url, headers=headers)
         data = resp.json()['data']
-
         factory_id_list = [i["id"] for i in data]
         factory_name_list = [i["name"] for i in data]
 
         self.factory_id_name_dict = dict(zip(factory_name_list, factory_id_list))
-
         if len(factory_name_list) == 1:
             self.FACTORY_OPTIONS = factory_name_list
         else:
@@ -443,37 +418,6 @@ class MyTkApp(tk.Frame):
         menu.config(font=font.Font(family='Helvetica', size=15))
 
 
-    def get_regions(self):
-        region_names, region_ids = [], []
-        # self.customer_id, self.token = 91, "eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2VtYWlsIjoiZGVtb29wZXJhdG9yQGdtYWlsLmNvbSIsInVzZXJfZm5hbWUiOiJPcGVyYXRvciIsInVzZXJfbmFtZSI6ImRlbW9vcGVyYXRvckBnbWFpbC5jb20iLCJjdXN0b21lcl91dWlkIjoiOGE1YTU2YTAtNGY0MS00YTFjLWFiMTQtNmQ1MWFlNjIyZDBiIiwicm9sZXMiOlsib3BlcmF0b3IiXSwiaXNzIjoiUXVhbGl4IiwidXNlcl9sbmFtZSI6Ik9wZXJhdG9yIiwiY2xpZW50X2lkIjoiY2xpZW50LW1vYmlsZSIsInVzZXJfdXVpZCI6Ijc3Nzk3NTkwLTlmMzYtNDM5Ni1iMTA2LTcwNThiZjFkMTc3ZiIsInVzZXJfdHlwZSI6IkNVU1RPTUVSIiwidXNlcl9pZCI6MTg4LCJ1c2VyX21vYmlsZSI6Ijk2NTY1ODU2OTUiLCJzY29wZSI6WyJhbGwiXSwidXNlcl9oaWVyYXJjaHkiOm51bGwsImN1c3RvbWVyX25hbWUiOiJEZW1vIGN1c3RvbWVyIiwiZXhwIjoxNjAxMDAxMDA2LCJjdXN0b21lcl9pZCI6OTEsImp0aSI6IjQ4YTZmZGI5LTcxZTgtNDEwMi04ZTQ5LTRjOGU2ZDVlY2YzYyJ9.PVmAvB5fqQD2qSiT3pHzqNfuShQ2P5Ly9heBrY02Ldpn9X4Q3ciPwx7LV7md1t871wuRylTAjS-_VHEDlGjKDo3Q1ZkhR8fDWT7jWPKLPbX0SX2pCZtCzHKFbTk4giGP1W1QACvVi-VKBUZw5fHglk8V7uqDyqJ80N-8ouSofLfwdoaZhFzrAaLT3jVuevRqQGDE5D2Asysx2lUH1-bQNWF3AzaTipqE6fWF9uF0RA0evDve5vQXLpTDEyc4C8DpIWj5ol0-X723cI549ZDYIjrKGIoF2rYSWXGCwTA2gEJ_t8dv4V1xDCPSJ1kQ_VSPpVkUSdpjbEB25OWm7OIr5w"
-        if helper.is_internet_available():
-            region_names, region_ids = helper.regions_list_qualix(self.customer_id, self.token)
-        self.REGIONS_OPTIONS = ["Select Region"] + region_names
-        self.region_id_name_dict = dict(zip(region_names, region_ids))
-        self.region_entry.place_forget()
-        self.region_entry = OptionMenu(self.window, self.region_verify, *self.REGIONS_OPTIONS)
-        self.region_verify.trace("w", self.get_instcenter)
-        self.region_entry.configure(width=24, state="active", font=font.Font(family='Helvetica', size=16))
-        menu = self.nametowidget(self.region_entry.menuname)
-        menu.config(font=font.Font(family='Helvetica', size=16))
-
-
-    def get_instcenter(self, *args):
-        center_names, center_ids = [], []
-        # customer_id, token = 91, "eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2VtYWlsIjoiZGVtb29wZXJhdG9yQGdtYWlsLmNvbSIsInVzZXJfZm5hbWUiOiJPcGVyYXRvciIsInVzZXJfbmFtZSI6ImRlbW9vcGVyYXRvckBnbWFpbC5jb20iLCJjdXN0b21lcl91dWlkIjoiOGE1YTU2YTAtNGY0MS00YTFjLWFiMTQtNmQ1MWFlNjIyZDBiIiwicm9sZXMiOlsib3BlcmF0b3IiXSwiaXNzIjoiUXVhbGl4IiwidXNlcl9sbmFtZSI6Ik9wZXJhdG9yIiwiY2xpZW50X2lkIjoiY2xpZW50LW1vYmlsZSIsInVzZXJfdXVpZCI6Ijc3Nzk3NTkwLTlmMzYtNDM5Ni1iMTA2LTcwNThiZjFkMTc3ZiIsInVzZXJfdHlwZSI6IkNVU1RPTUVSIiwidXNlcl9pZCI6MTg4LCJ1c2VyX21vYmlsZSI6Ijk2NTY1ODU2OTUiLCJzY29wZSI6WyJhbGwiXSwidXNlcl9oaWVyYXJjaHkiOm51bGwsImN1c3RvbWVyX25hbWUiOiJEZW1vIGN1c3RvbWVyIiwiZXhwIjoxNjAxMDAxMDA2LCJjdXN0b21lcl9pZCI6OTEsImp0aSI6IjQ4YTZmZGI5LTcxZTgtNDEwMi04ZTQ5LTRjOGU2ZDVlY2YzYyJ9.PVmAvB5fqQD2qSiT3pHzqNfuShQ2P5Ly9heBrY02Ldpn9X4Q3ciPwx7LV7md1t871wuRylTAjS-_VHEDlGjKDo3Q1ZkhR8fDWT7jWPKLPbX0SX2pCZtCzHKFbTk4giGP1W1QACvVi-VKBUZw5fHglk8V7uqDyqJ80N-8ouSofLfwdoaZhFzrAaLT3jVuevRqQGDE5D2Asysx2lUH1-bQNWF3AzaTipqE6fWF9uF0RA0evDve5vQXLpTDEyc4C8DpIWj5ol0-X723cI549ZDYIjrKGIoF2rYSWXGCwTA2gEJ_t8dv4V1xDCPSJ1kQ_VSPpVkUSdpjbEB25OWm7OIr5w"
-        region_id = self.region_id_name_dict[self.region_verify.get()]
-        if helper.is_internet_available():
-            center_names, center_ids = helper.inst_centers_list_qualix(region_id, self.customer_id, self.token)
-        self.INSTCENTER_OPTIONS = ["Select Region"] + center_names
-
-        self.center_id_name_dict = dict(zip(center_names, center_ids))
-        self.inst_center_entry.place_forget()
-        self.inst_center_entry = OptionMenu(self.window, self.inst_center_verify, *self.INSTCENTER_OPTIONS)
-        self.inst_center_entry.configure(width=24, state="active", font=font.Font(family='Helvetica', size=16))
-        self.inst_center_entry.place(x=400, y=290)
-        menu = self.nametowidget(self.inst_center_entry.menuname)
-        menu.config(font=font.Font(family='Helvetica', size=16))
-
     def get_farmer_id(self):
         try:
             farmer_code = self.farmer_verify.get()
@@ -489,7 +433,7 @@ class MyTkApp(tk.Frame):
             self.hide_numpad()
         except Exception as e:
             print(e)
-            self.show_error_msg("Please enter correct code.")
+            self.enter_correct_details()
 
     def place_inputs(self):
         self.farmer_entry.place(x=520,y=110, height=40, width=190)
@@ -497,7 +441,8 @@ class MyTkApp(tk.Frame):
         self.division_entry.place(x=520, y=200, height=40, width=190)
         self.sector_entry.place(x=520, y=245, height=40, width=190)
         self.entered.place(x=520, y=305)
-        self.startDemo.place(x=520, y=360)
+        # self.startDemo.place(x=520, y=360)
+
 
     def hide_numpad(self):
         gc.collect()
@@ -519,80 +464,13 @@ class MyTkApp(tk.Frame):
         self.farmer_entry.insert('end', val)
 
     def action_1(self, event):
-        if self.username_verify.get() == "Enter username":
-            self.username_login_entry.delete(0, tk.END)
+        self.clear_search_1(event)
         self.popup_keyboard(event)
+
 
     def action_2(self, event):
-        if self.password_verify.get() == "Enter password":
-            self.password_login_entry.delete(0, tk.END)
+        self.clear_search_2(event)
         self.popup_keyboard(event)
-
-    def kill_keyboard(self, event):
-        try:
-            subprocess.Popen("exec " + "killall onboard", stdout= subprocess.PIPE, shell=True)
-        except:
-            pass
-
-    def action_area(self, event):
-        if self.area_covered_verify.get() == "Enter Area Covered":
-            self.area_covered_entry.delete(0, tk.END)
-        self.popup_keyboard(event)
-
-    def lost_focus_area_covered(self, event):
-        if self.area_covered_verify.get() == "":
-            self.area_covered_entry.insert(1, "Enter Area Covered")
-        self.kill_keyboard(event)
-
-    def action_weight(self, event):
-        if self.weight_verify.get() == "Enter Weight":
-            self.weight_entry.delete(0, tk.END)
-        self.popup_keyboard(event)
-
-    def lost_focus_weight(self, event):
-        if self.weight_verify.get() == "":
-            self.weight_entry.insert(1, "Enter Weight")
-        self.kill_keyboard(event)
-
-    def action_sampleid(self, event):
-        if self.sample_id_verify.get() == "Enter Sample ID":
-            self.sample_id_entry.delete(0, tk.END)
-        self.popup_keyboard(event)
-
-    def lost_focus_sample_id(self, event):
-        if self.sample_id_verify.get() == "":
-            self.sample_id_entry.insert(1, "Enter Sample ID")
-        self.kill_keyboard(event)
-
-    def action_lotid(self, event):
-        if self.lot_id_verify.get() == "Enter Lot ID":
-            self.lot_id_entry.delete(0, tk.END)
-        self.popup_keyboard(event)
-
-    def lost_focus_lot_id(self, event):
-        if self.lot_id_verify.get() == "":
-            self.lot_id_entry.insert(1, "Enter Lot ID")
-        self.kill_keyboard(event)
-
-    def action_deviceserialno(self, event):
-        if self.device_serial_no_verify.get() == "Enter Device SerialNo":
-            self.device_serial_no_entry.delete(0, tk.END)
-        self.popup_keyboard(event)
-
-    def lost_focus_device_serial_no(self, event):
-        if self.device_serial_no_verify.get() == "":
-            self.device_serial_no_entry.insert(1, "Enter Device SerialNo")
-        self.kill_keyboard(event)
-
-    def action_batchid(self, event):
-        if self.batch_id_verify.get() == "Enter Batch ID":
-            self.batch_id_entry.delete(0, tk.END)
-        self.popup_keyboard(event)
-
-    def lost_focus_batch_id(self, event):
-        if self.batch_id_verify.get() == "":
-            self.batch_id_entry.insert(1, "Enter Batch ID")
-        self.kill_keyboard(event)
 
 
     def login_api(self, usr, pwd):
@@ -618,19 +496,101 @@ class MyTkApp(tk.Frame):
             print("Exception during login: ", e)
         return status
 
-    def send_data_api(self):
-        # ccId = int(self.factory_id_name_dict[self.factory_verify.get()])
-        # sectionId = int(self.section_id_name_dict[self.section_verify.get()])
-        # farmer_code = self.farmer_verify.get()
+
+    def get_class_count(self):
+        txt_file = open("result.txt", "r").read()
+        li = txt_file.split("\n")
+        frame_count = li[0].split(": ")[1]
+        _1lb = int(li[1].split(": ")[1])
+        _2lb = int(li[2].split(": ")[1])
+        _3lb = int(li[3].split(": ")[1]) 
+        _1bj = int(li[4].split(": ")[1])
+        _2bj = int(li[5].split(": ")[1])
+        _cluster = int(li[6].split(": ")[1])
+        _coarse = int(li[7].split(": ")[1])
+        time_taken = li[9].split(": ")[1]
+        # _perc = round(float(li[8].split(": ")[1]), 2)
+        # _perc = _perc if math.isnan(float(_perc)) == False else 0
+
+        totalCount = int(_1lb + _2lb + _3lb + _1bj + _2bj + _coarse)
+
+        _1lb = int(round(_1lb * 1.1346, 0))
+        _2lb = int(round(_2lb * 1.2006, 0))
+        _1bj = int(round(_1bj * 1.3288, 0))
+        _3lb = int(round(_3lb * 1.4213, 0))
+        _2bj = int(round(_2bj * 0.85, 0))
+
+        _coarse = int(round(_coarse - totalCount * 0.012, 0))
+        _coarse = _coarse if _coarse > 0 else 0
+
+        totalCount = _1lb + _2lb + _3lb + _1bj + _2bj + _coarse
+
+        try:
+            _perc = round(((_1lb + _2lb + (_3lb/2) + _1bj) / totalCount)*100, 2)
+        except Exception as e:
+            print(e)
+            _perc = 0
+
+        with open("factor.txt", "w") as factor:
+            factor.write("Frame: "+ frame_count + "\n")
+            factor.write("1LB: " + str(_1lb) + "\n")
+            factor.write("2LB: " + str(_2lb) + "\n")
+            factor.write("3LB: " + str(_3lb) + "\n")
+            factor.write("1Bj: " + str(_1bj) + "\n")
+            factor.write("2Bj: " + str(_2bj) + "\n")
+            factor.write("Coarse: " + str(_coarse) + "\n")
+            factor.write("Cluster: " + str(_cluster) + "\n")
+            factor.write("Total: " + str(totalCount) + "\n")
+            factor.write("FLC % " + str(_perc) + "\n")
+            factor.write("Time: " + time_taken + "\n")
+        gc.collect()
         
-        _1lb, _2lb, _3lb, _1bj, _2bj, _coarse, totalCount, _perc, payload = helper.get_payload()
-        # qualix_status = 0
-        # if helper.is_internet_available():
-        #     qualix_status = helper.qualix_api(payload, sectionId, farmer_code, self.new_fields)
-        qualix_status = 200
-        if qualix_status == 200:
+        return _1lb, _2lb, _3lb, _1bj, _2bj, _coarse, totalCount, _perc
+
+
+    def send_data_api(self):
+        if configparser.get('gui-config', 'internet') == 'true':
+            
+            _1lb, _2lb, _3lb, _1bj, _2bj, _coarse, totalCount, _perc = self.get_class_count()
+
+            head = {
+                "Content-Type": "application/json",
+                "Authorization": "Bearer " + self.token
+            }
+            load = {
+                "userId": int(self.userID),
+                "ccId": int(self.factory_id_name_dict[self.factory_verify.get()]),
+                "sectionId": int(self.section_id_name_dict[self.section_verify.get()]),
+                "assistId": int(self.farmer_id),
+                "oneLeafBud": _1lb,
+                "twoLeafBud": _2lb,
+                "threeLeafBud": _3lb,
+                "oneLeafBanjhi": _1bj,
+                "twoLeafBanjhi": _2bj,
+                "oneBudCount": "0",
+                "oneBanjhiCount": "0",
+                "oneLeafCount": "0",
+                "twoLeafCount": "0",
+                "threeLeafCount": "0",
+                "qualityScore": _perc,
+                "totalCount": totalCount,
+            }
+            resp = requests.request("POST", configparser.get('gui-config', 'ip') + "/api/user/scans", data=json.dumps(load), headers=head)
+            print(load)
+            print(resp.json())
+            saved = resp.json()['success']
+        else:
+            txt_file = open("result.txt", "r").read()
+            li = txt_file.split("\n")
+
+            with open("flc_utils/noInternetFiles/realTimeTesting.logs", "a") as out_file:
+                out_file.write("Datetime " + str(datetime.datetime.now())[:-7] + "\n")
+                out_file.write(txt_file)
+                out_file.write("\n")
+            saved = "true"
+
+        if saved == "true":
             self.msg_sent.configure(text="Data saved", fg="green")
-            helper.maintain_spreadsheet(_1lb, _2lb, _3lb, _1bj, _2bj, _coarse, totalCount, _perc)
         else:
             self.msg_sent.configure(text="Couldn't save to servers", fg="red")
         self._1lb_btn.place_forget()
@@ -669,38 +629,38 @@ class MyTkApp(tk.Frame):
     def show_results_on_display(self):
         self.forget_graph()
 
-        _1lb, _2lb, _3lb, _1bj, _2bj, _coarse, totalCount, _perc = helper.get_class_count()
+        _1lb, _2lb, _3lb, _1bj, _2bj, _coarse, totalCount, _perc = self.get_class_count()
 
-        updated_count = totalCount + 40
+
         self._flc_btn.configure(text="FLC %      " + str(_perc))
-        self._total_btn.configure(text="Total Leaves     " + str(updated_count))
+        self._total_btn.configure(text="Total Leaves     " + str(totalCount))
         try:
-            self._1lb_btn.configure(text="1LB %         " + str(round(_1lb*100/updated_count, 2)))
+            self._1lb_btn.configure(text="1LB %         " + str(round(_1lb*100/totalCount, 2)))
         except Exception as e:
             print(e)
             self._1lb_btn.configure(text="1LB %          0")
         try:
-            self._2lb_btn.configure(text="2LB %         " + str(round(_2lb*100/updated_count, 2)))
+            self._2lb_btn.configure(text="2LB %         " + str(round(_2lb*100/totalCount, 2)))
         except Exception as e:
             print(e)
             self._2lb_btn.configure(text="2LB %        0")
         try:
-            self._1bj_btn.configure(text="1Banjhi %      " + str(round(_1bj*100/updated_count, 2)))
+            self._1bj_btn.configure(text="1Banjhi %      " + str(round(_1bj*100/totalCount, 2)))
         except Exception as e:
             print(e)
             self._1bj_btn.configure(text="1Banjhi %     0")
         try:
-            self._3lb_btn.configure(text="3LB %        " + str(round(_3lb*50/updated_count, 2)))
+            self._3lb_btn.configure(text="3LB %        " + str(round(_3lb*50/totalCount, 2)))
         except Exception as e:
             print(e)
             self._3lb_btn.configure(text="3LB %       0")
         try:
-            self._coarse_btn.configure(text="Coarse %      " + str(round(_coarse*100/updated_count, 2)))
+            self._coarse_btn.configure(text="Coarse %      " + str(round(_coarse*100/totalCount, 2)))
         except Exception as e:
             print(e)
             self._coarse_btn.configure(text="Coarse %      0")
         try:
-            self._2bj_btn.configure(text="2Banjhi %     " + str(round(_2bj*100/updated_count, 2)))
+            self._2bj_btn.configure(text="2Banjhi %     " + str(round(_2bj*100/totalCount, 2)))
         except Exception as e:
             print(e)
             self._2bj_btn.configure(text="2Banjhi %     0")
@@ -719,40 +679,87 @@ class MyTkApp(tk.Frame):
              
      
     def login_verify(self):
-        username = self.username_verify.get()
-        password = self.password_verify.get()
-        if helper.is_internet_available():
-            success, self.token, self.customer_id = helper.login_api_qualix(username, password)
-            if success:
-                self.login_success()
+        username1 = self.username_verify.get()
+        password1 = self.password_verify.get()
+        if configparser.get('gui-config', 'internet') == 'true':
+            status = self.login_api(username1, password1)
+            if status == True:
+                self.login_sucess()
             else:
-                self.show_error_msg("User Not Found")
+                self.user_not_found()
         else:
-            show_error_msg("No Internet!")
+            list_of_files = os.listdir("flc_utils/noInternetFiles/")
+            if username1 in list_of_files:
+                file1 = open("flc_utils/noInternetFiles/"+username1, "r")
+                verify = file1.read().splitlines()
+                if password1 in verify:
+                    self.welcome_text.configure(text="Welcome, " + username1.title())
+                    self.login_sucess()
+                else:
+                    self.password_not_recognised()
+
+            else:
+                self.user_not_found()
         gc.collect()
 
 
-    def show_error_msg(self, msg):
-        self.error_screen = Toplevel(self.window)
-        self.error_screen.geometry("%dx%d+%d+%d" % (self.w, self.h, self.x + 300, self.y + 200))
-        self.error_screen.title("Error")
-        Label(self.error_screen, text=msg, font=('times', 15, 'bold')).pack()
-        Button(self.error_screen, text="OK", command=self.delete_error_screen).pack()
+    def show_error_msg(self):
+        self.details_not_filled_screen = Toplevel(self.window)
+        self.details_not_filled_screen.geometry("%dx%d+%d+%d" % (self.w, self.h, self.x + 300, self.y + 200))
+        self.details_not_filled_screen.title("Error")
+        Label(self.details_not_filled_screen, text="Please fill all details.").pack()
+        Button(self.details_not_filled_screen, text="OK", command=self.delete_details_not_filled_screen).pack()
 
-    def delete_error_screen(self):
-        self.error_screen.destroy()
+
+    def delete_details_not_filled_screen(self):
+        self.details_not_filled_screen.destroy()
+
+
+    def enter_correct_details(self):
+        self.enter_correct_details_screen = Toplevel(self.window)
+        self.enter_correct_details_screen.geometry("%dx%d+%d+%d" % (self.w, self.h, self.x + 300, self.y + 200))
+        self.enter_correct_details_screen.title("Error")
+        Label(self.enter_correct_details_screen, text="Please enter correct code.").pack()
+        Button(self.enter_correct_details_screen, text="OK", command=self.enter_correct_details_destroy).pack()
+
+
+    def enter_correct_details_destroy(self):
+        self.enter_correct_details_screen.destroy()
+
+    def password_not_recognised(self):
+        self.password_not_recog_screen = Toplevel(self.window)
+        self.password_not_recog_screen.geometry("%dx%d+%d+%d" % (self.w, self.h, self.x + 300, self.y + 200))
+        self.password_not_recog_screen.title("Error")
+        Label(self.password_not_recog_screen, text="Invalid Password ").pack()
+        Button(self.password_not_recog_screen, text="OK", command=self.delete_password_not_recognised).pack()
+
+     
+    def delete_password_not_recognised(self):
+        self.password_not_recog_screen.destroy()
+
+    def user_not_found(self):
+        self.user_not_found_screen = Toplevel(self.window)
+        self.user_not_found_screen.geometry("%dx%d+%d+%d" % (self.w, self.h, self.x + 300, self.y + 200))
+        self.user_not_found_screen.title("Error")
+        Label(self.user_not_found_screen, text="User Not Found").pack()
+        Button(self.user_not_found_screen, text="OK", command=self.delete_user_not_found_screen).pack()
+  
+     
+    def delete_user_not_found_screen(self):
+        self.user_not_found_screen.destroy()
+
 
     def details_verify(self): 
         gc.collect() 
-        # farmer = self.farmer_verify.get()
-        # sector = self.section_verify.get()  
-        # factory = self.factory_verify.get()
-        # division = self.division_verify.get()    
-        # if farmer not in ["", "Enter farmer Code"] and sector not in ["", "Select section ID"] and factory not in ["", "Select factory"] and division not in ["", "Select division ID"]:
-        self.details_entered_success()
-        self.start_testing(cmd)
-        # else:
-        #     self.show_error_msg("Please fill all details.")
+        farmer = self.farmer_verify.get()
+        sector = self.section_verify.get()  
+        factory = self.factory_verify.get()
+        division = self.division_verify.get()    
+        if farmer not in ["", "Enter farmer Code"] and sector not in ["", "Select section ID"] and factory not in ["", "Select factory"] and division not in ["", "Select division ID"]:
+            self.details_entered_success()
+            self.start_testing(cmd)
+        else:
+            self.show_error_msg()
 
      
     def enter_details(self):
@@ -784,114 +791,13 @@ class MyTkApp(tk.Frame):
 
         self.poweroff.place(x=750, y=80)
 
-    def second_screen_place(self):
-        self.forget_graph()
-        self.details_entered_success()
-        try:
-            subprocess.Popen("exec " + "killall onboard", stdout= subprocess.PIPE, shell=True)
-        except:
-            pass
-        self.welcome_text.place(x=int(configparser.get('gui-config', 'welcome_text_x')), y=int(configparser.get('gui-config', 'welcome_text_y')))
-
-        x_col1, x_col2, x_col3, x_col4 = 70, 300, 520, 650
-        y_row1, y_row2, y_row3, y_row4 = 150, 210, 290, 330
-
-        self.area_covered_label.place(x=x_col1, y=y_row1-22)
-        self.area_covered_entry.place(x=x_col1, y=y_row1)
-        self.area_covered_entry.delete(0, tk.END)
-        area_covered = self.new_fields['area_covered'] if 'area_covered' in self.new_fields else "Enter Area Covered"
-        self.area_covered_entry.insert(1, area_covered)
-
-        self.weight_label.place(x=x_col2, y=y_row1-22)
-        self.weight_entry.place(x=x_col2, y=y_row1)
-        self.weight_entry.delete(0, tk.END)
-        weight = self.new_fields['weight'] if 'weight' in self.new_fields else "Enter Weight"
-        self.weight_entry.insert(1, weight)
-
-        self.sample_id_label.place(x=x_col3, y=y_row1-22)
-        self.sample_id_entry.place(x=x_col3, y=y_row1)
-        self.sample_id_entry.delete(0, tk.END)
-        sample_id = self.new_fields['sample_id'] if 'sample_id' in self.new_fields else "Enter Sample ID"
-        self.sample_id_entry.insert(1, sample_id)
-
-        self.lot_id_label.place(x=x_col1, y=y_row2-22)
-        self.lot_id_entry.place(x=x_col1, y=y_row2)
-        self.lot_id_entry.delete(0, tk.END)
-        lot_id = self.new_fields['lot_id'] if 'lot_id' in self.new_fields else "Enter Lot ID"
-        self.lot_id_entry.insert(1, lot_id)
-
-        self.device_serial_no_label.place(x=x_col2, y=y_row2-22)
-        self.device_serial_no_entry.place(x=x_col2, y=y_row2)
-        self.device_serial_no_entry.delete(0, tk.END)
-        device_serial_no = self.new_fields['device_serial_no'] if 'device_serial_no' in self.new_fields else "Enter Device SerialNo"
-        self.device_serial_no_entry.insert(1, device_serial_no)
-
-        self.batch_id_label.place(x=x_col3, y=y_row2-22)
-        self.batch_id_entry.place(x=x_col3, y=y_row2)
-        self.batch_id_entry.delete(0, tk.END)
-        batch_id = self.new_fields['batchId'] if 'batchId' in self.new_fields else "Enter Batch ID"
-        self.batch_id_entry.insert(1, batch_id)
-
-        self.get_regions()
-        self.region_label.place(x=100, y=y_row3-22)
-        self.region_entry.place(x=100, y=y_row3)
-
-        self.inst_center_label.place(x=400, y=y_row3-22)
-        self.inst_center_entry.configure(width=24, state="disabled")
-        self.inst_center_entry.place(x=400, y=y_row3)
-
-        self.nextBtn.place(x=350,y=330)  
-        self.poweroff.place(x=750, y=80)      
-
-    def second_screen_forget(self):
-        self.area_covered_label.place_forget()
-        self.area_covered_entry.place_forget()
-        self.weight_label.place_forget()
-        self.weight_entry.place_forget()
-        self.sample_id_label.place_forget()
-        self.sample_id_entry.place_forget()
-        self.lot_id_label.place_forget()
-        self.lot_id_entry.place_forget()
-        self.region_label.place_forget()
-        self.region_entry.place_forget()
-        self.inst_center_label.place_forget()
-        self.inst_center_entry.place_forget()
-        self.device_serial_no_label.place_forget()
-        self.device_serial_no_entry.place_forget()
-        self.batch_id_label.place_forget()
-        self.batch_id_entry.place_forget()
-
-        self.nextBtn.place_forget()
-
-    def main_screen(self):
-        self.new_fields['area_covered'] = self.area_covered_verify.get()
-        self.new_fields['weight'] = self.weight_verify.get()
-        self.new_fields['sample_id'] = self.sample_id_verify.get()
-        self.new_fields['lot_id'] = self.lot_id_verify.get()
-        self.new_fields['region_id'] = self.region_id_name_dict[self.region_verify.get()] if self.region_verify.get() != 'Select Region' else self.region_verify.get()
-        self.new_fields['inst_center_id'] = self.center_id_name_dict[self.inst_center_verify.get()] if self.inst_center_verify.get() != 'Select Inst Center' else self.inst_center_verify.get()
-        self.new_fields['device_serial_no'] = self.device_serial_no_verify.get()
-        self.new_fields['batchId'] = self.batch_id_verify.get()
-        # if (self.new_fields['area_covered'] == 'Enter Area Covered') or \
-        #     (self.new_fields['weight'] == "Enter Weight") or \
-        #     (self.new_fields['sample_id'] == "Enter Sample ID")  or \
-        #     (self.new_fields['lot_id'] == "Enter Lot ID") or \
-        #     (self.new_fields['region_id'] == "Select Region") or \
-        #     (self.new_fields['inst_center_id'] == "Select Inst Center") or \
-        #     (self.new_fields['device_serial_no'] == "Enter Device SerialNo") or \
-        #     (self.new_fields['batchId'] == "Enter Batch ID"):
-        #     self.show_error_msg("Please fill all details.")
-        # else:
-        self.second_screen_forget()
-        self.enter_details()      
-        self.start_jetson_fan()
-
-    def login_success(self):
+     
+    def login_sucess(self):
         self.username_login_entry.place_forget()
         self.password_login_entry.place_forget()
         self.signin.place_forget()
         self.panel_bg.place_forget()
-        self.second_screen_place() 
+        self.enter_details()       
 
 
 def launchApp():
