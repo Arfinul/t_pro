@@ -446,7 +446,7 @@ class MyTkApp(tk.Frame):
             qualix_status = helper.qualix_api(payload, sectionId, self.new_fields)
         if qualix_status == 200:
             self.msg_sent.configure(text="Data saved", fg="green")
-            helper.update_spreadsheet(_1lb, _2lb, _3lb, _1bj, _2bj, _coarse, totalCount, _perc)
+            # helper.update_spreadsheet(_1lb, _2lb, _3lb, _1bj, _2bj, _coarse, totalCount, _perc)
         else:
             self.msg_sent.configure(text="Couldn't save to servers", fg="red")
 
