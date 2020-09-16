@@ -455,6 +455,15 @@ class MyTkApp(tk.Frame):
         f.write(self.section_verify.get() + ',' + str(_perc)+ ',' + datetime.datetime.now().strftime("%d-%m-%Y %H:%M:%S") + '\n')
         f.close()
 
+        self._flc_btn.place_forget()
+        self._total_btn.place_forget()
+        self._1lb_btn.place_forget()
+        self._2lb_btn.place_forget()
+        self._1bj_btn.place_forget()
+        self._3lb_btn.place_forget()
+        self._coarse_btn.place_forget()
+        self._2bj_btn.place_forget()
+
         helper.update_graph()
 
 
