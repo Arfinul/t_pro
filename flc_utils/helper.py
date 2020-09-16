@@ -8,6 +8,7 @@ import seaborn as sns
 from urllib.request import urlopen
 import configparser
 import math
+import cv2
 from requests_toolbelt.multipart.encoder import MultipartEncoder
 
 import pickle
