@@ -439,7 +439,7 @@ class MyTkApp(tk.Frame):
 
 
     def send_data_api(self):
-        sectionId = int(self.section_id_name_dict[self.section_verify.get()])
+        # sectionId = int(self.section_id_name_dict[self.section_verify.get()])
         
         _1lb, _2lb, _3lb, _1bj, _2bj, _coarse, totalCount, _perc, payload = helper.get_payload()
         # if helper.is_internet_available():
