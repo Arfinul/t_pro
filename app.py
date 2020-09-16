@@ -23,7 +23,7 @@ import glob
 from flask_server import server
 
 configparser = configparser.RawConfigParser()   
-#os.chdir("/home/agnext/Documents/flc")  # Agnext
+os.chdir("/home/agnext/Documents/flc")  # Agnext
 
 configparser.read('flc_utils/screens/touchScreen/gui.cfg')
 is_admin = False
@@ -140,7 +140,7 @@ class MyTkApp(tk.Frame):
         self.division_verify.set("Select division ID")
          
         self.farmer_entry = Entry(self.window, textvariable=self.farmer_verify)
-        self.farmer_entry.configure(font=font.Font(family='Helvetica', size=16))
+        self.farmer_entry.configure(font=font.Font(family='Helvetica', size=16), state="disabled")
         self.factory_entry = OptionMenu(self.window, self.factory_verify, *self.FACTORY_OPTIONS)
         self.factory_entry.configure(width=24, state="disabled", font=font.Font(family='Helvetica', size=16))
         self.division_entry = OptionMenu(self.window, self.division_verify, *self.DIVISION_OPTIONS)
@@ -229,6 +229,7 @@ class MyTkApp(tk.Frame):
     def details_entered_success(self):
         self.startDemo.place_forget() 
         self.capture.place_forget()
+        self.entered.place_forget()
         self.farmer_entry.place_forget()
         self.sector_entry.place_forget()
         self.factory_entry.place_forget()
@@ -299,16 +300,16 @@ class MyTkApp(tk.Frame):
 
 
     def demo_video(self):
-        farmer = self.farmer_verify.get()
-        sector = self.section_verify.get()  
-        factory = self.factory_verify.get()
-        division = self.division_verify.get()    
-        if farmer not in ["", "Enter farmer Code"] and sector not in ["", "Select section ID"] and factory not in ["", "Select factory"] and division not in ["", "Select division ID"]:
-            status = self.start_testing(False)
-            if status:
-                self.details_entered_success()
-        else:
-            self.show_error_msg("Please fill all details.")
+        # farmer = self.farmer_verify.get()
+        # sector = self.section_verify.get()  
+        # factory = self.factory_verify.get()
+        # division = self.division_verify.get()    
+        # if farmer not in ["", "Enter farmer Code"] and sector not in ["", "Select section ID"] and factory not in ["", "Select factory"] and division not in ["", "Select division ID"]:
+        status = self.start_testing(False)
+        if status:
+            self.details_entered_success()
+        # else:
+        #     self.show_error_msg("Please fill all details.")
         
 
     def end_video(self):
@@ -327,9 +328,6 @@ class MyTkApp(tk.Frame):
 
     def on_closing(self):
         if messagebox.askokcancel("Quit", "Do you want to quit?"):
-            if os.path.exists("result.txt"):
-                os.remove("result.txt")
-            gc.collect()
             self.window.destroy()
             SERVER.kill()
             sys.exit()
@@ -532,16 +530,19 @@ class MyTkApp(tk.Frame):
         _2leaf = int(self.result_dict['2Leaf_Count'])
         _3leaf = int(self.result_dict['3Leaf_Count'])
         _total = int(self.result_dict['Total_Bunches'])
-        _perc = ((_1lb + _2lb + (_3lb/2) + _1bj + _2bj + _1bud + _1banjhi) / _total) * 100
+        _sum = (_1lb + _2lb + (_3lb/2) + _1bj + _2bj + _1bud + _1banjhi)
+        if _sum == 0:
+            _perc = 0.0
+        else:
+            _perc = (_sum/ _total) * 100
 
         return _1lb, _2lb, _3lb, _1bj, _2bj,_3bj, _1bud, _1banjhi, _1leaf, _2leaf, _3leaf, _perc, _total
 
 
     def send_data_api(self):
-        if configparser.get('gui-config', 'internet') == 'true':
-            
-            _1lb, _2lb, _3lb, _1bj, _2bj, _3bj, _1bud, _1banjhi, _1leaf, _2leaf, _3leaf, _perc, _total = self.get_class_count()
+        _1lb, _2lb, _3lb, _1bj, _2bj, _3bj, _1bud, _1banjhi, _1leaf, _2leaf, _3leaf, _perc, _total = self.get_class_count()
 
+        if configparser.get('gui-config', 'internet') == 'true':
             head = {
                 "Content-Type": "application/json",
                 "Authorization": "Bearer " + self.token
@@ -570,13 +571,23 @@ class MyTkApp(tk.Frame):
             print(resp.json())
             saved = resp.json()['success']
         else:
-            txt_file = open("result.txt", "r").read()
-            li = txt_file.split("\n")
-
             with open("flc_utils/noInternetFiles/realTimeTesting.logs", "a") as out_file:
                 out_file.write("Datetime " + str(datetime.datetime.now())[:-7] + "\n")
-                out_file.write(txt_file)
-                out_file.write("\n")
+                out_file.write("_1lb, _2lb, _3lb, _1bj, _2bj, _3bj, _1bud, _1banjhi, _1leaf, _2leaf, _3leaf, _perc, _total\n")
+                out_file.write(str(_1lb) + ", ")
+                out_file.write(str(_2lb) + ", ")
+                out_file.write(str(_3lb) + ", ")
+                out_file.write(str(_1bj) + ", ")
+                out_file.write(str(_2bj) + ", ")
+                out_file.write(str(_3bj) + ", ")
+                out_file.write(str(_1bud) + ", ")
+                out_file.write(str(_1banjhi) + ", ")
+                out_file.write(str(_1leaf) + ", ")
+                out_file.write(str(_2leaf) + ", ")
+                out_file.write(str(_3leaf) + ", ")
+                out_file.write(str(_perc) + ", ")
+                out_file.write(str(_total) + ", ")
+                out_file.write("\n\n")
             saved = "true"
 
         if saved == "true":
@@ -664,17 +675,16 @@ class MyTkApp(tk.Frame):
 
 
     def details_verify(self): 
-        gc.collect() 
-        farmer = self.farmer_verify.get()
-        sector = self.section_verify.get()  
-        factory = self.factory_verify.get()
-        division = self.division_verify.get()    
-        if farmer not in ["", "Enter farmer Code"] and sector not in ["", "Select section ID"] and factory not in ["", "Select factory"] and division not in ["", "Select division ID"]:
-            status = self.start_testing(True)
-            if status:
-                self.details_entered_success()
-        else:
-            self.show_error_msg("Please fill all details.")
+        # farmer = self.farmer_verify.get()
+        # sector = self.section_verify.get()  
+        # factory = self.factory_verify.get()
+        # division = self.division_verify.get()    
+        # if farmer not in ["", "Enter farmer Code"] and sector not in ["", "Select section ID"] and factory not in ["", "Select factory"] and division not in ["", "Select division ID"]:
+        status = self.start_testing(True)
+        if status:
+            self.details_entered_success()
+        # else:
+        #     self.show_error_msg("Please fill all details.")
 
      
     def enter_details(self):
@@ -691,9 +701,10 @@ class MyTkApp(tk.Frame):
 
         self.welcome_text.place(x=int(configparser.get('gui-config', 'welcome_text_x')), y=int(configparser.get('gui-config', 'welcome_text_y')))
         
-        self.farmer_entry.bind("<Button-1>", self.show_numpad)
+        # self.farmer_entry.bind("<Button-1>", self.show_numpad)
         self.farmer_entry.delete(0, tk.END)
         self.farmer_entry.insert(1, "Enter farmer Code")
+        self.farmer_entry.configure(font=font.Font(family='Helvetica', size=16), state="disabled")
 
         self.SECTION_OPTIONS = ["Select section ID"]
         self.sector_entry.configure(width=24, state="disabled")
