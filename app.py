@@ -23,7 +23,7 @@ import glob
 from flask_server import server
 
 configparser = configparser.RawConfigParser()   
-#os.chdir("/home/agnext/Documents/flc")  # Agnext
+os.chdir("/home/agnext/Documents/flc")  # Agnext
 
 configparser.read('flc_utils/screens/touchScreen/gui.cfg')
 is_admin = False
@@ -229,6 +229,7 @@ class MyTkApp(tk.Frame):
     def details_entered_success(self):
         self.startDemo.place_forget() 
         self.capture.place_forget()
+        self.entered.place_forget()
         self.farmer_entry.place_forget()
         self.sector_entry.place_forget()
         self.factory_entry.place_forget()
@@ -532,7 +533,11 @@ class MyTkApp(tk.Frame):
         _2leaf = int(self.result_dict['2Leaf_Count'])
         _3leaf = int(self.result_dict['3Leaf_Count'])
         _total = int(self.result_dict['Total_Bunches'])
-        _perc = ((_1lb + _2lb + (_3lb/2) + _1bj + _2bj + _1bud + _1banjhi) / _total) * 100
+        _sum = (_1lb + _2lb + (_3lb/2) + _1bj + _2bj + _1bud + _1banjhi)
+        if _sum == 0:
+            _perc = 0.0
+        else:
+            _perc = (_sum/ _total) * 100
 
         return _1lb, _2lb, _3lb, _1bj, _2bj,_3bj, _1bud, _1banjhi, _1leaf, _2leaf, _3leaf, _perc, _total
 
