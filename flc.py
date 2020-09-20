@@ -24,7 +24,7 @@ logging.basicConfig(filename='server_logs.log',
 logger = logging.getLogger(("FLC"))
 
 configparser = configparser.RawConfigParser()   
-# os.chdir("/home/agnext/Documents/flc")
+os.chdir("/home/agnext/Documents/flc")
 
 configparser.read('flc_utils/screens/touchScreen/gui.cfg')
 
@@ -776,5 +776,4 @@ def launchApp():
 
 if __name__=='__main__':
     launchApp()
-
 

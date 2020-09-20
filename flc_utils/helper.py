@@ -208,48 +208,49 @@ def is_internet_available():
         return False
 
 def update_spreadsheet(_1lb, _2lb, _3lb, _1bj, _2bj, _coarse, totalCount, _perc):
-    # If modifying these scopes, delete the file token.pickle.
-    SCOPES = ['https://www.googleapis.com/auth/spreadsheets']
+    if is_internet_available():
+        # If modifying these scopes, delete the file token.pickle.
+        SCOPES = ['https://www.googleapis.com/auth/spreadsheets']
 
-    # The ID and range of a sample spreadsheet.
-    SPREADSHEET_ID = '1K_WDm3hwVXmxFRoimG8Z3DcZ52yuCJ9Ekox-s-RA4cA'
-    RANGE_NAME = 'Sheet1!A:H'
+        # The ID and range of a sample spreadsheet.
+        SPREADSHEET_ID = '1Js_ZRuruPlmyk4_JoPv2emh-Io8Zkuxzn2HwCdvX3iA'
+        RANGE_NAME = 'Sheet1!A:H'
 
-    creds = None
-    # The file token.pickle stores the user's access and refresh tokens, and is
-    # created automatically when the authorization flow completes for the first
-    # time.
-    if os.path.exists('flc_utils/token.pickle'):
-        with open('flc_utils/token.pickle', 'rb') as token:
-            creds = pickle.load(token)
-    # If there are no (valid) credentials available, let the user log in.
-    if not creds or not creds.valid:
-        if creds and creds.expired and creds.refresh_token:
-            creds.refresh(Request())
-        else:
-            flow = InstalledAppFlow.from_client_secrets_file(
-                'flc_utils/credentials.json', SCOPES)
-            creds = flow.run_local_server(port=0)
-        # Save the credentials for the next run
-        with open('flc_utils/token.pickle', 'wb') as token:
-            pickle.dump(creds, token)
+        creds = None
+        # The file token.pickle stores the user's access and refresh tokens, and is
+        # created automatically when the authorization flow completes for the first
+        # time.
+        if os.path.exists('flc_utils/token.pickle'):
+            with open('flc_utils/token.pickle', 'rb') as token:
+                creds = pickle.load(token)
+        # If there are no (valid) credentials available, let the user log in.
+        if not creds or not creds.valid:
+            if creds and creds.expired and creds.refresh_token:
+                creds.refresh(Request())
+            else:
+                flow = InstalledAppFlow.from_client_secrets_file(
+                    'flc_utils/credentials.json', SCOPES)
+                creds = flow.run_local_server(port=0)
+            # Save the credentials for the next run
+            with open('flc_utils/token.pickle', 'wb') as token:
+                pickle.dump(creds, token)
 
-    service = build('sheets', 'v4', credentials=creds)
-    
-    values = [
-            [
-                _1lb, _2lb, _3lb, _1bj, _2bj, _coarse, totalCount, _perc
-            ],
-        ]
-    body = {
-        'values': values
-    }
-    result = service.spreadsheets().values().append(
-        spreadsheetId=SPREADSHEET_ID, range=RANGE_NAME, 
-        valueInputOption="USER_ENTERED", body=body).execute()
-    print('{0} cells appended.'.format(result \
-                                           .get('updates') \
-                                           .get('updatedCells')))
+        service = build('sheets', 'v4', credentials=creds)
+        
+        values = [
+                [
+                    _1lb, _2lb, _3lb, _1bj, _2bj, _coarse, totalCount, _perc
+                ],
+            ]
+        body = {
+            'values': values
+        }
+        result = service.spreadsheets().values().append(
+            spreadsheetId=SPREADSHEET_ID, range=RANGE_NAME, 
+            valueInputOption="USER_ENTERED", body=body).execute()
+        print('{0} cells appended.'.format(result \
+                                               .get('updates') \
+                                               .get('updatedCells')))
 
 
 def update_graph():

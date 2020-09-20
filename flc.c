@@ -1216,6 +1216,7 @@ static const char __pyx_k_Label[] = "Label";
 static const char __pyx_k_Login[] = "Login";
 static const char __pyx_k_Popen[] = "Popen";
 static const char __pyx_k_black[] = "black";
+static const char __pyx_k_chdir[] = "chdir";
 static const char __pyx_k_close[] = "close";
 static const char __pyx_k_event[] = "event";
 static const char __pyx_k_graph[] = "graph";
@@ -1612,6 +1613,7 @@ static const char __pyx_k_MyTkApp_start_jetson_fan[] = "MyTkApp.start_jetson_fan
 static const char __pyx_k_inst_centers_list_qualix[] = "inst_centers_list_qualix";
 static const char __pyx_k_data_saved_notification_x[] = "data_saved_notification_x";
 static const char __pyx_k_data_saved_notification_y[] = "data_saved_notification_y";
+static const char __pyx_k_home_agnext_Documents_flc[] = "/home/agnext/Documents/flc";
 static const char __pyx_k_MyTkApp_delete_error_screen[] = "MyTkApp.delete_error_screen";
 static const char __pyx_k_MyTkApp_display_all_options[] = "MyTkApp.display_all_options";
 static const char __pyx_k_MyTkApp_second_screen_place[] = "MyTkApp.second_screen_place";
@@ -1875,6 +1877,7 @@ static PyObject *__pyx_n_s_bold;
 static PyObject *__pyx_n_s_center_id_name_dict;
 static PyObject *__pyx_n_s_center_ids;
 static PyObject *__pyx_n_s_center_names;
+static PyObject *__pyx_n_s_chdir;
 static PyObject *__pyx_n_s_cline_in_traceback;
 static PyObject *__pyx_n_s_close;
 static PyObject *__pyx_n_s_cmd;
@@ -1989,6 +1992,7 @@ static PyObject *__pyx_n_s_header;
 static PyObject *__pyx_n_s_headers;
 static PyObject *__pyx_n_s_height;
 static PyObject *__pyx_n_s_helper;
+static PyObject *__pyx_kp_s_home_agnext_Documents_flc;
 static PyObject *__pyx_kp_s_http_23_98_216_140_8072_api_divi;
 static PyObject *__pyx_kp_s_http_23_98_216_140_8072_api_gard;
 static PyObject *__pyx_kp_s_http_23_98_216_140_8072_api_loca;
@@ -2374,89 +2378,90 @@ static PyObject *__pyx_tuple__93;
 static PyObject *__pyx_tuple__94;
 static PyObject *__pyx_tuple__95;
 static PyObject *__pyx_tuple__96;
-static PyObject *__pyx_tuple__98;
-static PyObject *__pyx_tuple__100;
-static PyObject *__pyx_tuple__102;
-static PyObject *__pyx_tuple__104;
-static PyObject *__pyx_tuple__106;
-static PyObject *__pyx_tuple__108;
-static PyObject *__pyx_tuple__110;
-static PyObject *__pyx_tuple__112;
-static PyObject *__pyx_tuple__114;
-static PyObject *__pyx_tuple__116;
-static PyObject *__pyx_tuple__118;
-static PyObject *__pyx_tuple__120;
-static PyObject *__pyx_tuple__122;
-static PyObject *__pyx_tuple__124;
-static PyObject *__pyx_tuple__126;
-static PyObject *__pyx_tuple__128;
-static PyObject *__pyx_tuple__130;
-static PyObject *__pyx_tuple__132;
-static PyObject *__pyx_tuple__134;
-static PyObject *__pyx_tuple__136;
-static PyObject *__pyx_tuple__138;
-static PyObject *__pyx_tuple__140;
-static PyObject *__pyx_tuple__142;
-static PyObject *__pyx_tuple__144;
-static PyObject *__pyx_tuple__146;
-static PyObject *__pyx_tuple__148;
-static PyObject *__pyx_tuple__150;
-static PyObject *__pyx_tuple__152;
-static PyObject *__pyx_tuple__154;
-static PyObject *__pyx_tuple__156;
-static PyObject *__pyx_tuple__158;
-static PyObject *__pyx_tuple__160;
-static PyObject *__pyx_tuple__162;
-static PyObject *__pyx_tuple__164;
-static PyObject *__pyx_tuple__166;
-static PyObject *__pyx_tuple__168;
-static PyObject *__pyx_tuple__170;
-static PyObject *__pyx_tuple__172;
-static PyObject *__pyx_tuple__174;
-static PyObject *__pyx_tuple__176;
-static PyObject *__pyx_tuple__178;
-static PyObject *__pyx_codeobj__97;
-static PyObject *__pyx_codeobj__99;
-static PyObject *__pyx_codeobj__101;
-static PyObject *__pyx_codeobj__103;
-static PyObject *__pyx_codeobj__105;
-static PyObject *__pyx_codeobj__107;
-static PyObject *__pyx_codeobj__109;
-static PyObject *__pyx_codeobj__111;
-static PyObject *__pyx_codeobj__113;
-static PyObject *__pyx_codeobj__115;
-static PyObject *__pyx_codeobj__117;
-static PyObject *__pyx_codeobj__119;
-static PyObject *__pyx_codeobj__121;
-static PyObject *__pyx_codeobj__123;
-static PyObject *__pyx_codeobj__125;
-static PyObject *__pyx_codeobj__127;
-static PyObject *__pyx_codeobj__129;
-static PyObject *__pyx_codeobj__131;
-static PyObject *__pyx_codeobj__133;
-static PyObject *__pyx_codeobj__135;
-static PyObject *__pyx_codeobj__137;
-static PyObject *__pyx_codeobj__139;
-static PyObject *__pyx_codeobj__141;
-static PyObject *__pyx_codeobj__143;
-static PyObject *__pyx_codeobj__145;
-static PyObject *__pyx_codeobj__147;
-static PyObject *__pyx_codeobj__149;
-static PyObject *__pyx_codeobj__151;
-static PyObject *__pyx_codeobj__153;
-static PyObject *__pyx_codeobj__155;
-static PyObject *__pyx_codeobj__157;
-static PyObject *__pyx_codeobj__159;
-static PyObject *__pyx_codeobj__161;
-static PyObject *__pyx_codeobj__163;
-static PyObject *__pyx_codeobj__165;
-static PyObject *__pyx_codeobj__167;
-static PyObject *__pyx_codeobj__169;
-static PyObject *__pyx_codeobj__171;
-static PyObject *__pyx_codeobj__173;
-static PyObject *__pyx_codeobj__175;
-static PyObject *__pyx_codeobj__177;
-static PyObject *__pyx_codeobj__179;
+static PyObject *__pyx_tuple__97;
+static PyObject *__pyx_tuple__99;
+static PyObject *__pyx_tuple__101;
+static PyObject *__pyx_tuple__103;
+static PyObject *__pyx_tuple__105;
+static PyObject *__pyx_tuple__107;
+static PyObject *__pyx_tuple__109;
+static PyObject *__pyx_tuple__111;
+static PyObject *__pyx_tuple__113;
+static PyObject *__pyx_tuple__115;
+static PyObject *__pyx_tuple__117;
+static PyObject *__pyx_tuple__119;
+static PyObject *__pyx_tuple__121;
+static PyObject *__pyx_tuple__123;
+static PyObject *__pyx_tuple__125;
+static PyObject *__pyx_tuple__127;
+static PyObject *__pyx_tuple__129;
+static PyObject *__pyx_tuple__131;
+static PyObject *__pyx_tuple__133;
+static PyObject *__pyx_tuple__135;
+static PyObject *__pyx_tuple__137;
+static PyObject *__pyx_tuple__139;
+static PyObject *__pyx_tuple__141;
+static PyObject *__pyx_tuple__143;
+static PyObject *__pyx_tuple__145;
+static PyObject *__pyx_tuple__147;
+static PyObject *__pyx_tuple__149;
+static PyObject *__pyx_tuple__151;
+static PyObject *__pyx_tuple__153;
+static PyObject *__pyx_tuple__155;
+static PyObject *__pyx_tuple__157;
+static PyObject *__pyx_tuple__159;
+static PyObject *__pyx_tuple__161;
+static PyObject *__pyx_tuple__163;
+static PyObject *__pyx_tuple__165;
+static PyObject *__pyx_tuple__167;
+static PyObject *__pyx_tuple__169;
+static PyObject *__pyx_tuple__171;
+static PyObject *__pyx_tuple__173;
+static PyObject *__pyx_tuple__175;
+static PyObject *__pyx_tuple__177;
+static PyObject *__pyx_tuple__179;
+static PyObject *__pyx_codeobj__98;
+static PyObject *__pyx_codeobj__100;
+static PyObject *__pyx_codeobj__102;
+static PyObject *__pyx_codeobj__104;
+static PyObject *__pyx_codeobj__106;
+static PyObject *__pyx_codeobj__108;
+static PyObject *__pyx_codeobj__110;
+static PyObject *__pyx_codeobj__112;
+static PyObject *__pyx_codeobj__114;
+static PyObject *__pyx_codeobj__116;
+static PyObject *__pyx_codeobj__118;
+static PyObject *__pyx_codeobj__120;
+static PyObject *__pyx_codeobj__122;
+static PyObject *__pyx_codeobj__124;
+static PyObject *__pyx_codeobj__126;
+static PyObject *__pyx_codeobj__128;
+static PyObject *__pyx_codeobj__130;
+static PyObject *__pyx_codeobj__132;
+static PyObject *__pyx_codeobj__134;
+static PyObject *__pyx_codeobj__136;
+static PyObject *__pyx_codeobj__138;
+static PyObject *__pyx_codeobj__140;
+static PyObject *__pyx_codeobj__142;
+static PyObject *__pyx_codeobj__144;
+static PyObject *__pyx_codeobj__146;
+static PyObject *__pyx_codeobj__148;
+static PyObject *__pyx_codeobj__150;
+static PyObject *__pyx_codeobj__152;
+static PyObject *__pyx_codeobj__154;
+static PyObject *__pyx_codeobj__156;
+static PyObject *__pyx_codeobj__158;
+static PyObject *__pyx_codeobj__160;
+static PyObject *__pyx_codeobj__162;
+static PyObject *__pyx_codeobj__164;
+static PyObject *__pyx_codeobj__166;
+static PyObject *__pyx_codeobj__168;
+static PyObject *__pyx_codeobj__170;
+static PyObject *__pyx_codeobj__172;
+static PyObject *__pyx_codeobj__174;
+static PyObject *__pyx_codeobj__176;
+static PyObject *__pyx_codeobj__178;
+static PyObject *__pyx_codeobj__180;
 
 /* "flc.py":42
  * class MyTkApp(tk.Frame):
@@ -27130,6 +27135,7 @@ static __Pyx_StringTabEntry __pyx_string_tab[] = {
   {&__pyx_n_s_center_id_name_dict, __pyx_k_center_id_name_dict, sizeof(__pyx_k_center_id_name_dict), 0, 0, 1, 1},
   {&__pyx_n_s_center_ids, __pyx_k_center_ids, sizeof(__pyx_k_center_ids), 0, 0, 1, 1},
   {&__pyx_n_s_center_names, __pyx_k_center_names, sizeof(__pyx_k_center_names), 0, 0, 1, 1},
+  {&__pyx_n_s_chdir, __pyx_k_chdir, sizeof(__pyx_k_chdir), 0, 0, 1, 1},
   {&__pyx_n_s_cline_in_traceback, __pyx_k_cline_in_traceback, sizeof(__pyx_k_cline_in_traceback), 0, 0, 1, 1},
   {&__pyx_n_s_close, __pyx_k_close, sizeof(__pyx_k_close), 0, 0, 1, 1},
   {&__pyx_n_s_cmd, __pyx_k_cmd, sizeof(__pyx_k_cmd), 0, 0, 1, 1},
@@ -27244,6 +27250,7 @@ static __Pyx_StringTabEntry __pyx_string_tab[] = {
   {&__pyx_n_s_headers, __pyx_k_headers, sizeof(__pyx_k_headers), 0, 0, 1, 1},
   {&__pyx_n_s_height, __pyx_k_height, sizeof(__pyx_k_height), 0, 0, 1, 1},
   {&__pyx_n_s_helper, __pyx_k_helper, sizeof(__pyx_k_helper), 0, 0, 1, 1},
+  {&__pyx_kp_s_home_agnext_Documents_flc, __pyx_k_home_agnext_Documents_flc, sizeof(__pyx_k_home_agnext_Documents_flc), 0, 0, 1, 0},
   {&__pyx_kp_s_http_23_98_216_140_8072_api_divi, __pyx_k_http_23_98_216_140_8072_api_divi, sizeof(__pyx_k_http_23_98_216_140_8072_api_divi), 0, 0, 1, 0},
   {&__pyx_kp_s_http_23_98_216_140_8072_api_gard, __pyx_k_http_23_98_216_140_8072_api_gard, sizeof(__pyx_k_http_23_98_216_140_8072_api_gard), 0, 0, 1, 0},
   {&__pyx_kp_s_http_23_98_216_140_8072_api_loca, __pyx_k_http_23_98_216_140_8072_api_loca, sizeof(__pyx_k_http_23_98_216_140_8072_api_loca), 0, 0, 1, 0},
@@ -28173,16 +28180,27 @@ static int __Pyx_InitCachedConstants(void) {
   __Pyx_GOTREF(__pyx_tuple__93);
   __Pyx_GIVEREF(__pyx_tuple__93);
 
+  /* "flc.py":27
+ * 
+ * configparser = configparser.RawConfigParser()
+ * os.chdir("/home/agnext/Documents/flc")             # <<<<<<<<<<<<<<
+ * 
+ * configparser.read('flc_utils/screens/touchScreen/gui.cfg')
+ */
+  __pyx_tuple__94 = PyTuple_Pack(1, __pyx_kp_s_home_agnext_Documents_flc); if (unlikely(!__pyx_tuple__94)) __PYX_ERR(0, 27, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_tuple__94);
+  __Pyx_GIVEREF(__pyx_tuple__94);
+
   /* "flc.py":29
- * # os.chdir("/home/agnext/Documents/flc")
+ * os.chdir("/home/agnext/Documents/flc")
  * 
  * configparser.read('flc_utils/screens/touchScreen/gui.cfg')             # <<<<<<<<<<<<<<
  * 
  * cmd = """
  */
-  __pyx_tuple__94 = PyTuple_Pack(1, __pyx_kp_s_flc_utils_screens_touchScreen_gu); if (unlikely(!__pyx_tuple__94)) __PYX_ERR(0, 29, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_tuple__94);
-  __Pyx_GIVEREF(__pyx_tuple__94);
+  __pyx_tuple__95 = PyTuple_Pack(1, __pyx_kp_s_flc_utils_screens_touchScreen_gu); if (unlikely(!__pyx_tuple__95)) __PYX_ERR(0, 29, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_tuple__95);
+  __Pyx_GIVEREF(__pyx_tuple__95);
 
   /* "flc.py":36
  * """
@@ -28191,9 +28209,9 @@ static int __Pyx_InitCachedConstants(void) {
  * jetson_clock_cmd = 'jetson_clocks'
  * 
  */
-  __pyx_tuple__95 = PyTuple_Pack(2, __pyx_kp_s_gui_config, __pyx_n_s_sys_password); if (unlikely(!__pyx_tuple__95)) __PYX_ERR(0, 36, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_tuple__95);
-  __Pyx_GIVEREF(__pyx_tuple__95);
+  __pyx_tuple__96 = PyTuple_Pack(2, __pyx_kp_s_gui_config, __pyx_n_s_sys_password); if (unlikely(!__pyx_tuple__96)) __PYX_ERR(0, 36, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_tuple__96);
+  __Pyx_GIVEREF(__pyx_tuple__96);
 
   /* "flc.py":42
  * class MyTkApp(tk.Frame):
@@ -28202,10 +28220,10 @@ static int __Pyx_InitCachedConstants(void) {
  *         tk.Frame.__init__(self, master)
  *         self.token = ""
  */
-  __pyx_tuple__96 = PyTuple_Pack(11, __pyx_n_s_self, __pyx_n_s_master, __pyx_n_s_options_icon, __pyx_n_s_back_icon, __pyx_n_s_shutdown_icon, __pyx_n_s_logout_icon, __pyx_n_s_restart_icon, __pyx_n_s_img, __pyx_n_s_img_bg, __pyx_n_s_label_font_size, __pyx_n_s_entry_font_size); if (unlikely(!__pyx_tuple__96)) __PYX_ERR(0, 42, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_tuple__96);
-  __Pyx_GIVEREF(__pyx_tuple__96);
-  __pyx_codeobj__97 = (PyObject*)__Pyx_PyCode_New(2, 0, 11, 0, 0, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__96, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_flc_py, __pyx_n_s_init, 42, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__97)) __PYX_ERR(0, 42, __pyx_L1_error)
+  __pyx_tuple__97 = PyTuple_Pack(11, __pyx_n_s_self, __pyx_n_s_master, __pyx_n_s_options_icon, __pyx_n_s_back_icon, __pyx_n_s_shutdown_icon, __pyx_n_s_logout_icon, __pyx_n_s_restart_icon, __pyx_n_s_img, __pyx_n_s_img_bg, __pyx_n_s_label_font_size, __pyx_n_s_entry_font_size); if (unlikely(!__pyx_tuple__97)) __PYX_ERR(0, 42, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_tuple__97);
+  __Pyx_GIVEREF(__pyx_tuple__97);
+  __pyx_codeobj__98 = (PyObject*)__Pyx_PyCode_New(2, 0, 11, 0, 0, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__97, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_flc_py, __pyx_n_s_init, 42, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__98)) __PYX_ERR(0, 42, __pyx_L1_error)
 
   /* "flc.py":215
  *         self.nextBtn = tk.Button(self.window, text="Next", command=self.main_screen, fg="white", bg="#F37C62", width=12,height=2, font=('times', 16, 'bold'))
@@ -28214,10 +28232,10 @@ static int __Pyx_InitCachedConstants(void) {
  *         if messagebox.askokcancel("Quit", "Do you really want to restart the system?"):
  *             self.window.destroy()
  */
-  __pyx_tuple__98 = PyTuple_Pack(1, __pyx_n_s_self); if (unlikely(!__pyx_tuple__98)) __PYX_ERR(0, 215, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_tuple__98);
-  __Pyx_GIVEREF(__pyx_tuple__98);
-  __pyx_codeobj__99 = (PyObject*)__Pyx_PyCode_New(1, 0, 1, 0, 0, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__98, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_flc_py, __pyx_n_s_restart, 215, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__99)) __PYX_ERR(0, 215, __pyx_L1_error)
+  __pyx_tuple__99 = PyTuple_Pack(1, __pyx_n_s_self); if (unlikely(!__pyx_tuple__99)) __PYX_ERR(0, 215, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_tuple__99);
+  __Pyx_GIVEREF(__pyx_tuple__99);
+  __pyx_codeobj__100 = (PyObject*)__Pyx_PyCode_New(1, 0, 1, 0, 0, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__99, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_flc_py, __pyx_n_s_restart, 215, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__100)) __PYX_ERR(0, 215, __pyx_L1_error)
 
   /* "flc.py":222
  * 
@@ -28226,10 +28244,10 @@ static int __Pyx_InitCachedConstants(void) {
  *         if messagebox.askokcancel("Quit", "Do you really want to shutdown the system?"):
  *             self.window.destroy()
  */
-  __pyx_tuple__100 = PyTuple_Pack(1, __pyx_n_s_self); if (unlikely(!__pyx_tuple__100)) __PYX_ERR(0, 222, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_tuple__100);
-  __Pyx_GIVEREF(__pyx_tuple__100);
-  __pyx_codeobj__101 = (PyObject*)__Pyx_PyCode_New(1, 0, 1, 0, 0, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__100, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_flc_py, __pyx_n_s_shutdown, 222, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__101)) __PYX_ERR(0, 222, __pyx_L1_error)
+  __pyx_tuple__101 = PyTuple_Pack(1, __pyx_n_s_self); if (unlikely(!__pyx_tuple__101)) __PYX_ERR(0, 222, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_tuple__101);
+  __Pyx_GIVEREF(__pyx_tuple__101);
+  __pyx_codeobj__102 = (PyObject*)__Pyx_PyCode_New(1, 0, 1, 0, 0, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__101, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_flc_py, __pyx_n_s_shutdown, 222, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__102)) __PYX_ERR(0, 222, __pyx_L1_error)
 
   /* "flc.py":229
  * 
@@ -28238,10 +28256,10 @@ static int __Pyx_InitCachedConstants(void) {
  *         self.window.destroy()
  *         launchApp()
  */
-  __pyx_tuple__102 = PyTuple_Pack(1, __pyx_n_s_self); if (unlikely(!__pyx_tuple__102)) __PYX_ERR(0, 229, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_tuple__102);
-  __Pyx_GIVEREF(__pyx_tuple__102);
-  __pyx_codeobj__103 = (PyObject*)__Pyx_PyCode_New(1, 0, 1, 0, 0, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__102, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_flc_py, __pyx_n_s_logout, 229, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__103)) __PYX_ERR(0, 229, __pyx_L1_error)
+  __pyx_tuple__103 = PyTuple_Pack(1, __pyx_n_s_self); if (unlikely(!__pyx_tuple__103)) __PYX_ERR(0, 229, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_tuple__103);
+  __Pyx_GIVEREF(__pyx_tuple__103);
+  __pyx_codeobj__104 = (PyObject*)__Pyx_PyCode_New(1, 0, 1, 0, 0, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__103, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_flc_py, __pyx_n_s_logout, 229, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__104)) __PYX_ERR(0, 229, __pyx_L1_error)
 
   /* "flc.py":233
  *         launchApp()
@@ -28250,10 +28268,10 @@ static int __Pyx_InitCachedConstants(void) {
  *         try:
  *             subprocess.Popen("exec " + 'echo {} | sudo -S {}'.format(pwd, jetson_clock_cmd), stdout= subprocess.PIPE, shell=True)
  */
-  __pyx_tuple__104 = PyTuple_Pack(2, __pyx_n_s_self, __pyx_n_s_e); if (unlikely(!__pyx_tuple__104)) __PYX_ERR(0, 233, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_tuple__104);
-  __Pyx_GIVEREF(__pyx_tuple__104);
-  __pyx_codeobj__105 = (PyObject*)__Pyx_PyCode_New(1, 0, 2, 0, 0, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__104, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_flc_py, __pyx_n_s_start_jetson_fan, 233, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__105)) __PYX_ERR(0, 233, __pyx_L1_error)
+  __pyx_tuple__105 = PyTuple_Pack(2, __pyx_n_s_self, __pyx_n_s_e); if (unlikely(!__pyx_tuple__105)) __PYX_ERR(0, 233, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_tuple__105);
+  __Pyx_GIVEREF(__pyx_tuple__105);
+  __pyx_codeobj__106 = (PyObject*)__Pyx_PyCode_New(1, 0, 2, 0, 0, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__105, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_flc_py, __pyx_n_s_start_jetson_fan, 233, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__106)) __PYX_ERR(0, 233, __pyx_L1_error)
 
   /* "flc.py":239
  *             logger.exception(str('Exception occured in "start_jetson_fan" function\nError message:' + str(e)))
@@ -28262,10 +28280,10 @@ static int __Pyx_InitCachedConstants(void) {
  *         try:
  *             self.endRecord.place_forget()
  */
-  __pyx_tuple__106 = PyTuple_Pack(2, __pyx_n_s_self, __pyx_n_s_e); if (unlikely(!__pyx_tuple__106)) __PYX_ERR(0, 239, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_tuple__106);
-  __Pyx_GIVEREF(__pyx_tuple__106);
-  __pyx_codeobj__107 = (PyObject*)__Pyx_PyCode_New(1, 0, 2, 0, 0, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__106, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_flc_py, __pyx_n_s_details_entered_success, 239, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__107)) __PYX_ERR(0, 239, __pyx_L1_error)
+  __pyx_tuple__107 = PyTuple_Pack(2, __pyx_n_s_self, __pyx_n_s_e); if (unlikely(!__pyx_tuple__107)) __PYX_ERR(0, 239, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_tuple__107);
+  __Pyx_GIVEREF(__pyx_tuple__107);
+  __pyx_codeobj__108 = (PyObject*)__Pyx_PyCode_New(1, 0, 2, 0, 0, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__107, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_flc_py, __pyx_n_s_details_entered_success, 239, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__108)) __PYX_ERR(0, 239, __pyx_L1_error)
 
   /* "flc.py":250
  *             logger.exception(str('Exception occured in "details_entered_success" function\nError message:' + str(e)))
@@ -28274,10 +28292,10 @@ static int __Pyx_InitCachedConstants(void) {
  *         try:
  *             if self.options_displayed == False:
  */
-  __pyx_tuple__108 = PyTuple_Pack(2, __pyx_n_s_self, __pyx_n_s_e); if (unlikely(!__pyx_tuple__108)) __PYX_ERR(0, 250, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_tuple__108);
-  __Pyx_GIVEREF(__pyx_tuple__108);
-  __pyx_codeobj__109 = (PyObject*)__Pyx_PyCode_New(1, 0, 2, 0, 0, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__108, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_flc_py, __pyx_n_s_display_all_options, 250, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__109)) __PYX_ERR(0, 250, __pyx_L1_error)
+  __pyx_tuple__109 = PyTuple_Pack(2, __pyx_n_s_self, __pyx_n_s_e); if (unlikely(!__pyx_tuple__109)) __PYX_ERR(0, 250, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_tuple__109);
+  __Pyx_GIVEREF(__pyx_tuple__109);
+  __pyx_codeobj__110 = (PyObject*)__Pyx_PyCode_New(1, 0, 2, 0, 0, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__109, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_flc_py, __pyx_n_s_display_all_options, 250, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__110)) __PYX_ERR(0, 250, __pyx_L1_error)
 
   /* "flc.py":267
  *             logger.exception(str('Exception occured in "display_all_options" function\nError message:' + str(e)))
@@ -28286,10 +28304,10 @@ static int __Pyx_InitCachedConstants(void) {
  *         try:
  *             p = subprocess.Popen("exec " + command, stdout= subprocess.PIPE, shell=True)
  */
-  __pyx_tuple__110 = PyTuple_Pack(4, __pyx_n_s_self, __pyx_n_s_command, __pyx_n_s_p, __pyx_n_s_e); if (unlikely(!__pyx_tuple__110)) __PYX_ERR(0, 267, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_tuple__110);
-  __Pyx_GIVEREF(__pyx_tuple__110);
-  __pyx_codeobj__111 = (PyObject*)__Pyx_PyCode_New(2, 0, 4, 0, 0, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__110, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_flc_py, __pyx_n_s_start_testing, 267, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__111)) __PYX_ERR(0, 267, __pyx_L1_error)
+  __pyx_tuple__111 = PyTuple_Pack(4, __pyx_n_s_self, __pyx_n_s_command, __pyx_n_s_p, __pyx_n_s_e); if (unlikely(!__pyx_tuple__111)) __PYX_ERR(0, 267, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_tuple__111);
+  __Pyx_GIVEREF(__pyx_tuple__111);
+  __pyx_codeobj__112 = (PyObject*)__Pyx_PyCode_New(2, 0, 4, 0, 0, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__111, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_flc_py, __pyx_n_s_start_testing, 267, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__112)) __PYX_ERR(0, 267, __pyx_L1_error)
 
   /* "flc.py":279
  *             logger.exception(str('Exception occured in "start_testing" function\nError message:' + str(e)))
@@ -28298,10 +28316,10 @@ static int __Pyx_InitCachedConstants(void) {
  *         try:
  *             self.formula.place_forget()
  */
-  __pyx_tuple__112 = PyTuple_Pack(2, __pyx_n_s_self, __pyx_n_s_e); if (unlikely(!__pyx_tuple__112)) __PYX_ERR(0, 279, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_tuple__112);
-  __Pyx_GIVEREF(__pyx_tuple__112);
-  __pyx_codeobj__113 = (PyObject*)__Pyx_PyCode_New(1, 0, 2, 0, 0, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__112, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_flc_py, __pyx_n_s_end_video, 279, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__113)) __PYX_ERR(0, 279, __pyx_L1_error)
+  __pyx_tuple__113 = PyTuple_Pack(2, __pyx_n_s_self, __pyx_n_s_e); if (unlikely(!__pyx_tuple__113)) __PYX_ERR(0, 279, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_tuple__113);
+  __Pyx_GIVEREF(__pyx_tuple__113);
+  __pyx_codeobj__114 = (PyObject*)__Pyx_PyCode_New(1, 0, 2, 0, 0, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__113, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_flc_py, __pyx_n_s_end_video, 279, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__114)) __PYX_ERR(0, 279, __pyx_L1_error)
 
   /* "flc.py":290
  * 
@@ -28310,10 +28328,10 @@ static int __Pyx_InitCachedConstants(void) {
  *         if messagebox.askokcancel("Quit", "Do you want to quit?"):
  *             gc.collect()
  */
-  __pyx_tuple__114 = PyTuple_Pack(1, __pyx_n_s_self); if (unlikely(!__pyx_tuple__114)) __PYX_ERR(0, 290, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_tuple__114);
-  __Pyx_GIVEREF(__pyx_tuple__114);
-  __pyx_codeobj__115 = (PyObject*)__Pyx_PyCode_New(1, 0, 1, 0, 0, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__114, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_flc_py, __pyx_n_s_on_closing, 290, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__115)) __PYX_ERR(0, 290, __pyx_L1_error)
+  __pyx_tuple__115 = PyTuple_Pack(1, __pyx_n_s_self); if (unlikely(!__pyx_tuple__115)) __PYX_ERR(0, 290, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_tuple__115);
+  __Pyx_GIVEREF(__pyx_tuple__115);
+  __pyx_codeobj__116 = (PyObject*)__Pyx_PyCode_New(1, 0, 1, 0, 0, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__115, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_flc_py, __pyx_n_s_on_closing, 290, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__116)) __PYX_ERR(0, 290, __pyx_L1_error)
 
   /* "flc.py":300
  *             sys.exit()
@@ -28322,10 +28340,10 @@ static int __Pyx_InitCachedConstants(void) {
  *         try:
  *             subprocess.Popen("exec " + "onboard", stdout= subprocess.PIPE, shell=True)
  */
-  __pyx_tuple__116 = PyTuple_Pack(3, __pyx_n_s_self, __pyx_n_s_event, __pyx_n_s_e); if (unlikely(!__pyx_tuple__116)) __PYX_ERR(0, 300, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_tuple__116);
-  __Pyx_GIVEREF(__pyx_tuple__116);
-  __pyx_codeobj__117 = (PyObject*)__Pyx_PyCode_New(2, 0, 3, 0, 0, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__116, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_flc_py, __pyx_n_s_popup_keyboard, 300, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__117)) __PYX_ERR(0, 300, __pyx_L1_error)
+  __pyx_tuple__117 = PyTuple_Pack(3, __pyx_n_s_self, __pyx_n_s_event, __pyx_n_s_e); if (unlikely(!__pyx_tuple__117)) __PYX_ERR(0, 300, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_tuple__117);
+  __Pyx_GIVEREF(__pyx_tuple__117);
+  __pyx_codeobj__118 = (PyObject*)__Pyx_PyCode_New(2, 0, 3, 0, 0, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__117, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_flc_py, __pyx_n_s_popup_keyboard, 300, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__118)) __PYX_ERR(0, 300, __pyx_L1_error)
 
   /* "flc.py":306
  *             logger.exception(str('Exception occured in "popup_keyboard" function\nError message:' + str(e)))
@@ -28334,10 +28352,10 @@ static int __Pyx_InitCachedConstants(void) {
  *         try:
  *             url = "http://23.98.216.140:8072/api/locations"
  */
-  __pyx_tuple__118 = PyTuple_Pack(5, __pyx_n_s_self, __pyx_n_s_url, __pyx_n_s_headers, __pyx_n_s_response, __pyx_n_s_e); if (unlikely(!__pyx_tuple__118)) __PYX_ERR(0, 306, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_tuple__118);
-  __Pyx_GIVEREF(__pyx_tuple__118);
-  __pyx_codeobj__119 = (PyObject*)__Pyx_PyCode_New(1, 0, 5, 0, 0, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__118, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_flc_py, __pyx_n_s_get_locations, 306, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__119)) __PYX_ERR(0, 306, __pyx_L1_error)
+  __pyx_tuple__119 = PyTuple_Pack(5, __pyx_n_s_self, __pyx_n_s_url, __pyx_n_s_headers, __pyx_n_s_response, __pyx_n_s_e); if (unlikely(!__pyx_tuple__119)) __PYX_ERR(0, 306, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_tuple__119);
+  __Pyx_GIVEREF(__pyx_tuple__119);
+  __pyx_codeobj__120 = (PyObject*)__Pyx_PyCode_New(1, 0, 5, 0, 0, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__119, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_flc_py, __pyx_n_s_get_locations, 306, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__120)) __PYX_ERR(0, 306, __pyx_L1_error)
 
   /* "flc.py":316
  * 
@@ -28346,10 +28364,10 @@ static int __Pyx_InitCachedConstants(void) {
  *         try:
  *             url = "http://23.98.216.140:8072/api/gardens"
  */
-  __pyx_tuple__120 = PyTuple_Pack(11, __pyx_n_s_self, __pyx_n_s_url, __pyx_n_s_headers, __pyx_n_s_querystring, __pyx_n_s_response, __pyx_n_s_data, __pyx_n_s_garden_id_list, __pyx_n_s_garden_name_list, __pyx_n_s_menu, __pyx_n_s_e, __pyx_n_s_i); if (unlikely(!__pyx_tuple__120)) __PYX_ERR(0, 316, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_tuple__120);
-  __Pyx_GIVEREF(__pyx_tuple__120);
-  __pyx_codeobj__121 = (PyObject*)__Pyx_PyCode_New(1, 0, 11, 0, 0, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__120, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_flc_py, __pyx_n_s_get_gardens, 316, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__121)) __PYX_ERR(0, 316, __pyx_L1_error)
+  __pyx_tuple__121 = PyTuple_Pack(11, __pyx_n_s_self, __pyx_n_s_url, __pyx_n_s_headers, __pyx_n_s_querystring, __pyx_n_s_response, __pyx_n_s_data, __pyx_n_s_garden_id_list, __pyx_n_s_garden_name_list, __pyx_n_s_menu, __pyx_n_s_e, __pyx_n_s_i); if (unlikely(!__pyx_tuple__121)) __PYX_ERR(0, 316, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_tuple__121);
+  __Pyx_GIVEREF(__pyx_tuple__121);
+  __pyx_codeobj__122 = (PyObject*)__Pyx_PyCode_New(1, 0, 11, 0, 0, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__121, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_flc_py, __pyx_n_s_get_gardens, 316, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__122)) __PYX_ERR(0, 316, __pyx_L1_error)
 
   /* "flc.py":343
  *             logger.exception(str('Exception occured in "get_gardens" function\nError message:' + str(e)))
@@ -28358,10 +28376,10 @@ static int __Pyx_InitCachedConstants(void) {
  *         try:
  *             url = "http://23.98.216.140:8072/api/divisions"
  */
-  __pyx_tuple__122 = PyTuple_Pack(13, __pyx_n_s_self, __pyx_n_s_args, __pyx_n_s_url, __pyx_n_s_headers, __pyx_n_s_garden_id, __pyx_n_s_querystring, __pyx_n_s_response, __pyx_n_s_data, __pyx_n_s_division_id_list, __pyx_n_s_division_name_list, __pyx_n_s_menu, __pyx_n_s_e, __pyx_n_s_i); if (unlikely(!__pyx_tuple__122)) __PYX_ERR(0, 343, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_tuple__122);
-  __Pyx_GIVEREF(__pyx_tuple__122);
-  __pyx_codeobj__123 = (PyObject*)__Pyx_PyCode_New(1, 0, 13, 0, CO_VARARGS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__122, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_flc_py, __pyx_n_s_get_divisions, 343, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__123)) __PYX_ERR(0, 343, __pyx_L1_error)
+  __pyx_tuple__123 = PyTuple_Pack(13, __pyx_n_s_self, __pyx_n_s_args, __pyx_n_s_url, __pyx_n_s_headers, __pyx_n_s_garden_id, __pyx_n_s_querystring, __pyx_n_s_response, __pyx_n_s_data, __pyx_n_s_division_id_list, __pyx_n_s_division_name_list, __pyx_n_s_menu, __pyx_n_s_e, __pyx_n_s_i); if (unlikely(!__pyx_tuple__123)) __PYX_ERR(0, 343, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_tuple__123);
+  __Pyx_GIVEREF(__pyx_tuple__123);
+  __pyx_codeobj__124 = (PyObject*)__Pyx_PyCode_New(1, 0, 13, 0, CO_VARARGS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__123, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_flc_py, __pyx_n_s_get_divisions, 343, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__124)) __PYX_ERR(0, 343, __pyx_L1_error)
 
   /* "flc.py":367
  *             logger.exception(str('Exception occured in "get_divisions" function\nError message:' + str(e)))
@@ -28370,10 +28388,10 @@ static int __Pyx_InitCachedConstants(void) {
  *         try:
  *             url = "http://23.98.216.140:8072/api/sections"
  */
-  __pyx_tuple__124 = PyTuple_Pack(13, __pyx_n_s_self, __pyx_n_s_args, __pyx_n_s_url, __pyx_n_s_headers, __pyx_n_s_division_id, __pyx_n_s_querystring, __pyx_n_s_response, __pyx_n_s_data, __pyx_n_s_section_id_list, __pyx_n_s_section_name_list, __pyx_n_s_menu, __pyx_n_s_e, __pyx_n_s_i); if (unlikely(!__pyx_tuple__124)) __PYX_ERR(0, 367, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_tuple__124);
-  __Pyx_GIVEREF(__pyx_tuple__124);
-  __pyx_codeobj__125 = (PyObject*)__Pyx_PyCode_New(1, 0, 13, 0, CO_VARARGS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__124, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_flc_py, __pyx_n_s_get_sections, 367, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__125)) __PYX_ERR(0, 367, __pyx_L1_error)
+  __pyx_tuple__125 = PyTuple_Pack(13, __pyx_n_s_self, __pyx_n_s_args, __pyx_n_s_url, __pyx_n_s_headers, __pyx_n_s_division_id, __pyx_n_s_querystring, __pyx_n_s_response, __pyx_n_s_data, __pyx_n_s_section_id_list, __pyx_n_s_section_name_list, __pyx_n_s_menu, __pyx_n_s_e, __pyx_n_s_i); if (unlikely(!__pyx_tuple__125)) __PYX_ERR(0, 367, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_tuple__125);
+  __Pyx_GIVEREF(__pyx_tuple__125);
+  __pyx_codeobj__126 = (PyObject*)__Pyx_PyCode_New(1, 0, 13, 0, CO_VARARGS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__125, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_flc_py, __pyx_n_s_get_sections, 367, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__126)) __PYX_ERR(0, 367, __pyx_L1_error)
 
   /* "flc.py":390
  *             logger.exception(str('Exception occured in "get_sections" function\nError message:' + str(e)))
@@ -28382,10 +28400,10 @@ static int __Pyx_InitCachedConstants(void) {
  *         try:
  *             region_names, region_ids = [], []
  */
-  __pyx_tuple__126 = PyTuple_Pack(5, __pyx_n_s_self, __pyx_n_s_region_names, __pyx_n_s_region_ids, __pyx_n_s_menu, __pyx_n_s_e); if (unlikely(!__pyx_tuple__126)) __PYX_ERR(0, 390, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_tuple__126);
-  __Pyx_GIVEREF(__pyx_tuple__126);
-  __pyx_codeobj__127 = (PyObject*)__Pyx_PyCode_New(1, 0, 5, 0, 0, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__126, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_flc_py, __pyx_n_s_get_regions, 390, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__127)) __PYX_ERR(0, 390, __pyx_L1_error)
+  __pyx_tuple__127 = PyTuple_Pack(5, __pyx_n_s_self, __pyx_n_s_region_names, __pyx_n_s_region_ids, __pyx_n_s_menu, __pyx_n_s_e); if (unlikely(!__pyx_tuple__127)) __PYX_ERR(0, 390, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_tuple__127);
+  __Pyx_GIVEREF(__pyx_tuple__127);
+  __pyx_codeobj__128 = (PyObject*)__Pyx_PyCode_New(1, 0, 5, 0, 0, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__127, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_flc_py, __pyx_n_s_get_regions, 390, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__128)) __PYX_ERR(0, 390, __pyx_L1_error)
 
   /* "flc.py":406
  *             logger.exception(str('Exception occured in "get_regions" function\nError message:' + str(e)))
@@ -28394,10 +28412,10 @@ static int __Pyx_InitCachedConstants(void) {
  *         try:
  *             center_names, center_ids = [], []
  */
-  __pyx_tuple__128 = PyTuple_Pack(7, __pyx_n_s_self, __pyx_n_s_args, __pyx_n_s_center_names, __pyx_n_s_center_ids, __pyx_n_s_region_id, __pyx_n_s_menu, __pyx_n_s_e); if (unlikely(!__pyx_tuple__128)) __PYX_ERR(0, 406, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_tuple__128);
-  __Pyx_GIVEREF(__pyx_tuple__128);
-  __pyx_codeobj__129 = (PyObject*)__Pyx_PyCode_New(1, 0, 7, 0, CO_VARARGS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__128, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_flc_py, __pyx_n_s_get_instcenter, 406, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__129)) __PYX_ERR(0, 406, __pyx_L1_error)
+  __pyx_tuple__129 = PyTuple_Pack(7, __pyx_n_s_self, __pyx_n_s_args, __pyx_n_s_center_names, __pyx_n_s_center_ids, __pyx_n_s_region_id, __pyx_n_s_menu, __pyx_n_s_e); if (unlikely(!__pyx_tuple__129)) __PYX_ERR(0, 406, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_tuple__129);
+  __Pyx_GIVEREF(__pyx_tuple__129);
+  __pyx_codeobj__130 = (PyObject*)__Pyx_PyCode_New(1, 0, 7, 0, CO_VARARGS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__129, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_flc_py, __pyx_n_s_get_instcenter, 406, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__130)) __PYX_ERR(0, 406, __pyx_L1_error)
 
   /* "flc.py":424
  *             logger.exception(str('Exception occured in "get_instcenter" function\nError message:' + str(e)))
@@ -28406,10 +28424,10 @@ static int __Pyx_InitCachedConstants(void) {
  *         try:
  *             self.garden_entry.place(x=520, y=155, height=40, width=190)
  */
-  __pyx_tuple__130 = PyTuple_Pack(2, __pyx_n_s_self, __pyx_n_s_e); if (unlikely(!__pyx_tuple__130)) __PYX_ERR(0, 424, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_tuple__130);
-  __Pyx_GIVEREF(__pyx_tuple__130);
-  __pyx_codeobj__131 = (PyObject*)__Pyx_PyCode_New(1, 0, 2, 0, 0, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__130, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_flc_py, __pyx_n_s_place_inputs, 424, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__131)) __PYX_ERR(0, 424, __pyx_L1_error)
+  __pyx_tuple__131 = PyTuple_Pack(2, __pyx_n_s_self, __pyx_n_s_e); if (unlikely(!__pyx_tuple__131)) __PYX_ERR(0, 424, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_tuple__131);
+  __Pyx_GIVEREF(__pyx_tuple__131);
+  __pyx_codeobj__132 = (PyObject*)__Pyx_PyCode_New(1, 0, 2, 0, 0, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__131, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_flc_py, __pyx_n_s_place_inputs, 424, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__132)) __PYX_ERR(0, 424, __pyx_L1_error)
 
   /* "flc.py":433
  *             logger.exception(str('Exception occured in "place_inputs" function\nError message:' + str(e)))
@@ -28418,10 +28436,10 @@ static int __Pyx_InitCachedConstants(void) {
  *         try:
  *             self.graph.place(x=int(configparser.get('gui-config', 'graph_image_x')), y=int(configparser.get('gui-config', 'graph_image_y')))
  */
-  __pyx_tuple__132 = PyTuple_Pack(2, __pyx_n_s_self, __pyx_n_s_e); if (unlikely(!__pyx_tuple__132)) __PYX_ERR(0, 433, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_tuple__132);
-  __Pyx_GIVEREF(__pyx_tuple__132);
-  __pyx_codeobj__133 = (PyObject*)__Pyx_PyCode_New(1, 0, 2, 0, 0, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__132, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_flc_py, __pyx_n_s_load_graph, 433, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__133)) __PYX_ERR(0, 433, __pyx_L1_error)
+  __pyx_tuple__133 = PyTuple_Pack(2, __pyx_n_s_self, __pyx_n_s_e); if (unlikely(!__pyx_tuple__133)) __PYX_ERR(0, 433, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_tuple__133);
+  __Pyx_GIVEREF(__pyx_tuple__133);
+  __pyx_codeobj__134 = (PyObject*)__Pyx_PyCode_New(1, 0, 2, 0, 0, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__133, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_flc_py, __pyx_n_s_load_graph, 433, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__134)) __PYX_ERR(0, 433, __pyx_L1_error)
 
   /* "flc.py":439
  *             logger.exception(str('Exception occured in "load_graph" function\nError message:' + str(e)))
@@ -28430,10 +28448,10 @@ static int __Pyx_InitCachedConstants(void) {
  *         self.graph.place_forget()
  * 
  */
-  __pyx_tuple__134 = PyTuple_Pack(1, __pyx_n_s_self); if (unlikely(!__pyx_tuple__134)) __PYX_ERR(0, 439, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_tuple__134);
-  __Pyx_GIVEREF(__pyx_tuple__134);
-  __pyx_codeobj__135 = (PyObject*)__Pyx_PyCode_New(1, 0, 1, 0, 0, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__134, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_flc_py, __pyx_n_s_forget_graph, 439, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__135)) __PYX_ERR(0, 439, __pyx_L1_error)
+  __pyx_tuple__135 = PyTuple_Pack(1, __pyx_n_s_self); if (unlikely(!__pyx_tuple__135)) __PYX_ERR(0, 439, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_tuple__135);
+  __Pyx_GIVEREF(__pyx_tuple__135);
+  __pyx_codeobj__136 = (PyObject*)__Pyx_PyCode_New(1, 0, 1, 0, 0, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__135, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_flc_py, __pyx_n_s_forget_graph, 439, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__136)) __PYX_ERR(0, 439, __pyx_L1_error)
 
   /* "flc.py":442
  *         self.graph.place_forget()
@@ -28442,10 +28460,10 @@ static int __Pyx_InitCachedConstants(void) {
  *         if self.username_verify.get() == "Enter username":
  *             self.username_login_entry.delete(0, tk.END)
  */
-  __pyx_tuple__136 = PyTuple_Pack(2, __pyx_n_s_self, __pyx_n_s_event); if (unlikely(!__pyx_tuple__136)) __PYX_ERR(0, 442, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_tuple__136);
-  __Pyx_GIVEREF(__pyx_tuple__136);
-  __pyx_codeobj__137 = (PyObject*)__Pyx_PyCode_New(2, 0, 2, 0, 0, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__136, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_flc_py, __pyx_n_s_action_1, 442, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__137)) __PYX_ERR(0, 442, __pyx_L1_error)
+  __pyx_tuple__137 = PyTuple_Pack(2, __pyx_n_s_self, __pyx_n_s_event); if (unlikely(!__pyx_tuple__137)) __PYX_ERR(0, 442, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_tuple__137);
+  __Pyx_GIVEREF(__pyx_tuple__137);
+  __pyx_codeobj__138 = (PyObject*)__Pyx_PyCode_New(2, 0, 2, 0, 0, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__137, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_flc_py, __pyx_n_s_action_1, 442, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__138)) __PYX_ERR(0, 442, __pyx_L1_error)
 
   /* "flc.py":447
  *         self.popup_keyboard(event)
@@ -28454,10 +28472,10 @@ static int __Pyx_InitCachedConstants(void) {
  *         if self.password_verify.get() == "Enter password":
  *             self.password_login_entry.delete(0, tk.END)
  */
-  __pyx_tuple__138 = PyTuple_Pack(2, __pyx_n_s_self, __pyx_n_s_event); if (unlikely(!__pyx_tuple__138)) __PYX_ERR(0, 447, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_tuple__138);
-  __Pyx_GIVEREF(__pyx_tuple__138);
-  __pyx_codeobj__139 = (PyObject*)__Pyx_PyCode_New(2, 0, 2, 0, 0, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__138, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_flc_py, __pyx_n_s_action_2, 447, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__139)) __PYX_ERR(0, 447, __pyx_L1_error)
+  __pyx_tuple__139 = PyTuple_Pack(2, __pyx_n_s_self, __pyx_n_s_event); if (unlikely(!__pyx_tuple__139)) __PYX_ERR(0, 447, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_tuple__139);
+  __Pyx_GIVEREF(__pyx_tuple__139);
+  __pyx_codeobj__140 = (PyObject*)__Pyx_PyCode_New(2, 0, 2, 0, 0, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__139, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_flc_py, __pyx_n_s_action_2, 447, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__140)) __PYX_ERR(0, 447, __pyx_L1_error)
 
   /* "flc.py":452
  *         self.popup_keyboard(event)
@@ -28466,10 +28484,10 @@ static int __Pyx_InitCachedConstants(void) {
  *         try:
  *             subprocess.Popen("exec " + "killall onboard", stdout= subprocess.PIPE, shell=True)
  */
-  __pyx_tuple__140 = PyTuple_Pack(2, __pyx_n_s_self, __pyx_n_s_event); if (unlikely(!__pyx_tuple__140)) __PYX_ERR(0, 452, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_tuple__140);
-  __Pyx_GIVEREF(__pyx_tuple__140);
-  __pyx_codeobj__141 = (PyObject*)__Pyx_PyCode_New(2, 0, 2, 0, 0, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__140, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_flc_py, __pyx_n_s_kill_keyboard, 452, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__141)) __PYX_ERR(0, 452, __pyx_L1_error)
+  __pyx_tuple__141 = PyTuple_Pack(2, __pyx_n_s_self, __pyx_n_s_event); if (unlikely(!__pyx_tuple__141)) __PYX_ERR(0, 452, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_tuple__141);
+  __Pyx_GIVEREF(__pyx_tuple__141);
+  __pyx_codeobj__142 = (PyObject*)__Pyx_PyCode_New(2, 0, 2, 0, 0, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__141, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_flc_py, __pyx_n_s_kill_keyboard, 452, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__142)) __PYX_ERR(0, 452, __pyx_L1_error)
 
   /* "flc.py":458
  *             pass
@@ -28478,10 +28496,10 @@ static int __Pyx_InitCachedConstants(void) {
  *         if self.area_covered_verify.get() == "Enter Area Covered":
  *             self.area_covered_entry.delete(0, tk.END)
  */
-  __pyx_tuple__142 = PyTuple_Pack(2, __pyx_n_s_self, __pyx_n_s_event); if (unlikely(!__pyx_tuple__142)) __PYX_ERR(0, 458, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_tuple__142);
-  __Pyx_GIVEREF(__pyx_tuple__142);
-  __pyx_codeobj__143 = (PyObject*)__Pyx_PyCode_New(2, 0, 2, 0, 0, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__142, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_flc_py, __pyx_n_s_action_area, 458, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__143)) __PYX_ERR(0, 458, __pyx_L1_error)
+  __pyx_tuple__143 = PyTuple_Pack(2, __pyx_n_s_self, __pyx_n_s_event); if (unlikely(!__pyx_tuple__143)) __PYX_ERR(0, 458, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_tuple__143);
+  __Pyx_GIVEREF(__pyx_tuple__143);
+  __pyx_codeobj__144 = (PyObject*)__Pyx_PyCode_New(2, 0, 2, 0, 0, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__143, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_flc_py, __pyx_n_s_action_area, 458, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__144)) __PYX_ERR(0, 458, __pyx_L1_error)
 
   /* "flc.py":463
  *         self.popup_keyboard(event)
@@ -28490,10 +28508,10 @@ static int __Pyx_InitCachedConstants(void) {
  *         if self.weight_verify.get() == "Enter Weight":
  *             self.weight_entry.delete(0, tk.END)
  */
-  __pyx_tuple__144 = PyTuple_Pack(2, __pyx_n_s_self, __pyx_n_s_event); if (unlikely(!__pyx_tuple__144)) __PYX_ERR(0, 463, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_tuple__144);
-  __Pyx_GIVEREF(__pyx_tuple__144);
-  __pyx_codeobj__145 = (PyObject*)__Pyx_PyCode_New(2, 0, 2, 0, 0, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__144, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_flc_py, __pyx_n_s_action_weight, 463, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__145)) __PYX_ERR(0, 463, __pyx_L1_error)
+  __pyx_tuple__145 = PyTuple_Pack(2, __pyx_n_s_self, __pyx_n_s_event); if (unlikely(!__pyx_tuple__145)) __PYX_ERR(0, 463, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_tuple__145);
+  __Pyx_GIVEREF(__pyx_tuple__145);
+  __pyx_codeobj__146 = (PyObject*)__Pyx_PyCode_New(2, 0, 2, 0, 0, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__145, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_flc_py, __pyx_n_s_action_weight, 463, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__146)) __PYX_ERR(0, 463, __pyx_L1_error)
 
   /* "flc.py":468
  *         self.popup_keyboard(event)
@@ -28502,10 +28520,10 @@ static int __Pyx_InitCachedConstants(void) {
  *         if self.sample_id_verify.get() == "Enter Sample ID":
  *             self.sample_id_entry.delete(0, tk.END)
  */
-  __pyx_tuple__146 = PyTuple_Pack(2, __pyx_n_s_self, __pyx_n_s_event); if (unlikely(!__pyx_tuple__146)) __PYX_ERR(0, 468, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_tuple__146);
-  __Pyx_GIVEREF(__pyx_tuple__146);
-  __pyx_codeobj__147 = (PyObject*)__Pyx_PyCode_New(2, 0, 2, 0, 0, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__146, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_flc_py, __pyx_n_s_action_sampleid, 468, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__147)) __PYX_ERR(0, 468, __pyx_L1_error)
+  __pyx_tuple__147 = PyTuple_Pack(2, __pyx_n_s_self, __pyx_n_s_event); if (unlikely(!__pyx_tuple__147)) __PYX_ERR(0, 468, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_tuple__147);
+  __Pyx_GIVEREF(__pyx_tuple__147);
+  __pyx_codeobj__148 = (PyObject*)__Pyx_PyCode_New(2, 0, 2, 0, 0, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__147, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_flc_py, __pyx_n_s_action_sampleid, 468, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__148)) __PYX_ERR(0, 468, __pyx_L1_error)
 
   /* "flc.py":473
  *         self.popup_keyboard(event)
@@ -28514,10 +28532,10 @@ static int __Pyx_InitCachedConstants(void) {
  *         if self.lot_id_verify.get() == "Enter Lot ID":
  *             self.lot_id_entry.delete(0, tk.END)
  */
-  __pyx_tuple__148 = PyTuple_Pack(2, __pyx_n_s_self, __pyx_n_s_event); if (unlikely(!__pyx_tuple__148)) __PYX_ERR(0, 473, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_tuple__148);
-  __Pyx_GIVEREF(__pyx_tuple__148);
-  __pyx_codeobj__149 = (PyObject*)__Pyx_PyCode_New(2, 0, 2, 0, 0, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__148, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_flc_py, __pyx_n_s_action_lotid, 473, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__149)) __PYX_ERR(0, 473, __pyx_L1_error)
+  __pyx_tuple__149 = PyTuple_Pack(2, __pyx_n_s_self, __pyx_n_s_event); if (unlikely(!__pyx_tuple__149)) __PYX_ERR(0, 473, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_tuple__149);
+  __Pyx_GIVEREF(__pyx_tuple__149);
+  __pyx_codeobj__150 = (PyObject*)__Pyx_PyCode_New(2, 0, 2, 0, 0, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__149, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_flc_py, __pyx_n_s_action_lotid, 473, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__150)) __PYX_ERR(0, 473, __pyx_L1_error)
 
   /* "flc.py":478
  *         self.popup_keyboard(event)
@@ -28526,10 +28544,10 @@ static int __Pyx_InitCachedConstants(void) {
  *         if self.device_serial_no_verify.get() == "Enter Device SerialNo":
  *             self.device_serial_no_entry.delete(0, tk.END)
  */
-  __pyx_tuple__150 = PyTuple_Pack(2, __pyx_n_s_self, __pyx_n_s_event); if (unlikely(!__pyx_tuple__150)) __PYX_ERR(0, 478, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_tuple__150);
-  __Pyx_GIVEREF(__pyx_tuple__150);
-  __pyx_codeobj__151 = (PyObject*)__Pyx_PyCode_New(2, 0, 2, 0, 0, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__150, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_flc_py, __pyx_n_s_action_deviceserialno, 478, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__151)) __PYX_ERR(0, 478, __pyx_L1_error)
+  __pyx_tuple__151 = PyTuple_Pack(2, __pyx_n_s_self, __pyx_n_s_event); if (unlikely(!__pyx_tuple__151)) __PYX_ERR(0, 478, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_tuple__151);
+  __Pyx_GIVEREF(__pyx_tuple__151);
+  __pyx_codeobj__152 = (PyObject*)__Pyx_PyCode_New(2, 0, 2, 0, 0, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__151, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_flc_py, __pyx_n_s_action_deviceserialno, 478, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__152)) __PYX_ERR(0, 478, __pyx_L1_error)
 
   /* "flc.py":483
  *         self.popup_keyboard(event)
@@ -28538,10 +28556,10 @@ static int __Pyx_InitCachedConstants(void) {
  *         if self.batch_id_verify.get() == "Enter Batch ID":
  *             self.batch_id_entry.delete(0, tk.END)
  */
-  __pyx_tuple__152 = PyTuple_Pack(2, __pyx_n_s_self, __pyx_n_s_event); if (unlikely(!__pyx_tuple__152)) __PYX_ERR(0, 483, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_tuple__152);
-  __Pyx_GIVEREF(__pyx_tuple__152);
-  __pyx_codeobj__153 = (PyObject*)__Pyx_PyCode_New(2, 0, 2, 0, 0, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__152, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_flc_py, __pyx_n_s_action_batchid, 483, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__153)) __PYX_ERR(0, 483, __pyx_L1_error)
+  __pyx_tuple__153 = PyTuple_Pack(2, __pyx_n_s_self, __pyx_n_s_event); if (unlikely(!__pyx_tuple__153)) __PYX_ERR(0, 483, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_tuple__153);
+  __Pyx_GIVEREF(__pyx_tuple__153);
+  __pyx_codeobj__154 = (PyObject*)__Pyx_PyCode_New(2, 0, 2, 0, 0, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__153, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_flc_py, __pyx_n_s_action_batchid, 483, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__154)) __PYX_ERR(0, 483, __pyx_L1_error)
 
   /* "flc.py":489
  * 
@@ -28550,10 +28568,10 @@ static int __Pyx_InitCachedConstants(void) {
  *         try:
  *             # sectionId = int(self.section_id_name_dict[self.section_verify.get()])
  */
-  __pyx_tuple__154 = PyTuple_Pack(14, __pyx_n_s_self, __pyx_n_s_1lb_2, __pyx_n_s_2lb_2, __pyx_n_s_3lb_2, __pyx_n_s_1bj_2, __pyx_n_s_2bj_2, __pyx_n_s_coarse_2, __pyx_n_s_totalCount, __pyx_n_s_perc, __pyx_n_s_payload, __pyx_n_s_qualix_status, __pyx_n_s_t, __pyx_n_s_f, __pyx_n_s_e); if (unlikely(!__pyx_tuple__154)) __PYX_ERR(0, 489, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_tuple__154);
-  __Pyx_GIVEREF(__pyx_tuple__154);
-  __pyx_codeobj__155 = (PyObject*)__Pyx_PyCode_New(1, 0, 14, 0, 0, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__154, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_flc_py, __pyx_n_s_send_data_api, 489, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__155)) __PYX_ERR(0, 489, __pyx_L1_error)
+  __pyx_tuple__155 = PyTuple_Pack(14, __pyx_n_s_self, __pyx_n_s_1lb_2, __pyx_n_s_2lb_2, __pyx_n_s_3lb_2, __pyx_n_s_1bj_2, __pyx_n_s_2bj_2, __pyx_n_s_coarse_2, __pyx_n_s_totalCount, __pyx_n_s_perc, __pyx_n_s_payload, __pyx_n_s_qualix_status, __pyx_n_s_t, __pyx_n_s_f, __pyx_n_s_e); if (unlikely(!__pyx_tuple__155)) __PYX_ERR(0, 489, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_tuple__155);
+  __Pyx_GIVEREF(__pyx_tuple__155);
+  __pyx_codeobj__156 = (PyObject*)__Pyx_PyCode_New(1, 0, 14, 0, 0, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__155, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_flc_py, __pyx_n_s_send_data_api, 489, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__156)) __PYX_ERR(0, 489, __pyx_L1_error)
 
   /* "flc.py":522
  * 
@@ -28562,10 +28580,10 @@ static int __Pyx_InitCachedConstants(void) {
  *         pass
  * 
  */
-  __pyx_tuple__156 = PyTuple_Pack(1, __pyx_n_s_self); if (unlikely(!__pyx_tuple__156)) __PYX_ERR(0, 522, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_tuple__156);
-  __Pyx_GIVEREF(__pyx_tuple__156);
-  __pyx_codeobj__157 = (PyObject*)__Pyx_PyCode_New(1, 0, 1, 0, 0, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__156, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_flc_py, __pyx_n_s_do_nothing, 522, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__157)) __PYX_ERR(0, 522, __pyx_L1_error)
+  __pyx_tuple__157 = PyTuple_Pack(1, __pyx_n_s_self); if (unlikely(!__pyx_tuple__157)) __PYX_ERR(0, 522, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_tuple__157);
+  __Pyx_GIVEREF(__pyx_tuple__157);
+  __pyx_codeobj__158 = (PyObject*)__Pyx_PyCode_New(1, 0, 1, 0, 0, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__157, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_flc_py, __pyx_n_s_do_nothing, 522, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__158)) __PYX_ERR(0, 522, __pyx_L1_error)
 
   /* "flc.py":526
  * 
@@ -28574,10 +28592,10 @@ static int __Pyx_InitCachedConstants(void) {
  *         try:
  *             self.forget_graph()
  */
-  __pyx_tuple__158 = PyTuple_Pack(17, __pyx_n_s_self, __pyx_n_s_1lb_2, __pyx_n_s_2lb_2, __pyx_n_s_3lb_2, __pyx_n_s_1bj_2, __pyx_n_s_2bj_2, __pyx_n_s_coarse_2, __pyx_n_s_totalCount, __pyx_n_s_perc, __pyx_n_s_1lb_perc, __pyx_n_s_2lb_perc, __pyx_n_s_3lb_perc, __pyx_n_s_1bj_perc, __pyx_n_s_2bj_perc, __pyx_n_s_coarse_perc, __pyx_n_s_flc_perc, __pyx_n_s_e); if (unlikely(!__pyx_tuple__158)) __PYX_ERR(0, 526, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_tuple__158);
-  __Pyx_GIVEREF(__pyx_tuple__158);
-  __pyx_codeobj__159 = (PyObject*)__Pyx_PyCode_New(1, 0, 17, 0, 0, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__158, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_flc_py, __pyx_n_s_show_results_on_display, 526, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__159)) __PYX_ERR(0, 526, __pyx_L1_error)
+  __pyx_tuple__159 = PyTuple_Pack(17, __pyx_n_s_self, __pyx_n_s_1lb_2, __pyx_n_s_2lb_2, __pyx_n_s_3lb_2, __pyx_n_s_1bj_2, __pyx_n_s_2bj_2, __pyx_n_s_coarse_2, __pyx_n_s_totalCount, __pyx_n_s_perc, __pyx_n_s_1lb_perc, __pyx_n_s_2lb_perc, __pyx_n_s_3lb_perc, __pyx_n_s_1bj_perc, __pyx_n_s_2bj_perc, __pyx_n_s_coarse_perc, __pyx_n_s_flc_perc, __pyx_n_s_e); if (unlikely(!__pyx_tuple__159)) __PYX_ERR(0, 526, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_tuple__159);
+  __Pyx_GIVEREF(__pyx_tuple__159);
+  __pyx_codeobj__160 = (PyObject*)__Pyx_PyCode_New(1, 0, 17, 0, 0, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__159, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_flc_py, __pyx_n_s_show_results_on_display, 526, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__160)) __PYX_ERR(0, 526, __pyx_L1_error)
 
   /* "flc.py":579
  * 
@@ -28586,10 +28604,10 @@ static int __Pyx_InitCachedConstants(void) {
  *         try:
  *             # username = self.username_verify.get()
  */
-  __pyx_tuple__160 = PyTuple_Pack(6, __pyx_n_s_self, __pyx_n_s_username, __pyx_n_s_password, __pyx_n_s_success, __pyx_n_s_name, __pyx_n_s_e); if (unlikely(!__pyx_tuple__160)) __PYX_ERR(0, 579, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_tuple__160);
-  __Pyx_GIVEREF(__pyx_tuple__160);
-  __pyx_codeobj__161 = (PyObject*)__Pyx_PyCode_New(1, 0, 6, 0, 0, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__160, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_flc_py, __pyx_n_s_login_verify, 579, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__161)) __PYX_ERR(0, 579, __pyx_L1_error)
+  __pyx_tuple__161 = PyTuple_Pack(6, __pyx_n_s_self, __pyx_n_s_username, __pyx_n_s_password, __pyx_n_s_success, __pyx_n_s_name, __pyx_n_s_e); if (unlikely(!__pyx_tuple__161)) __PYX_ERR(0, 579, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_tuple__161);
+  __Pyx_GIVEREF(__pyx_tuple__161);
+  __pyx_codeobj__162 = (PyObject*)__Pyx_PyCode_New(1, 0, 6, 0, 0, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__161, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_flc_py, __pyx_n_s_login_verify, 579, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__162)) __PYX_ERR(0, 579, __pyx_L1_error)
 
   /* "flc.py":599
  * 
@@ -28598,10 +28616,10 @@ static int __Pyx_InitCachedConstants(void) {
  *         self.error_screen = Toplevel(self.window)
  *         self.error_screen.geometry("%dx%d+%d+%d" % (self.w, self.h, self.x + 300, self.y + 200))
  */
-  __pyx_tuple__162 = PyTuple_Pack(2, __pyx_n_s_self, __pyx_n_s_msg); if (unlikely(!__pyx_tuple__162)) __PYX_ERR(0, 599, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_tuple__162);
-  __Pyx_GIVEREF(__pyx_tuple__162);
-  __pyx_codeobj__163 = (PyObject*)__Pyx_PyCode_New(2, 0, 2, 0, 0, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__162, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_flc_py, __pyx_n_s_show_error_msg, 599, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__163)) __PYX_ERR(0, 599, __pyx_L1_error)
+  __pyx_tuple__163 = PyTuple_Pack(2, __pyx_n_s_self, __pyx_n_s_msg); if (unlikely(!__pyx_tuple__163)) __PYX_ERR(0, 599, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_tuple__163);
+  __Pyx_GIVEREF(__pyx_tuple__163);
+  __pyx_codeobj__164 = (PyObject*)__Pyx_PyCode_New(2, 0, 2, 0, 0, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__163, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_flc_py, __pyx_n_s_show_error_msg, 599, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__164)) __PYX_ERR(0, 599, __pyx_L1_error)
 
   /* "flc.py":606
  *         Button(self.error_screen, text="OK", command=self.delete_error_screen, width=15, font=('times', 16, 'bold')).pack()
@@ -28610,10 +28628,10 @@ static int __Pyx_InitCachedConstants(void) {
  *         self.error_screen.destroy()
  * 
  */
-  __pyx_tuple__164 = PyTuple_Pack(1, __pyx_n_s_self); if (unlikely(!__pyx_tuple__164)) __PYX_ERR(0, 606, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_tuple__164);
-  __Pyx_GIVEREF(__pyx_tuple__164);
-  __pyx_codeobj__165 = (PyObject*)__Pyx_PyCode_New(1, 0, 1, 0, 0, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__164, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_flc_py, __pyx_n_s_delete_error_screen, 606, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__165)) __PYX_ERR(0, 606, __pyx_L1_error)
+  __pyx_tuple__165 = PyTuple_Pack(1, __pyx_n_s_self); if (unlikely(!__pyx_tuple__165)) __PYX_ERR(0, 606, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_tuple__165);
+  __Pyx_GIVEREF(__pyx_tuple__165);
+  __pyx_codeobj__166 = (PyObject*)__Pyx_PyCode_New(1, 0, 1, 0, 0, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__165, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_flc_py, __pyx_n_s_delete_error_screen, 606, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__166)) __PYX_ERR(0, 606, __pyx_L1_error)
 
   /* "flc.py":609
  *         self.error_screen.destroy()
@@ -28622,10 +28640,10 @@ static int __Pyx_InitCachedConstants(void) {
  *         try:
  *             gc.collect()
  */
-  __pyx_tuple__166 = PyTuple_Pack(2, __pyx_n_s_self, __pyx_n_s_e); if (unlikely(!__pyx_tuple__166)) __PYX_ERR(0, 609, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_tuple__166);
-  __Pyx_GIVEREF(__pyx_tuple__166);
-  __pyx_codeobj__167 = (PyObject*)__Pyx_PyCode_New(1, 0, 2, 0, 0, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__166, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_flc_py, __pyx_n_s_details_verify, 609, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__167)) __PYX_ERR(0, 609, __pyx_L1_error)
+  __pyx_tuple__167 = PyTuple_Pack(2, __pyx_n_s_self, __pyx_n_s_e); if (unlikely(!__pyx_tuple__167)) __PYX_ERR(0, 609, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_tuple__167);
+  __Pyx_GIVEREF(__pyx_tuple__167);
+  __pyx_codeobj__168 = (PyObject*)__Pyx_PyCode_New(1, 0, 2, 0, 0, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__167, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_flc_py, __pyx_n_s_details_verify, 609, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__168)) __PYX_ERR(0, 609, __pyx_L1_error)
 
   /* "flc.py":623
  *             logger.exception(str('Exception occured in "details_verify" function\nError message:' + str(e)))
@@ -28634,10 +28652,10 @@ static int __Pyx_InitCachedConstants(void) {
  *         try:
  *             gph = ImageTk.PhotoImage(Image.open(configparser.get('gui-config', 'graph')))
  */
-  __pyx_tuple__168 = PyTuple_Pack(3, __pyx_n_s_self, __pyx_n_s_gph, __pyx_n_s_e); if (unlikely(!__pyx_tuple__168)) __PYX_ERR(0, 623, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_tuple__168);
-  __Pyx_GIVEREF(__pyx_tuple__168);
-  __pyx_codeobj__169 = (PyObject*)__Pyx_PyCode_New(1, 0, 3, 0, 0, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__168, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_flc_py, __pyx_n_s_enter_details, 623, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__169)) __PYX_ERR(0, 623, __pyx_L1_error)
+  __pyx_tuple__169 = PyTuple_Pack(3, __pyx_n_s_self, __pyx_n_s_gph, __pyx_n_s_e); if (unlikely(!__pyx_tuple__169)) __PYX_ERR(0, 623, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_tuple__169);
+  __Pyx_GIVEREF(__pyx_tuple__169);
+  __pyx_codeobj__170 = (PyObject*)__Pyx_PyCode_New(1, 0, 3, 0, 0, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__169, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_flc_py, __pyx_n_s_enter_details, 623, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__170)) __PYX_ERR(0, 623, __pyx_L1_error)
 
   /* "flc.py":650
  *             logger.exception(str('Exception occured in "enter_details" function\nError message:' + str(e)))
@@ -28646,10 +28664,10 @@ static int __Pyx_InitCachedConstants(void) {
  *         try:
  *             self.forget_graph()
  */
-  __pyx_tuple__170 = PyTuple_Pack(16, __pyx_n_s_self, __pyx_n_s_x_col1, __pyx_n_s_x_col2, __pyx_n_s_x_col3, __pyx_n_s_x_col4, __pyx_n_s_y_row1, __pyx_n_s_y_row2, __pyx_n_s_y_row3, __pyx_n_s_y_row4, __pyx_n_s_area_covered, __pyx_n_s_weight, __pyx_n_s_sample_id, __pyx_n_s_lot_id, __pyx_n_s_device_serial_no, __pyx_n_s_batch_id, __pyx_n_s_e); if (unlikely(!__pyx_tuple__170)) __PYX_ERR(0, 650, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_tuple__170);
-  __Pyx_GIVEREF(__pyx_tuple__170);
-  __pyx_codeobj__171 = (PyObject*)__Pyx_PyCode_New(1, 0, 16, 0, 0, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__170, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_flc_py, __pyx_n_s_second_screen_place, 650, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__171)) __PYX_ERR(0, 650, __pyx_L1_error)
+  __pyx_tuple__171 = PyTuple_Pack(16, __pyx_n_s_self, __pyx_n_s_x_col1, __pyx_n_s_x_col2, __pyx_n_s_x_col3, __pyx_n_s_x_col4, __pyx_n_s_y_row1, __pyx_n_s_y_row2, __pyx_n_s_y_row3, __pyx_n_s_y_row4, __pyx_n_s_area_covered, __pyx_n_s_weight, __pyx_n_s_sample_id, __pyx_n_s_lot_id, __pyx_n_s_device_serial_no, __pyx_n_s_batch_id, __pyx_n_s_e); if (unlikely(!__pyx_tuple__171)) __PYX_ERR(0, 650, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_tuple__171);
+  __Pyx_GIVEREF(__pyx_tuple__171);
+  __pyx_codeobj__172 = (PyObject*)__Pyx_PyCode_New(1, 0, 16, 0, 0, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__171, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_flc_py, __pyx_n_s_second_screen_place, 650, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__172)) __PYX_ERR(0, 650, __pyx_L1_error)
 
   /* "flc.py":712
  *             logger.exception(str('Exception occured in "second_screen_place" function\nError message:' + str(e)))
@@ -28658,10 +28676,10 @@ static int __Pyx_InitCachedConstants(void) {
  *         try:
  *             self.area_covered_label.place_forget()
  */
-  __pyx_tuple__172 = PyTuple_Pack(2, __pyx_n_s_self, __pyx_n_s_e); if (unlikely(!__pyx_tuple__172)) __PYX_ERR(0, 712, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_tuple__172);
-  __Pyx_GIVEREF(__pyx_tuple__172);
-  __pyx_codeobj__173 = (PyObject*)__Pyx_PyCode_New(1, 0, 2, 0, 0, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__172, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_flc_py, __pyx_n_s_second_screen_forget, 712, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__173)) __PYX_ERR(0, 712, __pyx_L1_error)
+  __pyx_tuple__173 = PyTuple_Pack(2, __pyx_n_s_self, __pyx_n_s_e); if (unlikely(!__pyx_tuple__173)) __PYX_ERR(0, 712, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_tuple__173);
+  __Pyx_GIVEREF(__pyx_tuple__173);
+  __pyx_codeobj__174 = (PyObject*)__Pyx_PyCode_New(1, 0, 2, 0, 0, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__173, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_flc_py, __pyx_n_s_second_screen_forget, 712, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__174)) __PYX_ERR(0, 712, __pyx_L1_error)
 
   /* "flc.py":735
  *             logger.exception(str('Exception occured in "second_screen_forget" function\nError message:' + str(e)))
@@ -28670,10 +28688,10 @@ static int __Pyx_InitCachedConstants(void) {
  *         try:
  *             self.new_fields['area_covered'] = self.area_covered_verify.get()
  */
-  __pyx_tuple__174 = PyTuple_Pack(2, __pyx_n_s_self, __pyx_n_s_e); if (unlikely(!__pyx_tuple__174)) __PYX_ERR(0, 735, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_tuple__174);
-  __Pyx_GIVEREF(__pyx_tuple__174);
-  __pyx_codeobj__175 = (PyObject*)__Pyx_PyCode_New(1, 0, 2, 0, 0, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__174, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_flc_py, __pyx_n_s_main_screen, 735, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__175)) __PYX_ERR(0, 735, __pyx_L1_error)
+  __pyx_tuple__175 = PyTuple_Pack(2, __pyx_n_s_self, __pyx_n_s_e); if (unlikely(!__pyx_tuple__175)) __PYX_ERR(0, 735, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_tuple__175);
+  __Pyx_GIVEREF(__pyx_tuple__175);
+  __pyx_codeobj__176 = (PyObject*)__Pyx_PyCode_New(1, 0, 2, 0, 0, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__175, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_flc_py, __pyx_n_s_main_screen, 735, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__176)) __PYX_ERR(0, 735, __pyx_L1_error)
 
   /* "flc.py":761
  *             logger.exception(str('Exception occured in "main_screen" function\nError message:' + str(e)))
@@ -28682,10 +28700,10 @@ static int __Pyx_InitCachedConstants(void) {
  *         try:
  *             self.username_login_entry.place_forget()
  */
-  __pyx_tuple__176 = PyTuple_Pack(2, __pyx_n_s_self, __pyx_n_s_e); if (unlikely(!__pyx_tuple__176)) __PYX_ERR(0, 761, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_tuple__176);
-  __Pyx_GIVEREF(__pyx_tuple__176);
-  __pyx_codeobj__177 = (PyObject*)__Pyx_PyCode_New(1, 0, 2, 0, 0, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__176, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_flc_py, __pyx_n_s_login_success, 761, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__177)) __PYX_ERR(0, 761, __pyx_L1_error)
+  __pyx_tuple__177 = PyTuple_Pack(2, __pyx_n_s_self, __pyx_n_s_e); if (unlikely(!__pyx_tuple__177)) __PYX_ERR(0, 761, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_tuple__177);
+  __Pyx_GIVEREF(__pyx_tuple__177);
+  __pyx_codeobj__178 = (PyObject*)__Pyx_PyCode_New(1, 0, 2, 0, 0, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__177, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_flc_py, __pyx_n_s_login_success, 761, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__178)) __PYX_ERR(0, 761, __pyx_L1_error)
 
   /* "flc.py":772
  * 
@@ -28694,10 +28712,10 @@ static int __Pyx_InitCachedConstants(void) {
  *     window = tk.Tk()
  *     MyTkApp(window)
  */
-  __pyx_tuple__178 = PyTuple_Pack(1, __pyx_n_s_window); if (unlikely(!__pyx_tuple__178)) __PYX_ERR(0, 772, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_tuple__178);
-  __Pyx_GIVEREF(__pyx_tuple__178);
-  __pyx_codeobj__179 = (PyObject*)__Pyx_PyCode_New(0, 0, 1, 0, 0, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__178, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_flc_py, __pyx_n_s_launchApp, 772, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__179)) __PYX_ERR(0, 772, __pyx_L1_error)
+  __pyx_tuple__179 = PyTuple_Pack(1, __pyx_n_s_window); if (unlikely(!__pyx_tuple__179)) __PYX_ERR(0, 772, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_tuple__179);
+  __Pyx_GIVEREF(__pyx_tuple__179);
+  __pyx_codeobj__180 = (PyObject*)__Pyx_PyCode_New(0, 0, 1, 0, 0, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__179, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_flc_py, __pyx_n_s_launchApp, 772, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__180)) __PYX_ERR(0, 772, __pyx_L1_error)
   __Pyx_RefNannyFinishContext();
   return 0;
   __pyx_L1_error:;
@@ -29181,7 +29199,7 @@ PyMODINIT_FUNC PyInit_flc(void)
  * logger = logging.getLogger(("FLC"))
  * 
  * configparser = configparser.RawConfigParser()             # <<<<<<<<<<<<<<
- * # os.chdir("/home/agnext/Documents/flc")
+ * os.chdir("/home/agnext/Documents/flc")
  * 
  */
   __pyx_t_2 = __Pyx_GetModuleGlobalName(__pyx_n_s_configparser); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 26, __pyx_L1_error)
@@ -29210,8 +29228,25 @@ PyMODINIT_FUNC PyInit_flc(void)
   if (PyDict_SetItem(__pyx_d, __pyx_n_s_configparser, __pyx_t_4) < 0) __PYX_ERR(0, 26, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
 
+  /* "flc.py":27
+ * 
+ * configparser = configparser.RawConfigParser()
+ * os.chdir("/home/agnext/Documents/flc")             # <<<<<<<<<<<<<<
+ * 
+ * configparser.read('flc_utils/screens/touchScreen/gui.cfg')
+ */
+  __pyx_t_4 = __Pyx_GetModuleGlobalName(__pyx_n_s_os); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 27, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_4);
+  __pyx_t_1 = __Pyx_PyObject_GetAttrStr(__pyx_t_4, __pyx_n_s_chdir); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 27, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_1);
+  __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
+  __pyx_t_4 = __Pyx_PyObject_Call(__pyx_t_1, __pyx_tuple__94, NULL); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 27, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_4);
+  __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
+  __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
+
   /* "flc.py":29
- * # os.chdir("/home/agnext/Documents/flc")
+ * os.chdir("/home/agnext/Documents/flc")
  * 
  * configparser.read('flc_utils/screens/touchScreen/gui.cfg')             # <<<<<<<<<<<<<<
  * 
@@ -29222,7 +29257,7 @@ PyMODINIT_FUNC PyInit_flc(void)
   __pyx_t_1 = __Pyx_PyObject_GetAttrStr(__pyx_t_4, __pyx_n_s_read); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 29, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
-  __pyx_t_4 = __Pyx_PyObject_Call(__pyx_t_1, __pyx_tuple__94, NULL); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 29, __pyx_L1_error)
+  __pyx_t_4 = __Pyx_PyObject_Call(__pyx_t_1, __pyx_tuple__95, NULL); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 29, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_4);
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
   __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
@@ -29248,7 +29283,7 @@ PyMODINIT_FUNC PyInit_flc(void)
   __pyx_t_1 = __Pyx_PyObject_GetAttrStr(__pyx_t_4, __pyx_n_s_get); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 36, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
-  __pyx_t_4 = __Pyx_PyObject_Call(__pyx_t_1, __pyx_tuple__95, NULL); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 36, __pyx_L1_error)
+  __pyx_t_4 = __Pyx_PyObject_Call(__pyx_t_1, __pyx_tuple__96, NULL); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 36, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_4);
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
   if (PyDict_SetItem(__pyx_d, __pyx_n_s_pwd, __pyx_t_4) < 0) __PYX_ERR(0, 36, __pyx_L1_error)
@@ -29292,7 +29327,7 @@ PyMODINIT_FUNC PyInit_flc(void)
  *         tk.Frame.__init__(self, master)
  *         self.token = ""
  */
-  __pyx_t_3 = __Pyx_CyFunction_NewEx(&__pyx_mdef_3flc_7MyTkApp_1__init__, 0, __pyx_n_s_MyTkApp___init, NULL, __pyx_n_s_flc, __pyx_d, ((PyObject *)__pyx_codeobj__97)); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 42, __pyx_L1_error)
+  __pyx_t_3 = __Pyx_CyFunction_NewEx(&__pyx_mdef_3flc_7MyTkApp_1__init__, 0, __pyx_n_s_MyTkApp___init, NULL, __pyx_n_s_flc, __pyx_d, ((PyObject *)__pyx_codeobj__98)); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 42, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_3);
   if (PyObject_SetItem(__pyx_t_2, __pyx_n_s_init, __pyx_t_3) < 0) __PYX_ERR(0, 42, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
@@ -29304,7 +29339,7 @@ PyMODINIT_FUNC PyInit_flc(void)
  *         if messagebox.askokcancel("Quit", "Do you really want to restart the system?"):
  *             self.window.destroy()
  */
-  __pyx_t_3 = __Pyx_CyFunction_NewEx(&__pyx_mdef_3flc_7MyTkApp_3restart, 0, __pyx_n_s_MyTkApp_restart, NULL, __pyx_n_s_flc, __pyx_d, ((PyObject *)__pyx_codeobj__99)); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 215, __pyx_L1_error)
+  __pyx_t_3 = __Pyx_CyFunction_NewEx(&__pyx_mdef_3flc_7MyTkApp_3restart, 0, __pyx_n_s_MyTkApp_restart, NULL, __pyx_n_s_flc, __pyx_d, ((PyObject *)__pyx_codeobj__100)); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 215, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_3);
   if (PyObject_SetItem(__pyx_t_2, __pyx_n_s_restart, __pyx_t_3) < 0) __PYX_ERR(0, 215, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
@@ -29316,7 +29351,7 @@ PyMODINIT_FUNC PyInit_flc(void)
  *         if messagebox.askokcancel("Quit", "Do you really want to shutdown the system?"):
  *             self.window.destroy()
  */
-  __pyx_t_3 = __Pyx_CyFunction_NewEx(&__pyx_mdef_3flc_7MyTkApp_5shutdown, 0, __pyx_n_s_MyTkApp_shutdown, NULL, __pyx_n_s_flc, __pyx_d, ((PyObject *)__pyx_codeobj__101)); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 222, __pyx_L1_error)
+  __pyx_t_3 = __Pyx_CyFunction_NewEx(&__pyx_mdef_3flc_7MyTkApp_5shutdown, 0, __pyx_n_s_MyTkApp_shutdown, NULL, __pyx_n_s_flc, __pyx_d, ((PyObject *)__pyx_codeobj__102)); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 222, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_3);
   if (PyObject_SetItem(__pyx_t_2, __pyx_n_s_shutdown, __pyx_t_3) < 0) __PYX_ERR(0, 222, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
@@ -29328,7 +29363,7 @@ PyMODINIT_FUNC PyInit_flc(void)
  *         self.window.destroy()
  *         launchApp()
  */
-  __pyx_t_3 = __Pyx_CyFunction_NewEx(&__pyx_mdef_3flc_7MyTkApp_7logout, 0, __pyx_n_s_MyTkApp_logout, NULL, __pyx_n_s_flc, __pyx_d, ((PyObject *)__pyx_codeobj__103)); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 229, __pyx_L1_error)
+  __pyx_t_3 = __Pyx_CyFunction_NewEx(&__pyx_mdef_3flc_7MyTkApp_7logout, 0, __pyx_n_s_MyTkApp_logout, NULL, __pyx_n_s_flc, __pyx_d, ((PyObject *)__pyx_codeobj__104)); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 229, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_3);
   if (PyObject_SetItem(__pyx_t_2, __pyx_n_s_logout, __pyx_t_3) < 0) __PYX_ERR(0, 229, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
@@ -29340,7 +29375,7 @@ PyMODINIT_FUNC PyInit_flc(void)
  *         try:
  *             subprocess.Popen("exec " + 'echo {} | sudo -S {}'.format(pwd, jetson_clock_cmd), stdout= subprocess.PIPE, shell=True)
  */
-  __pyx_t_3 = __Pyx_CyFunction_NewEx(&__pyx_mdef_3flc_7MyTkApp_9start_jetson_fan, 0, __pyx_n_s_MyTkApp_start_jetson_fan, NULL, __pyx_n_s_flc, __pyx_d, ((PyObject *)__pyx_codeobj__105)); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 233, __pyx_L1_error)
+  __pyx_t_3 = __Pyx_CyFunction_NewEx(&__pyx_mdef_3flc_7MyTkApp_9start_jetson_fan, 0, __pyx_n_s_MyTkApp_start_jetson_fan, NULL, __pyx_n_s_flc, __pyx_d, ((PyObject *)__pyx_codeobj__106)); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 233, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_3);
   if (PyObject_SetItem(__pyx_t_2, __pyx_n_s_start_jetson_fan, __pyx_t_3) < 0) __PYX_ERR(0, 233, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
@@ -29352,7 +29387,7 @@ PyMODINIT_FUNC PyInit_flc(void)
  *         try:
  *             self.endRecord.place_forget()
  */
-  __pyx_t_3 = __Pyx_CyFunction_NewEx(&__pyx_mdef_3flc_7MyTkApp_11details_entered_success, 0, __pyx_n_s_MyTkApp_details_entered_success, NULL, __pyx_n_s_flc, __pyx_d, ((PyObject *)__pyx_codeobj__107)); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 239, __pyx_L1_error)
+  __pyx_t_3 = __Pyx_CyFunction_NewEx(&__pyx_mdef_3flc_7MyTkApp_11details_entered_success, 0, __pyx_n_s_MyTkApp_details_entered_success, NULL, __pyx_n_s_flc, __pyx_d, ((PyObject *)__pyx_codeobj__108)); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 239, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_3);
   if (PyObject_SetItem(__pyx_t_2, __pyx_n_s_details_entered_success, __pyx_t_3) < 0) __PYX_ERR(0, 239, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
@@ -29364,7 +29399,7 @@ PyMODINIT_FUNC PyInit_flc(void)
  *         try:
  *             if self.options_displayed == False:
  */
-  __pyx_t_3 = __Pyx_CyFunction_NewEx(&__pyx_mdef_3flc_7MyTkApp_13display_all_options, 0, __pyx_n_s_MyTkApp_display_all_options, NULL, __pyx_n_s_flc, __pyx_d, ((PyObject *)__pyx_codeobj__109)); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 250, __pyx_L1_error)
+  __pyx_t_3 = __Pyx_CyFunction_NewEx(&__pyx_mdef_3flc_7MyTkApp_13display_all_options, 0, __pyx_n_s_MyTkApp_display_all_options, NULL, __pyx_n_s_flc, __pyx_d, ((PyObject *)__pyx_codeobj__110)); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 250, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_3);
   if (PyObject_SetItem(__pyx_t_2, __pyx_n_s_display_all_options, __pyx_t_3) < 0) __PYX_ERR(0, 250, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
@@ -29376,7 +29411,7 @@ PyMODINIT_FUNC PyInit_flc(void)
  *         try:
  *             p = subprocess.Popen("exec " + command, stdout= subprocess.PIPE, shell=True)
  */
-  __pyx_t_3 = __Pyx_CyFunction_NewEx(&__pyx_mdef_3flc_7MyTkApp_15start_testing, 0, __pyx_n_s_MyTkApp_start_testing, NULL, __pyx_n_s_flc, __pyx_d, ((PyObject *)__pyx_codeobj__111)); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 267, __pyx_L1_error)
+  __pyx_t_3 = __Pyx_CyFunction_NewEx(&__pyx_mdef_3flc_7MyTkApp_15start_testing, 0, __pyx_n_s_MyTkApp_start_testing, NULL, __pyx_n_s_flc, __pyx_d, ((PyObject *)__pyx_codeobj__112)); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 267, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_3);
   if (PyObject_SetItem(__pyx_t_2, __pyx_n_s_start_testing, __pyx_t_3) < 0) __PYX_ERR(0, 267, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
@@ -29388,7 +29423,7 @@ PyMODINIT_FUNC PyInit_flc(void)
  *         try:
  *             self.formula.place_forget()
  */
-  __pyx_t_3 = __Pyx_CyFunction_NewEx(&__pyx_mdef_3flc_7MyTkApp_17end_video, 0, __pyx_n_s_MyTkApp_end_video, NULL, __pyx_n_s_flc, __pyx_d, ((PyObject *)__pyx_codeobj__113)); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 279, __pyx_L1_error)
+  __pyx_t_3 = __Pyx_CyFunction_NewEx(&__pyx_mdef_3flc_7MyTkApp_17end_video, 0, __pyx_n_s_MyTkApp_end_video, NULL, __pyx_n_s_flc, __pyx_d, ((PyObject *)__pyx_codeobj__114)); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 279, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_3);
   if (PyObject_SetItem(__pyx_t_2, __pyx_n_s_end_video, __pyx_t_3) < 0) __PYX_ERR(0, 279, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
@@ -29400,7 +29435,7 @@ PyMODINIT_FUNC PyInit_flc(void)
  *         if messagebox.askokcancel("Quit", "Do you want to quit?"):
  *             gc.collect()
  */
-  __pyx_t_3 = __Pyx_CyFunction_NewEx(&__pyx_mdef_3flc_7MyTkApp_19on_closing, 0, __pyx_n_s_MyTkApp_on_closing, NULL, __pyx_n_s_flc, __pyx_d, ((PyObject *)__pyx_codeobj__115)); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 290, __pyx_L1_error)
+  __pyx_t_3 = __Pyx_CyFunction_NewEx(&__pyx_mdef_3flc_7MyTkApp_19on_closing, 0, __pyx_n_s_MyTkApp_on_closing, NULL, __pyx_n_s_flc, __pyx_d, ((PyObject *)__pyx_codeobj__116)); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 290, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_3);
   if (PyObject_SetItem(__pyx_t_2, __pyx_n_s_on_closing, __pyx_t_3) < 0) __PYX_ERR(0, 290, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
@@ -29412,7 +29447,7 @@ PyMODINIT_FUNC PyInit_flc(void)
  *         try:
  *             subprocess.Popen("exec " + "onboard", stdout= subprocess.PIPE, shell=True)
  */
-  __pyx_t_3 = __Pyx_CyFunction_NewEx(&__pyx_mdef_3flc_7MyTkApp_21popup_keyboard, 0, __pyx_n_s_MyTkApp_popup_keyboard, NULL, __pyx_n_s_flc, __pyx_d, ((PyObject *)__pyx_codeobj__117)); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 300, __pyx_L1_error)
+  __pyx_t_3 = __Pyx_CyFunction_NewEx(&__pyx_mdef_3flc_7MyTkApp_21popup_keyboard, 0, __pyx_n_s_MyTkApp_popup_keyboard, NULL, __pyx_n_s_flc, __pyx_d, ((PyObject *)__pyx_codeobj__118)); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 300, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_3);
   if (PyObject_SetItem(__pyx_t_2, __pyx_n_s_popup_keyboard, __pyx_t_3) < 0) __PYX_ERR(0, 300, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
@@ -29424,7 +29459,7 @@ PyMODINIT_FUNC PyInit_flc(void)
  *         try:
  *             url = "http://23.98.216.140:8072/api/locations"
  */
-  __pyx_t_3 = __Pyx_CyFunction_NewEx(&__pyx_mdef_3flc_7MyTkApp_23get_locations, 0, __pyx_n_s_MyTkApp_get_locations, NULL, __pyx_n_s_flc, __pyx_d, ((PyObject *)__pyx_codeobj__119)); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 306, __pyx_L1_error)
+  __pyx_t_3 = __Pyx_CyFunction_NewEx(&__pyx_mdef_3flc_7MyTkApp_23get_locations, 0, __pyx_n_s_MyTkApp_get_locations, NULL, __pyx_n_s_flc, __pyx_d, ((PyObject *)__pyx_codeobj__120)); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 306, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_3);
   if (PyObject_SetItem(__pyx_t_2, __pyx_n_s_get_locations, __pyx_t_3) < 0) __PYX_ERR(0, 306, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
@@ -29436,7 +29471,7 @@ PyMODINIT_FUNC PyInit_flc(void)
  *         try:
  *             url = "http://23.98.216.140:8072/api/gardens"
  */
-  __pyx_t_3 = __Pyx_CyFunction_NewEx(&__pyx_mdef_3flc_7MyTkApp_25get_gardens, 0, __pyx_n_s_MyTkApp_get_gardens, NULL, __pyx_n_s_flc, __pyx_d, ((PyObject *)__pyx_codeobj__121)); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 316, __pyx_L1_error)
+  __pyx_t_3 = __Pyx_CyFunction_NewEx(&__pyx_mdef_3flc_7MyTkApp_25get_gardens, 0, __pyx_n_s_MyTkApp_get_gardens, NULL, __pyx_n_s_flc, __pyx_d, ((PyObject *)__pyx_codeobj__122)); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 316, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_3);
   if (PyObject_SetItem(__pyx_t_2, __pyx_n_s_get_gardens, __pyx_t_3) < 0) __PYX_ERR(0, 316, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
@@ -29448,7 +29483,7 @@ PyMODINIT_FUNC PyInit_flc(void)
  *         try:
  *             url = "http://23.98.216.140:8072/api/divisions"
  */
-  __pyx_t_3 = __Pyx_CyFunction_NewEx(&__pyx_mdef_3flc_7MyTkApp_27get_divisions, 0, __pyx_n_s_MyTkApp_get_divisions, NULL, __pyx_n_s_flc, __pyx_d, ((PyObject *)__pyx_codeobj__123)); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 343, __pyx_L1_error)
+  __pyx_t_3 = __Pyx_CyFunction_NewEx(&__pyx_mdef_3flc_7MyTkApp_27get_divisions, 0, __pyx_n_s_MyTkApp_get_divisions, NULL, __pyx_n_s_flc, __pyx_d, ((PyObject *)__pyx_codeobj__124)); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 343, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_3);
   if (PyObject_SetItem(__pyx_t_2, __pyx_n_s_get_divisions, __pyx_t_3) < 0) __PYX_ERR(0, 343, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
@@ -29460,7 +29495,7 @@ PyMODINIT_FUNC PyInit_flc(void)
  *         try:
  *             url = "http://23.98.216.140:8072/api/sections"
  */
-  __pyx_t_3 = __Pyx_CyFunction_NewEx(&__pyx_mdef_3flc_7MyTkApp_29get_sections, 0, __pyx_n_s_MyTkApp_get_sections, NULL, __pyx_n_s_flc, __pyx_d, ((PyObject *)__pyx_codeobj__125)); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 367, __pyx_L1_error)
+  __pyx_t_3 = __Pyx_CyFunction_NewEx(&__pyx_mdef_3flc_7MyTkApp_29get_sections, 0, __pyx_n_s_MyTkApp_get_sections, NULL, __pyx_n_s_flc, __pyx_d, ((PyObject *)__pyx_codeobj__126)); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 367, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_3);
   if (PyObject_SetItem(__pyx_t_2, __pyx_n_s_get_sections, __pyx_t_3) < 0) __PYX_ERR(0, 367, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
@@ -29472,7 +29507,7 @@ PyMODINIT_FUNC PyInit_flc(void)
  *         try:
  *             region_names, region_ids = [], []
  */
-  __pyx_t_3 = __Pyx_CyFunction_NewEx(&__pyx_mdef_3flc_7MyTkApp_31get_regions, 0, __pyx_n_s_MyTkApp_get_regions, NULL, __pyx_n_s_flc, __pyx_d, ((PyObject *)__pyx_codeobj__127)); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 390, __pyx_L1_error)
+  __pyx_t_3 = __Pyx_CyFunction_NewEx(&__pyx_mdef_3flc_7MyTkApp_31get_regions, 0, __pyx_n_s_MyTkApp_get_regions, NULL, __pyx_n_s_flc, __pyx_d, ((PyObject *)__pyx_codeobj__128)); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 390, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_3);
   if (PyObject_SetItem(__pyx_t_2, __pyx_n_s_get_regions, __pyx_t_3) < 0) __PYX_ERR(0, 390, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
@@ -29484,7 +29519,7 @@ PyMODINIT_FUNC PyInit_flc(void)
  *         try:
  *             center_names, center_ids = [], []
  */
-  __pyx_t_3 = __Pyx_CyFunction_NewEx(&__pyx_mdef_3flc_7MyTkApp_33get_instcenter, 0, __pyx_n_s_MyTkApp_get_instcenter, NULL, __pyx_n_s_flc, __pyx_d, ((PyObject *)__pyx_codeobj__129)); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 406, __pyx_L1_error)
+  __pyx_t_3 = __Pyx_CyFunction_NewEx(&__pyx_mdef_3flc_7MyTkApp_33get_instcenter, 0, __pyx_n_s_MyTkApp_get_instcenter, NULL, __pyx_n_s_flc, __pyx_d, ((PyObject *)__pyx_codeobj__130)); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 406, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_3);
   if (PyObject_SetItem(__pyx_t_2, __pyx_n_s_get_instcenter, __pyx_t_3) < 0) __PYX_ERR(0, 406, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
@@ -29496,7 +29531,7 @@ PyMODINIT_FUNC PyInit_flc(void)
  *         try:
  *             self.garden_entry.place(x=520, y=155, height=40, width=190)
  */
-  __pyx_t_3 = __Pyx_CyFunction_NewEx(&__pyx_mdef_3flc_7MyTkApp_35place_inputs, 0, __pyx_n_s_MyTkApp_place_inputs, NULL, __pyx_n_s_flc, __pyx_d, ((PyObject *)__pyx_codeobj__131)); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 424, __pyx_L1_error)
+  __pyx_t_3 = __Pyx_CyFunction_NewEx(&__pyx_mdef_3flc_7MyTkApp_35place_inputs, 0, __pyx_n_s_MyTkApp_place_inputs, NULL, __pyx_n_s_flc, __pyx_d, ((PyObject *)__pyx_codeobj__132)); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 424, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_3);
   if (PyObject_SetItem(__pyx_t_2, __pyx_n_s_place_inputs, __pyx_t_3) < 0) __PYX_ERR(0, 424, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
@@ -29508,7 +29543,7 @@ PyMODINIT_FUNC PyInit_flc(void)
  *         try:
  *             self.graph.place(x=int(configparser.get('gui-config', 'graph_image_x')), y=int(configparser.get('gui-config', 'graph_image_y')))
  */
-  __pyx_t_3 = __Pyx_CyFunction_NewEx(&__pyx_mdef_3flc_7MyTkApp_37load_graph, 0, __pyx_n_s_MyTkApp_load_graph, NULL, __pyx_n_s_flc, __pyx_d, ((PyObject *)__pyx_codeobj__133)); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 433, __pyx_L1_error)
+  __pyx_t_3 = __Pyx_CyFunction_NewEx(&__pyx_mdef_3flc_7MyTkApp_37load_graph, 0, __pyx_n_s_MyTkApp_load_graph, NULL, __pyx_n_s_flc, __pyx_d, ((PyObject *)__pyx_codeobj__134)); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 433, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_3);
   if (PyObject_SetItem(__pyx_t_2, __pyx_n_s_load_graph, __pyx_t_3) < 0) __PYX_ERR(0, 433, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
@@ -29520,7 +29555,7 @@ PyMODINIT_FUNC PyInit_flc(void)
  *         self.graph.place_forget()
  * 
  */
-  __pyx_t_3 = __Pyx_CyFunction_NewEx(&__pyx_mdef_3flc_7MyTkApp_39forget_graph, 0, __pyx_n_s_MyTkApp_forget_graph, NULL, __pyx_n_s_flc, __pyx_d, ((PyObject *)__pyx_codeobj__135)); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 439, __pyx_L1_error)
+  __pyx_t_3 = __Pyx_CyFunction_NewEx(&__pyx_mdef_3flc_7MyTkApp_39forget_graph, 0, __pyx_n_s_MyTkApp_forget_graph, NULL, __pyx_n_s_flc, __pyx_d, ((PyObject *)__pyx_codeobj__136)); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 439, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_3);
   if (PyObject_SetItem(__pyx_t_2, __pyx_n_s_forget_graph, __pyx_t_3) < 0) __PYX_ERR(0, 439, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
@@ -29532,7 +29567,7 @@ PyMODINIT_FUNC PyInit_flc(void)
  *         if self.username_verify.get() == "Enter username":
  *             self.username_login_entry.delete(0, tk.END)
  */
-  __pyx_t_3 = __Pyx_CyFunction_NewEx(&__pyx_mdef_3flc_7MyTkApp_41action_1, 0, __pyx_n_s_MyTkApp_action_1, NULL, __pyx_n_s_flc, __pyx_d, ((PyObject *)__pyx_codeobj__137)); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 442, __pyx_L1_error)
+  __pyx_t_3 = __Pyx_CyFunction_NewEx(&__pyx_mdef_3flc_7MyTkApp_41action_1, 0, __pyx_n_s_MyTkApp_action_1, NULL, __pyx_n_s_flc, __pyx_d, ((PyObject *)__pyx_codeobj__138)); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 442, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_3);
   if (PyObject_SetItem(__pyx_t_2, __pyx_n_s_action_1, __pyx_t_3) < 0) __PYX_ERR(0, 442, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
@@ -29544,7 +29579,7 @@ PyMODINIT_FUNC PyInit_flc(void)
  *         if self.password_verify.get() == "Enter password":
  *             self.password_login_entry.delete(0, tk.END)
  */
-  __pyx_t_3 = __Pyx_CyFunction_NewEx(&__pyx_mdef_3flc_7MyTkApp_43action_2, 0, __pyx_n_s_MyTkApp_action_2, NULL, __pyx_n_s_flc, __pyx_d, ((PyObject *)__pyx_codeobj__139)); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 447, __pyx_L1_error)
+  __pyx_t_3 = __Pyx_CyFunction_NewEx(&__pyx_mdef_3flc_7MyTkApp_43action_2, 0, __pyx_n_s_MyTkApp_action_2, NULL, __pyx_n_s_flc, __pyx_d, ((PyObject *)__pyx_codeobj__140)); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 447, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_3);
   if (PyObject_SetItem(__pyx_t_2, __pyx_n_s_action_2, __pyx_t_3) < 0) __PYX_ERR(0, 447, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
@@ -29556,7 +29591,7 @@ PyMODINIT_FUNC PyInit_flc(void)
  *         try:
  *             subprocess.Popen("exec " + "killall onboard", stdout= subprocess.PIPE, shell=True)
  */
-  __pyx_t_3 = __Pyx_CyFunction_NewEx(&__pyx_mdef_3flc_7MyTkApp_45kill_keyboard, 0, __pyx_n_s_MyTkApp_kill_keyboard, NULL, __pyx_n_s_flc, __pyx_d, ((PyObject *)__pyx_codeobj__141)); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 452, __pyx_L1_error)
+  __pyx_t_3 = __Pyx_CyFunction_NewEx(&__pyx_mdef_3flc_7MyTkApp_45kill_keyboard, 0, __pyx_n_s_MyTkApp_kill_keyboard, NULL, __pyx_n_s_flc, __pyx_d, ((PyObject *)__pyx_codeobj__142)); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 452, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_3);
   if (PyObject_SetItem(__pyx_t_2, __pyx_n_s_kill_keyboard, __pyx_t_3) < 0) __PYX_ERR(0, 452, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
@@ -29568,7 +29603,7 @@ PyMODINIT_FUNC PyInit_flc(void)
  *         if self.area_covered_verify.get() == "Enter Area Covered":
  *             self.area_covered_entry.delete(0, tk.END)
  */
-  __pyx_t_3 = __Pyx_CyFunction_NewEx(&__pyx_mdef_3flc_7MyTkApp_47action_area, 0, __pyx_n_s_MyTkApp_action_area, NULL, __pyx_n_s_flc, __pyx_d, ((PyObject *)__pyx_codeobj__143)); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 458, __pyx_L1_error)
+  __pyx_t_3 = __Pyx_CyFunction_NewEx(&__pyx_mdef_3flc_7MyTkApp_47action_area, 0, __pyx_n_s_MyTkApp_action_area, NULL, __pyx_n_s_flc, __pyx_d, ((PyObject *)__pyx_codeobj__144)); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 458, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_3);
   if (PyObject_SetItem(__pyx_t_2, __pyx_n_s_action_area, __pyx_t_3) < 0) __PYX_ERR(0, 458, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
@@ -29580,7 +29615,7 @@ PyMODINIT_FUNC PyInit_flc(void)
  *         if self.weight_verify.get() == "Enter Weight":
  *             self.weight_entry.delete(0, tk.END)
  */
-  __pyx_t_3 = __Pyx_CyFunction_NewEx(&__pyx_mdef_3flc_7MyTkApp_49action_weight, 0, __pyx_n_s_MyTkApp_action_weight, NULL, __pyx_n_s_flc, __pyx_d, ((PyObject *)__pyx_codeobj__145)); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 463, __pyx_L1_error)
+  __pyx_t_3 = __Pyx_CyFunction_NewEx(&__pyx_mdef_3flc_7MyTkApp_49action_weight, 0, __pyx_n_s_MyTkApp_action_weight, NULL, __pyx_n_s_flc, __pyx_d, ((PyObject *)__pyx_codeobj__146)); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 463, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_3);
   if (PyObject_SetItem(__pyx_t_2, __pyx_n_s_action_weight, __pyx_t_3) < 0) __PYX_ERR(0, 463, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
@@ -29592,7 +29627,7 @@ PyMODINIT_FUNC PyInit_flc(void)
  *         if self.sample_id_verify.get() == "Enter Sample ID":
  *             self.sample_id_entry.delete(0, tk.END)
  */
-  __pyx_t_3 = __Pyx_CyFunction_NewEx(&__pyx_mdef_3flc_7MyTkApp_51action_sampleid, 0, __pyx_n_s_MyTkApp_action_sampleid, NULL, __pyx_n_s_flc, __pyx_d, ((PyObject *)__pyx_codeobj__147)); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 468, __pyx_L1_error)
+  __pyx_t_3 = __Pyx_CyFunction_NewEx(&__pyx_mdef_3flc_7MyTkApp_51action_sampleid, 0, __pyx_n_s_MyTkApp_action_sampleid, NULL, __pyx_n_s_flc, __pyx_d, ((PyObject *)__pyx_codeobj__148)); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 468, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_3);
   if (PyObject_SetItem(__pyx_t_2, __pyx_n_s_action_sampleid, __pyx_t_3) < 0) __PYX_ERR(0, 468, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
@@ -29604,7 +29639,7 @@ PyMODINIT_FUNC PyInit_flc(void)
  *         if self.lot_id_verify.get() == "Enter Lot ID":
  *             self.lot_id_entry.delete(0, tk.END)
  */
-  __pyx_t_3 = __Pyx_CyFunction_NewEx(&__pyx_mdef_3flc_7MyTkApp_53action_lotid, 0, __pyx_n_s_MyTkApp_action_lotid, NULL, __pyx_n_s_flc, __pyx_d, ((PyObject *)__pyx_codeobj__149)); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 473, __pyx_L1_error)
+  __pyx_t_3 = __Pyx_CyFunction_NewEx(&__pyx_mdef_3flc_7MyTkApp_53action_lotid, 0, __pyx_n_s_MyTkApp_action_lotid, NULL, __pyx_n_s_flc, __pyx_d, ((PyObject *)__pyx_codeobj__150)); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 473, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_3);
   if (PyObject_SetItem(__pyx_t_2, __pyx_n_s_action_lotid, __pyx_t_3) < 0) __PYX_ERR(0, 473, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
@@ -29616,7 +29651,7 @@ PyMODINIT_FUNC PyInit_flc(void)
  *         if self.device_serial_no_verify.get() == "Enter Device SerialNo":
  *             self.device_serial_no_entry.delete(0, tk.END)
  */
-  __pyx_t_3 = __Pyx_CyFunction_NewEx(&__pyx_mdef_3flc_7MyTkApp_55action_deviceserialno, 0, __pyx_n_s_MyTkApp_action_deviceserialno, NULL, __pyx_n_s_flc, __pyx_d, ((PyObject *)__pyx_codeobj__151)); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 478, __pyx_L1_error)
+  __pyx_t_3 = __Pyx_CyFunction_NewEx(&__pyx_mdef_3flc_7MyTkApp_55action_deviceserialno, 0, __pyx_n_s_MyTkApp_action_deviceserialno, NULL, __pyx_n_s_flc, __pyx_d, ((PyObject *)__pyx_codeobj__152)); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 478, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_3);
   if (PyObject_SetItem(__pyx_t_2, __pyx_n_s_action_deviceserialno, __pyx_t_3) < 0) __PYX_ERR(0, 478, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
@@ -29628,7 +29663,7 @@ PyMODINIT_FUNC PyInit_flc(void)
  *         if self.batch_id_verify.get() == "Enter Batch ID":
  *             self.batch_id_entry.delete(0, tk.END)
  */
-  __pyx_t_3 = __Pyx_CyFunction_NewEx(&__pyx_mdef_3flc_7MyTkApp_57action_batchid, 0, __pyx_n_s_MyTkApp_action_batchid, NULL, __pyx_n_s_flc, __pyx_d, ((PyObject *)__pyx_codeobj__153)); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 483, __pyx_L1_error)
+  __pyx_t_3 = __Pyx_CyFunction_NewEx(&__pyx_mdef_3flc_7MyTkApp_57action_batchid, 0, __pyx_n_s_MyTkApp_action_batchid, NULL, __pyx_n_s_flc, __pyx_d, ((PyObject *)__pyx_codeobj__154)); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 483, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_3);
   if (PyObject_SetItem(__pyx_t_2, __pyx_n_s_action_batchid, __pyx_t_3) < 0) __PYX_ERR(0, 483, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
@@ -29640,7 +29675,7 @@ PyMODINIT_FUNC PyInit_flc(void)
  *         try:
  *             # sectionId = int(self.section_id_name_dict[self.section_verify.get()])
  */
-  __pyx_t_3 = __Pyx_CyFunction_NewEx(&__pyx_mdef_3flc_7MyTkApp_59send_data_api, 0, __pyx_n_s_MyTkApp_send_data_api, NULL, __pyx_n_s_flc, __pyx_d, ((PyObject *)__pyx_codeobj__155)); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 489, __pyx_L1_error)
+  __pyx_t_3 = __Pyx_CyFunction_NewEx(&__pyx_mdef_3flc_7MyTkApp_59send_data_api, 0, __pyx_n_s_MyTkApp_send_data_api, NULL, __pyx_n_s_flc, __pyx_d, ((PyObject *)__pyx_codeobj__156)); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 489, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_3);
   if (PyObject_SetItem(__pyx_t_2, __pyx_n_s_send_data_api, __pyx_t_3) < 0) __PYX_ERR(0, 489, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
@@ -29652,7 +29687,7 @@ PyMODINIT_FUNC PyInit_flc(void)
  *         pass
  * 
  */
-  __pyx_t_3 = __Pyx_CyFunction_NewEx(&__pyx_mdef_3flc_7MyTkApp_61do_nothing, 0, __pyx_n_s_MyTkApp_do_nothing, NULL, __pyx_n_s_flc, __pyx_d, ((PyObject *)__pyx_codeobj__157)); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 522, __pyx_L1_error)
+  __pyx_t_3 = __Pyx_CyFunction_NewEx(&__pyx_mdef_3flc_7MyTkApp_61do_nothing, 0, __pyx_n_s_MyTkApp_do_nothing, NULL, __pyx_n_s_flc, __pyx_d, ((PyObject *)__pyx_codeobj__158)); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 522, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_3);
   if (PyObject_SetItem(__pyx_t_2, __pyx_n_s_do_nothing, __pyx_t_3) < 0) __PYX_ERR(0, 522, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
@@ -29664,7 +29699,7 @@ PyMODINIT_FUNC PyInit_flc(void)
  *         try:
  *             self.forget_graph()
  */
-  __pyx_t_3 = __Pyx_CyFunction_NewEx(&__pyx_mdef_3flc_7MyTkApp_63show_results_on_display, 0, __pyx_n_s_MyTkApp_show_results_on_display, NULL, __pyx_n_s_flc, __pyx_d, ((PyObject *)__pyx_codeobj__159)); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 526, __pyx_L1_error)
+  __pyx_t_3 = __Pyx_CyFunction_NewEx(&__pyx_mdef_3flc_7MyTkApp_63show_results_on_display, 0, __pyx_n_s_MyTkApp_show_results_on_display, NULL, __pyx_n_s_flc, __pyx_d, ((PyObject *)__pyx_codeobj__160)); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 526, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_3);
   if (PyObject_SetItem(__pyx_t_2, __pyx_n_s_show_results_on_display, __pyx_t_3) < 0) __PYX_ERR(0, 526, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
@@ -29676,7 +29711,7 @@ PyMODINIT_FUNC PyInit_flc(void)
  *         try:
  *             # username = self.username_verify.get()
  */
-  __pyx_t_3 = __Pyx_CyFunction_NewEx(&__pyx_mdef_3flc_7MyTkApp_65login_verify, 0, __pyx_n_s_MyTkApp_login_verify, NULL, __pyx_n_s_flc, __pyx_d, ((PyObject *)__pyx_codeobj__161)); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 579, __pyx_L1_error)
+  __pyx_t_3 = __Pyx_CyFunction_NewEx(&__pyx_mdef_3flc_7MyTkApp_65login_verify, 0, __pyx_n_s_MyTkApp_login_verify, NULL, __pyx_n_s_flc, __pyx_d, ((PyObject *)__pyx_codeobj__162)); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 579, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_3);
   if (PyObject_SetItem(__pyx_t_2, __pyx_n_s_login_verify, __pyx_t_3) < 0) __PYX_ERR(0, 579, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
@@ -29688,7 +29723,7 @@ PyMODINIT_FUNC PyInit_flc(void)
  *         self.error_screen = Toplevel(self.window)
  *         self.error_screen.geometry("%dx%d+%d+%d" % (self.w, self.h, self.x + 300, self.y + 200))
  */
-  __pyx_t_3 = __Pyx_CyFunction_NewEx(&__pyx_mdef_3flc_7MyTkApp_67show_error_msg, 0, __pyx_n_s_MyTkApp_show_error_msg, NULL, __pyx_n_s_flc, __pyx_d, ((PyObject *)__pyx_codeobj__163)); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 599, __pyx_L1_error)
+  __pyx_t_3 = __Pyx_CyFunction_NewEx(&__pyx_mdef_3flc_7MyTkApp_67show_error_msg, 0, __pyx_n_s_MyTkApp_show_error_msg, NULL, __pyx_n_s_flc, __pyx_d, ((PyObject *)__pyx_codeobj__164)); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 599, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_3);
   if (PyObject_SetItem(__pyx_t_2, __pyx_n_s_show_error_msg, __pyx_t_3) < 0) __PYX_ERR(0, 599, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
@@ -29700,7 +29735,7 @@ PyMODINIT_FUNC PyInit_flc(void)
  *         self.error_screen.destroy()
  * 
  */
-  __pyx_t_3 = __Pyx_CyFunction_NewEx(&__pyx_mdef_3flc_7MyTkApp_69delete_error_screen, 0, __pyx_n_s_MyTkApp_delete_error_screen, NULL, __pyx_n_s_flc, __pyx_d, ((PyObject *)__pyx_codeobj__165)); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 606, __pyx_L1_error)
+  __pyx_t_3 = __Pyx_CyFunction_NewEx(&__pyx_mdef_3flc_7MyTkApp_69delete_error_screen, 0, __pyx_n_s_MyTkApp_delete_error_screen, NULL, __pyx_n_s_flc, __pyx_d, ((PyObject *)__pyx_codeobj__166)); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 606, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_3);
   if (PyObject_SetItem(__pyx_t_2, __pyx_n_s_delete_error_screen, __pyx_t_3) < 0) __PYX_ERR(0, 606, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
@@ -29712,7 +29747,7 @@ PyMODINIT_FUNC PyInit_flc(void)
  *         try:
  *             gc.collect()
  */
-  __pyx_t_3 = __Pyx_CyFunction_NewEx(&__pyx_mdef_3flc_7MyTkApp_71details_verify, 0, __pyx_n_s_MyTkApp_details_verify, NULL, __pyx_n_s_flc, __pyx_d, ((PyObject *)__pyx_codeobj__167)); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 609, __pyx_L1_error)
+  __pyx_t_3 = __Pyx_CyFunction_NewEx(&__pyx_mdef_3flc_7MyTkApp_71details_verify, 0, __pyx_n_s_MyTkApp_details_verify, NULL, __pyx_n_s_flc, __pyx_d, ((PyObject *)__pyx_codeobj__168)); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 609, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_3);
   if (PyObject_SetItem(__pyx_t_2, __pyx_n_s_details_verify, __pyx_t_3) < 0) __PYX_ERR(0, 609, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
@@ -29724,7 +29759,7 @@ PyMODINIT_FUNC PyInit_flc(void)
  *         try:
  *             gph = ImageTk.PhotoImage(Image.open(configparser.get('gui-config', 'graph')))
  */
-  __pyx_t_3 = __Pyx_CyFunction_NewEx(&__pyx_mdef_3flc_7MyTkApp_73enter_details, 0, __pyx_n_s_MyTkApp_enter_details, NULL, __pyx_n_s_flc, __pyx_d, ((PyObject *)__pyx_codeobj__169)); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 623, __pyx_L1_error)
+  __pyx_t_3 = __Pyx_CyFunction_NewEx(&__pyx_mdef_3flc_7MyTkApp_73enter_details, 0, __pyx_n_s_MyTkApp_enter_details, NULL, __pyx_n_s_flc, __pyx_d, ((PyObject *)__pyx_codeobj__170)); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 623, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_3);
   if (PyObject_SetItem(__pyx_t_2, __pyx_n_s_enter_details, __pyx_t_3) < 0) __PYX_ERR(0, 623, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
@@ -29736,7 +29771,7 @@ PyMODINIT_FUNC PyInit_flc(void)
  *         try:
  *             self.forget_graph()
  */
-  __pyx_t_3 = __Pyx_CyFunction_NewEx(&__pyx_mdef_3flc_7MyTkApp_75second_screen_place, 0, __pyx_n_s_MyTkApp_second_screen_place, NULL, __pyx_n_s_flc, __pyx_d, ((PyObject *)__pyx_codeobj__171)); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 650, __pyx_L1_error)
+  __pyx_t_3 = __Pyx_CyFunction_NewEx(&__pyx_mdef_3flc_7MyTkApp_75second_screen_place, 0, __pyx_n_s_MyTkApp_second_screen_place, NULL, __pyx_n_s_flc, __pyx_d, ((PyObject *)__pyx_codeobj__172)); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 650, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_3);
   if (PyObject_SetItem(__pyx_t_2, __pyx_n_s_second_screen_place, __pyx_t_3) < 0) __PYX_ERR(0, 650, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
@@ -29748,7 +29783,7 @@ PyMODINIT_FUNC PyInit_flc(void)
  *         try:
  *             self.area_covered_label.place_forget()
  */
-  __pyx_t_3 = __Pyx_CyFunction_NewEx(&__pyx_mdef_3flc_7MyTkApp_77second_screen_forget, 0, __pyx_n_s_MyTkApp_second_screen_forget, NULL, __pyx_n_s_flc, __pyx_d, ((PyObject *)__pyx_codeobj__173)); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 712, __pyx_L1_error)
+  __pyx_t_3 = __Pyx_CyFunction_NewEx(&__pyx_mdef_3flc_7MyTkApp_77second_screen_forget, 0, __pyx_n_s_MyTkApp_second_screen_forget, NULL, __pyx_n_s_flc, __pyx_d, ((PyObject *)__pyx_codeobj__174)); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 712, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_3);
   if (PyObject_SetItem(__pyx_t_2, __pyx_n_s_second_screen_forget, __pyx_t_3) < 0) __PYX_ERR(0, 712, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
@@ -29760,7 +29795,7 @@ PyMODINIT_FUNC PyInit_flc(void)
  *         try:
  *             self.new_fields['area_covered'] = self.area_covered_verify.get()
  */
-  __pyx_t_3 = __Pyx_CyFunction_NewEx(&__pyx_mdef_3flc_7MyTkApp_79main_screen, 0, __pyx_n_s_MyTkApp_main_screen, NULL, __pyx_n_s_flc, __pyx_d, ((PyObject *)__pyx_codeobj__175)); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 735, __pyx_L1_error)
+  __pyx_t_3 = __Pyx_CyFunction_NewEx(&__pyx_mdef_3flc_7MyTkApp_79main_screen, 0, __pyx_n_s_MyTkApp_main_screen, NULL, __pyx_n_s_flc, __pyx_d, ((PyObject *)__pyx_codeobj__176)); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 735, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_3);
   if (PyObject_SetItem(__pyx_t_2, __pyx_n_s_main_screen, __pyx_t_3) < 0) __PYX_ERR(0, 735, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
@@ -29772,7 +29807,7 @@ PyMODINIT_FUNC PyInit_flc(void)
  *         try:
  *             self.username_login_entry.place_forget()
  */
-  __pyx_t_3 = __Pyx_CyFunction_NewEx(&__pyx_mdef_3flc_7MyTkApp_81login_success, 0, __pyx_n_s_MyTkApp_login_success, NULL, __pyx_n_s_flc, __pyx_d, ((PyObject *)__pyx_codeobj__177)); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 761, __pyx_L1_error)
+  __pyx_t_3 = __Pyx_CyFunction_NewEx(&__pyx_mdef_3flc_7MyTkApp_81login_success, 0, __pyx_n_s_MyTkApp_login_success, NULL, __pyx_n_s_flc, __pyx_d, ((PyObject *)__pyx_codeobj__178)); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 761, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_3);
   if (PyObject_SetItem(__pyx_t_2, __pyx_n_s_login_success, __pyx_t_3) < 0) __PYX_ERR(0, 761, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
@@ -29799,7 +29834,7 @@ PyMODINIT_FUNC PyInit_flc(void)
  *     window = tk.Tk()
  *     MyTkApp(window)
  */
-  __pyx_t_4 = __Pyx_CyFunction_NewEx(&__pyx_mdef_3flc_1launchApp, 0, __pyx_n_s_launchApp, NULL, __pyx_n_s_flc, __pyx_d, ((PyObject *)__pyx_codeobj__179)); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 772, __pyx_L1_error)
+  __pyx_t_4 = __Pyx_CyFunction_NewEx(&__pyx_mdef_3flc_1launchApp, 0, __pyx_n_s_launchApp, NULL, __pyx_n_s_flc, __pyx_d, ((PyObject *)__pyx_codeobj__180)); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 772, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_4);
   if (PyDict_SetItem(__pyx_d, __pyx_n_s_launchApp, __pyx_t_4) < 0) __PYX_ERR(0, 772, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
@@ -29821,7 +29856,6 @@ PyMODINIT_FUNC PyInit_flc(void)
  * 
  * if __name__=='__main__':
  *     launchApp()             # <<<<<<<<<<<<<<
- * 
  * 
  */
     __pyx_t_1 = __Pyx_GetModuleGlobalName(__pyx_n_s_launchApp); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 778, __pyx_L1_error)
