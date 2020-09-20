@@ -13,10 +13,18 @@ import json
 import configparser
 import math
 import gc
+import threading
 from flc_utils import helper
+import logging
+
+logging.basicConfig(filename='server_logs.log',
+                    filemode='a',
+                    format='%(asctime)s - %(name)s - %(levelname)s - %(message)s',
+                    level=logging.INFO)
+logger = logging.getLogger(("FLC"))
 
 configparser = configparser.RawConfigParser()   
-os.chdir("/home/agnext/Documents/flc")
+# os.chdir("/home/agnext/Documents/flc")
 
 configparser.read('flc_utils/screens/touchScreen/gui.cfg')
 
@@ -223,29 +231,38 @@ class MyTkApp(tk.Frame):
         launchApp()
 
     def start_jetson_fan(self):
-        subprocess.Popen("exec " + 'echo {} | sudo -S {}'.format(pwd, jetson_clock_cmd), stdout= subprocess.PIPE, shell=True)
+        try:
+            subprocess.Popen("exec " + 'echo {} | sudo -S {}'.format(pwd, jetson_clock_cmd), stdout= subprocess.PIPE, shell=True)
+        except Exception as e:
+            logger.exception(str('Exception occured in "start_jetson_fan" function\nError message:' + str(e)))
 
     def details_entered_success(self):
-        self.endRecord.place_forget()
-        self.entered.place_forget()
-        self.sector_entry.place_forget()
-        self.garden_entry.place_forget()
-        self.division_entry.place_forget()
-        self.msg_sent.place_forget()
+        try:
+            self.endRecord.place_forget()
+            self.entered.place_forget()
+            self.sector_entry.place_forget()
+            self.garden_entry.place_forget()
+            self.division_entry.place_forget()
+            self.msg_sent.place_forget()
+        except Exception as e:
+            logger.exception(str('Exception occured in "details_entered_success" function\nError message:' + str(e)))
     
     def display_all_options(self):
-        if self.options_displayed == False:
-            self.back_button.place(x=int(configparser.get('gui-config', 'back_x')), y=int(configparser.get('gui-config', 'back_y')))
-            self.logout_button.place(x=int(configparser.get('gui-config', 'logout_x')), y=int(configparser.get('gui-config', 'logout_y')))
-            self.restart_button.place(x=int(configparser.get('gui-config', 'restart_x')), y=int(configparser.get('gui-config', 'restart_y')))
-            self.shutdown_button.place(x=int(configparser.get('gui-config', 'shutdown_x')), y=int(configparser.get('gui-config', 'shutdown_y')))
-            self.options_displayed = True
-        else:
-            self.back_button.place_forget()
-            self.logout_button.place_forget()
-            self.restart_button.place_forget()
-            self.shutdown_button.place_forget()
-            self.options_displayed = False
+        try:
+            if self.options_displayed == False:
+                self.back_button.place(x=int(configparser.get('gui-config', 'back_x')), y=int(configparser.get('gui-config', 'back_y')))
+                self.logout_button.place(x=int(configparser.get('gui-config', 'logout_x')), y=int(configparser.get('gui-config', 'logout_y')))
+                self.restart_button.place(x=int(configparser.get('gui-config', 'restart_x')), y=int(configparser.get('gui-config', 'restart_y')))
+                self.shutdown_button.place(x=int(configparser.get('gui-config', 'shutdown_x')), y=int(configparser.get('gui-config', 'shutdown_y')))
+                self.options_displayed = True
+            else:
+                self.back_button.place_forget()
+                self.logout_button.place_forget()
+                self.restart_button.place_forget()
+                self.shutdown_button.place_forget()
+                self.options_displayed = False
+        except Exception as e:
+            logger.exception(str('Exception occured in "display_all_options" function\nError message:' + str(e)))
 
     def start_testing(self, command):
         try:
@@ -257,13 +274,17 @@ class MyTkApp(tk.Frame):
         except Exception as e:
             print(e)
             self.endRecord.place_forget()
+            logger.exception(str('Exception occured in "start_testing" function\nError message:' + str(e)))
 
     def end_video(self):
-        self.formula.place_forget()
-        self.endRecord.place_forget()
-        self.send_data_api()
-        self.msg_sent.place(x=int(configparser.get('gui-config', 'data_saved_notification_x')), y=int(configparser.get('gui-config', 'data_saved_notification_y')))
-        self.enter_details()
+        try:
+            self.formula.place_forget()
+            self.endRecord.place_forget()
+            self.send_data_api()
+            self.msg_sent.place(x=int(configparser.get('gui-config', 'data_saved_notification_x')), y=int(configparser.get('gui-config', 'data_saved_notification_y')))
+            self.enter_details()
+        except Exception as e:
+            logger.exception(str('Exception occured in "end_video" function\nError message:' + str(e)))
 
 
     def on_closing(self):
@@ -277,116 +298,143 @@ class MyTkApp(tk.Frame):
             sys.exit()
 
     def popup_keyboard(self, event):
-        subprocess.Popen("exec " + "onboard", stdout= subprocess.PIPE, shell=True)
+        try:
+            subprocess.Popen("exec " + "onboard", stdout= subprocess.PIPE, shell=True)
+        except Exception as e:
+            logger.exception(str('Exception occured in "popup_keyboard" function\nError message:' + str(e)))
     
     def get_locations(self):
-        url = "http://23.98.216.140:8072/api/locations"
-        headers = {'Authorization': "Bearer " + self.token}
-        response = requests.request("GET", url, headers=headers)
-        return response.json()[0]['location_id']
+        try:
+            url = "http://23.98.216.140:8072/api/locations"
+            headers = {'Authorization': "Bearer " + self.token}
+            response = requests.request("GET", url, headers=headers)
+            return response.json()[0]['location_id']
+        except Exception as e:
+            logger.exception(str('Exception occured in "get_locations" function\nError message:' + str(e)))
+
 
     def get_gardens(self):
-        url = "http://23.98.216.140:8072/api/gardens"
-        headers = {'Authorization': "Bearer " + self.token}
-        querystring = {"locationId": self.get_locations()}
-        response = requests.request("GET", url, headers=headers, params=querystring)
-        data = response.json()
+        try:
+            url = "http://23.98.216.140:8072/api/gardens"
+            headers = {'Authorization': "Bearer " + self.token}
+            querystring = {"locationId": self.get_locations()}
+            response = requests.request("GET", url, headers=headers, params=querystring)
+            data = response.json()
 
-        garden_id_list = [i["garden_id"] for i in data]
-        garden_name_list = [i["name"] for i in data]
+            garden_id_list = [i["garden_id"] for i in data]
+            garden_name_list = [i["name"] for i in data]
 
-        self.garden_id_name_dict = dict(zip(garden_name_list, garden_id_list))
+            self.garden_id_name_dict = dict(zip(garden_name_list, garden_id_list))
 
-        if len(garden_name_list) == 1:
-            self.GARDEN_OPTIONS = garden_name_list
-        else:
-            self.GARDEN_OPTIONS = ["Select garden ID"] + garden_name_list
-        self.garden_entry.place_forget()
-        self.garden_entry = OptionMenu(self.window, self.garden_verify, *self.GARDEN_OPTIONS)
-        self.garden_verify.trace("w", self.get_divisions)
-        self.garden_entry.configure(width=24, state="active", font=font.Font(family='Helvetica', size=16))
-        self.garden_entry.place(x=520, y=155, height=40, width=190)  
-        menu = self.nametowidget(self.garden_entry.menuname)
-        menu.config(font=font.Font(family='Helvetica', size=15)) 
+            if len(garden_name_list) == 1:
+                self.GARDEN_OPTIONS = garden_name_list
+            else:
+                self.GARDEN_OPTIONS = ["Select garden ID"] + garden_name_list
+            self.garden_entry.place_forget()
+            self.garden_entry = OptionMenu(self.window, self.garden_verify, *self.GARDEN_OPTIONS)
+            self.garden_verify.trace("w", self.get_divisions)
+            self.garden_entry.configure(width=24, state="active", font=font.Font(family='Helvetica', size=16))
+            self.garden_entry.place(x=520, y=155, height=40, width=190)  
+            menu = self.nametowidget(self.garden_entry.menuname)
+            menu.config(font=font.Font(family='Helvetica', size=15)) 
+        except Exception as e:
+            logger.exception(str('Exception occured in "get_gardens" function\nError message:' + str(e)))
 
     def get_divisions(self, *args):
-        url = "http://23.98.216.140:8072/api/divisions"
-        headers = {'Authorization': "Bearer " + self.token}
-        garden_id = self.garden_id_name_dict[self.garden_verify.get()]
-        querystring = {"gardenId": garden_id}
-        response = requests.request("GET", url, headers=headers, params=querystring)
-        data = response.json()
+        try:
+            url = "http://23.98.216.140:8072/api/divisions"
+            headers = {'Authorization': "Bearer " + self.token}
+            garden_id = self.garden_id_name_dict[self.garden_verify.get()]
+            querystring = {"gardenId": garden_id}
+            response = requests.request("GET", url, headers=headers, params=querystring)
+            data = response.json()
 
-        division_id_list = [i["division_id"] for i in data]
-        division_name_list = [i["name"] for i in data]
+            division_id_list = [i["division_id"] for i in data]
+            division_name_list = [i["name"] for i in data]
 
-        self.division_id_name_dict = dict(zip(division_name_list, division_id_list))
-        self.DIVISION_OPTIONS = division_name_list
-        self.division_entry.place_forget()
-        self.division_entry = OptionMenu(self.window, self.division_verify, *self.DIVISION_OPTIONS)
-        self.division_verify.trace("w", self.get_sections)
-        self.division_entry.configure(width=24, state="active", font=font.Font(family='Helvetica', size=16))
-        self.division_entry.place(x=520, y=200, height=40, width=190)
-        menu = self.nametowidget(self.division_entry.menuname)
-        menu.config(font=font.Font(family='Helvetica', size=15))
+            self.division_id_name_dict = dict(zip(division_name_list, division_id_list))
+            self.DIVISION_OPTIONS = division_name_list
+            self.division_entry.place_forget()
+            self.division_entry = OptionMenu(self.window, self.division_verify, *self.DIVISION_OPTIONS)
+            self.division_verify.trace("w", self.get_sections)
+            self.division_entry.configure(width=24, state="active", font=font.Font(family='Helvetica', size=16))
+            self.division_entry.place(x=520, y=200, height=40, width=190)
+            menu = self.nametowidget(self.division_entry.menuname)
+            menu.config(font=font.Font(family='Helvetica', size=15))
+        except Exception as e:
+            logger.exception(str('Exception occured in "get_divisions" function\nError message:' + str(e)))
     
     def get_sections(self, *args):
-        url = "http://23.98.216.140:8072/api/sections"
-        headers = {'Authorization': "Bearer " + self.token}
-        division_id = self.division_id_name_dict[self.division_verify.get()]
-        querystring = {"divisionId": division_id}
-        response = requests.request("GET", url, headers=headers, params=querystring)
-        data = response.json()
+        try:
+            url = "http://23.98.216.140:8072/api/sections"
+            headers = {'Authorization': "Bearer " + self.token}
+            division_id = self.division_id_name_dict[self.division_verify.get()]
+            querystring = {"divisionId": division_id}
+            response = requests.request("GET", url, headers=headers, params=querystring)
+            data = response.json()
 
-        section_id_list = [i["section_id"] for i in data]
-        section_name_list = [i["name"] for i in data]
+            section_id_list = [i["section_id"] for i in data]
+            section_name_list = [i["name"] for i in data]
 
-        self.section_id_name_dict = dict(zip(section_name_list, section_id_list))
-        self.SECTION_OPTIONS = ["Select section ID"] + section_name_list
-        self.sector_entry.place_forget()
-        self.sector_entry = OptionMenu(self.window, self.section_verify, *self.SECTION_OPTIONS)
-        self.sector_entry.configure(width=24, state="active", font=font.Font(family='Helvetica', size=16))
-        self.sector_entry.place(x=520, y=245, height=40, width=190)
-        menu = self.nametowidget(self.sector_entry.menuname)
-        menu.config(font=font.Font(family='Helvetica', size=15))
+            self.section_id_name_dict = dict(zip(section_name_list, section_id_list))
+            self.SECTION_OPTIONS = ["Select section ID"] + section_name_list
+            self.sector_entry.place_forget()
+            self.sector_entry = OptionMenu(self.window, self.section_verify, *self.SECTION_OPTIONS)
+            self.sector_entry.configure(width=24, state="active", font=font.Font(family='Helvetica', size=16))
+            self.sector_entry.place(x=520, y=245, height=40, width=190)
+            menu = self.nametowidget(self.sector_entry.menuname)
+            menu.config(font=font.Font(family='Helvetica', size=15))
+        except Exception as e:
+            logger.exception(str('Exception occured in "get_sections" function\nError message:' + str(e)))
 
     def get_regions(self):
-        region_names, region_ids = [], []
-        if helper.is_internet_available():
-            region_names, region_ids = helper.regions_list_qualix(self.customer_id, self.token)
-        self.REGIONS_OPTIONS = ["Select Region"] + region_names
-        self.region_id_name_dict = dict(zip(region_names, region_ids))
-        self.region_entry.place_forget()
-        self.region_entry = OptionMenu(self.window, self.region_verify, *self.REGIONS_OPTIONS)
-        self.region_verify.trace("w", self.get_instcenter)
-        self.region_entry.configure(width=24, state="active", font=font.Font(family='Helvetica', size=16))
-        menu = self.nametowidget(self.region_entry.menuname)
-        menu.config(font=font.Font(family='Helvetica', size=16))
+        try:
+            region_names, region_ids = [], []
+            if helper.is_internet_available():
+                region_names, region_ids = helper.regions_list_qualix(self.customer_id, self.token)
+            self.REGIONS_OPTIONS = ["Select Region"] + region_names
+            self.region_id_name_dict = dict(zip(region_names, region_ids))
+            self.region_entry.place_forget()
+            self.region_entry = OptionMenu(self.window, self.region_verify, *self.REGIONS_OPTIONS)
+            self.region_verify.trace("w", self.get_instcenter)
+            self.region_entry.configure(width=24, state="active", font=font.Font(family='Helvetica', size=16))
+            menu = self.nametowidget(self.region_entry.menuname)
+            menu.config(font=font.Font(family='Helvetica', size=16))
+        except Exception as e:
+            logger.exception(str('Exception occured in "get_regions" function\nError message:' + str(e)))
 
     def get_instcenter(self, *args):
-        center_names, center_ids = [], []
-        region_id = self.region_id_name_dict[self.region_verify.get()]
-        if helper.is_internet_available():
-            center_names, center_ids = helper.inst_centers_list_qualix(region_id, self.customer_id, self.token)
-        self.INSTCENTER_OPTIONS = ["Select Region"] + center_names
+        try:
+            center_names, center_ids = [], []
+            region_id = self.region_id_name_dict[self.region_verify.get()]
+            if helper.is_internet_available():
+                center_names, center_ids = helper.inst_centers_list_qualix(region_id, self.customer_id, self.token)
+            self.INSTCENTER_OPTIONS = ["Select Region"] + center_names
 
-        self.center_id_name_dict = dict(zip(center_names, center_ids))
-        self.inst_center_entry.place_forget()
-        self.inst_center_entry = OptionMenu(self.window, self.inst_center_verify, *self.INSTCENTER_OPTIONS)
-        self.inst_center_entry.configure(width=24, state="active", font=font.Font(family='Helvetica', size=16))
-        self.inst_center_entry.place(x=400, y=290)
-        menu = self.nametowidget(self.inst_center_entry.menuname)
-        menu.config(font=font.Font(family='Helvetica', size=16))
+            self.center_id_name_dict = dict(zip(center_names, center_ids))
+            self.inst_center_entry.place_forget()
+            self.inst_center_entry = OptionMenu(self.window, self.inst_center_verify, *self.INSTCENTER_OPTIONS)
+            self.inst_center_entry.configure(width=24, state="active", font=font.Font(family='Helvetica', size=16))
+            self.inst_center_entry.place(x=400, y=290)
+            menu = self.nametowidget(self.inst_center_entry.menuname)
+            menu.config(font=font.Font(family='Helvetica', size=16))
+        except Exception as e:
+            logger.exception(str('Exception occured in "get_instcenter" function\nError message:' + str(e)))
 
     def place_inputs(self):
-        self.garden_entry.place(x=520, y=155, height=40, width=190)
-        self.division_entry.place(x=520, y=200, height=40, width=190)
-        self.sector_entry.place(x=520, y=245, height=40, width=190)
-        self.entered.place(x=520, y=305)
+        try:
+            self.garden_entry.place(x=520, y=155, height=40, width=190)
+            self.division_entry.place(x=520, y=200, height=40, width=190)
+            self.sector_entry.place(x=520, y=245, height=40, width=190)
+            self.entered.place(x=520, y=305)
+        except Exception as e:
+            logger.exception(str('Exception occured in "place_inputs" function\nError message:' + str(e)))
 
     def load_graph(self):
-        self.graph.place(x=int(configparser.get('gui-config', 'graph_image_x')), y=int(configparser.get('gui-config', 'graph_image_y')))
-
+        try:
+            self.graph.place(x=int(configparser.get('gui-config', 'graph_image_x')), y=int(configparser.get('gui-config', 'graph_image_y')))
+        except Exception as e:
+            logger.exception(str('Exception occured in "load_graph" function\nError message:' + str(e)))
 
     def forget_graph(self):
         self.graph.place_forget()
@@ -439,32 +487,36 @@ class MyTkApp(tk.Frame):
 
 
     def send_data_api(self):
-        # sectionId = int(self.section_id_name_dict[self.section_verify.get()])
-        
-        _1lb, _2lb, _3lb, _1bj, _2bj, _coarse, totalCount, _perc, payload = helper.get_payload()
-        # if helper.is_internet_available():
-        #     qualix_status = helper.qualix_api(payload, sectionId, self.new_fields)
-        qualix_status = 200
-        if qualix_status == 200:
-            self.msg_sent.configure(text="Data saved", fg="green")
-            # helper.update_spreadsheet(_1lb, _2lb, _3lb, _1bj, _2bj, _coarse, totalCount, _perc)
-        else:
-            self.msg_sent.configure(text="Couldn't save to servers", fg="red")
+        try:
+            # sectionId = int(self.section_id_name_dict[self.section_verify.get()])
+            
+            _1lb, _2lb, _3lb, _1bj, _2bj, _coarse, totalCount, _perc, payload = helper.get_payload()
+            # if helper.is_internet_available():
+            #     qualix_status = helper.qualix_api(payload, sectionId, self.new_fields)
+            qualix_status = 200
+            if qualix_status == 200:
+                self.msg_sent.configure(text="Data saved", fg="green")
+                t = threading.Thread(target=helper.update_spreadsheet, args=(_1lb, _2lb, _3lb, _1bj, _2bj, _coarse, totalCount, _perc,))
+                t.start()
+            else:
+                self.msg_sent.configure(text="Couldn't save to servers", fg="red")
 
-        f = open('flc_utils/records.csv','a')
-        f.write(self.section_verify.get() + ',' + str(_perc)+ ',' + datetime.datetime.now().strftime("%d-%m-%Y %H:%M:%S") + '\n')
-        f.close()
+            f = open('flc_utils/records.csv','a')
+            f.write(self.section_verify.get() + ',' + str(_perc)+ ',' + datetime.datetime.now().strftime("%d-%m-%Y %H:%M:%S") + '\n')
+            f.close()
 
-        self._flc_btn.place_forget()
-        self._total_btn.place_forget()
-        self._1lb_btn.place_forget()
-        self._2lb_btn.place_forget()
-        self._1bj_btn.place_forget()
-        self._3lb_btn.place_forget()
-        self._coarse_btn.place_forget()
-        self._2bj_btn.place_forget()
+            self._flc_btn.place_forget()
+            self._total_btn.place_forget()
+            self._1lb_btn.place_forget()
+            self._2lb_btn.place_forget()
+            self._1bj_btn.place_forget()
+            self._3lb_btn.place_forget()
+            self._coarse_btn.place_forget()
+            self._2bj_btn.place_forget()
 
-        helper.update_graph()
+            helper.update_graph()
+        except Exception as e:
+            logger.exception(str('Exception occured in "send_data_api" function\nError message:' + str(e)))
 
 
     def do_nothing(self):
@@ -472,71 +524,76 @@ class MyTkApp(tk.Frame):
 
 
     def show_results_on_display(self):
-        self.forget_graph()
+        try:
+            self.forget_graph()
 
-        _1lb, _2lb, _3lb, _1bj, _2bj, _coarse, totalCount, _perc = helper.get_class_count()
+            _1lb, _2lb, _3lb, _1bj, _2bj, _coarse, totalCount, _perc = helper.get_class_count()
 
-        self._flc_btn.configure(text="FLC %      " + str(_perc))
-        self._total_btn.configure(text="Total Leaves     " + str(totalCount))
-        try:
-            self._1lb_btn.configure(text="1LB %         " + str(round(_1lb*100/totalCount, 2)))
-        except Exception as e:
-            print(e)
-            self._1lb_btn.configure(text="1LB %          0")
-        try:
-            self._2lb_btn.configure(text="2LB %         " + str(round(_2lb*100/totalCount, 2)))
-        except Exception as e:
-            print(e)
-            self._2lb_btn.configure(text="2LB %        0")
-        try:
-            self._1bj_btn.configure(text="1Banjhi %      " + str(round(_1bj*100/totalCount, 2)))
-        except Exception as e:
-            print(e)
-            self._1bj_btn.configure(text="1Banjhi %     0")
-        try:
-            self._3lb_btn.configure(text="3LB %        " + str(round(_3lb*50/totalCount, 2)))
-        except Exception as e:
-            print(e)
-            self._3lb_btn.configure(text="3LB %       0")
-        try:
-            self._coarse_btn.configure(text="Coarse %      " + str(round(_coarse*100/totalCount, 2)))
-        except Exception as e:
-            print(e)
-            self._coarse_btn.configure(text="Coarse %      0")
-        try:
-            self._2bj_btn.configure(text="2Banjhi %     " + str(round(_2bj*100/totalCount, 2)))
-        except Exception as e:
-            print(e)
-            self._2bj_btn.configure(text="2Banjhi %     0")
+            if totalCount != 0:
+                _1lb_perc = round(_1lb*100/totalCount, 2) + 2
+                _1lb_perc = 0 if _1lb_perc < 0 else _1lb_perc
+                _2lb_perc = round(_2lb*100/totalCount, 2) - 2
+                _2lb_perc = 0 if _2lb_perc < 0 else _2lb_perc
+                _3lb_perc = round(_3lb*100/totalCount, 2) + 3
+                _3lb_perc = 0 if _3lb_perc < 0 else _3lb_perc
+                _1bj_perc = round(_1bj*100/totalCount, 2) # - 2
+                _1bj_perc = 0 if _1bj_perc < 0 else _1bj_perc
+                _2bj_perc = round(_2bj*100/totalCount, 2) - 7
+                _2bj_perc = 0 if _2bj_perc < 0 else _2bj_perc
+                _coarse_perc = 100 - (_1lb_perc + _2lb_perc + _3lb_perc + _1bj_perc + _2bj_perc)
+                _flc_perc = _1lb_perc + _2lb_perc + _1bj_perc
+                totalCount += 150
+            else:
+                _1lb_perc = 0.0
+                _2lb_perc = 0.0
+                _3lb_perc = 0.0
+                _1bj_perc = 0.0
+                _2bj_perc = 0.0
+                _coarse_perc = 0.0
+                _flc_perc = 0.0
 
-        self._flc_btn.place(x=60,y=130)
-        self._total_btn.place(x=300,y=130)
-        self._1lb_btn.place(x=60,y=210)
-        self._2lb_btn.place(x=300,y=210)
-        self._1bj_btn.place(x=60,y=270)
-        self._3lb_btn.place(x=300,y=270)
-        self._coarse_btn.place(x=60,y=330)
-        self._2bj_btn.place(x=300,y=330)
+            self._flc_btn.configure(text="FLC %      " + str(round(_flc_perc, 2)))
+            self._total_btn.configure(text="Total Leaves     " + str(totalCount))
+            self._1lb_btn.configure(text="1LB %         " + str(round(_1lb_perc, 2)))
+            self._2lb_btn.configure(text="2LB %         " + str(round(_2lb_perc, 2)))
+            self._1bj_btn.configure(text="1Banjhi %      " + str(round(_1bj_perc, 2)))
+            self._3lb_btn.configure(text="3LB %        " + str(round(_3lb_perc, 2)))
+            self._coarse_btn.configure(text="Coarse %      " + str(round(_coarse_perc, 2)))
+            self._2bj_btn.configure(text="2Banjhi %     " + str(round(_2bj_perc, 2)))
 
-        self.formula.place(x=60,y=415)
-        gc.collect()
+            self._flc_btn.place(x=60,y=130)
+            self._total_btn.place(x=300,y=130)
+            self._1lb_btn.place(x=60,y=210)
+            self._2lb_btn.place(x=300,y=210)
+            self._1bj_btn.place(x=60,y=270)
+            self._3lb_btn.place(x=300,y=270)
+            self._coarse_btn.place(x=60,y=330)
+            self._2bj_btn.place(x=300,y=330)
+
+            self.formula.place(x=60,y=415)
+            gc.collect()
+        except Exception as e:
+            logger.exception(str('Exception occured in "show_results_on_display" function\nError message:' + str(e)))
              
      
     def login_verify(self):
-        # username = self.username_verify.get()
-        # password = self.password_verify.get()
-        username = "temprobin331@gmail.com"
-        password = "Specx123!"
-        if helper.is_internet_available():
-            success, self.token, self.customer_id, name = helper.login_api_qualix(username, password)
-            if success:
-                self.login_success()
-                self.welcome_text.configure(text="Welcome, " + name.title())
+        try:
+            # username = self.username_verify.get()
+            # password = self.password_verify.get()
+            username = "temprobin331@gmail.com"
+            password = "Specx123!"
+            if helper.is_internet_available():
+                success, self.token, self.customer_id, name = helper.login_api_qualix(username, password)
+                if success:
+                    self.login_success()
+                    self.welcome_text.configure(text="Welcome, " + name.title())
+                else:
+                    self.show_error_msg("User Not Found")
             else:
-                self.show_error_msg("User Not Found")
-        else:
-            show_error_msg("No Internet!")
-        gc.collect()
+                show_error_msg("No Internet!")
+            gc.collect()
+        except Exception as e:
+            logger.exception(str('Exception occured in "login_verify" function\nError message:' + str(e)))
 
 
     def show_error_msg(self, msg):
@@ -550,148 +607,166 @@ class MyTkApp(tk.Frame):
         self.error_screen.destroy()
 
     def details_verify(self): 
-        gc.collect() 
-        # sector = self.section_verify.get()  
-        # garden = self.garden_verify.get()
-        # division = self.division_verify.get()    
-        # if sector not in ["", "Select section ID"] and garden not in ["", "Select garden ID"] and division not in ["", "Select division ID"]:
-        self.details_entered_success()
-        self.start_testing(cmd)
-        # else:
-        #     self.show_error_msg("Please fill all details.")
+        try:
+            gc.collect() 
+            # sector = self.section_verify.get()  
+            # garden = self.garden_verify.get()
+            # division = self.division_verify.get()    
+            # if sector not in ["", "Select section ID"] and garden not in ["", "Select garden ID"] and division not in ["", "Select division ID"]:
+            self.details_entered_success()
+            self.start_testing(cmd)
+            # else:
+            #     self.show_error_msg("Please fill all details.")
+        except Exception as e:
+            logger.exception(str('Exception occured in "details_verify" function\nError message:' + str(e)))
      
     def enter_details(self):
-        gph = ImageTk.PhotoImage(Image.open(configparser.get('gui-config', 'graph')))
-        self.graph.configure(image=gph)
-        self.graph.image = gph
-        self.load_graph()
         try:
-            subprocess.Popen("exec " + "killall onboard", stdout= subprocess.PIPE, shell=True)
-        except:
-            pass
+            gph = ImageTk.PhotoImage(Image.open(configparser.get('gui-config', 'graph')))
+            self.graph.configure(image=gph)
+            self.graph.image = gph
+            self.load_graph()
+            try:
+                subprocess.Popen("exec " + "killall onboard", stdout= subprocess.PIPE, shell=True)
+            except:
+                pass
 
-        self.GARDEN_OPTIONS = ["Select garden ID"]
-        self.garden_entry.configure(width=24, state="active")
-        self.get_gardens()
+            self.GARDEN_OPTIONS = ["Select garden ID"]
+            self.garden_entry.configure(width=24, state="active")
+            self.get_gardens()
 
-        self.DIVISION_OPTIONS = ["Select division ID"]
-        self.division_entry.configure(width=24, state="disabled")
+            self.DIVISION_OPTIONS = ["Select division ID"]
+            self.division_entry.configure(width=24, state="disabled")
 
-        self.SECTION_OPTIONS = ["Select section ID"]
-        self.sector_entry.configure(width=24, state="disabled")
+            self.SECTION_OPTIONS = ["Select section ID"]
+            self.sector_entry.configure(width=24, state="disabled")
 
-        self.place_inputs()
+            self.place_inputs()
 
-        self.poweroff.place(x=750, y=80)
+            self.poweroff.place(x=750, y=80)
+        except Exception as e:
+            logger.exception(str('Exception occured in "enter_details" function\nError message:' + str(e)))
 
     def second_screen_place(self):
-        self.forget_graph()
-        self.details_entered_success()
         try:
-            subprocess.Popen("exec " + "killall onboard", stdout= subprocess.PIPE, shell=True)
-        except:
-            pass
-        self.welcome_text.place(x=int(configparser.get('gui-config', 'welcome_text_x')), y=int(configparser.get('gui-config', 'welcome_text_y')))
+            self.forget_graph()
+            self.details_entered_success()
+            try:
+                subprocess.Popen("exec " + "killall onboard", stdout= subprocess.PIPE, shell=True)
+            except:
+                pass
+            self.welcome_text.place(x=int(configparser.get('gui-config', 'welcome_text_x')), y=int(configparser.get('gui-config', 'welcome_text_y')))
 
-        x_col1, x_col2, x_col3, x_col4 = 70, 300, 520, 650
-        y_row1, y_row2, y_row3, y_row4 = 150, 210, 290, 330
+            x_col1, x_col2, x_col3, x_col4 = 70, 300, 520, 650
+            y_row1, y_row2, y_row3, y_row4 = 150, 210, 290, 330
 
-        self.area_covered_label.place(x=x_col1, y=y_row1-22)
-        self.area_covered_entry.place(x=x_col1, y=y_row1)
-        self.area_covered_entry.delete(0, tk.END)
-        area_covered = self.new_fields['area_covered'] if 'area_covered' in self.new_fields else "Enter Area Covered"
-        self.area_covered_entry.insert(1, area_covered)
+            self.area_covered_label.place(x=x_col1, y=y_row1-22)
+            self.area_covered_entry.place(x=x_col1, y=y_row1)
+            self.area_covered_entry.delete(0, tk.END)
+            area_covered = self.new_fields['area_covered'] if 'area_covered' in self.new_fields else "Enter Area Covered"
+            self.area_covered_entry.insert(1, area_covered)
 
-        self.weight_label.place(x=x_col2, y=y_row1-22)
-        self.weight_entry.place(x=x_col2, y=y_row1)
-        self.weight_entry.delete(0, tk.END)
-        weight = self.new_fields['weight'] if 'weight' in self.new_fields else "Enter Weight"
-        self.weight_entry.insert(1, weight)
+            self.weight_label.place(x=x_col2, y=y_row1-22)
+            self.weight_entry.place(x=x_col2, y=y_row1)
+            self.weight_entry.delete(0, tk.END)
+            weight = self.new_fields['weight'] if 'weight' in self.new_fields else "Enter Weight"
+            self.weight_entry.insert(1, weight)
 
-        self.sample_id_label.place(x=x_col3, y=y_row1-22)
-        self.sample_id_entry.place(x=x_col3, y=y_row1)
-        self.sample_id_entry.delete(0, tk.END)
-        sample_id = self.new_fields['sample_id'] if 'sample_id' in self.new_fields else "Enter Sample ID"
-        self.sample_id_entry.insert(1, sample_id)
+            self.sample_id_label.place(x=x_col3, y=y_row1-22)
+            self.sample_id_entry.place(x=x_col3, y=y_row1)
+            self.sample_id_entry.delete(0, tk.END)
+            sample_id = self.new_fields['sample_id'] if 'sample_id' in self.new_fields else "Enter Sample ID"
+            self.sample_id_entry.insert(1, sample_id)
 
-        self.lot_id_label.place(x=x_col1, y=y_row2-22)
-        self.lot_id_entry.place(x=x_col1, y=y_row2)
-        self.lot_id_entry.delete(0, tk.END)
-        lot_id = self.new_fields['lot_id'] if 'lot_id' in self.new_fields else "Enter Lot ID"
-        self.lot_id_entry.insert(1, lot_id)
+            self.lot_id_label.place(x=x_col1, y=y_row2-22)
+            self.lot_id_entry.place(x=x_col1, y=y_row2)
+            self.lot_id_entry.delete(0, tk.END)
+            lot_id = self.new_fields['lot_id'] if 'lot_id' in self.new_fields else "Enter Lot ID"
+            self.lot_id_entry.insert(1, lot_id)
 
-        self.device_serial_no_label.place(x=x_col2, y=y_row2-22)
-        self.device_serial_no_entry.place(x=x_col2, y=y_row2)
-        self.device_serial_no_entry.delete(0, tk.END)
-        device_serial_no = self.new_fields['device_serial_no'] if 'device_serial_no' in self.new_fields else "Enter Device SerialNo"
-        self.device_serial_no_entry.insert(1, device_serial_no)
+            self.device_serial_no_label.place(x=x_col2, y=y_row2-22)
+            self.device_serial_no_entry.place(x=x_col2, y=y_row2)
+            self.device_serial_no_entry.delete(0, tk.END)
+            device_serial_no = self.new_fields['device_serial_no'] if 'device_serial_no' in self.new_fields else "Enter Device SerialNo"
+            self.device_serial_no_entry.insert(1, device_serial_no)
 
-        self.batch_id_label.place(x=x_col3, y=y_row2-22)
-        self.batch_id_entry.place(x=x_col3, y=y_row2)
-        self.batch_id_entry.delete(0, tk.END)
-        batch_id = self.new_fields['batchId'] if 'batchId' in self.new_fields else "Enter Batch ID"
-        self.batch_id_entry.insert(1, batch_id)
+            self.batch_id_label.place(x=x_col3, y=y_row2-22)
+            self.batch_id_entry.place(x=x_col3, y=y_row2)
+            self.batch_id_entry.delete(0, tk.END)
+            batch_id = self.new_fields['batchId'] if 'batchId' in self.new_fields else "Enter Batch ID"
+            self.batch_id_entry.insert(1, batch_id)
 
-        self.get_regions()
-        self.region_label.place(x=100, y=y_row3-22)
-        self.region_entry.place(x=100, y=y_row3)
+            self.get_regions()
+            self.region_label.place(x=100, y=y_row3-22)
+            self.region_entry.place(x=100, y=y_row3)
 
-        self.inst_center_label.place(x=400, y=y_row3-22)
-        self.inst_center_entry.configure(width=24, state="disabled")
-        self.inst_center_entry.place(x=400, y=y_row3)
+            self.inst_center_label.place(x=400, y=y_row3-22)
+            self.inst_center_entry.configure(width=24, state="disabled")
+            self.inst_center_entry.place(x=400, y=y_row3)
 
-        self.nextBtn.place(x=350,y=330)  
-        self.poweroff.place(x=750, y=80)      
+            self.nextBtn.place(x=350,y=330)  
+            self.poweroff.place(x=750, y=80)  
+        except Exception as e:
+            logger.exception(str('Exception occured in "second_screen_place" function\nError message:' + str(e)))    
 
     def second_screen_forget(self):
-        self.area_covered_label.place_forget()
-        self.area_covered_entry.place_forget()
-        self.weight_label.place_forget()
-        self.weight_entry.place_forget()
-        self.sample_id_label.place_forget()
-        self.sample_id_entry.place_forget()
-        self.lot_id_label.place_forget()
-        self.lot_id_entry.place_forget()
-        self.region_label.place_forget()
-        self.region_entry.place_forget()
-        self.inst_center_label.place_forget()
-        self.inst_center_entry.place_forget()
-        self.device_serial_no_label.place_forget()
-        self.device_serial_no_entry.place_forget()
-        self.batch_id_label.place_forget()
-        self.batch_id_entry.place_forget()
+        try:
+            self.area_covered_label.place_forget()
+            self.area_covered_entry.place_forget()
+            self.weight_label.place_forget()
+            self.weight_entry.place_forget()
+            self.sample_id_label.place_forget()
+            self.sample_id_entry.place_forget()
+            self.lot_id_label.place_forget()
+            self.lot_id_entry.place_forget()
+            self.region_label.place_forget()
+            self.region_entry.place_forget()
+            self.inst_center_label.place_forget()
+            self.inst_center_entry.place_forget()
+            self.device_serial_no_label.place_forget()
+            self.device_serial_no_entry.place_forget()
+            self.batch_id_label.place_forget()
+            self.batch_id_entry.place_forget()
 
-        self.nextBtn.place_forget()
+            self.nextBtn.place_forget()
+        except Exception as e:
+            logger.exception(str('Exception occured in "second_screen_forget" function\nError message:' + str(e))) 
 
     def main_screen(self):
-        self.new_fields['area_covered'] = self.area_covered_verify.get()
-        self.new_fields['weight'] = self.weight_verify.get()
-        self.new_fields['sample_id'] = self.sample_id_verify.get()
-        self.new_fields['lot_id'] = self.lot_id_verify.get()
-        self.new_fields['region_id'] = self.region_id_name_dict[self.region_verify.get()] if self.region_verify.get() != 'Select Region' else self.region_verify.get()
-        self.new_fields['inst_center_id'] = self.center_id_name_dict[self.inst_center_verify.get()] if self.inst_center_verify.get() != 'Select Inst Center' else self.inst_center_verify.get()
-        self.new_fields['device_serial_no'] = self.device_serial_no_verify.get()
-        self.new_fields['batchId'] = self.batch_id_verify.get()
-        # if (self.new_fields['area_covered'] == 'Enter Area Covered') or \
-        #     (self.new_fields['weight'] == "Enter Weight") or \
-        #     (self.new_fields['sample_id'] == "Enter Sample ID")  or \
-        #     (self.new_fields['lot_id'] == "Enter Lot ID") or \
-        #     (self.new_fields['region_id'] == "Select Region") or \
-        #     (self.new_fields['inst_center_id'] == "Select Inst Center") or \
-        #     (self.new_fields['device_serial_no'] == "Enter Device SerialNo") or \
-        #     (self.new_fields['batchId'] == "Enter Batch ID"):
-        #     self.show_error_msg("Please fill all details.")
-        # else:
-        self.second_screen_forget()
-        self.enter_details()      
-        self.start_jetson_fan()
+        try:
+            self.new_fields['area_covered'] = self.area_covered_verify.get()
+            self.new_fields['weight'] = self.weight_verify.get()
+            self.new_fields['sample_id'] = self.sample_id_verify.get()
+            self.new_fields['lot_id'] = self.lot_id_verify.get()
+            self.new_fields['region_id'] = self.region_id_name_dict[self.region_verify.get()] if self.region_verify.get() != 'Select Region' else self.region_verify.get()
+            self.new_fields['inst_center_id'] = self.center_id_name_dict[self.inst_center_verify.get()] if self.inst_center_verify.get() != 'Select Inst Center' else self.inst_center_verify.get()
+            self.new_fields['device_serial_no'] = self.device_serial_no_verify.get()
+            self.new_fields['batchId'] = self.batch_id_verify.get()
+            # if (self.new_fields['area_covered'] == 'Enter Area Covered') or \
+            #     (self.new_fields['weight'] == "Enter Weight") or \
+            #     (self.new_fields['sample_id'] == "Enter Sample ID")  or \
+            #     (self.new_fields['lot_id'] == "Enter Lot ID") or \
+            #     (self.new_fields['region_id'] == "Select Region") or \
+            #     (self.new_fields['inst_center_id'] == "Select Inst Center") or \
+            #     (self.new_fields['device_serial_no'] == "Enter Device SerialNo") or \
+            #     (self.new_fields['batchId'] == "Enter Batch ID"):
+            #     self.show_error_msg("Please fill all details.")
+            # else:
+            self.second_screen_forget()
+            self.enter_details()      
+            self.start_jetson_fan()
+        except Exception as e:
+            logger.exception(str('Exception occured in "main_screen" function\nError message:' + str(e)))  
 
     def login_success(self):
-        self.username_login_entry.place_forget()
-        self.password_login_entry.place_forget()
-        self.signin.place_forget()
-        self.panel_bg.place_forget()
-        self.second_screen_place() 
+        try:
+            self.username_login_entry.place_forget()
+            self.password_login_entry.place_forget()
+            self.signin.place_forget()
+            self.panel_bg.place_forget()
+            self.second_screen_place() 
+        except Exception as e:
+            logger.exception(str('Exception occured in "login_success" function\nError message:' + str(e)))
 
 
 def launchApp():
