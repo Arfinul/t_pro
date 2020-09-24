@@ -213,7 +213,7 @@ def update_spreadsheet(_1lb, _2lb, _3lb, _1bj, _2bj, _coarse, totalCount, _perc)
         SCOPES = ['https://www.googleapis.com/auth/spreadsheets']
 
         # The ID and range of a sample spreadsheet.
-        SPREADSHEET_ID = '1Js_ZRuruPlmyk4_JoPv2emh-Io8Zkuxzn2HwCdvX3iA'
+        SPREADSHEET_ID = '1e2tH5u0KDqQWKd_UOcctT2D0GejOmU1fP-mqIQTALnw'
         RANGE_NAME = 'Sheet1!A:H'
 
         creds = None

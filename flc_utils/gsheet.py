@@ -32,7 +32,7 @@ service = build('sheets', 'v4', credentials=creds)
 def create_sheet():
     spreadsheet = {
         'properties': {
-            'title': "Goodricke Trials"
+            'title': "Jai Jalpesh - Akash"
         }
     }
     spreadsheet = service.spreadsheets().create(body=spreadsheet,
