@@ -9,6 +9,7 @@ from urllib.request import urlopen
 import configparser
 import math
 import cv2
+import glob
 from requests_toolbelt.multipart.encoder import MultipartEncoder
 
 import pickle
@@ -267,3 +268,20 @@ def update_graph():
     cv2_img = cv2.imread("flc_utils/result.png")
     new_img = cv2.resize(cv2_img, (400, 270))
     cv2.imwrite("flc_utils/result.png", new_img)
+
+
+def free_space():
+    files = glob.glob("flc_utils/trainVideo/testing/*.avi")
+    if len(files) > 0:
+        sizes = [os.path.getsize(i) >> 20 for i in files]
+        di = dict(zip(files, sizes))
+        for i in di:
+            if di[i] < 250:
+                os.remove(i)
+        rest_files_names = glob.glob("flc_utils/trainVideo/testing/*.avi")
+        if len(rest_files_names) > 0:
+            rest_files_names.sort()
+            delete_files = rest_files_names[:-10]
+            for i in delete_files:
+                os.remove(i)
+

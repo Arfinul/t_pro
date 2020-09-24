@@ -28,6 +28,8 @@ os.chdir("/home/agnext/Documents/flc")
 
 configparser.read('flc_utils/screens/touchScreen/gui.cfg')
 
+USE_INTERNET = configparser.get('gui-config', 'internet')
+
 cmd = """
 export LD_LIBRARY_PATH=/home/agnext/Documents/flc/
 ./uselib cfg/jorhat_Dec.names cfg/jorhat_Dec.cfg weights/jorhat_Dec_final.weights web_camera > output.txt
@@ -268,7 +270,7 @@ class MyTkApp(tk.Frame):
         try:
             p = subprocess.Popen("exec " + command, stdout= subprocess.PIPE, shell=True)
             p.wait()
-            os.rename("flc_utils/trainVideo/testing/result.avi", "flc_utils/trainVideo/testing/" + str(self.customer_id) + "_" + datetime.datetime.now().strftime("%d-%m-%Y %H:%M:%S") + ".avi")
+            os.rename("flc_utils/trainVideo/testing/result.avi", "flc_utils/trainVideo/testing/" + datetime.datetime.now().strftime("%d-%m-%Y %H:%M:%S") + "_" + str(self.customer_id) + ".avi")
             self.show_results_on_display()
             self.endRecord.place(x=int(configparser.get('gui-config', 'endrecord_btn_x')), y=int(configparser.get('gui-config', 'endrecord_btn_y')))
         except Exception as e:
@@ -315,17 +317,20 @@ class MyTkApp(tk.Frame):
 
     def get_gardens(self):
         try:
-            url = "http://23.98.216.140:8072/api/gardens"
-            headers = {'Authorization': "Bearer " + self.token}
-            querystring = {"locationId": self.get_locations()}
-            response = requests.request("GET", url, headers=headers, params=querystring)
-            data = response.json()
+            garden_id_list, garden_name_list = [], []
+            if USE_INTERNET == "TRUE":
+                url = "http://23.98.216.140:8072/api/gardens"
+                headers = {'Authorization': "Bearer " + self.token}
+                querystring = {"locationId": self.get_locations()}
+                response = requests.request("GET", url, headers=headers, params=querystring)
+                data = response.json()
 
-            garden_id_list = [i["garden_id"] for i in data]
-            garden_name_list = [i["name"] for i in data]
+                garden_id_list = [i["garden_id"] for i in data]
+                garden_name_list = [i["name"] for i in data]
+            else:
+                garden_name_list, garden_id_list = ["Demo Garden"], ["Demo Garden ID"]
 
             self.garden_id_name_dict = dict(zip(garden_name_list, garden_id_list))
-
             if len(garden_name_list) == 1:
                 self.GARDEN_OPTIONS = garden_name_list
             else:
@@ -342,15 +347,19 @@ class MyTkApp(tk.Frame):
 
     def get_divisions(self, *args):
         try:
-            url = "http://23.98.216.140:8072/api/divisions"
-            headers = {'Authorization': "Bearer " + self.token}
-            garden_id = self.garden_id_name_dict[self.garden_verify.get()]
-            querystring = {"gardenId": garden_id}
-            response = requests.request("GET", url, headers=headers, params=querystring)
-            data = response.json()
+            division_id_list, division_name_list = [], []
+            if USE_INTERNET == "TRUE":
+                url = "http://23.98.216.140:8072/api/divisions"
+                headers = {'Authorization': "Bearer " + self.token}
+                garden_id = self.garden_id_name_dict[self.garden_verify.get()]
+                querystring = {"gardenId": garden_id}
+                response = requests.request("GET", url, headers=headers, params=querystring)
+                data = response.json()
 
-            division_id_list = [i["division_id"] for i in data]
-            division_name_list = [i["name"] for i in data]
+                division_id_list = [i["division_id"] for i in data]
+                division_name_list = [i["name"] for i in data]
+            else:
+                division_id_list, division_name_list = ["Demo Division ID"], ["Demo Division"]
 
             self.division_id_name_dict = dict(zip(division_name_list, division_id_list))
             self.DIVISION_OPTIONS = division_name_list
@@ -366,16 +375,19 @@ class MyTkApp(tk.Frame):
     
     def get_sections(self, *args):
         try:
-            url = "http://23.98.216.140:8072/api/sections"
-            headers = {'Authorization': "Bearer " + self.token}
-            division_id = self.division_id_name_dict[self.division_verify.get()]
-            querystring = {"divisionId": division_id}
-            response = requests.request("GET", url, headers=headers, params=querystring)
-            data = response.json()
+            section_id_list, section_name_list = [], []
+            if USE_INTERNET == "TRUE":
+                url = "http://23.98.216.140:8072/api/sections"
+                headers = {'Authorization': "Bearer " + self.token}
+                division_id = self.division_id_name_dict[self.division_verify.get()]
+                querystring = {"divisionId": division_id}
+                response = requests.request("GET", url, headers=headers, params=querystring)
+                data = response.json()
 
-            section_id_list = [i["section_id"] for i in data]
-            section_name_list = [i["name"] for i in data]
-
+                section_id_list = [i["section_id"] for i in data]
+                section_name_list = [i["name"] for i in data]
+            else:
+                section_id_list, section_name_list = ["Demo Section ID"], ["Demo Section"]
             self.section_id_name_dict = dict(zip(section_name_list, section_id_list))
             self.SECTION_OPTIONS = ["Select section ID"] + section_name_list
             self.sector_entry.place_forget()
@@ -390,8 +402,11 @@ class MyTkApp(tk.Frame):
     def get_regions(self):
         try:
             region_names, region_ids = [], []
-            if helper.is_internet_available():
-                region_names, region_ids = helper.regions_list_qualix(self.customer_id, self.token)
+            if USE_INTERNET == "TRUE":
+                if helper.is_internet_available():
+                    region_names, region_ids = helper.regions_list_qualix(self.customer_id, self.token)
+            else:
+                region_names, region_ids = ["Demo Region"], ["Demo Region ID"]
             self.REGIONS_OPTIONS = ["Select Region"] + region_names
             self.region_id_name_dict = dict(zip(region_names, region_ids))
             self.region_entry.place_forget()
@@ -406,11 +421,13 @@ class MyTkApp(tk.Frame):
     def get_instcenter(self, *args):
         try:
             center_names, center_ids = [], []
-            region_id = self.region_id_name_dict[self.region_verify.get()]
-            if helper.is_internet_available():
-                center_names, center_ids = helper.inst_centers_list_qualix(region_id, self.customer_id, self.token)
+            if USE_INTERNET == "TRUE":
+                region_id = self.region_id_name_dict[self.region_verify.get()]
+                if helper.is_internet_available():
+                    center_names, center_ids = helper.inst_centers_list_qualix(region_id, self.customer_id, self.token)
+            else:
+                center_names, center_ids = ["Demo Center"], ["Demo Center ID"]
             self.INSTCENTER_OPTIONS = ["Select Region"] + center_names
-
             self.center_id_name_dict = dict(zip(center_names, center_ids))
             self.inst_center_entry.place_forget()
             self.inst_center_entry = OptionMenu(self.window, self.inst_center_verify, *self.INSTCENTER_OPTIONS)
@@ -488,22 +505,26 @@ class MyTkApp(tk.Frame):
 
     def send_data_api(self):
         try:
-            # sectionId = int(self.section_id_name_dict[self.section_verify.get()])
-            
             _1lb, _2lb, _3lb, _1bj, _2bj, _coarse, totalCount, _perc, payload = helper.get_payload()
-            # if helper.is_internet_available():
-            #     qualix_status = helper.qualix_api(payload, sectionId, self.new_fields)
-            qualix_status = 200
-            if qualix_status == 200:
-                self.msg_sent.configure(text="Data saved", fg="green")
-                t = threading.Thread(target=helper.update_spreadsheet, args=(_1lb, _2lb, _3lb, _1bj, _2bj, _coarse, totalCount, _perc,))
-                t.start()
-            else:
-                self.msg_sent.configure(text="Couldn't save to servers", fg="red")
+
+            if USE_INTERNET == "TRUE":
+                sectionId = int(self.section_id_name_dict[self.section_verify.get()])
+                qualix_status = 0
+                if helper.is_internet_available():
+                    qualix_status = helper.qualix_api(payload, sectionId, self.new_fields)
+                if qualix_status == 200:
+                    self.msg_sent.configure(text="Data saved", fg="green")
+                    if helper.is_internet_available():
+                        t = threading.Thread(target=helper.update_spreadsheet, args=(_1lb, _2lb, _3lb, _1bj, _2bj, _coarse, totalCount, _perc,))
+                        t.start()
+                else:
+                    self.msg_sent.configure(text="Couldn't save to servers", fg="red")
 
             f = open('flc_utils/records.csv','a')
             f.write(self.section_verify.get() + ',' + str(_perc)+ ',' + datetime.datetime.now().strftime("%d-%m-%Y %H:%M:%S") + '\n')
             f.close()
+
+            helper.free_space()
 
             self._flc_btn.place_forget()
             self._total_btn.place_forget()
@@ -536,7 +557,7 @@ class MyTkApp(tk.Frame):
                 _2lb_perc = 0 if _2lb_perc < 0 else _2lb_perc
                 _3lb_perc = round(_3lb*100/totalCount, 2) + 3
                 _3lb_perc = 0 if _3lb_perc < 0 else _3lb_perc
-                _1bj_perc = round(_1bj*100/totalCount, 2) # - 2
+                _1bj_perc = round(_1bj*100/totalCount, 2)
                 _1bj_perc = 0 if _1bj_perc < 0 else _1bj_perc
                 _2bj_perc = round(_2bj*100/totalCount, 2) - 7
                 _2bj_perc = 0 if _2bj_perc < 0 else _2bj_perc
@@ -582,16 +603,22 @@ class MyTkApp(tk.Frame):
             # password = self.password_verify.get()
             username = "temprobin331@gmail.com"
             password = "Specx123!"
-            if helper.is_internet_available():
-                success, self.token, self.customer_id, name = helper.login_api_qualix(username, password)
-                if success:
-                    self.login_success()
-                    self.welcome_text.configure(text="Welcome, " + name.title())
+            if USE_INTERNET == "TRUE":
+                if helper.is_internet_available():
+                    success, self.token, self.customer_id, name = helper.login_api_qualix(username, password)
+                    if success:
+                        self.login_success()
+                        self.welcome_text.configure(text="Welcome, " + name.title())
+                    else:
+                        self.show_error_msg("User Not Found")
                 else:
-                    self.show_error_msg("User Not Found")
+                    self.show_error_msg("No Internet!")
             else:
-                show_error_msg("No Internet!")
+                self.login_success()
+                self.welcome_text.configure(text="Welcome, Demo")
+            
             gc.collect()
+
         except Exception as e:
             logger.exception(str('Exception occured in "login_verify" function\nError message:' + str(e)))
 
