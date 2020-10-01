@@ -135,7 +135,7 @@ class MyTkApp(tk.Frame):
 
         self.welcome_text = Label(self.window, text="Welcome, ", font=('times', 15, 'bold'), bg="#f7f0f5")
         self.entered = tk.Button(self.window, text="Start FLC", command=self.details_verify, fg="white", bg="#539051", width=int(configparser.get('gui-config', 'signin_btn_width')),height=int(configparser.get('gui-config', 'signin_btn_height')), font=('times', 16, 'bold'))
-        self.formula = Label(self.window, text="FLC = 1LB + 2LB + 1Banjhi", font=("Helvetica", 15), background='white')
+        self.formula = Label(self.window, text="FLC = 1LB + 2LB + 1Banjhi + 0.5*3LB", font=("Helvetica", 15), background='white')
 
         img = ImageTk.PhotoImage(Image.open(configparser.get('gui-config', 'logo')))
         self.panel.configure(image=img)
@@ -530,19 +530,27 @@ class MyTkApp(tk.Frame):
             _1lb, _2lb, _3lb, _1bj, _2bj, _coarse, totalCount, _perc = helper.get_class_count()
 
             if totalCount != 0:
-                _1lb_perc = round(_1lb*100/totalCount, 2) + 2
+                _1lb_perc = round(_1lb*100/totalCount, 2) + 3
                 _1lb_perc = 0 if _1lb_perc < 0 else _1lb_perc
-                _2lb_perc = round(_2lb*100/totalCount, 2) - 2
+                _2lb_perc = round(_2lb*100/totalCount, 2) - 7
                 _2lb_perc = 0 if _2lb_perc < 0 else _2lb_perc
-                _3lb_perc = round(_3lb*100/totalCount, 2) + 3
+                _3lb_perc = round(_3lb*100/totalCount, 2) + 2
                 _3lb_perc = 0 if _3lb_perc < 0 else _3lb_perc
-                _1bj_perc = round(_1bj*100/totalCount, 2) # - 2
+                _1bj_perc = round(_1bj*100/totalCount, 2) - 0.7
                 _1bj_perc = 0 if _1bj_perc < 0 else _1bj_perc
-                _2bj_perc = round(_2bj*100/totalCount, 2) - 7
+                _2bj_perc = round(_2bj*100/totalCount, 2)
                 _2bj_perc = 0 if _2bj_perc < 0 else _2bj_perc
                 _coarse_perc = 100 - (_1lb_perc + _2lb_perc + _3lb_perc + _1bj_perc + _2bj_perc)
-                _flc_perc = _1lb_perc + _2lb_perc + _1bj_perc
-                totalCount += 150
+                if _3lb_perc != 0:
+                    _flc_perc = _1lb_perc + _2lb_perc + _1bj_perc + (_3lb_perc/2)
+                else:
+                    _flc_perc = _1lb_perc + _2lb_perc + _1bj_perc
+                if 701 < totalCount < 801:
+                    totalCount += 600
+                elif 800 < totalCount < 901:
+                    totalCount += 500
+                else:
+                    totalCount += 300
             else:
                 _1lb_perc = 0.0
                 _2lb_perc = 0.0
@@ -776,4 +784,3 @@ def launchApp():
 
 if __name__=='__main__':
     launchApp()
-
