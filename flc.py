@@ -69,7 +69,7 @@ class MyTkApp(tk.Frame):
         self.window.configure(background='snow')
         self.window.protocol("WM_DELETE_WINDOW", self.on_closing)
 
-        self.header = tk.Label(self.window, text="                                 Fine Leaf Count System", fg="white", bg="#539051", width=int(configparser.get('gui-config', 'title_width')), height=int(configparser.get('gui-config', 'title_height')), font=('times', 30, 'bold'))
+        self.header = tk.Label(self.window, text="   Fine Leaf Count", fg="white", bg="#539051", width=int(configparser.get('gui-config', 'title_width')), height=int(configparser.get('gui-config', 'title_height')), font=('times', 30, 'bold'))
         self.footer = tk.Label(self.window, text="                                                    © 2020 Agnext Technologies. All Rights Reserved                                                          ", fg="white", bg="#2b2c28", width=160, height=2, font=('times', 10, 'bold'))
 
         self.panel = Label(self.window, bg='#539051')
@@ -145,7 +145,7 @@ class MyTkApp(tk.Frame):
 
         self.header.place(x=int(configparser.get('gui-config', 'title_x')), y=int(configparser.get('gui-config', 'title_y')))
         self.panel.place(x=int(configparser.get('gui-config', 'login_image_x')), y=int(configparser.get('gui-config', 'login_image_y')))
-        self.footer.place(x=0, y=450)
+        self.footer.place(x=0, y=420)
 
         img_bg = ImageTk.PhotoImage(Image.open(configparser.get('gui-config', 'bg_image')))
         self.panel_bg.configure(image=img_bg)
@@ -520,20 +520,16 @@ class MyTkApp(tk.Frame):
                 else:
                     self.msg_sent.configure(text="Couldn't save to servers", fg="red")
 
-            f = open('flc_utils/records.csv','a')
-            f.write(self.section_verify.get() + ',' + str(_perc)+ ',' + datetime.datetime.now().strftime("%d-%m-%Y %H:%M:%S") + '\n')
-            f.close()
-
             helper.free_space()
 
             self._flc_btn.place_forget()
-            self._total_btn.place_forget()
-            self._1lb_btn.place_forget()
-            self._2lb_btn.place_forget()
-            self._1bj_btn.place_forget()
-            self._3lb_btn.place_forget()
+            # self._total_btn.place_forget()
+            # self._1lb_btn.place_forget()
+            # self._2lb_btn.place_forget()
+            # self._1bj_btn.place_forget()
+            # self._3lb_btn.place_forget()
             self._coarse_btn.place_forget()
-            self._2bj_btn.place_forget()
+            # self._2bj_btn.place_forget()
 
             helper.update_graph()
         except Exception as e:
@@ -551,18 +547,18 @@ class MyTkApp(tk.Frame):
             _1lb, _2lb, _3lb, _1bj, _2bj, _coarse, totalCount, _perc = helper.get_class_count()
 
             if totalCount != 0:
-                _1lb_perc = round(_1lb*100/totalCount, 2) + 2
+                _1lb_perc = round(_1lb*100/totalCount, 2)
                 _1lb_perc = 0 if _1lb_perc < 0 else _1lb_perc
-                _2lb_perc = round(_2lb*100/totalCount, 2) - 2
+                _2lb_perc = round(_2lb*100/totalCount, 2)
                 _2lb_perc = 0 if _2lb_perc < 0 else _2lb_perc
-                _3lb_perc = round(_3lb*100/totalCount, 2) + 3
+                _3lb_perc = round(_3lb*100/totalCount, 2)
                 _3lb_perc = 0 if _3lb_perc < 0 else _3lb_perc
                 _1bj_perc = round(_1bj*100/totalCount, 2)
                 _1bj_perc = 0 if _1bj_perc < 0 else _1bj_perc
-                _2bj_perc = round(_2bj*100/totalCount, 2) - 7
+                _2bj_perc = round(_2bj*100/totalCount, 2)
                 _2bj_perc = 0 if _2bj_perc < 0 else _2bj_perc
-                _coarse_perc = 100 - (_1lb_perc + _2lb_perc + _3lb_perc + _1bj_perc + _2bj_perc)
                 _flc_perc = _1lb_perc + _2lb_perc + _1bj_perc
+                _coarse_perc = 100 - _flc_perc
                 totalCount += 150
             else:
                 _1lb_perc = 0.0
@@ -573,6 +569,19 @@ class MyTkApp(tk.Frame):
                 _coarse_perc = 0.0
                 _flc_perc = 0.0
 
+            f = open('flc_utils/records.csv','a')
+            dt_ = datetime.datetime.now().strftime("%d-%m-%Y %H:%M:%S")
+            flc_ = str(_flc_perc)
+            coarse_ = str(_coarse_perc)
+            _1lbp = str(_1lb_perc)
+            _2lbp = str(_2lb_perc)
+            _3lbp = str(_3lb_perc)
+            _1bjp = str(_1bj_perc)
+            _2bjp = str(_2bj_perc)
+            total_ = str(totalCount)
+            f.write(f"{dt_},{flc_},{coarse_},{_1lbp},{_2lbp},{_3lbp},{_1bjp},{_2bjp},{total_}\n")
+            f.close()
+
             self._flc_btn.configure(text="FLC %      " + str(round(_flc_perc, 2)))
             self._total_btn.configure(text="Total Leaves     " + str(totalCount))
             self._1lb_btn.configure(text="1LB %         " + str(round(_1lb_perc, 2)))
@@ -582,16 +591,18 @@ class MyTkApp(tk.Frame):
             self._coarse_btn.configure(text="Coarse %      " + str(round(_coarse_perc, 2)))
             self._2bj_btn.configure(text="2Banjhi %     " + str(round(_2bj_perc, 2)))
 
-            self._flc_btn.place(x=60,y=130)
-            self._total_btn.place(x=300,y=130)
-            self._1lb_btn.place(x=60,y=210)
-            self._2lb_btn.place(x=300,y=210)
-            self._1bj_btn.place(x=60,y=270)
-            self._3lb_btn.place(x=300,y=270)
-            self._coarse_btn.place(x=60,y=330)
-            self._2bj_btn.place(x=300,y=330)
+            self._flc_btn.place(x=60,y=150)
+            # self._flc_btn.place(x=60,y=130) # before
+            # self._total_btn.place(x=300,y=130)
+            # self._1lb_btn.place(x=60,y=210)
+            # self._2lb_btn.place(x=300,y=210)
+            # self._1bj_btn.place(x=60,y=270)
+            # self._3lb_btn.place(x=300,y=270)
+            self._coarse_btn.place(x=60,y=300)
+            # self._coarse_btn.place(x=60,y=330) # before
+            # self._2bj_btn.place(x=300,y=330)
 
-            self.formula.place(x=60,y=415)
+            self.formula.place(x=60,y=390)
             gc.collect()
         except Exception as e:
             logger.exception(str('Exception occured in "show_results_on_display" function\nError message:' + str(e)))

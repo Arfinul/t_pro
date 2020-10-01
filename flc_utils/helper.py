@@ -276,7 +276,7 @@ def free_space():
         sizes = [os.path.getsize(i) >> 20 for i in files]
         di = dict(zip(files, sizes))
         for i in di:
-            if di[i] < 250:
+            if di[i] < 5:
                 os.remove(i)
         rest_files_names = glob.glob("flc_utils/trainVideo/testing/*.avi")
         if len(rest_files_names) > 0:
@@ -284,4 +284,3 @@ def free_space():
             delete_files = rest_files_names[:-10]
             for i in delete_files:
                 os.remove(i)
-
