@@ -818,12 +818,12 @@ int main(int argc, char *argv[])
                         perc_count_coarse = (float(count_coarse)*100)/total;
                         _coarse_count_str = "Coarse : " + std::to_string(count_coarse); // Agnext
                         coarse_str = "Coarse %: " + std::to_string(perc_count_coarse); // Agnext
-                        putText(draw_frame, coarse_str.substr(0,14), cv::Point2f(10, 250), cv::FONT_HERSHEY_COMPLEX_SMALL, 1.2, cv::Scalar(0, 255, 255), 1);  // Agnext
+                        putText(draw_frame, coarse_str.substr(0,14), cv::Point2f(10, 100), cv::FONT_HERSHEY_COMPLEX_SMALL, 1.2, cv::Scalar(0, 255, 255), 2);  // Agnext
 
                         fine_percnt = (float(count_1lb) + float(count_2lb) + float(count_1Banjhi)) * 100 / total; // Agnext
 
                         fine_per = "FLC % : " + std::to_string(fine_percnt); // Agnext
-                        putText(draw_frame, fine_per.substr(0,12), cv::Point2f(10, 280), cv::FONT_HERSHEY_COMPLEX_SMALL, 1.2, cv::Scalar(0, 255, 255), 2);  // Agnext
+                        putText(draw_frame, fine_per.substr(0,12), cv::Point2f(10, 50), cv::FONT_HERSHEY_COMPLEX_SMALL, 1.2, cv::Scalar(0, 255, 255), 2);  // Agnext
 
                         total_str = "Total : " + std::to_string(total); // Agnext
                         // putText(draw_frame, total_str, cv::Point2f(10, 310), cv::FONT_HERSHEY_COMPLEX_SMALL, 1.2, cv::Scalar(0, 255, 255), 1);  // Agnext
