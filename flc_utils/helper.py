@@ -214,7 +214,7 @@ def update_spreadsheet(_1lb, _2lb, _3lb, _1bj, _2bj, _coarse, totalCount, _perc)
         SCOPES = ['https://www.googleapis.com/auth/spreadsheets']
 
         # The ID and range of a sample spreadsheet.
-        SPREADSHEET_ID = '1Js_ZRuruPlmyk4_JoPv2emh-Io8Zkuxzn2HwCdvX3iA'
+        SPREADSHEET_ID = '1OEDMdeegamLGyV9vnU8VF24dHfOl63LB4RH0GsIdfkI'
         RANGE_NAME = 'Sheet1!A:H'
 
         creds = None
@@ -284,4 +284,3 @@ def free_space():
             delete_files = rest_files_names[:-10]
             for i in delete_files:
                 os.remove(i)
-
