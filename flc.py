@@ -523,13 +523,13 @@ class MyTkApp(tk.Frame):
             helper.free_space()
 
             self._flc_btn.place_forget()
-            # self._total_btn.place_forget()
-            # self._1lb_btn.place_forget()
-            # self._2lb_btn.place_forget()
-            # self._1bj_btn.place_forget()
-            # self._3lb_btn.place_forget()
+            self._total_btn.place_forget()
+            self._1lb_btn.place_forget()
+            self._2lb_btn.place_forget()
+            self._1bj_btn.place_forget()
+            self._3lb_btn.place_forget()
             self._coarse_btn.place_forget()
-            # self._2bj_btn.place_forget()
+            self._2bj_btn.place_forget()
 
             helper.update_graph()
         except Exception as e:
