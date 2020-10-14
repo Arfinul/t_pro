@@ -268,7 +268,7 @@ class MyTkApp(tk.Frame):
         try:
             p = subprocess.Popen("exec " + command, stdout= subprocess.PIPE, shell=True)
             p.wait()
-            os.rename("flc_utils/trainVideo/testing/result.avi", "flc_utils/trainVideo/testing/" + str(self.customer_id) + "_" + datetime.datetime.now().strftime("%d-%m-%Y %H:%M:%S") + ".avi")
+            os.rename("flc_utils/trainVideo/testing/result.avi", "flc_utils/trainVideo/testing/" + datetime.datetime.now().strftime("%d-%m-%Y %H:%M:%S") + "_" + str(self.customer_id) + ".avi")
             self.show_results_on_display()
             self.endRecord.place(x=int(configparser.get('gui-config', 'endrecord_btn_x')), y=int(configparser.get('gui-config', 'endrecord_btn_y')))
         except Exception as e:
@@ -501,9 +501,7 @@ class MyTkApp(tk.Frame):
             else:
                 self.msg_sent.configure(text="Couldn't save to servers", fg="red")
 
-            f = open('flc_utils/records.csv','a')
-            f.write(self.section_verify.get() + ',' + str(_perc)+ ',' + datetime.datetime.now().strftime("%d-%m-%Y %H:%M:%S") + '\n')
-            f.close()
+            helper.free_space()
 
             self._flc_btn.place_forget()
             self._total_btn.place_forget()
@@ -559,6 +557,20 @@ class MyTkApp(tk.Frame):
                 _2bj_perc = 0.0
                 _coarse_perc = 0.0
                 _flc_perc = 0.0
+
+            f = open('flc_utils/records.csv','a')
+            dt_ = datetime.datetime.now().strftime("%d-%m-%Y %H:%M:%S")
+            flc_ = str(_flc_perc)
+            coarse_ = str(_coarse_perc)
+            _1lbp = str(_1lb_perc)
+            _2lbp = str(_2lb_perc)
+            _3lbp = str(_3lb_perc)
+            _1bjp = str(_1bj_perc)
+            _2bjp = str(_2bj_perc)
+            total_ = str(totalCount)
+            f.write(f"{dt_},{flc_},{coarse_},{_1lbp},{_2lbp},{_3lbp},{_1bjp},{_2bjp},{total_}\n")
+            f.close()
+
 
             self._flc_btn.configure(text="FLC %      " + str(round(_flc_perc, 2)))
             self._total_btn.configure(text="Total Leaves     " + str(totalCount))
