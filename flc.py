@@ -588,7 +588,10 @@ class MyTkApp(tk.Frame):
             total_ = str(totalCount)
             f.write(f"{dt_},{flc_},{coarse_},{_1lbp},{_2lbp},{_3lbp},{_1bjp},{_2bjp},{total_}\n")
             f.close()
-
+            
+            r = open('/home/agnext/Desktop/result.csv','a')
+            r.write(f"{dt_},{flc_},{coarse_},{total_}\n")
+            r.close()
 
             self._flc_btn.configure(text="FLC %      " + str(round(_flc_perc, 2)))
             self._total_btn.configure(text="Total Leaves     " + str(totalCount))
@@ -616,10 +619,8 @@ class MyTkApp(tk.Frame):
      
     def login_verify(self):
         try:
-            # username = self.username_verify.get()
-            # password = self.password_verify.get()
-            username = "temprobin331@gmail.com"
-            password = "Specx123!"
+            username = self.username_verify.get()
+            password = self.password_verify.get()
             if USE_INTERNET == "TRUE":
                 if helper.is_internet_available():
                     success, self.token, self.customer_id, name = helper.login_api_qualix(username, password)
@@ -651,14 +652,14 @@ class MyTkApp(tk.Frame):
     def details_verify(self): 
         try:
             gc.collect() 
-            # sector = self.section_verify.get()  
-            # garden = self.garden_verify.get()
-            # division = self.division_verify.get()    
-            # if sector not in ["", "Select section ID"] and garden not in ["", "Select garden ID"] and division not in ["", "Select division ID"]:
-            self.details_entered_success()
-            self.start_testing(cmd)
-            # else:
-            #     self.show_error_msg("Please fill all details.")
+            sector = self.section_verify.get()  
+            garden = self.garden_verify.get()
+            division = self.division_verify.get()    
+            if sector not in ["", "Select section ID"] and garden not in ["", "Select garden ID"] and division not in ["", "Select division ID"]:
+                self.details_entered_success()
+                self.start_testing(cmd)
+            else:
+                self.show_error_msg("Please fill all details.")
         except Exception as e:
             logger.exception(str('Exception occured in "details_verify" function\nError message:' + str(e)))
      
@@ -784,19 +785,19 @@ class MyTkApp(tk.Frame):
             self.new_fields['inst_center_id'] = self.center_id_name_dict[self.inst_center_verify.get()] if self.inst_center_verify.get() != 'Select Inst Center' else self.inst_center_verify.get()
             self.new_fields['device_serial_no'] = self.device_serial_no_verify.get()
             self.new_fields['batchId'] = self.batch_id_verify.get()
-            # if (self.new_fields['area_covered'] == 'Enter Area Covered') or \
-            #     (self.new_fields['weight'] == "Enter Weight") or \
-            #     (self.new_fields['sample_id'] == "Enter Sample ID")  or \
-            #     (self.new_fields['lot_id'] == "Enter Lot ID") or \
-            #     (self.new_fields['region_id'] == "Select Region") or \
-            #     (self.new_fields['inst_center_id'] == "Select Inst Center") or \
-            #     (self.new_fields['device_serial_no'] == "Enter Device SerialNo") or \
-            #     (self.new_fields['batchId'] == "Enter Batch ID"):
-            #     self.show_error_msg("Please fill all details.")
-            # else:
-            self.second_screen_forget()
-            self.enter_details()      
-            self.start_jetson_fan()
+            if (self.new_fields['area_covered'] == 'Enter Area Covered') or \
+                (self.new_fields['weight'] == "Enter Weight") or \
+                (self.new_fields['sample_id'] == "Enter Sample ID")  or \
+                (self.new_fields['lot_id'] == "Enter Lot ID") or \
+                (self.new_fields['region_id'] == "Select Region") or \
+                (self.new_fields['inst_center_id'] == "Select Inst Center") or \
+                (self.new_fields['device_serial_no'] == "Enter Device SerialNo") or \
+                (self.new_fields['batchId'] == "Enter Batch ID"):
+                self.show_error_msg("Please fill all details.")
+            else:
+                self.second_screen_forget()
+                self.enter_details()      
+                self.start_jetson_fan()
         except Exception as e:
             logger.exception(str('Exception occured in "main_screen" function\nError message:' + str(e)))  
 
