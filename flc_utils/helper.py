@@ -102,16 +102,16 @@ def qualix_api(payload, sectionId, new_fields):
             fields={
                 "data": json.dumps({
                     "section_id": str(sectionId),
-                    "batch_id": str(new_fields['batchId']),
+                    "batch_id": "Good-001",
                     "commodity_id": "4",
-                    "device_serial_no": str(new_fields['device_serial_no']),
+                    "device_serial_no": "FLCP203208P01M2",
                     "device_type": "FLC",
                     "device_type_id": "5",
                     "farmer_code": "QX1409936521", # str(farmer_code)
                     "location": "30.703239_76.692094",
                     "lot_id": str(new_fields['lot_id']),
                     "quantity": str(new_fields['weight']),
-                    "quantity_unit": "tonnes",
+                    "quantity_unit": "kg",
                     "sample_id": str(new_fields['sample_id']),
                     "scan_by_user_code": "128",
                     "vendor_code": "1",

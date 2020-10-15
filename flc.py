@@ -112,10 +112,10 @@ class MyTkApp(tk.Frame):
         self.password_verify = StringVar()
          
         self.username_login_entry = Entry(self.window, textvariable=self.username_verify, font = "Helvetica 15")
-        self.username_login_entry.insert(1, "Enter username")
+        self.username_login_entry.insert(1, "dang@goodricke.com")
 
         self.password_login_entry = Entry(self.window, textvariable=self.password_verify, show= '*', font = "Helvetica 15")
-        self.password_login_entry.insert(1, "Enter password")
+        self.password_login_entry.insert(1, "Goodricke123!")
         
         self.signin = tk.Button(self.window, text="Login", command=self.login_verify, fg="white", bg="#539051", width=int(configparser.get('gui-config', 'signin_btn_width')),height=int(configparser.get('gui-config', 'signin_btn_height')), font=("Helvetica 15 bold"))
 
@@ -652,14 +652,14 @@ class MyTkApp(tk.Frame):
     def details_verify(self): 
         try:
             gc.collect() 
-            sector = self.section_verify.get()  
-            garden = self.garden_verify.get()
-            division = self.division_verify.get()    
-            if sector not in ["", "Select section ID"] and garden not in ["", "Select garden ID"] and division not in ["", "Select division ID"]:
-                self.details_entered_success()
-                self.start_testing(cmd)
-            else:
-                self.show_error_msg("Please fill all details.")
+            # sector = self.section_verify.get()  
+            # garden = self.garden_verify.get()
+            # division = self.division_verify.get()    
+            # if sector not in ["", "Select section ID"] and garden not in ["", "Select garden ID"] and division not in ["", "Select division ID"]:
+            self.details_entered_success()
+            self.start_testing(cmd)
+            # else:
+            #     self.show_error_msg("Please fill all details.")
         except Exception as e:
             logger.exception(str('Exception occured in "details_verify" function\nError message:' + str(e)))
      
@@ -785,15 +785,18 @@ class MyTkApp(tk.Frame):
             self.new_fields['inst_center_id'] = self.center_id_name_dict[self.inst_center_verify.get()] if self.inst_center_verify.get() != 'Select Inst Center' else self.inst_center_verify.get()
             self.new_fields['device_serial_no'] = self.device_serial_no_verify.get()
             self.new_fields['batchId'] = self.batch_id_verify.get()
-            if (self.new_fields['area_covered'] == 'Enter Area Covered') or \
-                (self.new_fields['weight'] == "Enter Weight") or \
-                (self.new_fields['sample_id'] == "Enter Sample ID")  or \
-                (self.new_fields['lot_id'] == "Enter Lot ID") or \
-                (self.new_fields['region_id'] == "Select Region") or \
-                (self.new_fields['inst_center_id'] == "Select Inst Center") or \
-                (self.new_fields['device_serial_no'] == "Enter Device SerialNo") or \
-                (self.new_fields['batchId'] == "Enter Batch ID"):
-                self.show_error_msg("Please fill all details.")
+            # if (self.new_fields['area_covered'] == 'Enter Area Covered') or \
+            #     (self.new_fields['weight'] == "Enter Weight") or \
+            #     (self.new_fields['sample_id'] == "Enter Sample ID")  or \
+            #     (self.new_fields['lot_id'] == "Enter Lot ID") or \
+            #     (self.new_fields['region_id'] == "Select Region") or \
+            #     (self.new_fields['inst_center_id'] == "Select Inst Center") or \
+            #     (self.new_fields['device_serial_no'] == "Enter Device SerialNo") or \
+            #     (self.new_fields['batchId'] == "Enter Batch ID"):
+            #     self.show_error_msg("Please fill all details.")
+            # else:
+            if (self.new_fields['weight'] == 'Enter Weight'):
+                self.show_error_msg("Please enter weight in kg.")
             else:
                 self.second_screen_forget()
                 self.enter_details()      
