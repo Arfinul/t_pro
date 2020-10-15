@@ -797,6 +797,10 @@ class MyTkApp(tk.Frame):
             # else:
             if (self.new_fields['weight'] == 'Enter Weight'):
                 self.show_error_msg("Please enter weight in kg.")
+            elif (self.new_fields['region_id'] == 'Select Region'):
+                self.show_error_msg("Please select Region")
+            elif (self.new_fields['inst_center_id'] == 'Select Inst Center'):
+                self.show_error_msg("Please select Inst Center")
             else:
                 self.second_screen_forget()
                 self.enter_details()      
