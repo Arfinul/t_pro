@@ -50,6 +50,7 @@ class MyTkApp(tk.Frame):
         self.division_id_name_dict = {}
         self.region_id_name_dict = {}
         self.center_id_name_dict = {}
+        self.LEAF_OPTIONS = ["Select Leaf Type", "Pruned", "Unpruned", "Bot Leaf"]
         self.SECTION_OPTIONS = ["Select section ID"]
         self.GARDEN_OPTIONS = ["Select garden ID"]
         self.DIVISION_OPTIONS = ["Select division ID"] 
@@ -120,13 +121,17 @@ class MyTkApp(tk.Frame):
         
         self.signin = tk.Button(self.window, text="Login", command=self.login_verify, fg="white", bg="#539051", width=int(configparser.get('gui-config', 'signin_btn_width')),height=int(configparser.get('gui-config', 'signin_btn_height')), font=("Helvetica 15 bold"))
 
+        self.leaf_verify = StringVar()
         self.section_verify = StringVar()
         self.garden_verify = StringVar()
         self.division_verify = StringVar()
+        self.leaf_verify.set("Select Leaf Type")
         self.section_verify.set("Select section ID")
         self.garden_verify.set("Select garden ID")
         self.division_verify.set("Select division ID")
          
+        self.leaf_entry = OptionMenu(self.window, self.leaf_verify, *self.LEAF_OPTIONS)
+        self.leaf_entry.configure(width=24, state="disabled", font=font.Font(family='Helvetica', size=16))
         self.garden_entry = OptionMenu(self.window, self.garden_verify, *self.GARDEN_OPTIONS)
         self.garden_entry.configure(width=24, state="disabled", font=font.Font(family='Helvetica', size=16))
         self.division_entry = OptionMenu(self.window, self.division_verify, *self.DIVISION_OPTIONS)
@@ -242,6 +247,7 @@ class MyTkApp(tk.Frame):
         try:
             self.endRecord.place_forget()
             self.entered.place_forget()
+            self.leaf_entry.place_forget()
             self.sector_entry.place_forget()
             self.garden_entry.place_forget()
             self.division_entry.place_forget()
@@ -440,6 +446,7 @@ class MyTkApp(tk.Frame):
 
     def place_inputs(self):
         try:
+            self.leaf_entry.place(x=520, y=110, height=40, width=190)
             self.garden_entry.place(x=520, y=155, height=40, width=190)
             self.division_entry.place(x=520, y=200, height=40, width=190)
             self.sector_entry.place(x=520, y=245, height=40, width=190)
@@ -547,20 +554,44 @@ class MyTkApp(tk.Frame):
             _1lb, _2lb, _3lb, _1bj, _2bj, _coarse, totalCount, _perc = helper.get_class_count()
 
             if totalCount != 0:
-                _1lb_perc = round(_1lb*100/totalCount, 2) + 3
+                leaf = self.leaf_verify.get()
+                if leaf == "Pruned":
+                    _1lb_perc = round(_1lb*100/totalCount, 2) + 3
+                    _2lb_perc = round(_2lb*100/totalCount, 2) - 7
+                    _3lb_perc = round(_3lb*100/totalCount, 2) + 2
+                    _1bj_perc = round(_1bj*100/totalCount, 2) - 0.7
+                    _2bj_perc = round(_2bj*100/totalCount, 2)
+                    totalCount = int(totalCount * 1.6)
+                elif leaf == "Unpruned":
+                    _1lb_perc = round(_1lb*100/totalCount, 2) + 3
+                    _2lb_perc = round(_2lb*100/totalCount, 2) - 7
+                    _3lb_perc = round(_3lb*100/totalCount, 2) + 2
+                    _1bj_perc = round(_1bj*100/totalCount, 2) - 0.7
+                    _2bj_perc = round(_2bj*100/totalCount, 2)
+                    totalCount = int(totalCount * 1.6)
+                elif leaf == "Bot Leaf":
+                    _1lb_perc = round(_1lb*100/totalCount, 2) + 3
+                    _2lb_perc = round(_2lb*100/totalCount, 2) - 7
+                    _3lb_perc = round(_3lb*100/totalCount, 2) + 2
+                    _1bj_perc = round(_1bj*100/totalCount, 2) - 0.7
+                    _2bj_perc = round(_2bj*100/totalCount, 2)
+                    totalCount = int(totalCount * 1.6)
+                else:
+                    _1lb_perc = round(_1lb*100/totalCount, 2)
+                    _2lb_perc = round(_2lb*100/totalCount, 2)
+                    _3lb_perc = round(_3lb*100/totalCount, 2)
+                    _1bj_perc = round(_1bj*100/totalCount, 2)
+                    _2bj_perc = round(_2bj*100/totalCount, 2)
+                    totalCount = int(totalCount * 1.6)
+
                 _1lb_perc = 0 if _1lb_perc < 0 else _1lb_perc
-                _2lb_perc = round(_2lb*100/totalCount, 2) - 7
                 _2lb_perc = 0 if _2lb_perc < 0 else _2lb_perc
-                _3lb_perc = round(_3lb*100/totalCount, 2) + 2
                 _3lb_perc = 0 if _3lb_perc < 0 else _3lb_perc
-                _1bj_perc = round(_1bj*100/totalCount, 2) - 0.7
                 _1bj_perc = 0 if _1bj_perc < 0 else _1bj_perc
-                _2bj_perc = round(_2bj*100/totalCount, 2)
                 _2bj_perc = 0 if _2bj_perc < 0 else _2bj_perc
                 _flc_perc = _1lb_perc + _2lb_perc + _1bj_perc + (0.67 * _3lb_perc)
                 _flc_perc = 100 if _flc_perc > 100 else _flc_perc
                 _coarse_perc = 100 - _flc_perc
-                totalCount = int(totalCount * 1.6)
             else:
                 _1lb_perc = 0.0
                 _2lb_perc = 0.0
@@ -648,12 +679,16 @@ class MyTkApp(tk.Frame):
     def details_verify(self): 
         try:
             gc.collect() 
+            leaf = self.leaf_verify.get()
             # sector = self.section_verify.get()  
             # garden = self.garden_verify.get()
             # division = self.division_verify.get()    
-            # if sector not in ["", "Select section ID"] and garden not in ["", "Select garden ID"] and division not in ["", "Select division ID"]:
-            self.details_entered_success()
-            self.start_testing(cmd)
+            # if leaf not in ["", "Select Leaf Type"] and sector not in ["", "Select section ID"] and garden not in ["", "Select garden ID"] and division not in ["", "Select division ID"]:
+            if leaf != "Select Leaf Type":
+                self.details_entered_success()
+                self.start_testing(cmd)
+            else:
+                self.show_error_msg("Please select leaf type.")
             # else:
             #     self.show_error_msg("Please fill all details.")
         except Exception as e:
@@ -669,6 +704,10 @@ class MyTkApp(tk.Frame):
                 subprocess.Popen("exec " + "killall onboard", stdout= subprocess.PIPE, shell=True)
             except:
                 pass
+
+            self.leaf_entry.configure(width=24, state="active")
+            menu = self.nametowidget(self.leaf_entry.menuname)
+            menu.config(font=font.Font(family='Helvetica', size=16))
 
             self.GARDEN_OPTIONS = ["Select garden ID"]
             self.garden_entry.configure(width=24, state="active")
