@@ -9,6 +9,7 @@ from urllib.request import urlopen
 import configparser
 import math
 import cv2
+import glob
 from requests_toolbelt.multipart.encoder import MultipartEncoder
 
 import pickle
