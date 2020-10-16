@@ -547,19 +547,20 @@ class MyTkApp(tk.Frame):
             _1lb, _2lb, _3lb, _1bj, _2bj, _coarse, totalCount, _perc = helper.get_class_count()
 
             if totalCount != 0:
-                _1lb_perc = round(_1lb*100/totalCount, 2)
+                _1lb_perc = round(_1lb*100/totalCount, 2) + 3
                 _1lb_perc = 0 if _1lb_perc < 0 else _1lb_perc
-                _2lb_perc = round(_2lb*100/totalCount, 2)
+                _2lb_perc = round(_2lb*100/totalCount, 2) - 7
                 _2lb_perc = 0 if _2lb_perc < 0 else _2lb_perc
-                _3lb_perc = round(_3lb*100/totalCount, 2)
+                _3lb_perc = round(_3lb*100/totalCount, 2) + 2
                 _3lb_perc = 0 if _3lb_perc < 0 else _3lb_perc
-                _1bj_perc = round(_1bj*100/totalCount, 2)
+                _1bj_perc = round(_1bj*100/totalCount, 2) - 0.7
                 _1bj_perc = 0 if _1bj_perc < 0 else _1bj_perc
                 _2bj_perc = round(_2bj*100/totalCount, 2)
                 _2bj_perc = 0 if _2bj_perc < 0 else _2bj_perc
-                _flc_perc = _1lb_perc + _2lb_perc + _1bj_perc
+                _flc_perc = _1lb_perc + _2lb_perc + _1bj_perc + (0.67 * _3lb_perc)
+                _flc_perc = 100 if _flc_perc > 100 else _flc_perc
                 _coarse_perc = 100 - _flc_perc
-                totalCount += 150
+                totalCount = int(totalCount * 1.6)
             else:
                 _1lb_perc = 0.0
                 _2lb_perc = 0.0
@@ -814,4 +815,3 @@ def launchApp():
 
 if __name__=='__main__':
     launchApp()
-
