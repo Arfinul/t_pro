@@ -50,7 +50,7 @@ class MyTkApp(tk.Frame):
         self.division_id_name_dict = {}
         self.region_id_name_dict = {}
         self.center_id_name_dict = {}
-        self.LEAF_OPTIONS = ["Select Leaf Type", "Pruned", "Unpruned", "Bot Leaf"]
+        self.LEAF_OPTIONS = ["Select Leaf Type", "Own", "Bought"]
         self.SECTION_OPTIONS = ["Select section ID"]
         self.GARDEN_OPTIONS = ["Select garden ID"]
         self.DIVISION_OPTIONS = ["Select division ID"] 
@@ -555,21 +555,14 @@ class MyTkApp(tk.Frame):
 
             if totalCount != 0:
                 leaf = self.leaf_verify.get()
-                if leaf == "Pruned":
+                if leaf == "Own":
                     _1lb_perc = round(_1lb*100/totalCount, 2) + 3
                     _2lb_perc = round(_2lb*100/totalCount, 2) - 7
                     _3lb_perc = round(_3lb*100/totalCount, 2) + 2
                     _1bj_perc = round(_1bj*100/totalCount, 2) - 0.7
                     _2bj_perc = round(_2bj*100/totalCount, 2)
                     totalCount = int(totalCount * 1.6)
-                elif leaf == "Unpruned":
-                    _1lb_perc = round(_1lb*100/totalCount, 2) + 2.5
-                    _2lb_perc = round(_2lb*100/totalCount, 2) - 20
-                    _3lb_perc = round(_3lb*100/totalCount, 2) - 5.5
-                    _1bj_perc = round(_1bj*100/totalCount, 2) + 7
-                    _2bj_perc = round(_2bj*100/totalCount, 2)
-                    totalCount = int(totalCount * 1.6)
-                elif leaf == "Bot Leaf":
+                elif leaf == "Bought":
                     _1lb_perc = round(_1lb*100/totalCount, 2) + 3
                     _2lb_perc = round(_2lb*100/totalCount, 2) - 7
                     _3lb_perc = round(_3lb*100/totalCount, 2) + 2
