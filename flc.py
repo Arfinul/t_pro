@@ -142,7 +142,7 @@ class MyTkApp(tk.Frame):
 
         self.welcome_text = Label(self.window, text="Welcome, ", font=('times', 15, 'bold'), bg="#f7f0f5")
         self.entered = tk.Button(self.window, text="Start FLC", command=self.details_verify, fg="white", bg="#539051", width=int(configparser.get('gui-config', 'signin_btn_width')),height=int(configparser.get('gui-config', 'signin_btn_height')), font=('times', 16, 'bold'))
-        self.formula = Label(self.window, text="FLC = 1LB + 2LB + 1Banjhi", font=("Helvetica", 15), background='white')
+        self.formula = Label(self.window, text="FLC = 1LB + 2LB + 1Banjhi + 0.67 * 3LB", font=("Helvetica", 15), background='white')
 
         img = ImageTk.PhotoImage(Image.open(configparser.get('gui-config', 'logo')))
         self.panel.configure(image=img)
@@ -552,9 +552,9 @@ class MyTkApp(tk.Frame):
             self.forget_graph()
 
             _1lb, _2lb, _3lb, _1bj, _2bj, _coarse, totalCount, _perc = helper.get_class_count()
+            leaf = self.leaf_verify.get()
 
             if totalCount != 0:
-                leaf = self.leaf_verify.get()
                 if leaf == "Own":
                     _1lb_perc = round(_1lb*100/totalCount, 2) + 3
                     _2lb_perc = round(_2lb*100/totalCount, 2) - 7
@@ -576,6 +576,8 @@ class MyTkApp(tk.Frame):
                 _1bj_perc = 0 if _1bj_perc < 0 else _1bj_perc
                 _2bj_perc = 0 if _2bj_perc < 0 else _2bj_perc
                 _flc_perc = _1lb_perc + _2lb_perc + _1bj_perc + (0.67 * _3lb_perc)
+                #if leaf == "Bought":
+                #_flc_perc = _flc_perc * 0.75
                 _flc_perc = 100 if _flc_perc > 100 else _flc_perc
                 _coarse_perc = 100 - _flc_perc
             else:
@@ -597,7 +599,7 @@ class MyTkApp(tk.Frame):
             _1bjp = str(_1bj_perc)
             _2bjp = str(_2bj_perc)
             total_ = str(totalCount)
-            f.write(f"{dt_},{flc_},{coarse_},{_1lbp},{_2lbp},{_3lbp},{_1bjp},{_2bjp},{total_}\n")
+            f.write(f"{dt_},{flc_},{coarse_},{_1lbp},{_2lbp},{_3lbp},{_1bjp},{_2bjp},{total_},{leaf}\n")
             f.close()
 
             self._flc_btn.configure(text="FLC %      " + str(round(_flc_perc, 2)))
