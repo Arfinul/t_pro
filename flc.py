@@ -601,6 +601,10 @@ class MyTkApp(tk.Frame):
             total_ = str(totalCount)
             f.write(f"{dt_},{flc_},{coarse_},{_1lbp},{_2lbp},{_3lbp},{_1bjp},{_2bjp},{total_},{leaf}\n")
             f.close()
+            
+            r = open('/home/agnext/Desktop/results.csv','a')
+            r.write(f"{dt_},{flc_},{coarse_},{leaf}\n")
+            r.close()
 
             self._flc_btn.configure(text="FLC %      " + str(round(_flc_perc, 2)))
             self._total_btn.configure(text="Total Leaves     " + str(totalCount))
