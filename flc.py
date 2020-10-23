@@ -137,6 +137,7 @@ class MyTkApp(tk.Frame):
         self.welcome_text = Label(self.window, text="Welcome, ", font=('times', 15, 'bold'), bg="#f7f0f5")
         self.entered = tk.Button(self.window, text="Start FLC", command=self.details_verify, fg="white", bg="#539051", width=int(configparser.get('gui-config', 'signin_btn_width')),height=int(configparser.get('gui-config', 'signin_btn_height')), font=('times', 16, 'bold'))
         self.formula = Label(self.window, text="FLC = 1LB + 2LB + 1Banjhi + 0.5*3LB", font=("Helvetica", 15), background='white')
+        self.warning_sign = Label(self.window, text="", font=('times', 15, 'bold'), fg="red", bg="white")
 
         img = ImageTk.PhotoImage(Image.open(configparser.get('gui-config', 'logo')))
         self.panel.configure(image=img)
@@ -280,6 +281,7 @@ class MyTkApp(tk.Frame):
     def end_video(self):
         try:
             self.formula.place_forget()
+            self.warning_sign.place(x=10, y=390)
             self.endRecord.place_forget()
             self.send_data_api()
             self.msg_sent.place(x=int(configparser.get('gui-config', 'data_saved_notification_x')), y=int(configparser.get('gui-config', 'data_saved_notification_y')))
@@ -611,6 +613,7 @@ class MyTkApp(tk.Frame):
             self._coarse_btn.place(x=60,y=330)
             self._2bj_btn.place(x=300,y=330)
 
+            self.warning_sign.place_forget()
             self.formula.place(x=60,y=390)
             gc.collect()
         except Exception as e:
@@ -623,11 +626,17 @@ class MyTkApp(tk.Frame):
             password = self.password_verify.get()
             if USE_INTERNET == "TRUE":
                 if helper.is_internet_available():
-                    # success, self.token, self.customer_id, name = True, "eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2VtYWlsIjoiZGFuZ0Bnb29kcmlja2UuY29tIiwidXNlcl9mbmFtZSI6IkRlbmd1YWpoYXIiLCJ1c2VyX25hbWUiOiJkYW5nQGdvb2RyaWNrZS5jb20iLCJjdXN0b21lcl91dWlkIjoiNzZiODM4YjEtODllZi00YTBkLTg0ODQtYzc1MDMzNmFiYTVkIiwicm9sZXMiOlsib3BlcmF0b3IiXSwiaXNzIjoiUXVhbGl4IiwidXNlcl9sbmFtZSI6Ikdvb2RyaWNrZSIsImNsaWVudF9pZCI6ImNsaWVudC1tb2JpbGUiLCJ1c2VyX3V1aWQiOiJjZjNjMWRhZS0wYWI4LTQ0ZDEtYjcwYy00ZTQ5NDY0OWM5NmEiLCJ1c2VyX3R5cGUiOiJDVVNUT01FUiIsInVzZXJfaWQiOjI1NSwidXNlcl9tb2JpbGUiOiI5ODY1MzIxNTQ1Iiwic2NvcGUiOlsiYWxsIl0sInVzZXJfaGllcmFyY2h5IjpudWxsLCJjdXN0b21lcl9uYW1lIjoiR29vZHJpY2tlIiwiZXhwIjoxNjA2MzYyNDEzLCJjdXN0b21lcl9pZCI6MTgwLCJqdGkiOiI5ZjI0MTMxMy1kNGIyLTRiOWEtYTA3Mi1hMzU5NWM3YjQ0NDkifQ.SBY56FVifsFCaBclcFlaCHz1KTMieam3bu66ipMm26cACZ7yF55PnU56NaIm0n9aGaoBbvS-zuMw3fIjbDLt6VRVtT7LVAhDnbiANwzfn0i2vS5nO_1oG7KGbdqXRgUR3epJsc2CMfuSkRX74p4HpeEkMACK_SD0RBAI8miOswrI6ok5_tAvkiiCVBDj75PHkCR-wCnK3VUHtd8rmJZwDM9P14wMpQKDlSJy6WHbW4JKv-BOHv_vAcfDtFjIGfGP-6a1GW_nnhgiL8-IUZdEVcML-S_E_7Thyug9r0btX3xo73WuEwlTwIk6ibdn2MVpjfzZ7KiTNXJXQp_Mn2DrqA", 180, "Denguajhar"
                     success, self.token, self.customer_id, name = helper.login_api_qualix(username, password)
                     if success:
-                        self.login_success()
-                        self.welcome_text.configure(text="Welcome, " + name.title())
+                        valid, days = helper.check_expiry()
+                        if valid:
+                            if 0 < days < 7:
+                                self.warning_sign.configure(text=f"License expiring in {days} days")
+                                self.warning_sign.place(x=10, y=390)
+                            self.login_success()
+                            self.welcome_text.configure(text="Welcome, " + name.title())
+                        else:
+                            self.show_error_msg("License expired.")
                     else:
                         self.show_error_msg("User Not Found")
                 else:
@@ -653,14 +662,14 @@ class MyTkApp(tk.Frame):
     def details_verify(self): 
         try:
             gc.collect() 
-            # sector = self.section_verify.get()  
-            # garden = self.garden_verify.get()
-            # division = self.division_verify.get()    
-            # if sector not in ["", "Select section ID"] and garden not in ["", "Select garden ID"] and division not in ["", "Select division ID"]:
-            self.details_entered_success()
-            self.start_testing(cmd)
-            # else:
-            #     self.show_error_msg("Please fill all details.")
+            sector = self.section_verify.get()  
+            garden = self.garden_verify.get()
+            division = self.division_verify.get()    
+            if sector not in ["", "Select section ID"] and garden not in ["", "Select garden ID"] and division not in ["", "Select division ID"]:
+                self.details_entered_success()
+                self.start_testing(cmd)
+            else:
+                self.show_error_msg("Please fill all details.")
         except Exception as e:
             logger.exception(str('Exception occured in "details_verify" function\nError message:' + str(e)))
      
@@ -786,22 +795,22 @@ class MyTkApp(tk.Frame):
             self.new_fields['inst_center_id'] = self.center_id_name_dict[self.inst_center_verify.get()] if self.inst_center_verify.get() != 'Select Inst Center' else self.inst_center_verify.get()
             self.new_fields['device_serial_no'] = self.device_serial_no_verify.get()
             self.new_fields['batchId'] = self.batch_id_verify.get()
-            # if (self.new_fields['area_covered'] == 'Enter Area Covered') or \
-            #     (self.new_fields['weight'] == "Enter Weight") or \
-            #     (self.new_fields['sample_id'] == "Enter Sample ID")  or \
-            #     (self.new_fields['lot_id'] == "Enter Lot ID") or \
-            #     (self.new_fields['region_id'] == "Select Region") or \
-            #     (self.new_fields['inst_center_id'] == "Select Inst Center") or \
-            #     (self.new_fields['device_serial_no'] == "Enter Device SerialNo") or \
-            #     (self.new_fields['batchId'] == "Enter Batch ID"):
-            #     self.show_error_msg("Please fill all details.")
+            if (self.new_fields['area_covered'] == 'Enter Area Covered') or \
+                (self.new_fields['weight'] == "Enter Weight") or \
+                (self.new_fields['sample_id'] == "Enter Sample ID")  or \
+                (self.new_fields['lot_id'] == "Enter Lot ID") or \
+                (self.new_fields['region_id'] == "Select Region") or \
+                (self.new_fields['inst_center_id'] == "Select Inst Center") or \
+                (self.new_fields['device_serial_no'] == "Enter Device SerialNo") or \
+                (self.new_fields['batchId'] == "Enter Batch ID"):
+                self.show_error_msg("Please fill all details.")
             # else:
-            if (self.new_fields['weight'] == 'Enter Weight'):
-                self.show_error_msg("Please enter weight in kg.")
-            elif (self.new_fields['region_id'] == 'Select Region'):
-                self.show_error_msg("Please select Region")
-            elif (self.new_fields['inst_center_id'] == 'Select Inst Center'):
-                self.show_error_msg("Please select Inst Center")
+            # if (self.new_fields['weight'] == 'Enter Weight'):
+            #     self.show_error_msg("Please enter weight in kg.")
+            # elif (self.new_fields['region_id'] == 'Select Region'):
+            #     self.show_error_msg("Please select Region")
+            # elif (self.new_fields['inst_center_id'] == 'Select Inst Center'):
+            #     self.show_error_msg("Please select Inst Center")
             else:
                 self.second_screen_forget()
                 self.enter_details()      
