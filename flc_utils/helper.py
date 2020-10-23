@@ -94,24 +94,22 @@ def get_payload():
                 'total_count': totalCount, 'quality_score': _perc}
     return _1lb, _2lb, _3lb, _1bj, _2bj, _coarse, totalCount, _perc, payload
 
-def qualix_api(payload, sectionId, new_fields):
+def qualix_api(token, payload, sectionId, new_fields):
     li = []
     for i in payload:
         li.append({"analysisName": i, "totalAmount": payload[i]})
-    mp_encoder = MultipartEncoder(
-            fields={
-                "data": json.dumps({
+    data_ = json.dumps({
                     "section_id": str(sectionId),
-                    "batch_id": str(new_fields['batchId']),
+                    "batch_id": "Good-001",
                     "commodity_id": "4",
-                    "device_serial_no": str(new_fields['device_serial_no']),
+                    "device_serial_no": "FLCP203208P02M1",
                     "device_type": "FLC",
                     "device_type_id": "5",
                     "farmer_code": "QX1409936521", # str(farmer_code)
                     "location": "30.703239_76.692094",
                     "lot_id": str(new_fields['lot_id']),
                     "quantity": str(new_fields['weight']),
-                    "quantity_unit": "tonnes",
+                    "quantity_unit": "kg",
                     "sample_id": str(new_fields['sample_id']),
                     "scan_by_user_code": "128",
                     "vendor_code": "1",
@@ -122,15 +120,21 @@ def qualix_api(payload, sectionId, new_fields):
                     "commodity_category_id":"2",
                     "commodity_name":"Tea",
                     "area_covered": str(new_fields['area_covered'])
-                    }),
-                "analyses": json.dumps(li),
+                    })
+    data_ = data_.replace("'", '"')
+    analyses_ = json.dumps(li)
+    analyses_ = analyses_.replace("'", '"')
+    mp_encoder = MultipartEncoder(
+            fields={
+                "data": data_,
+                "analyses": analyses_,
                    }
                 )
     response = requests.post(
             'http://23.98.216.140:8085/api/scan',
             data=mp_encoder,
             headers={'Content-Type': mp_encoder.content_type,
-                     "Authorization": "Bearer eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2VtYWlsIjoiZGVtb29wZXJhdG9yQGdtYWlsLmNvbSIsInVzZXJfZm5hbWUiOiJPcGVyYXRvciIsInVzZXJfbmFtZSI6ImRlbW9vcGVyYXRvckBnbWFpbC5jb20iLCJjdXN0b21lcl91dWlkIjoiOGE1YTU2YTAtNGY0MS00YTFjLWFiMTQtNmQ1MWFlNjIyZDBiIiwicm9sZXMiOlsib3BlcmF0b3IiXSwiaXNzIjoiUXVhbGl4IiwidXNlcl9sbmFtZSI6Ik9wZXJhdG9yIiwiY2xpZW50X2lkIjoiY2xpZW50LW1vYmlsZSIsInVzZXJfdXVpZCI6Ijc3Nzk3NTkwLTlmMzYtNDM5Ni1iMTA2LTcwNThiZjFkMTc3ZiIsInVzZXJfdHlwZSI6IkNVU1RPTUVSIiwidXNlcl9pZCI6MTg4LCJ1c2VyX21vYmlsZSI6Ijk2NTY1ODU2OTUiLCJzY29wZSI6WyJhbGwiXSwidXNlcl9oaWVyYXJjaHkiOm51bGwsImN1c3RvbWVyX25hbWUiOiJEZW1vIGN1c3RvbWVyIiwiZXhwIjoxNTk5MDEyMjE0LCJjdXN0b21lcl9pZCI6OTEsImp0aSI6Ijc5NDM3NzRiLWY0MTQtNDg1Yi1hZmZiLWYyNGRkODRiOWExOCJ9.KKW07ptym9_ftVoD1BhxBQ1yoal60NkK1gGh62lBT7XZfDKlKGwfIHthQHZRkAvhzpta2y3ePS5LHobyoF4Cir29dodSnM6f-CrNny5yUCQsyysVjVQSENRBFGBB9MzQ_0dU76UU5Ix-uj4N_IXMhaswX8hUn2GLdfKiCqPivqHkyL-jGT6QmFW2rj_GnqGyGZNumMysSm-xFhvIySMjkVgm8hT2DBp6QygTSwitMH3N1eogKIb76VJdvE9IDbUYjKll0AZqkVx0omWBCth9-sCiWkuzBXBPmQ48OFYTZN0j3vFO019IlAve2Ioj7_ewj_Qa2d2ni0uoOkm6RQqc7A"
+                     "Authorization": "Bearer " + token
                      }
         )
     print(response.text)

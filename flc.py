@@ -114,10 +114,10 @@ class MyTkApp(tk.Frame):
         self.password_verify = StringVar()
          
         self.username_login_entry = Entry(self.window, textvariable=self.username_verify, font = "Helvetica 15")
-        self.username_login_entry.insert(1, "Enter username")
+        self.username_login_entry.insert(1, "nagrijulite@gmail.com")
 
         self.password_login_entry = Entry(self.window, textvariable=self.password_verify, show= '*', font = "Helvetica 15")
-        self.password_login_entry.insert(1, "Enter password")
+        self.password_login_entry.insert(1, "nagrijuli")
         
         self.signin = tk.Button(self.window, text="Login", command=self.login_verify, fg="white", bg="#539051", width=int(configparser.get('gui-config', 'signin_btn_width')),height=int(configparser.get('gui-config', 'signin_btn_height')), font=("Helvetica 15 bold"))
 
@@ -518,7 +518,7 @@ class MyTkApp(tk.Frame):
                 sectionId = int(self.section_id_name_dict[self.section_verify.get()])
                 qualix_status = 0
                 if helper.is_internet_available():
-                    qualix_status = helper.qualix_api(payload, sectionId, self.new_fields)
+                    qualix_status = helper.qualix_api(self.token, payload, sectionId, self.new_fields)
                 if qualix_status == 200:
                     self.msg_sent.configure(text="Data saved", fg="green")
                     if helper.is_internet_available():
