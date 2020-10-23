@@ -143,6 +143,7 @@ class MyTkApp(tk.Frame):
         self.welcome_text = Label(self.window, text="Welcome, ", font=('times', 15, 'bold'), bg="#f7f0f5")
         self.entered = tk.Button(self.window, text="Start FLC", command=self.details_verify, fg="white", bg="#539051", width=int(configparser.get('gui-config', 'signin_btn_width')),height=int(configparser.get('gui-config', 'signin_btn_height')), font=('times', 16, 'bold'))
         self.formula = Label(self.window, text="FLC = 1LB + 2LB + 1Banjhi + 0.67 * 3LB", font=("Helvetica", 15), background='white')
+        self.warning_sign = Label(self.window, text="", font=('times', 15, 'bold'), fg="red", bg="white")
 
         img = ImageTk.PhotoImage(Image.open(configparser.get('gui-config', 'logo')))
         self.panel.configure(image=img)
@@ -287,6 +288,7 @@ class MyTkApp(tk.Frame):
     def end_video(self):
         try:
             self.formula.place_forget()
+            self.warning_sign.place(x=10, y=390)
             self.endRecord.place_forget()
             self.send_data_api()
             self.msg_sent.place(x=int(configparser.get('gui-config', 'data_saved_notification_x')), y=int(configparser.get('gui-config', 'data_saved_notification_y')))
@@ -625,7 +627,7 @@ class MyTkApp(tk.Frame):
             self._coarse_btn.place(x=60,y=300)
             # self._coarse_btn.place(x=60,y=330) # before
             # self._2bj_btn.place(x=300,y=330)
-
+            self.warning_sign.place_forget()
             self.formula.place(x=60,y=390)
             gc.collect()
         except Exception as e:
@@ -640,8 +642,16 @@ class MyTkApp(tk.Frame):
                 if helper.is_internet_available():
                     success, self.token, self.customer_id, name = helper.login_api_qualix(username, password)
                     if success:
-                        self.login_success()
-                        self.welcome_text.configure(text="Welcome, " + name.title())
+                        valid, days = helper.check_expiry()
+                        print(valid, days)
+                        if valid:
+                            if 0 < days < 7:
+                                self.warning_sign.configure(text=f"License expiring in {days} days")
+                                self.warning_sign.place(x=10, y=390)
+                            self.login_success()
+                            self.welcome_text.configure(text="Welcome, " + name.title())
+                        else:
+                            self.show_error_msg("License expired.")
                     else:
                         self.show_error_msg("User Not Found")
                 else:

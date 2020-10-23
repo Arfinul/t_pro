@@ -288,3 +288,13 @@ def free_space():
             delete_files = rest_files_names[:-10]
             for i in delete_files:
                 os.remove(i)
+
+def check_expiry():
+    from dateutil.relativedelta import relativedelta
+
+    START_DATE = datetime.datetime(2020, 10, 23, 0, 0)
+    EXPIRY_MONTHS = 6
+    FINAL_DATE = START_DATE + relativedelta(months=+EXPIRY_MONTHS)
+    # NOW = datetime.datetime(2021, 4, 20, 0, 0)
+    NOW = datetime.datetime.now()
+    return NOW < FINAL_DATE, (FINAL_DATE - NOW).days
