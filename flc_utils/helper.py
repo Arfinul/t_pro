@@ -289,12 +289,23 @@ def free_space():
             for i in delete_files:
                 os.remove(i)
 
-def check_expiry():
-    from dateutil.relativedelta import relativedelta
+def check_expiry(token):
+    # from dateutil.relativedelta import relativedelta
+    # START_DATE = datetime.datetime(2020, 10, 23, 0, 0)
+    # EXPIRY_MONTHS = 6
+    # FINAL_DATE = START_DATE + relativedelta(months=+EXPIRY_MONTHS)
+    # # NOW = datetime.datetime(2021, 4, 20, 0, 0)
+    # NOW = datetime.datetime.now()
 
-    START_DATE = datetime.datetime(2020, 10, 23, 0, 0)
-    EXPIRY_MONTHS = 6
-    FINAL_DATE = START_DATE + relativedelta(months=+EXPIRY_MONTHS)
-    # NOW = datetime.datetime(2021, 4, 20, 0, 0)
-    NOW = datetime.datetime.now()
-    return NOW < FINAL_DATE, (FINAL_DATE - NOW).days
+    DEVICE = "DVPRO001"
+    url = f"http://70.37.95.226:8072/api/chemical/device/{DEVICE}?v=1"
+    headers = {'Authorization': "Bearer " + token}
+    response = requests.request("GET", url, headers=headers)
+    data = response.json()
+    if data:
+        EPOCH_DATE = data['crops'][0]["licence_valid"]
+        FINAL_DATE = datetime.datetime.fromtimestamp(float(EPOCH_DATE)/1000.)
+        NOW = datetime.datetime.now()
+        return True, NOW < FINAL_DATE, (FINAL_DATE - NOW).days
+    else:
+        return False, "", ""

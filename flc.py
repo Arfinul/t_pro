@@ -642,16 +642,18 @@ class MyTkApp(tk.Frame):
                 if helper.is_internet_available():
                     success, self.token, self.customer_id, name = helper.login_api_qualix(username, password)
                     if success:
-                        valid, days = helper.check_expiry()
-                        print(valid, days)
-                        if valid:
-                            if 0 < days < 7:
-                                self.warning_sign.configure(text=f"License expiring in {days} days")
-                                self.warning_sign.place(x=10, y=390)
-                            self.login_success()
-                            self.welcome_text.configure(text="Welcome, " + name.title())
+                        registered, valid, days = helper.check_expiry(self.token)
+                        if registered:
+                            if valid:
+                                if 0 < days < 7:
+                                    self.warning_sign.configure(text=f"License expiring in {days} days")
+                                    self.warning_sign.place(x=10, y=390)
+                                self.login_success()
+                                self.welcome_text.configure(text="Welcome, " + name.title())
+                            else:
+                                self.show_error_msg("License expired.")
                         else:
-                            self.show_error_msg("License expired.")
+                            self.show_error_msg("Device not registered.")
                     else:
                         self.show_error_msg("User Not Found")
                 else:
