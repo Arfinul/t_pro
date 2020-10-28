@@ -121,17 +121,13 @@ class MyTkApp(tk.Frame):
         
         self.signin = tk.Button(self.window, text="Login", command=self.login_verify, fg="white", bg="#539051", width=int(configparser.get('gui-config', 'signin_btn_width')),height=int(configparser.get('gui-config', 'signin_btn_height')), font=("Helvetica 15 bold"))
 
-        self.leaf_verify = StringVar()
         self.section_verify = StringVar()
         self.garden_verify = StringVar()
         self.division_verify = StringVar()
-        self.leaf_verify.set("Select Leaf Type")
         self.section_verify.set("Select section ID")
         self.garden_verify.set("Select garden ID")
         self.division_verify.set("Select division ID")
          
-        self.leaf_entry = OptionMenu(self.window, self.leaf_verify, *self.LEAF_OPTIONS)
-        self.leaf_entry.configure(width=24, state="disabled", font=font.Font(family='Helvetica', size=16))
         self.garden_entry = OptionMenu(self.window, self.garden_verify, *self.GARDEN_OPTIONS)
         self.garden_entry.configure(width=24, state="disabled", font=font.Font(family='Helvetica', size=16))
         self.division_entry = OptionMenu(self.window, self.division_verify, *self.DIVISION_OPTIONS)
@@ -167,11 +163,12 @@ class MyTkApp(tk.Frame):
 
         self.endRecord.place_forget()
 
+        self.leaf_verify = StringVar()
+        self.leaf_verify.set("Select Leaf Type")
         self.area_covered_verify = StringVar()
         self.weight_verify = StringVar()
         self.sample_id_verify = StringVar()
         self.lot_id_verify = StringVar()
-        self.device_serial_no_verify = StringVar()
         self.batch_id_verify = StringVar()
         self.region_verify = StringVar()
         self.inst_center_verify = StringVar()
@@ -180,43 +177,43 @@ class MyTkApp(tk.Frame):
 
         label_font_size = 15
         entry_font_size = 12
+
+        self.leaf_entry = OptionMenu(self.window, self.leaf_verify, *self.LEAF_OPTIONS)
+        self.leaf_entry.configure(width=15, state="active", font=font.Font(family='Helvetica', size=16))
+        self.leaf_verify.trace("w", self.show_options)
+
         self.area_covered_label = Label(self.window, text="Area covered:", font=('times', label_font_size, 'bold'), bg="#f7f0f5")
         self.area_covered_entry = Entry(self.window, textvariable=self.area_covered_verify)
-        self.area_covered_entry.configure(font=font.Font(family='Helvetica', size=entry_font_size))
+        self.area_covered_entry.configure(font=font.Font(family='Helvetica', size=entry_font_size), state="disabled")
         self.area_covered_entry.bind("<Button-1>", self.action_area)
 
         self.weight_label = Label(self.window, text="Weight:", font=('times', label_font_size, 'bold'), bg="#f7f0f5")
         self.weight_entry = Entry(self.window, textvariable=self.weight_verify)
-        self.weight_entry.configure(font=font.Font(family='Helvetica', size=entry_font_size))
+        self.weight_entry.configure(font=font.Font(family='Helvetica', size=entry_font_size), state="disabled")
         self.weight_entry.bind("<Button-1>", self.action_weight)
 
         self.sample_id_label = Label(self.window, text="Sample ID:", font=('times', label_font_size, 'bold'), bg="#f7f0f5")
         self.sample_id_entry = Entry(self.window, textvariable=self.sample_id_verify)
-        self.sample_id_entry.configure(font=font.Font(family='Helvetica', size=entry_font_size))
+        self.sample_id_entry.configure(font=font.Font(family='Helvetica', size=entry_font_size), state="disabled")
         self.sample_id_entry.bind("<Button-1>", self.action_sampleid)
 
         self.lot_id_label = Label(self.window, text="Lot ID:", font=('times', label_font_size, 'bold'), bg="#f7f0f5")
         self.lot_id_entry = Entry(self.window, textvariable=self.lot_id_verify)
-        self.lot_id_entry.configure(font=font.Font(family='Helvetica', size=entry_font_size))
+        self.lot_id_entry.configure(font=font.Font(family='Helvetica', size=entry_font_size), state="disabled")
         self.lot_id_entry.bind("<Button-1>", self.action_lotid)
-
-        self.device_serial_no_label = Label(self.window, text="Device Serial No.:", font=('times', label_font_size, 'bold'), bg="#f7f0f5")
-        self.device_serial_no_entry = Entry(self.window, textvariable=self.device_serial_no_verify)
-        self.device_serial_no_entry.configure(font=font.Font(family='Helvetica', size=entry_font_size))
-        self.device_serial_no_entry.bind("<Button-1>", self.action_deviceserialno)
 
         self.batch_id_label = Label(self.window, text="Batch ID:", font=('times', label_font_size, 'bold'), bg="#f7f0f5")
         self.batch_id_entry = Entry(self.window, textvariable=self.batch_id_verify)
-        self.batch_id_entry.configure(font=font.Font(family='Helvetica', size=entry_font_size))
+        self.batch_id_entry.configure(font=font.Font(family='Helvetica', size=entry_font_size), state="disabled")
         self.batch_id_entry.bind("<Button-1>", self.action_batchid)
 
         self.region_label = Label(self.window, text="Region:", font=('times', label_font_size, 'bold'), bg="#f7f0f5")
         self.region_entry = OptionMenu(self.window, self.region_verify, *self.REGIONS_OPTIONS)
-        self.region_entry.configure(width=24, state="active", font=font.Font(family='times', size=16))
+        self.region_entry.configure(width=24, state="disabled", font=font.Font(family='times', size=16))
 
         self.inst_center_label = Label(self.window, text="Installation Center:", font=('times', label_font_size, 'bold'), bg="#f7f0f5")
         self.inst_center_entry = OptionMenu(self.window, self.inst_center_verify, *self.INSTCENTER_OPTIONS)
-        self.inst_center_entry.configure(width=24, state="active", font=font.Font(family='times', size=16))
+        self.inst_center_entry.configure(width=24, state="disabled", font=font.Font(family='times', size=16))
 
         self.nextBtn = tk.Button(self.window, text="Next", command=self.main_screen, fg="white", bg="#F37C62", width=12,height=2, font=('times', 16, 'bold'))
 
@@ -248,7 +245,6 @@ class MyTkApp(tk.Frame):
         try:
             self.endRecord.place_forget()
             self.entered.place_forget()
-            self.leaf_entry.place_forget()
             self.sector_entry.place_forget()
             self.garden_entry.place_forget()
             self.division_entry.place_forget()
@@ -446,9 +442,21 @@ class MyTkApp(tk.Frame):
         except Exception as e:
             logger.exception(str('Exception occured in "get_instcenter" function\nError message:' + str(e)))
 
+    def show_options(self, *args):
+        leaf_type = self.leaf_verify.get()
+        if leaf_type == "Own":
+            self.area_covered_entry.configure(state="normal")
+            self.weight_entry.configure(state="normal")
+            self.sample_id_entry.configure(state="normal")
+            self.lot_id_entry.configure(state="normal")
+            self.batch_id_entry.configure(state="normal")
+            self.get_regions()
+            self.region_entry.place(x=100, y=290)
+            self.region_entry.configure(state="active")
+            self.inst_center_entry.configure(state="active")
+
     def place_inputs(self):
         try:
-            self.leaf_entry.place(x=520, y=110, height=40, width=190)
             self.garden_entry.place(x=520, y=155, height=40, width=190)
             self.division_entry.place(x=520, y=200, height=40, width=190)
             self.sector_entry.place(x=520, y=245, height=40, width=190)
@@ -499,11 +507,6 @@ class MyTkApp(tk.Frame):
     def action_lotid(self, event):
         if self.lot_id_verify.get() == "Enter Lot ID":
             self.lot_id_entry.delete(0, tk.END)
-        self.popup_keyboard(event)
-
-    def action_deviceserialno(self, event):
-        if self.device_serial_no_verify.get() == "Enter Device SerialNo":
-            self.device_serial_no_entry.delete(0, tk.END)
         self.popup_keyboard(event)
 
     def action_batchid(self, event):
@@ -590,7 +593,6 @@ class MyTkApp(tk.Frame):
                 _2bj_perc = 0.0
                 _coarse_perc = 0.0
                 _flc_perc = 0.0
-
             f = open('flc_utils/records.csv','a')
             dt_ = datetime.datetime.now().strftime("%d-%m-%Y %H:%M:%S")
             flc_ = str(_flc_perc)
@@ -681,11 +683,10 @@ class MyTkApp(tk.Frame):
     def details_verify(self): 
         try:
             gc.collect() 
-            leaf = self.leaf_verify.get()
             sector = self.section_verify.get()  
             garden = self.garden_verify.get()
             division = self.division_verify.get()    
-            if leaf not in ["", "Select Leaf Type"] and sector not in ["", "Select section ID"] and garden not in ["", "Select garden ID"] and division not in ["", "Select division ID"]:
+            if sector not in ["", "Select section ID"] and garden not in ["", "Select garden ID"] and division not in ["", "Select division ID"]:
                 self.details_entered_success()
                 self.start_testing(cmd)
             else:
@@ -737,35 +738,33 @@ class MyTkApp(tk.Frame):
             x_col1, x_col2, x_col3, x_col4 = 70, 300, 520, 650
             y_row1, y_row2, y_row3, y_row4 = 150, 210, 290, 330
 
-            self.area_covered_label.place(x=x_col1, y=y_row1-22)
-            self.area_covered_entry.place(x=x_col1, y=y_row1)
+            self.leaf_entry.place(x=x_col1-10, y=y_row1-10)
+            menu = self.nametowidget(self.leaf_entry.menuname)
+            menu.config(font=font.Font(family='Helvetica', size=16))
+
+            self.area_covered_label.place(x=x_col2, y=y_row1-22)
+            self.area_covered_entry.place(x=x_col2, y=y_row1)
             self.area_covered_entry.delete(0, tk.END)
             area_covered = self.new_fields['area_covered'] if 'area_covered' in self.new_fields else "Enter Area Covered"
             self.area_covered_entry.insert(1, area_covered)
 
-            self.weight_label.place(x=x_col2, y=y_row1-22)
-            self.weight_entry.place(x=x_col2, y=y_row1)
+            self.weight_label.place(x=x_col3, y=y_row1-22)
+            self.weight_entry.place(x=x_col3, y=y_row1)
             self.weight_entry.delete(0, tk.END)
             weight = self.new_fields['weight'] if 'weight' in self.new_fields else "Enter Weight"
             self.weight_entry.insert(1, weight)
 
-            self.sample_id_label.place(x=x_col3, y=y_row1-22)
-            self.sample_id_entry.place(x=x_col3, y=y_row1)
+            self.sample_id_label.place(x=x_col1, y=y_row2-22)
+            self.sample_id_entry.place(x=x_col1, y=y_row2)
             self.sample_id_entry.delete(0, tk.END)
             sample_id = self.new_fields['sample_id'] if 'sample_id' in self.new_fields else "Enter Sample ID"
             self.sample_id_entry.insert(1, sample_id)
 
-            self.lot_id_label.place(x=x_col1, y=y_row2-22)
-            self.lot_id_entry.place(x=x_col1, y=y_row2)
+            self.lot_id_label.place(x=x_col2, y=y_row2-22)
+            self.lot_id_entry.place(x=x_col2, y=y_row2)
             self.lot_id_entry.delete(0, tk.END)
             lot_id = self.new_fields['lot_id'] if 'lot_id' in self.new_fields else "Enter Lot ID"
             self.lot_id_entry.insert(1, lot_id)
-
-            self.device_serial_no_label.place(x=x_col2, y=y_row2-22)
-            self.device_serial_no_entry.place(x=x_col2, y=y_row2)
-            self.device_serial_no_entry.delete(0, tk.END)
-            device_serial_no = self.new_fields['device_serial_no'] if 'device_serial_no' in self.new_fields else "Enter Device SerialNo"
-            self.device_serial_no_entry.insert(1, device_serial_no)
 
             self.batch_id_label.place(x=x_col3, y=y_row2-22)
             self.batch_id_entry.place(x=x_col3, y=y_row2)
@@ -773,7 +772,6 @@ class MyTkApp(tk.Frame):
             batch_id = self.new_fields['batchId'] if 'batchId' in self.new_fields else "Enter Batch ID"
             self.batch_id_entry.insert(1, batch_id)
 
-            self.get_regions()
             self.region_label.place(x=100, y=y_row3-22)
             self.region_entry.place(x=100, y=y_row3)
 
@@ -788,6 +786,7 @@ class MyTkApp(tk.Frame):
 
     def second_screen_forget(self):
         try:
+            self.leaf_entry.place_forget()
             self.area_covered_label.place_forget()
             self.area_covered_entry.place_forget()
             self.weight_label.place_forget()
@@ -800,8 +799,6 @@ class MyTkApp(tk.Frame):
             self.region_entry.place_forget()
             self.inst_center_label.place_forget()
             self.inst_center_entry.place_forget()
-            self.device_serial_no_label.place_forget()
-            self.device_serial_no_entry.place_forget()
             self.batch_id_label.place_forget()
             self.batch_id_entry.place_forget()
 
@@ -811,27 +808,40 @@ class MyTkApp(tk.Frame):
 
     def main_screen(self):
         try:
-            self.new_fields['area_covered'] = self.area_covered_verify.get()
-            self.new_fields['weight'] = self.weight_verify.get()
-            self.new_fields['sample_id'] = self.sample_id_verify.get()
-            self.new_fields['lot_id'] = self.lot_id_verify.get()
-            self.new_fields['region_id'] = self.region_id_name_dict[self.region_verify.get()] if self.region_verify.get() != 'Select Region' else self.region_verify.get()
-            self.new_fields['inst_center_id'] = self.center_id_name_dict[self.inst_center_verify.get()] if self.inst_center_verify.get() != 'Select Inst Center' else self.inst_center_verify.get()
-            self.new_fields['device_serial_no'] = self.device_serial_no_verify.get()
-            self.new_fields['batchId'] = self.batch_id_verify.get()
-            if (self.new_fields['area_covered'] == 'Enter Area Covered') or \
-                (self.new_fields['weight'] == "Enter Weight") or \
-                (self.new_fields['sample_id'] == "Enter Sample ID")  or \
-                (self.new_fields['lot_id'] == "Enter Lot ID") or \
-                (self.new_fields['region_id'] == "Select Region") or \
-                (self.new_fields['inst_center_id'] == "Select Inst Center") or \
-                (self.new_fields['device_serial_no'] == "Enter Device SerialNo") or \
-                (self.new_fields['batchId'] == "Enter Batch ID"):
-                self.show_error_msg("Please fill all details.")
-            else:
+            leaf_type =  self.leaf_verify.get()
+            if leaf_type == "Own":
+                self.new_fields['area_covered'] = self.area_covered_verify.get()
+                self.new_fields['weight'] = self.weight_verify.get()
+                self.new_fields['sample_id'] = self.sample_id_verify.get()
+                self.new_fields['lot_id'] = self.lot_id_verify.get()
+                self.new_fields['region_id'] = self.region_id_name_dict[self.region_verify.get()] if self.region_verify.get() != 'Select Region' else self.region_verify.get()
+                self.new_fields['inst_center_id'] = self.center_id_name_dict[self.inst_center_verify.get()] if self.inst_center_verify.get() != 'Select Inst Center' else self.inst_center_verify.get()
+                self.new_fields['batchId'] = self.batch_id_verify.get()
+                if (self.new_fields['area_covered'] == 'Enter Area Covered') or \
+                    (self.new_fields['weight'] == "Enter Weight") or \
+                    (self.new_fields['sample_id'] == "Enter Sample ID")  or \
+                    (self.new_fields['lot_id'] == "Enter Lot ID") or \
+                    (self.new_fields['region_id'] == "Select Region") or \
+                    (self.new_fields['inst_center_id'] == "Select Inst Center") or \
+                    (self.new_fields['batchId'] == "Enter Batch ID"):
+                    self.show_error_msg("Please fill all details.")
+                else:
+                    self.second_screen_forget()
+                    self.enter_details()      
+                    self.start_jetson_fan()
+            elif leaf_type == "Bought":
+                self.new_fields['area_covered'] = "0"
+                self.new_fields['weight'] = "0.75"
+                self.new_fields['sample_id'] = "0"
+                self.new_fields['lot_id'] = "0"
+                self.new_fields['region_id'] = "0"
+                self.new_fields['inst_center_id'] = "0"
+                self.new_fields['batchId'] = "0"
                 self.second_screen_forget()
                 self.enter_details()      
                 self.start_jetson_fan()
+            else:
+                self.show_error_msg("Please select leaf type")
         except Exception as e:
             logger.exception(str('Exception occured in "main_screen" function\nError message:' + str(e)))  
 
