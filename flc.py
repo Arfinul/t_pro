@@ -56,7 +56,7 @@ class MyTkApp(tk.Frame):
         self.DIVISION_OPTIONS = ["Select division ID"] 
         self.REGIONS_OPTIONS = ['Select Region']
         self.INSTCENTER_OPTIONS = ['Select Inst Center']
-        self.options_displayed = False
+        self.options_displayed = True
         self.new_fields = {}
 
         self.window = master
@@ -254,7 +254,7 @@ class MyTkApp(tk.Frame):
     
     def display_all_options(self):
         try:
-            if self.options_displayed == False:
+            if self.options_displayed == True:
                 self.back_button.place(x=int(configparser.get('gui-config', 'back_x')), y=int(configparser.get('gui-config', 'back_y')))
                 self.logout_button.place(x=int(configparser.get('gui-config', 'logout_x')), y=int(configparser.get('gui-config', 'logout_y')))
                 self.restart_button.place(x=int(configparser.get('gui-config', 'restart_x')), y=int(configparser.get('gui-config', 'restart_y')))
@@ -720,6 +720,7 @@ class MyTkApp(tk.Frame):
             self.sector_entry.configure(width=24, state="disabled")
 
             self.place_inputs()
+            self.display_all_options()
 
             self.poweroff.place(x=750, y=80)
         except Exception as e:
