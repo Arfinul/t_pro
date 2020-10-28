@@ -26,6 +26,12 @@ logger = logging.getLogger(("FLC"))
 configparser = configparser.RawConfigParser()   
 os.chdir("/home/agnext/Documents/flc")
 
+def cam_fresh():
+    subprocess.Popen("python3 flc_utils/guvcview-config/cam_initialise.py", stdout= subprocess.PIPE, shell=True)
+
+th = threading.Thread(target=cam_fresh)
+th.start()
+
 configparser.read('flc_utils/screens/touchScreen/gui.cfg')
 
 USE_INTERNET = configparser.get('gui-config', 'internet')
