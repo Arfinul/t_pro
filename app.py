@@ -25,6 +25,12 @@ from flask_server import server
 configparser = configparser.RawConfigParser()   
 os.chdir("/home/agnext/Documents/flc")  # Agnext
 
+def cam_fresh():
+    subprocess.Popen("python3 flc_utils/guvcview-config/cam_initialise.py", stdout= subprocess.PIPE, shell=True)
+
+th = threading.Thread(target=cam_fresh)
+th.start()
+
 configparser.read('flc_utils/screens/touchScreen/gui.cfg')
 is_admin = False
 
@@ -735,5 +741,3 @@ def launchApp():
 
 if __name__=='__main__':
     launchApp()
-
-
