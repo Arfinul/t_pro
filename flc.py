@@ -26,6 +26,11 @@ logger = logging.getLogger(("FLC"))
 configparser = configparser.RawConfigParser()   
 os.chdir("/home/agnext/Documents/flc")
 
+def cam_fresh():
+    subprocess.Popen("python3 flc_utils/guvcview-config/cam_initialise.py", stdout= subprocess.PIPE, shell=True)
+th = threading.Thread(target=cam_fresh)
+th.start()
+
 configparser.read('flc_utils/screens/touchScreen/gui.cfg')
 
 USE_INTERNET = configparser.get('gui-config', 'internet')
@@ -113,10 +118,10 @@ class MyTkApp(tk.Frame):
         self.password_verify = StringVar()
          
         self.username_login_entry = Entry(self.window, textvariable=self.username_verify, font = "Helvetica 15")
-        self.username_login_entry.insert(1, "Enter username")
+        self.username_login_entry.insert(1, "jai@ad")
 
         self.password_login_entry = Entry(self.window, textvariable=self.password_verify, show= '*', font = "Helvetica 15")
-        self.password_login_entry.insert(1, "Enter password")
+        self.password_login_entry.insert(1, "qw123")
         
         self.signin = tk.Button(self.window, text="Login", command=self.login_verify, fg="white", bg="#539051", width=int(configparser.get('gui-config', 'signin_btn_width')),height=int(configparser.get('gui-config', 'signin_btn_height')), font=("Helvetica 15 bold"))
 
@@ -138,6 +143,7 @@ class MyTkApp(tk.Frame):
         self.welcome_text = Label(self.window, text="Welcome, ", font=('times', 15, 'bold'), bg="#f7f0f5")
         self.entered = tk.Button(self.window, text="Start FLC", command=self.details_verify, fg="white", bg="#539051", width=int(configparser.get('gui-config', 'signin_btn_width')),height=int(configparser.get('gui-config', 'signin_btn_height')), font=('times', 16, 'bold'))
         self.formula = Label(self.window, text="FLC = 1LB + 2LB + 1Banjhi", font=("Helvetica", 15), background='white')
+        self.warning_sign = Label(self.window, text="", font=('times', 15, 'bold'), fg="red", bg="white")
 
         img = ImageTk.PhotoImage(Image.open(configparser.get('gui-config', 'logo')))
         self.panel.configure(image=img)
@@ -165,7 +171,6 @@ class MyTkApp(tk.Frame):
         self.weight_verify = StringVar()
         self.sample_id_verify = StringVar()
         self.lot_id_verify = StringVar()
-        self.device_serial_no_verify = StringVar()
         self.batch_id_verify = StringVar()
         self.region_verify = StringVar()
         self.inst_center_verify = StringVar()
@@ -193,11 +198,6 @@ class MyTkApp(tk.Frame):
         self.lot_id_entry = Entry(self.window, textvariable=self.lot_id_verify)
         self.lot_id_entry.configure(font=font.Font(family='Helvetica', size=entry_font_size))
         self.lot_id_entry.bind("<Button-1>", self.action_lotid)
-
-        self.device_serial_no_label = Label(self.window, text="Device Serial No.:", font=('times', label_font_size, 'bold'), bg="#f7f0f5")
-        self.device_serial_no_entry = Entry(self.window, textvariable=self.device_serial_no_verify)
-        self.device_serial_no_entry.configure(font=font.Font(family='Helvetica', size=entry_font_size))
-        self.device_serial_no_entry.bind("<Button-1>", self.action_deviceserialno)
 
         self.batch_id_label = Label(self.window, text="Batch ID:", font=('times', label_font_size, 'bold'), bg="#f7f0f5")
         self.batch_id_entry = Entry(self.window, textvariable=self.batch_id_verify)
@@ -281,6 +281,7 @@ class MyTkApp(tk.Frame):
     def end_video(self):
         try:
             self.formula.place_forget()
+            self.warning_sign.place(x=10, y=390)
             self.endRecord.place_forget()
             self.send_data_api()
             self.msg_sent.place(x=int(configparser.get('gui-config', 'data_saved_notification_x')), y=int(configparser.get('gui-config', 'data_saved_notification_y')))
@@ -492,11 +493,6 @@ class MyTkApp(tk.Frame):
             self.lot_id_entry.delete(0, tk.END)
         self.popup_keyboard(event)
 
-    def action_deviceserialno(self, event):
-        if self.device_serial_no_verify.get() == "Enter Device SerialNo":
-            self.device_serial_no_entry.delete(0, tk.END)
-        self.popup_keyboard(event)
-
     def action_batchid(self, event):
         if self.batch_id_verify.get() == "Enter Batch ID":
             self.batch_id_entry.delete(0, tk.END)
@@ -511,7 +507,7 @@ class MyTkApp(tk.Frame):
                 sectionId = int(self.section_id_name_dict[self.section_verify.get()])
                 qualix_status = 0
                 if helper.is_internet_available():
-                    qualix_status = helper.qualix_api(payload, sectionId, self.new_fields)
+                    qualix_status = helper.qualix_api(self.token, payload, sectionId, self.new_fields)
                 if qualix_status == 200:
                     self.msg_sent.configure(text="Data saved", fg="green")
                     if helper.is_internet_available():
@@ -581,6 +577,10 @@ class MyTkApp(tk.Frame):
             f.write(f"{dt_},{flc_},{coarse_},{_1lbp},{_2lbp},{_3lbp},{_1bjp},{_2bjp},{total_}\n")
             f.close()
 
+            r = open('/home/agnext/Desktop/results.csv','a')
+            r.write(f"{dt_},{flc_},{coarse_},{leaf}\n")
+            r.close()
+
             self._flc_btn.configure(text="FLC %      " + str(round(_flc_perc, 2)))
             self._total_btn.configure(text="Total Leaves     " + str(totalCount))
             self._1lb_btn.configure(text="1LB %         " + str(round(_1lb_perc, 2)))
@@ -599,6 +599,7 @@ class MyTkApp(tk.Frame):
             self._coarse_btn.place(x=60,y=330)
             self._2bj_btn.place(x=300,y=330)
 
+            self.warning_sign.place_forget()
             self.formula.place(x=60,y=390)
             gc.collect()
         except Exception as e:
@@ -607,16 +608,28 @@ class MyTkApp(tk.Frame):
      
     def login_verify(self):
         try:
-            # username = self.username_verify.get()
-            # password = self.password_verify.get()
-            username = "temprobin331@gmail.com"
-            password = "Specx123!"
+            username = self.username_verify.get()
+            password = self.password_verify.get()
             if USE_INTERNET == "TRUE":
                 if helper.is_internet_available():
                     success, self.token, self.customer_id, name = helper.login_api_qualix(username, password)
                     if success:
-                        self.login_success()
-                        self.welcome_text.configure(text="Welcome, " + name.title())
+                        registered, valid, days = helper.check_expiry(self.token)
+                        print(registered, valid, days)
+                        if registered:
+                            if valid:
+                                if 0 < days < 7:
+                                    self.warning_sign.configure(text=f"License expiring in {days} days", fg="red")
+                                    self.warning_sign.place(x=10, y=390)
+                                else:
+                                    self.warning_sign.configure(text=f"License expiring in {days} days", fg="green")
+                                    self.warning_sign.place(x=10, y=390)
+                                self.login_success()
+                                self.welcome_text.configure(text="Welcome, " + name.title())
+                            else:
+                                self.show_error_msg("License expired.")
+                        else:
+                            self.show_error_msg("Device not registered.")
                     else:
                         self.show_error_msg("User Not Found")
                 else:
@@ -643,15 +656,14 @@ class MyTkApp(tk.Frame):
 
     def details_verify(self): 
         try:
-            gc.collect() 
-            # sector = self.section_verify.get()  
-            # garden = self.garden_verify.get()
-            # division = self.division_verify.get()    
-            # if sector not in ["", "Select section ID"] and garden not in ["", "Select garden ID"] and division not in ["", "Select division ID"]:
-            self.details_entered_success()
-            self.start_testing(cmd)
-            # else:
-            #     self.show_error_msg("Please fill all details.")
+            sector = self.section_verify.get()  
+            garden = self.garden_verify.get()
+            division = self.division_verify.get()    
+            if sector not in ["", "Select section ID"] and garden not in ["", "Select garden ID"] and division not in ["", "Select division ID"]:
+                self.details_entered_success()
+                self.start_testing(cmd)
+            else:
+                self.show_error_msg("Please fill all details.")
         except Exception as e:
             logger.exception(str('Exception occured in "details_verify" function\nError message:' + str(e)))
      
@@ -713,20 +725,14 @@ class MyTkApp(tk.Frame):
             sample_id = self.new_fields['sample_id'] if 'sample_id' in self.new_fields else "Enter Sample ID"
             self.sample_id_entry.insert(1, sample_id)
 
-            self.lot_id_label.place(x=x_col1, y=y_row2-22)
-            self.lot_id_entry.place(x=x_col1, y=y_row2)
+            self.lot_id_label.place(x=x_col1+130, y=y_row2-22)
+            self.lot_id_entry.place(x=x_col1+130, y=y_row2)
             self.lot_id_entry.delete(0, tk.END)
             lot_id = self.new_fields['lot_id'] if 'lot_id' in self.new_fields else "Enter Lot ID"
             self.lot_id_entry.insert(1, lot_id)
 
-            self.device_serial_no_label.place(x=x_col2, y=y_row2-22)
-            self.device_serial_no_entry.place(x=x_col2, y=y_row2)
-            self.device_serial_no_entry.delete(0, tk.END)
-            device_serial_no = self.new_fields['device_serial_no'] if 'device_serial_no' in self.new_fields else "Enter Device SerialNo"
-            self.device_serial_no_entry.insert(1, device_serial_no)
-
-            self.batch_id_label.place(x=x_col3, y=y_row2-22)
-            self.batch_id_entry.place(x=x_col3, y=y_row2)
+            self.batch_id_label.place(x=x_col3-100, y=y_row2-22)
+            self.batch_id_entry.place(x=x_col3-100, y=y_row2)
             self.batch_id_entry.delete(0, tk.END)
             batch_id = self.new_fields['batchId'] if 'batchId' in self.new_fields else "Enter Batch ID"
             self.batch_id_entry.insert(1, batch_id)
@@ -758,8 +764,6 @@ class MyTkApp(tk.Frame):
             self.region_entry.place_forget()
             self.inst_center_label.place_forget()
             self.inst_center_entry.place_forget()
-            self.device_serial_no_label.place_forget()
-            self.device_serial_no_entry.place_forget()
             self.batch_id_label.place_forget()
             self.batch_id_entry.place_forget()
 
@@ -775,21 +779,19 @@ class MyTkApp(tk.Frame):
             self.new_fields['lot_id'] = self.lot_id_verify.get()
             self.new_fields['region_id'] = self.region_id_name_dict[self.region_verify.get()] if self.region_verify.get() != 'Select Region' else self.region_verify.get()
             self.new_fields['inst_center_id'] = self.center_id_name_dict[self.inst_center_verify.get()] if self.inst_center_verify.get() != 'Select Inst Center' else self.inst_center_verify.get()
-            self.new_fields['device_serial_no'] = self.device_serial_no_verify.get()
             self.new_fields['batchId'] = self.batch_id_verify.get()
-            # if (self.new_fields['area_covered'] == 'Enter Area Covered') or \
-            #     (self.new_fields['weight'] == "Enter Weight") or \
-            #     (self.new_fields['sample_id'] == "Enter Sample ID")  or \
-            #     (self.new_fields['lot_id'] == "Enter Lot ID") or \
-            #     (self.new_fields['region_id'] == "Select Region") or \
-            #     (self.new_fields['inst_center_id'] == "Select Inst Center") or \
-            #     (self.new_fields['device_serial_no'] == "Enter Device SerialNo") or \
-            #     (self.new_fields['batchId'] == "Enter Batch ID"):
-            #     self.show_error_msg("Please fill all details.")
-            # else:
-            self.second_screen_forget()
-            self.enter_details()      
-            self.start_jetson_fan()
+            if (self.new_fields['area_covered'] == 'Enter Area Covered') or \
+                (self.new_fields['weight'] == "Enter Weight") or \
+                (self.new_fields['sample_id'] == "Enter Sample ID")  or \
+                (self.new_fields['lot_id'] == "Enter Lot ID") or \
+                (self.new_fields['region_id'] == "Select Region") or \
+                (self.new_fields['inst_center_id'] == "Select Inst Center") or \
+                (self.new_fields['batchId'] == "Enter Batch ID"):
+                self.show_error_msg("Please fill all details.")
+            else:
+                self.second_screen_forget()
+                self.enter_details()      
+                self.start_jetson_fan()
         except Exception as e:
             logger.exception(str('Exception occured in "main_screen" function\nError message:' + str(e)))  
 
