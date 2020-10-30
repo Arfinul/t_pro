@@ -578,7 +578,7 @@ class MyTkApp(tk.Frame):
             f.close()
 
             r = open('/home/agnext/Desktop/results.csv','a')
-            r.write(f"{dt_},{flc_},{coarse_},{leaf}\n")
+            r.write(f"{dt_},{flc_},{coarse_},{total_},{leaf}\n")
             r.close()
 
             self._flc_btn.configure(text="FLC %      " + str(round(_flc_perc, 2)))
