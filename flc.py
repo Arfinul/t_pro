@@ -530,6 +530,10 @@ class MyTkApp(tk.Frame):
                 qualix_status = 0
                 if helper.is_internet_available():
                     qualix_status = helper.qualix_api(self.token, payload, sectionId, self.new_fields)
+                    if qualix_status != 200:
+                        logger.exception(f"payload {payload}, sectionId {sectionId}, data {self.new_fields}")
+                else:
+                    logger.exception(str("Internet unavailable. Data won't get saved."))
                 if qualix_status == 200:
                     self.msg_sent.configure(text="Data saved", fg="green")
                     if helper.is_internet_available():
@@ -653,8 +657,11 @@ class MyTkApp(tk.Frame):
                         registered, valid, days = helper.check_expiry(self.token)
                         if registered:
                             if valid:
-                                if 0 < days < 7:
-                                    self.warning_sign.configure(text=f"License expiring in {days} days")
+                                if 0 < days < 3:
+                                    self.warning_sign.configure(text=f"License - {days} days left", fg="red")
+                                    self.warning_sign.place(x=10, y=390)
+                                else:
+                                    self.warning_sign.configure(text=f"License - {days} days left", fg="green")
                                     self.warning_sign.place(x=10, y=390)
                                 self.login_success()
                                 self.welcome_text.configure(text="Welcome, " + name.title())

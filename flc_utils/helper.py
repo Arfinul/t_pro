@@ -207,7 +207,7 @@ def inst_centers_list_qualix(region_id, customer_id, token):
 
 def is_internet_available():
     try:
-        urlopen("http://216.58.192.142", timeout=3)
+        urlopen("http://216.58.192.142", timeout=10)
         return True
     except Exception as e:
         return False
@@ -290,14 +290,7 @@ def free_space():
                 os.remove(i)
 
 def check_expiry(token):
-    # from dateutil.relativedelta import relativedelta
-    # START_DATE = datetime.datetime(2020, 10, 23, 0, 0)
-    # EXPIRY_MONTHS = 6
-    # FINAL_DATE = START_DATE + relativedelta(months=+EXPIRY_MONTHS)
-    # # NOW = datetime.datetime(2021, 4, 20, 0, 0)
-    # NOW = datetime.datetime.now()
-
-    DEVICE = "DVPRO001"
+    DEVICE = "FLCP203208P02M1"
     url = f"http://70.37.95.226:8072/api/chemical/device/{DEVICE}?v=1"
     headers = {'Authorization': "Bearer " + token}
     response = requests.request("GET", url, headers=headers)
