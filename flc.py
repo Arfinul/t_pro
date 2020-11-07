@@ -120,10 +120,10 @@ class MyTkApp(tk.Frame):
         self.password_verify = StringVar()
          
         self.username_login_entry = Entry(self.window, textvariable=self.username_verify, font = "Helvetica 15")
-        self.username_login_entry.insert(1, "nagrijulite@gmail.com")
+        self.username_login_entry.insert(1, "bokahola.op@agnext.in")
 
         self.password_login_entry = Entry(self.window, textvariable=self.password_verify, show= '*', font = "Helvetica 15")
-        self.password_login_entry.insert(1, "nagrijuli")
+        self.password_login_entry.insert(1, "zxc")
         
         self.signin = tk.Button(self.window, text="Login", command=self.login_verify, fg="white", bg="#539051", width=int(configparser.get('gui-config', 'signin_btn_width')),height=int(configparser.get('gui-config', 'signin_btn_height')), font=("Helvetica 15 bold"))
 
