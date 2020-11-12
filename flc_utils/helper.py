@@ -290,7 +290,7 @@ def free_space():
                 os.remove(i)
 
 def check_expiry(token):
-    DEVICE = "DVPRO001"
+    DEVICE = "FLCP203208P01M3"
     url = f"http://70.37.95.226:8072/api/chemical/device/{DEVICE}?v=1"
     headers = {'Authorization': "Bearer " + token}
     response = requests.request("GET", url, headers=headers)

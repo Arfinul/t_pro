@@ -519,13 +519,13 @@ class MyTkApp(tk.Frame):
             helper.free_space()
 
             self._flc_btn.place_forget()
-            self._total_btn.place_forget()
-            self._1lb_btn.place_forget()
-            self._2lb_btn.place_forget()
-            self._1bj_btn.place_forget()
-            self._3lb_btn.place_forget()
+            #self._total_btn.place_forget()
+            #self._1lb_btn.place_forget()
+            #self._2lb_btn.place_forget()
+            #self._1bj_btn.place_forget()
+            #self._3lb_btn.place_forget()
             self._coarse_btn.place_forget()
-            self._2bj_btn.place_forget()
+            #self._2bj_btn.place_forget()
 
             helper.update_graph()
         except Exception as e:
@@ -591,13 +591,13 @@ class MyTkApp(tk.Frame):
             self._2bj_btn.configure(text="2Banjhi %     " + str(round(_2bj_perc, 2)))
 
             self._flc_btn.place(x=60,y=130)
-            self._total_btn.place(x=300,y=130)
-            self._1lb_btn.place(x=60,y=210)
-            self._2lb_btn.place(x=300,y=210)
-            self._1bj_btn.place(x=60,y=270)
-            self._3lb_btn.place(x=300,y=270)
+            #self._total_btn.place(x=300,y=130)
+            #self._1lb_btn.place(x=60,y=210)
+            #self._2lb_btn.place(x=300,y=210)
+            #self._1bj_btn.place(x=60,y=270)
+            #self._3lb_btn.place(x=300,y=270)
             self._coarse_btn.place(x=60,y=330)
-            self._2bj_btn.place(x=300,y=330)
+            #self._2bj_btn.place(x=300,y=330)
 
             self.warning_sign.place_forget()
             self.formula.place(x=60,y=390)
@@ -710,31 +710,31 @@ class MyTkApp(tk.Frame):
             self.area_covered_label.place(x=x_col1, y=y_row1-22)
             self.area_covered_entry.place(x=x_col1, y=y_row1)
             self.area_covered_entry.delete(0, tk.END)
-            area_covered = self.new_fields['area_covered'] if 'area_covered' in self.new_fields else "Enter Area Covered"
+            area_covered = self.new_fields['area_covered'] if 'area_covered' in self.new_fields else "1"
             self.area_covered_entry.insert(1, area_covered)
 
             self.weight_label.place(x=x_col2, y=y_row1-22)
             self.weight_entry.place(x=x_col2, y=y_row1)
             self.weight_entry.delete(0, tk.END)
-            weight = self.new_fields['weight'] if 'weight' in self.new_fields else "Enter Weight"
+            weight = self.new_fields['weight'] if 'weight' in self.new_fields else "0.70"
             self.weight_entry.insert(1, weight)
 
             self.sample_id_label.place(x=x_col3, y=y_row1-22)
             self.sample_id_entry.place(x=x_col3, y=y_row1)
             self.sample_id_entry.delete(0, tk.END)
-            sample_id = self.new_fields['sample_id'] if 'sample_id' in self.new_fields else "Enter Sample ID"
+            sample_id = self.new_fields['sample_id'] if 'sample_id' in self.new_fields else "1"
             self.sample_id_entry.insert(1, sample_id)
 
             self.lot_id_label.place(x=x_col1+130, y=y_row2-22)
             self.lot_id_entry.place(x=x_col1+130, y=y_row2)
             self.lot_id_entry.delete(0, tk.END)
-            lot_id = self.new_fields['lot_id'] if 'lot_id' in self.new_fields else "Enter Lot ID"
+            lot_id = self.new_fields['lot_id'] if 'lot_id' in self.new_fields else "1"
             self.lot_id_entry.insert(1, lot_id)
 
             self.batch_id_label.place(x=x_col3-100, y=y_row2-22)
             self.batch_id_entry.place(x=x_col3-100, y=y_row2)
             self.batch_id_entry.delete(0, tk.END)
-            batch_id = self.new_fields['batchId'] if 'batchId' in self.new_fields else "Enter Batch ID"
+            batch_id = self.new_fields['batchId'] if 'batchId' in self.new_fields else "1"
             self.batch_id_entry.insert(1, batch_id)
 
             self.get_regions()
