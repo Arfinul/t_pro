@@ -38,61 +38,6 @@ def get_class_count():
     totalCount = int(_1lb + _2lb + _3lb + _1bj + _2bj + _coarse)
     return _1lb, _2lb, _3lb, _1bj, _2bj, _coarse, totalCount, _perc
 
-def get_saved_status(token, userID, ccId, sectionId, farmer_id):
-    payload = {}
-    _perc = 0.0
-    if is_internet_available():
-        _1lb, _2lb, _3lb, _1bj, _2bj, _coarse, totalCount, _perc = get_class_count()
-
-        head = {
-            "Content-Type": "application/json",
-            "Authorization": "Bearer " + token
-        }
-        load = {
-            "userId": int(userID),
-            "ccId": int(ccId),
-            "sectionId": int(sectionId),
-            "assistId": int(farmer_id),
-            "oneLeafBud": _1lb,
-            "twoLeafBud": _2lb,
-            "threeLeafBud": _3lb,
-            "oneLeafBanjhi": _1bj,
-            "twoLeafBanjhi": _2bj,
-            "oneBudCount": "0",
-            "oneBanjhiCount": "0",
-            "oneLeafCount": "0",
-            "twoLeafCount": "0",
-            "threeLeafCount": "0",
-            "qualityScore": _perc,
-            "totalCount": totalCount,
-        }
-        payload = {'one_leaf_bud': _1lb, 'two_leaf_bud': _2lb, 'three_leaf_bud': _3lb, 
-                    'one_leaf_banjhi': _1bj, 'two_leaf_banjhi': _2bj, 
-                    'one_bud_count': 0, 'one_leaf_count': 0, 'two_leaf_count': 0,
-                    'three_leaf_count': 0, 'one_banjhi_count': 0, 
-                    'total_count': totalCount, 'quality_score': _perc}
-        resp = requests.request("POST", configparser.get('gui-config', 'ip') + "/api/user/scans", data=json.dumps(load), headers=head)
-        print(resp.json())
-        saved = resp.json()['success']
-    else:
-        txt_file = open("result.txt", "r").read()
-        li = txt_file.split("\n")
-
-        with open("flc_utils/noInternetFiles/realTimeTesting.logs", "a") as out_file:
-            out_file.write("Datetime " + str(datetime.datetime.now())[:-7] + "\n")
-            out_file.write(txt_file)
-            out_file.write("\n")
-        saved = "true"
-    return saved, payload, _perc
-
-def get_payload():
-    _1lb, _2lb, _3lb, _1bj, _2bj, _coarse, totalCount, _perc = get_class_count()
-    payload = {'one_leaf_bud': _1lb, 'two_leaf_bud': _2lb, 'three_leaf_bud': _3lb, 
-                'one_leaf_banjhi': _1bj, 'two_leaf_banjhi': _2bj, 
-                'one_bud_count': 0, 'one_leaf_count': 0, 'two_leaf_count': 0,
-                'three_leaf_count': 0, 'one_banjhi_count': 0, 
-                'total_count': totalCount, 'quality_score': _perc}
-    return _1lb, _2lb, _3lb, _1bj, _2bj, _coarse, totalCount, _perc, payload
 
 def qualix_api(token, payload, sectionId, new_fields):
     li = []
