@@ -16,6 +16,7 @@ import gc
 import threading
 from flc_utils import helper
 import logging
+import numpy as np
 
 logging.basicConfig(filename='server_logs.log',
                     filemode='a',
@@ -64,6 +65,7 @@ class MyTkApp(tk.Frame):
         self.INSTCENTER_OPTIONS = ['Select Inst Center']
         self.options_displayed = True
         self.new_fields = {}
+        self.results = {}
 
         self.window = master
         self.x = self.window.winfo_x()
@@ -523,21 +525,22 @@ class MyTkApp(tk.Frame):
 
     def send_data_api(self):
         try:
-            _1lb, _2lb, _3lb, _1bj, _2bj, _coarse, totalCount, _perc, payload = helper.get_payload()
-
             if USE_INTERNET == "TRUE":
                 sectionId = int(self.section_id_name_dict[self.section_verify.get()])
                 qualix_status = 0
                 if helper.is_internet_available():
-                    qualix_status = helper.qualix_api(self.token, payload, sectionId, self.new_fields)
+                    qualix_status = helper.qualix_api(self.token, self.results, sectionId, self.new_fields)
                     if qualix_status != 200:
-                        logger.exception(f"payload {payload}, sectionId {sectionId}, data {self.new_fields}")
+                        logger.exception(f"payload {self.results}, sectionId {sectionId}, data {self.new_fields}")
                 else:
                     logger.exception(str("Internet unavailable. Data won't get saved."))
                 if qualix_status == 200:
                     self.msg_sent.configure(text="Data saved", fg="green")
                     if helper.is_internet_available():
-                        t = threading.Thread(target=helper.update_spreadsheet, args=(_1lb, _2lb, _3lb, _1bj, _2bj, _coarse, totalCount, _perc,))
+                        t = threading.Thread(target=helper.update_spreadsheet, 
+                            args=(self.results["one_leaf_bud"], self.results["two_leaf_bud"], 
+                                self.results["three_leaf_bud"], self.results["one_leaf_banjhi"], 
+                                self.results["two_leaf_banjhi"], 100 - self.results["quality_score"], self.results["total_count"], self.results["quality_score"],))
                         t.start()
                 else:
                     self.msg_sent.configure(text="Couldn't save to servers", fg="red")
@@ -545,13 +548,7 @@ class MyTkApp(tk.Frame):
             helper.free_space()
 
             self._flc_btn.place_forget()
-            # self._total_btn.place_forget()
-            # self._1lb_btn.place_forget()
-            # self._2lb_btn.place_forget()
-            # self._1bj_btn.place_forget()
-            # self._3lb_btn.place_forget()
             self._coarse_btn.place_forget()
-            # self._2bj_btn.place_forget()
 
             helper.update_graph()
         except Exception as e:
@@ -591,8 +588,6 @@ class MyTkApp(tk.Frame):
                 _1bj_perc = 0 if _1bj_perc < 0 else _1bj_perc
                 _2bj_perc = 0 if _2bj_perc < 0 else _2bj_perc
                 _flc_perc = _1lb_perc + _2lb_perc + _1bj_perc + (0.50 * _3lb_perc)
-                #if leaf == "Bought":
-                #_flc_perc = _flc_perc * 0.75
                 _flc_perc = 100 if _flc_perc > 100 else _flc_perc
                 _coarse_perc = 100 - _flc_perc
             else:
@@ -603,6 +598,7 @@ class MyTkApp(tk.Frame):
                 _2bj_perc = 0.0
                 _coarse_perc = 0.0
                 _flc_perc = 0.0
+            
             f = open('flc_utils/records.csv','a')
             dt_ = datetime.datetime.now().strftime("%d-%m-%Y %H:%M:%S")
             flc_ = str(_flc_perc)
@@ -620,6 +616,19 @@ class MyTkApp(tk.Frame):
             r.write(f"{dt_},{flc_},{coarse_},{leaf}\n")
             r.close()
 
+            self.results['one_leaf_bud'] = int(np.ceil(_1lb_perc * totalCount/100))
+            self.results['two_leaf_bud'] = int(np.ceil(_2lb_perc * totalCount/100))
+            self.results['three_leaf_bud'] = int(np.ceil(_3lb_perc * totalCount/100))
+            self.results['one_leaf_banjhi'] = int(np.ceil(_1bj_perc * totalCount/100))
+            self.results['two_leaf_banjhi'] = int(np.ceil(_2bj_perc * totalCount/100))
+            self.results['one_bud_count'] = 0
+            self.results['one_leaf_count'] = 0
+            self.results['two_leaf_count'] = 0
+            self.results['three_leaf_count'] = 0
+            self.results['one_banjhi_count'] = 0
+            self.results['total_count'] = totalCount
+            self.results['quality_score'] = _flc_perc
+
             self._flc_btn.configure(text="FLC %      " + str(round(_flc_perc, 2)))
             self._total_btn.configure(text="Total Leaves     " + str(totalCount))
             self._1lb_btn.configure(text="1LB %         " + str(round(_1lb_perc, 2)))
@@ -630,15 +639,7 @@ class MyTkApp(tk.Frame):
             self._2bj_btn.configure(text="2Banjhi %     " + str(round(_2bj_perc, 2)))
 
             self._flc_btn.place(x=60,y=150)
-            # self._flc_btn.place(x=60,y=130) # before
-            # self._total_btn.place(x=300,y=130)
-            # self._1lb_btn.place(x=60,y=210)
-            # self._2lb_btn.place(x=300,y=210)
-            # self._1bj_btn.place(x=60,y=270)
-            # self._3lb_btn.place(x=300,y=270)
             self._coarse_btn.place(x=60,y=300)
-            # self._coarse_btn.place(x=60,y=330) # before
-            # self._2bj_btn.place(x=300,y=330)
             self.warning_sign.place_forget()
             self.formula.place(x=60,y=390)
             gc.collect()
