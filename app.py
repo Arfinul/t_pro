@@ -95,7 +95,7 @@ class MyTkApp(tk.Frame):
 
         self.msg_sent = Label(self.window, text="Data sent status", font=('times', 15), fg="green", bg='white')
 
-        self._flc_btn = tk.Button(self.window, text="flc", command=self.do_nothing, fg="white", bg="#318FCC", width=50,height=15, font=('times', 13, 'bold'))
+        self._flc_btn = tk.Button(self.window, text="flc", command=self.do_nothing, fg="black", bg="white", width=50,height=15, font=('times', 16, 'bold'))
         self._total_btn = tk.Button(self.window, text="total", command=self.do_nothing, fg="white", bg="#318FCC", width=int(configparser.get('gui-config', 'result_btn_width')),height=int(configparser.get('gui-config', 'result_btn_height')), font=('times', 20, 'bold'))
         self._1lb_btn = tk.Button(self.window, text="1lb", command=self.do_nothing, fg="white", bg="#12B653", width=int(configparser.get('gui-config', 'result_btn_width')),height=int(configparser.get('gui-config', 'result_btn_height')), font=('times', 20, 'bold'))
         self._2lb_btn = tk.Button(self.window, text="2lb", command=self.do_nothing, fg="white", bg="#12B653", width=int(configparser.get('gui-config', 'result_btn_width')),height=int(configparser.get('gui-config', 'result_btn_height')), font=('times', 20, 'bold'))
@@ -281,6 +281,10 @@ class MyTkApp(tk.Frame):
                     self.result_dict = dict(zip(df.sum().keys(), df.sum().values))
                     for key in self.result_dict:
                         self.result_dict[key] = str(self.result_dict[key])
+                    self.result_dict['1LeafBud_Count'] = int(self.result_dict['1LeafBud_Count']) + int(self.result_dict['1Bud_Count'])
+                    self.result_dict['1LeafBanjhi_Count'] = int(self.result_dict['1LeafBanjhi_Count']) + int(self.result_dict['1Banjhi_Count'])
+                    if 'key' in self.result_dict: del self.result_dict['1Bud_Count']
+                    if 'key' in self.result_dict: del self.result_dict['1Banjhi_Count']
                 else:
                     self.show_error_msg("Capture atleast 1 image")
                     return False
@@ -313,7 +317,7 @@ class MyTkApp(tk.Frame):
         
 
     def end_video(self):
-        # self.formula.place_forget()
+        self.formula.place_forget()
         self.endRecord.place_forget()
         self._flc_btn.place_forget()
         self.send_data_api()
@@ -524,23 +528,21 @@ class MyTkApp(tk.Frame):
         _1bj = int(self.result_dict['1LeafBanjhi_Count'])
         _2bj = int(self.result_dict['2LeafBanjhi_Count'])
         _3bj = int(self.result_dict['3LeafBanjhi_Count'])
-        _1bud = int(self.result_dict['1Bud_Count'])
-        _1banjhi = int(self.result_dict['1Banjhi_Count'])
         _1leaf = int(self.result_dict['1Leaf_Count'])
         _2leaf = int(self.result_dict['2Leaf_Count'])
         _3leaf = int(self.result_dict['3Leaf_Count'])
         _total = int(self.result_dict['Total_Bunches'])
-        _sum = (_1lb + _2lb + (_3lb/2) + _1bj + _2bj + _1bud + _1banjhi)
+        _sum = (_1lb + _2lb + (_3lb/2) + _1bj)
         if _sum == 0:
             _perc = 0.0
         else:
-            _perc = (_sum/ _total) * 100
+            _perc = round((_sum/ _total) * 100, 2)
 
-        return _1lb, _2lb, _3lb, _1bj, _2bj,_3bj, _1bud, _1banjhi, _1leaf, _2leaf, _3leaf, _perc, _total
+        return _1lb, _2lb, _3lb, _1bj, _2bj, _3bj, _1leaf, _2leaf, _3leaf, _perc, _total
 
 
     def send_data_api(self):
-        _1lb, _2lb, _3lb, _1bj, _2bj, _3bj, _1bud, _1banjhi, _1leaf, _2leaf, _3leaf, _perc, _total = self.get_class_count()
+        _1lb, _2lb, _3lb, _1bj, _2bj, _3bj, _1leaf, _2leaf, _3leaf, _perc, _total = self.get_class_count()
 
         if configparser.get('gui-config', 'internet') == 'true':
             head = {
@@ -558,8 +560,8 @@ class MyTkApp(tk.Frame):
                 "oneLeafBanjhi": _1bj,
                 "twoLeafBanjhi": _2bj,
                 "threeLeafBanjhi": _3bj,
-                "oneBudCount": _1bud,
-                "oneBanjhiCount": _1banjhi,
+                "oneBudCount": 0,
+                "oneBanjhiCount": 0,
                 "oneLeafCount": _1leaf,
                 "twoLeafCount": _2leaf,
                 "threeLeafCount": _3leaf,
@@ -580,8 +582,8 @@ class MyTkApp(tk.Frame):
                 out_file.write(str(_1bj) + ", ")
                 out_file.write(str(_2bj) + ", ")
                 out_file.write(str(_3bj) + ", ")
-                out_file.write(str(_1bud) + ", ")
-                out_file.write(str(_1banjhi) + ", ")
+                out_file.write(str(0) + ", ")
+                out_file.write(str(0) + ", ")
                 out_file.write(str(_1leaf) + ", ")
                 out_file.write(str(_2leaf) + ", ")
                 out_file.write(str(_3leaf) + ", ")
@@ -629,9 +631,12 @@ class MyTkApp(tk.Frame):
 
     def show_results_on_display(self):
         self.forget_graph()
+        _, _, _, _, _, _, _, _, _, _perc, _ = self.get_class_count()
         text_result = ''
         for i in self.result_dict:
-            text_result += i + ': ' + str(self.result_dict[i]) + '\n'
+            if self.result_dict[i] != 0:
+              text_result += i + ': ' + str(self.result_dict[i]) + '\n'
+        text_result += "FLC %" + ': ' + str(_perc)
         self._flc_btn.configure(text=text_result)
         self._flc_btn.place(x=60,y=130)
         self.endRecord.place(x=int(configparser.get('gui-config', 'endrecord_btn_x')), y=int(configparser.get('gui-config', 'endrecord_btn_y')))
@@ -718,6 +723,7 @@ class MyTkApp(tk.Frame):
         self.place_inputs()
 
         self.poweroff.place(x=750, y=80)
+        self.formula.place(x=50, y=420)
 
      
     def login_sucess(self):
@@ -735,5 +741,4 @@ def launchApp():
 
 if __name__=='__main__':
     launchApp()
-
 
