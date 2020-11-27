@@ -95,7 +95,7 @@ class MyTkApp(tk.Frame):
 
         self.msg_sent = Label(self.window, text="Data sent status", font=('times', 15), fg="green", bg='white')
 
-        self._flc_btn = tk.Button(self.window, text="flc", command=self.do_nothing, fg="black", bg="white", width=50,height=15, font=('times', 16, 'bold'))
+        self._flc_btn = tk.Button(self.window, text="flc", command=self.do_nothing, fg="black", bg="white", width=40,height=13, font=('times', 17, 'bold'))
         self._total_btn = tk.Button(self.window, text="total", command=self.do_nothing, fg="white", bg="#318FCC", width=int(configparser.get('gui-config', 'result_btn_width')),height=int(configparser.get('gui-config', 'result_btn_height')), font=('times', 20, 'bold'))
         self._1lb_btn = tk.Button(self.window, text="1lb", command=self.do_nothing, fg="white", bg="#12B653", width=int(configparser.get('gui-config', 'result_btn_width')),height=int(configparser.get('gui-config', 'result_btn_height')), font=('times', 20, 'bold'))
         self._2lb_btn = tk.Button(self.window, text="2lb", command=self.do_nothing, fg="white", bg="#12B653", width=int(configparser.get('gui-config', 'result_btn_width')),height=int(configparser.get('gui-config', 'result_btn_height')), font=('times', 20, 'bold'))
@@ -633,10 +633,19 @@ class MyTkApp(tk.Frame):
         self.forget_graph()
         _, _, _, _, _, _, _, _, _, _perc, _ = self.get_class_count()
         text_result = ''
-        for i in self.result_dict:
-            if self.result_dict[i] != 0:
-              text_result += i + ': ' + str(self.result_dict[i]) + '\n'
-        text_result += "FLC %" + ': ' + str(_perc)
+        text_result += "1LB" + ': ' + str(self.result_dict["1LeafBud_Count"]) + '\n'
+        text_result += "2LB" + ': ' + str(self.result_dict["2LeafBud_Count"]) + '\n'
+        text_result += "3LB" + ': ' + str(self.result_dict["3LeafBud_Count"]) + '\n'
+        text_result += "1Banjhi" + ': ' + str(self.result_dict["1LeafBanjhi_Count"]) + '\n'
+        text_result += "2Banjhi" + ': ' + str(self.result_dict["2LeafBanjhi_Count"]) + '\n'
+        text_result += "Coarse" + ': ' + str(self.result_dict["3LeafBanjhi_Count"] 
+                    + self.result_dict["1Leaf_Count"] + self.result_dict["2Leaf_Count"]
+                    + self.result_dict["3Leaf_Count"] ) + '\n' + '\n'
+
+        text_result += "FLC %" + ': ' + str(_perc) + '\n'
+        text_result += "Total" + ': ' + str(self.result_dict["Total_Bunches"]) + '\n' + '\n'
+        text_result += "Time (seconds)" + ': ' + str(self.result_dict["Time Taken(seconds)"])
+
         self._flc_btn.configure(text=text_result)
         self._flc_btn.place(x=60,y=130)
         self.endRecord.place(x=int(configparser.get('gui-config', 'endrecord_btn_x')), y=int(configparser.get('gui-config', 'endrecord_btn_y')))
