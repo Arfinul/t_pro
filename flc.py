@@ -569,9 +569,9 @@ class MyTkApp(tk.Frame):
             if totalCount != 0:
                 if leaf == "Own":
                     _1lb_perc = round(_1lb*100/totalCount, 2) + 3
-                    _2lb_perc = round(_2lb*100/totalCount, 2) - 7
-                    _3lb_perc = round(_3lb*100/totalCount, 2) + 2
-                    _1bj_perc = round(_1bj*100/totalCount, 2) - 0.7
+                    _2lb_perc = round(_2lb*100/totalCount, 2) - 15
+                    _3lb_perc = round(_3lb*100/totalCount, 2) - 7
+                    _1bj_perc = round(_1bj*100/totalCount, 2)
                     _2bj_perc = round(_2bj*100/totalCount, 2)
                     totalCount = int(totalCount * 1.6)
                 elif leaf == "--":
