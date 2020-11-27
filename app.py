@@ -95,7 +95,7 @@ class MyTkApp(tk.Frame):
 
         self.msg_sent = Label(self.window, text="Data sent status", font=('times', 15), fg="green", bg='white')
 
-        self._flc_btn = tk.Button(self.window, text="flc", command=self.do_nothing, fg="black", bg="white", width=40,height=13, font=('times', 17, 'bold'))
+        self._flc_btn = tk.Button(self.window, text="flc", command=self.do_nothing, fg="black", bg="white", width=40,height=13, font=('times', 20, 'bold'))
         self._total_btn = tk.Button(self.window, text="total", command=self.do_nothing, fg="white", bg="#318FCC", width=int(configparser.get('gui-config', 'result_btn_width')),height=int(configparser.get('gui-config', 'result_btn_height')), font=('times', 20, 'bold'))
         self._1lb_btn = tk.Button(self.window, text="1lb", command=self.do_nothing, fg="white", bg="#12B653", width=int(configparser.get('gui-config', 'result_btn_width')),height=int(configparser.get('gui-config', 'result_btn_height')), font=('times', 20, 'bold'))
         self._2lb_btn = tk.Button(self.window, text="2lb", command=self.do_nothing, fg="white", bg="#12B653", width=int(configparser.get('gui-config', 'result_btn_width')),height=int(configparser.get('gui-config', 'result_btn_height')), font=('times', 20, 'bold'))
@@ -536,7 +536,7 @@ class MyTkApp(tk.Frame):
         if _sum == 0:
             _perc = 0.0
         else:
-            _perc = round((_sum/ _total) * 100, 2)
+            _perc = round((_sum/ _total) * 100, 1)
 
         return _1lb, _2lb, _3lb, _1bj, _2bj, _3bj, _1leaf, _2leaf, _3leaf, _perc, _total
 
@@ -632,19 +632,28 @@ class MyTkApp(tk.Frame):
     def show_results_on_display(self):
         self.forget_graph()
         _, _, _, _, _, _, _, _, _, _perc, _ = self.get_class_count()
-        text_result = ''
-        text_result += "1LB" + ': ' + str(self.result_dict["1LeafBud_Count"]) + '\n'
-        text_result += "2LB" + ': ' + str(self.result_dict["2LeafBud_Count"]) + '\n'
-        text_result += "3LB" + ': ' + str(self.result_dict["3LeafBud_Count"]) + '\n'
-        text_result += "1Banjhi" + ': ' + str(self.result_dict["1LeafBanjhi_Count"]) + '\n'
-        text_result += "2Banjhi" + ': ' + str(self.result_dict["2LeafBanjhi_Count"]) + '\n'
-        text_result += "Coarse" + ': ' + str(self.result_dict["3LeafBanjhi_Count"] 
-                    + self.result_dict["1Leaf_Count"] + self.result_dict["2Leaf_Count"]
-                    + self.result_dict["3Leaf_Count"] ) + '\n' + '\n'
 
-        text_result += "FLC %" + ': ' + str(_perc) + '\n'
-        text_result += "Total" + ': ' + str(self.result_dict["Total_Bunches"]) + '\n' + '\n'
-        text_result += "Time (seconds)" + ': ' + str(self.result_dict["Time Taken(seconds)"])
+        f = open('flc_utils/result_breakup.csv','a')
+        dt_ = datetime.datetime.now().strftime("%d-%m-%Y %H:%M:%S")
+        flc_ = str(_perc)
+        coarse_ = str(round((100 - _perc), 1))
+        total_ = self.result_dict["Total_Bunches"]
+        total_str = str(total_)
+        _1lbp = str(round((self.result_dict["1LeafBud_Count"] * 100 / total_), 2))
+        _2lbp = str(round((self.result_dict["2LeafBud_Count"] * 100 / total_), 2))
+        _3lbp = str(round((self.result_dict["3LeafBud_Count"] * 100 / total_), 2))
+        _1bjp = str(round((self.result_dict["1LeafBanjhi_Count"] * 100 / total_), 2))
+        _2bjp = str(round((self.result_dict["2LeafBanjhi_Count"] * 100 / total_), 2))
+        f.write(f"{dt_},{flc_},{coarse_},{_1lbp},{_2lbp},{_3lbp},{_1bjp},{_2bjp},{total_str}\n")
+        f.close()
+        
+        r = open('/home/agnext/Desktop/results.csv','a')
+        r.write(f"{dt_},{flc_},{coarse_}\n")
+        r.close()
+
+        text_result = ''
+        text_result += "FLC %" + ': ' + flc_ + '\n' + '\n' + '\n'
+        text_result += "Coarse" + ': ' + str(self.result_dict["Total_Bunches"]) 
 
         self._flc_btn.configure(text=text_result)
         self._flc_btn.place(x=60,y=130)
@@ -750,4 +759,3 @@ def launchApp():
 
 if __name__=='__main__':
     launchApp()
-
