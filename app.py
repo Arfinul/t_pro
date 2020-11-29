@@ -280,7 +280,7 @@ class MyTkApp(tk.Frame):
                     df = df.astype(int)
                     self.result_dict = dict(zip(df.sum().keys(), df.sum().values))
                     for key in self.result_dict:
-                        self.result_dict[key] = str(self.result_dict[key])
+                        self.result_dict[key] = int(self.result_dict[key])
                     self.result_dict['1LeafBud_Count'] = int(self.result_dict['1LeafBud_Count']) + int(self.result_dict['1Bud_Count'])
                     self.result_dict['1LeafBanjhi_Count'] = int(self.result_dict['1LeafBanjhi_Count']) + int(self.result_dict['1Banjhi_Count'])
                     if 'key' in self.result_dict: del self.result_dict['1Bud_Count']
@@ -637,7 +637,7 @@ class MyTkApp(tk.Frame):
         dt_ = datetime.datetime.now().strftime("%d-%m-%Y %H:%M:%S")
         flc_ = str(_perc)
         coarse_ = str(round((100 - _perc), 1))
-        total_ = self.result_dict["Total_Bunches"]
+        total_ = int(self.result_dict["Total_Bunches"])
         total_str = str(total_)
         _1lbp = str(round((self.result_dict["1LeafBud_Count"] * 100 / total_), 2))
         _2lbp = str(round((self.result_dict["2LeafBud_Count"] * 100 / total_), 2))
