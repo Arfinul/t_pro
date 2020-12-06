@@ -57,7 +57,7 @@ class MyTkApp(tk.Frame):
         self.division_id_name_dict = {}
         self.region_id_name_dict = {}
         self.center_id_name_dict = {}
-        self.LEAF_OPTIONS = ["Select Leaf Type", "Own", "--"]
+        self.LEAF_OPTIONS = ["Select Leaf Type", "Bought", "baught"]
         self.SECTION_OPTIONS = ["Select section ID"]
         self.GARDEN_OPTIONS = ["Select garden ID"]
         self.DIVISION_OPTIONS = ["Select division ID"] 
@@ -122,10 +122,10 @@ class MyTkApp(tk.Frame):
         self.password_verify = StringVar()
          
         self.username_login_entry = Entry(self.window, textvariable=self.username_verify, font = "Helvetica 15")
-        self.username_login_entry.insert(1, "bokahola.op@agnext.in")
+        self.username_login_entry.insert(1, "maharani.op@agnext.in")
 
         self.password_login_entry = Entry(self.window, textvariable=self.password_verify, show= '*', font = "Helvetica 15")
-        self.password_login_entry.insert(1, "zxc")
+        self.password_login_entry.insert(1, "m-op")
         
         self.signin = tk.Button(self.window, text="Login", command=self.login_verify, fg="white", bg="#539051", width=int(configparser.get('gui-config', 'signin_btn_width')),height=int(configparser.get('gui-config', 'signin_btn_height')), font=("Helvetica 15 bold"))
 
@@ -146,7 +146,7 @@ class MyTkApp(tk.Frame):
 
         self.welcome_text = Label(self.window, text="Welcome, ", font=('times', 15, 'bold'), bg="#f7f0f5")
         self.entered = tk.Button(self.window, text="Start FLC", command=self.details_verify, fg="white", bg="#539051", width=int(configparser.get('gui-config', 'signin_btn_width')),height=int(configparser.get('gui-config', 'signin_btn_height')), font=('times', 16, 'bold'))
-        self.formula = Label(self.window, text="FLC = 1LB + 2LB + 1Banjhi + 0.50 * 3LB", font=("Helvetica", 15), background='white')
+        self.formula = Label(self.window, text="FLC = 1LB + 2LB + 1Banjhi + 0.67 * 3LB", font=("Helvetica", 15), background='white')
         self.warning_sign = Label(self.window, text="", font=('times', 15, 'bold'), fg="red", bg="white")
 
         img = ImageTk.PhotoImage(Image.open(configparser.get('gui-config', 'logo')))
@@ -452,12 +452,12 @@ class MyTkApp(tk.Frame):
 
     def show_options(self, *args):
         leaf_type = self.leaf_verify.get()
-        if leaf_type == "Own":
-            self.area_covered_entry.configure(state="normal")
-            self.weight_entry.configure(state="normal")
-            self.sample_id_entry.configure(state="normal")
-            self.lot_id_entry.configure(state="normal")
-            self.batch_id_entry.configure(state="normal")
+        if leaf_type in ["Bought", "bought"]:
+            # self.area_covered_entry.configure(state="normal")
+            # self.weight_entry.configure(state="normal")
+            # self.sample_id_entry.configure(state="normal")
+            # self.lot_id_entry.configure(state="normal")
+            # self.batch_id_entry.configure(state="normal")
             self.get_regions()
             self.region_entry.place(x=100, y=290)
             self.region_entry.configure(state="active")
@@ -567,14 +567,14 @@ class MyTkApp(tk.Frame):
             leaf = self.leaf_verify.get()
 
             if totalCount != 0:
-                if leaf == "Own":
+                if leaf == "Bought":
                     _1lb_perc = round(_1lb*100/totalCount, 2) + 3
                     _2lb_perc = round(_2lb*100/totalCount, 2) - 15
                     _3lb_perc = round(_3lb*100/totalCount, 2) - 7
                     _1bj_perc = round(_1bj*100/totalCount, 2)
                     _2bj_perc = round(_2bj*100/totalCount, 2)
                     totalCount = int(totalCount * 1.6)
-                elif leaf == "--":
+                elif leaf == "bought":
                     _1lb_perc = round(_1lb*100/totalCount, 2) + 3
                     _2lb_perc = round(_2lb*100/totalCount, 2) - 15
                     _3lb_perc = round(_3lb*100/totalCount, 2) - 7
@@ -587,7 +587,7 @@ class MyTkApp(tk.Frame):
                 _3lb_perc = 0 if _3lb_perc < 0 else _3lb_perc
                 _1bj_perc = 0 if _1bj_perc < 0 else _1bj_perc
                 _2bj_perc = 0 if _2bj_perc < 0 else _2bj_perc
-                _flc_perc = _1lb_perc + _2lb_perc + _1bj_perc + (0.50 * _3lb_perc)
+                _flc_perc = _1lb_perc + _2lb_perc + _1bj_perc + (0.67 * _3lb_perc)
                 _flc_perc = 100 if _flc_perc > 100 else _flc_perc
                 _coarse_perc = 100 - _flc_perc
             else:
@@ -613,7 +613,7 @@ class MyTkApp(tk.Frame):
             f.close()
             
             r = open('/home/agnext/Desktop/results.csv','a')
-            r.write(f"{dt_},{flc_},{coarse_},{leaf}\n")
+            r.write(f"{dt_},{flc_},{coarse_}\n")
             r.close()
 
             self.results['one_leaf_bud'] = int(np.ceil(_1lb_perc * totalCount/100))
@@ -824,22 +824,16 @@ class MyTkApp(tk.Frame):
     def main_screen(self):
         try:
             leaf_type =  self.leaf_verify.get()
-            if leaf_type == "Own":
-                self.new_fields['area_covered'] = self.area_covered_verify.get()
-                self.new_fields['weight'] = str(int(self.weight_verify.get()) / 1000)
-                self.new_fields['sample_id'] = self.sample_id_verify.get()
-                self.new_fields['lot_id'] = self.lot_id_verify.get()
+            if leaf_type in ["Bought", "bought"]:
+                self.new_fields['area_covered'] = "0"
+                self.new_fields['weight'] = "0.75"
+                self.new_fields['sample_id'] = "0"
+                self.new_fields['lot_id'] = "0"
+                self.new_fields['batchId'] = "0"
                 self.new_fields['region_id'] = self.region_id_name_dict[self.region_verify.get()] if self.region_verify.get() != 'Select Region' else self.region_verify.get()
                 self.new_fields['inst_center_id'] = self.center_id_name_dict[self.inst_center_verify.get()] if self.inst_center_verify.get() != 'Select Inst Center' else self.inst_center_verify.get()
-                self.new_fields['batchId'] = self.batch_id_verify.get()
-                if (self.new_fields['area_covered'] == 'Enter Area Covered') or \
-                    (self.new_fields['weight'] == "Enter Weight") or \
-                    (self.new_fields['sample_id'] == "Enter Sample ID")  or \
-                    (self.new_fields['lot_id'] == "Enter Lot ID") or \
-                    (self.new_fields['region_id'] == "Select Region") or \
-                    (self.new_fields['inst_center_id'] == "Select Inst Center") or \
-                    (self.new_fields['batchId'] == "Enter Batch ID"):
-                    self.show_error_msg("Please fill all details.")
+                if (self.new_fields['region_id'] == "Select Region") or (self.new_fields['inst_center_id'] == "Select Inst Center"):
+                    self.show_error_msg("Please select Region & Inst Center.")
                 else:
                     self.second_screen_forget()
                     self.enter_details()      
