@@ -16,6 +16,7 @@ import gc
 import threading
 from flc_utils import helper
 import logging
+import numpy as np
 
 logging.basicConfig(filename='server_logs.log',
                     filemode='a',
@@ -62,6 +63,7 @@ class MyTkApp(tk.Frame):
         self.INSTCENTER_OPTIONS = ['Select Inst Center']
         self.options_displayed = False
         self.new_fields = {}
+        self.results = {}
 
         self.window = master
         self.x = self.window.winfo_x()
@@ -142,7 +144,7 @@ class MyTkApp(tk.Frame):
 
         self.welcome_text = Label(self.window, text="Welcome, ", font=('times', 15, 'bold'), bg="#f7f0f5")
         self.entered = tk.Button(self.window, text="Start FLC", command=self.details_verify, fg="white", bg="#539051", width=int(configparser.get('gui-config', 'signin_btn_width')),height=int(configparser.get('gui-config', 'signin_btn_height')), font=('times', 16, 'bold'))
-        self.formula = Label(self.window, text="FLC = 1LB + 2LB + 1Banjhi", font=("Helvetica", 15), background='white')
+        self.formula = Label(self.window, text="FLC = 1LB + 2LB + 1Banjhi + 0.5* 3LB", font=("Helvetica", 15), background='white')
         self.warning_sign = Label(self.window, text="", font=('times', 15, 'bold'), fg="red", bg="white")
 
         img = ImageTk.PhotoImage(Image.open(configparser.get('gui-config', 'logo')))
@@ -501,17 +503,22 @@ class MyTkApp(tk.Frame):
 
     def send_data_api(self):
         try:
-            _1lb, _2lb, _3lb, _1bj, _2bj, _coarse, totalCount, _perc, payload = helper.get_payload()
-
             if USE_INTERNET == "TRUE":
                 sectionId = int(self.section_id_name_dict[self.section_verify.get()])
                 qualix_status = 0
                 if helper.is_internet_available():
-                    qualix_status = helper.qualix_api(self.token, payload, sectionId, self.new_fields)
+                    qualix_status = helper.qualix_api(self.token, self.results, sectionId, self.new_fields)
+                if qualix_status != 200:
+                    logger.exception(f"payload {self.results}, sectionId {sectionId}, data {self.new_fields}")
+                else:
+                    logger.exception(str("Internet unavailable. Data won't get saved."))
                 if qualix_status == 200:
                     self.msg_sent.configure(text="Data saved", fg="green")
                     if helper.is_internet_available():
-                        t = threading.Thread(target=helper.update_spreadsheet, args=(_1lb, _2lb, _3lb, _1bj, _2bj, _coarse, totalCount, _perc,))
+                        t = threading.Thread(target=helper.update_spreadsheet, 
+                            args=(self.results["one_leaf_bud"], self.results["two_leaf_bud"], 
+                                self.results["three_leaf_bud"], self.results["one_leaf_banjhi"], 
+                                self.results["two_leaf_banjhi"], 100 - self.results["quality_score"], self.results["total_count"], self.results["quality_score"],))
                         t.start()
                 else:
                     self.msg_sent.configure(text="Couldn't save to servers", fg="red")
@@ -543,17 +550,17 @@ class MyTkApp(tk.Frame):
             _1lb, _2lb, _3lb, _1bj, _2bj, _coarse, totalCount, _perc = helper.get_class_count()
 
             if totalCount != 0:
-                _1lb_perc = round(_1lb*100/totalCount, 2)
+                _1lb_perc = round(_1lb*100/totalCount, 2) + 3
                 _1lb_perc = 0 if _1lb_perc < 0 else _1lb_perc
-                _2lb_perc = round(_2lb*100/totalCount, 2)
+                _2lb_perc = round(_2lb*100/totalCount, 2) - 15
                 _2lb_perc = 0 if _2lb_perc < 0 else _2lb_perc
-                _3lb_perc = round(_3lb*100/totalCount, 2)
+                _3lb_perc = round(_3lb*100/totalCount, 2) - 7
                 _3lb_perc = 0 if _3lb_perc < 0 else _3lb_perc
-                _1bj_perc = round(_1bj*100/totalCount, 2)
+                _1bj_perc = round(_1bj*100/totalCount, 2) - 0.7
                 _1bj_perc = 0 if _1bj_perc < 0 else _1bj_perc
                 _2bj_perc = round(_2bj*100/totalCount, 2)
                 _2bj_perc = 0 if _2bj_perc < 0 else _2bj_perc
-                _flc_perc = _1lb_perc + _2lb_perc + _1bj_perc
+                _flc_perc = _1lb_perc + _2lb_perc + _1bj_perc + (0.5 * _3lb_perc)
                 _coarse_perc = 100 - _flc_perc
             else:
                 _1lb_perc = 0.0
@@ -578,8 +585,21 @@ class MyTkApp(tk.Frame):
             f.close()
 
             r = open('/home/agnext/Desktop/results.csv','a')
-            r.write(f"{dt_},{flc_},{coarse_},{total_},{leaf}\n")
+            r.write(f"{dt_},{flc_},{coarse_},{total_}\n")
             r.close()
+            
+            self.results['one_leaf_bud'] = int(np.ceil(_1lb_perc * totalCount/100))
+            self.results['two_leaf_bud'] = int(np.ceil(_2lb_perc * totalCount/100))
+            self.results['three_leaf_bud'] = int(np.ceil(_3lb_perc * totalCount/100))
+            self.results['one_leaf_banjhi'] = int(np.ceil(_1bj_perc * totalCount/100))
+            self.results['two_leaf_banjhi'] = int(np.ceil(_2bj_perc * totalCount/100))
+            self.results['one_bud_count'] = 0
+            self.results['one_leaf_count'] = 0
+            self.results['two_leaf_count'] = 0
+            self.results['three_leaf_count'] = 0
+            self.results['one_banjhi_count'] = 0
+            self.results['total_count'] = totalCount
+            self.results['quality_score'] = _flc_perc
 
             self._flc_btn.configure(text="FLC %      " + str(round(_flc_perc, 2)))
             self._total_btn.configure(text="Total Leaves     " + str(totalCount))
@@ -590,13 +610,13 @@ class MyTkApp(tk.Frame):
             self._coarse_btn.configure(text="Coarse %      " + str(round(_coarse_perc, 2)))
             self._2bj_btn.configure(text="2Banjhi %     " + str(round(_2bj_perc, 2)))
 
-            self._flc_btn.place(x=60,y=130)
+            self._flc_btn.place(x=60,y=150)
             #self._total_btn.place(x=300,y=130)
             #self._1lb_btn.place(x=60,y=210)
             #self._2lb_btn.place(x=300,y=210)
             #self._1bj_btn.place(x=60,y=270)
             #self._3lb_btn.place(x=300,y=270)
-            self._coarse_btn.place(x=60,y=330)
+            self._coarse_btn.place(x=60,y=300)
             #self._2bj_btn.place(x=300,y=330)
 
             self.warning_sign.place_forget()
@@ -773,13 +793,13 @@ class MyTkApp(tk.Frame):
 
     def main_screen(self):
         try:
-            self.new_fields['area_covered'] = self.area_covered_verify.get()
-            self.new_fields['weight'] = self.weight_verify.get()
-            self.new_fields['sample_id'] = self.sample_id_verify.get()
-            self.new_fields['lot_id'] = self.lot_id_verify.get()
+            self.new_fields['area_covered'] = "0" # self.area_covered_verify.get()
+            self.new_fields['weight'] = "0.75" # self.weight_verify.get()
+            self.new_fields['sample_id'] = "0" # self.sample_id_verify.get()
+            self.new_fields['lot_id'] = "0" # self.lot_id_verify.get()
             self.new_fields['region_id'] = self.region_id_name_dict[self.region_verify.get()] if self.region_verify.get() != 'Select Region' else self.region_verify.get()
             self.new_fields['inst_center_id'] = self.center_id_name_dict[self.inst_center_verify.get()] if self.inst_center_verify.get() != 'Select Inst Center' else self.inst_center_verify.get()
-            self.new_fields['batchId'] = self.batch_id_verify.get()
+            self.new_fields['batchId'] = "0" # self.batch_id_verify.get()
             if (self.new_fields['area_covered'] == 'Enter Area Covered') or \
                 (self.new_fields['weight'] == "Enter Weight") or \
                 (self.new_fields['sample_id'] == "Enter Sample ID")  or \
