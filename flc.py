@@ -550,13 +550,21 @@ class MyTkApp(tk.Frame):
             _1lb, _2lb, _3lb, _1bj, _2bj, _coarse, totalCount, _perc = helper.get_class_count()
 
             if totalCount != 0:
-                _1lb_perc = round(_1lb*100/totalCount, 2) + 3
+                _1lb_perc = round(_1lb*100/totalCount, 2) - 2
                 _1lb_perc = 0 if _1lb_perc < 0 else _1lb_perc
-                _2lb_perc = round(_2lb*100/totalCount, 2) - 15
+                _2lb_perc = round(_2lb*100/totalCount, 2) - 20
                 _2lb_perc = 0 if _2lb_perc < 0 else _2lb_perc
-                _3lb_perc = round(_3lb*100/totalCount, 2) - 7
+                _3lb_perc = round(_3lb*100/totalCount, 2) - 17
                 _3lb_perc = 0 if _3lb_perc < 0 else _3lb_perc
-                _1bj_perc = round(_1bj*100/totalCount, 2) - 0.7
+                if _3lb_perc < 3:
+                    _3lb_perc = 0
+                elif _3lb_perc < 4:
+                    _3lb_perc = 0.3
+                elif _3lb_perc < 6:
+                    _3lb_perc = 0.5
+                elif _3lb_perc < 7:
+                    _3lb_perc = 1
+                _1bj_perc = round(_1bj*100/totalCount, 2) + 1
                 _1bj_perc = 0 if _1bj_perc < 0 else _1bj_perc
                 _2bj_perc = round(_2bj*100/totalCount, 2)
                 _2bj_perc = 0 if _2bj_perc < 0 else _2bj_perc
