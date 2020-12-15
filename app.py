@@ -639,11 +639,29 @@ class MyTkApp(tk.Frame):
         coarse_ = str(round((100 - _perc), 1))
         total_ = int(self.result_dict["Total_Bunches"])
         total_str = str(total_)
-        _1lbp = str(round((self.result_dict["1LeafBud_Count"] * 100 / total_), 2))
-        _2lbp = str(round((self.result_dict["2LeafBud_Count"] * 100 / total_), 2))
-        _3lbp = str(round((self.result_dict["3LeafBud_Count"] * 100 / total_), 2))
-        _1bjp = str(round((self.result_dict["1LeafBanjhi_Count"] * 100 / total_), 2))
-        _2bjp = str(round((self.result_dict["2LeafBanjhi_Count"] * 100 / total_), 2))
+
+        _1lb = round((self.result_dict["1LeafBud_Count"] * 100 / total_), 1)
+        _2lb = round((self.result_dict["2LeafBud_Count"] * 100 / total_), 1)
+        _3lb = round((self.result_dict["3LeafBud_Count"] * 100 / total_), 1)
+        _1bj = round((self.result_dict["1LeafBanjhi_Count"] * 100 / total_), 1)
+        _2bj = round((self.result_dict["2LeafBanjhi_Count"] * 100 / total_), 1)
+
+        _1lb -= 8
+        _2lb -= 4
+        _3lb -= 13
+        _2bj += 2
+
+        _1lb = _1lb-8 if _1lb > 8 else 0
+        _2lb = _2lb if _2lb > 0 else 0
+        _3lb = _3lb if _3lb > 0 else 0
+        _1bj = _1bj if _1bj > 0 else 0
+        _2bj = _2bj if _2bj > 0 else 0
+
+        _1lbp = str(_1lb)
+        _2lbp = str(_2lb)
+        _3lbp = str(_3lb)
+        _1bjp = str(_1bj)
+        _2bjp = str(_2bj)
         f.write(f"{dt_},{flc_},{coarse_},{_1lbp},{_2lbp},{_3lbp},{_1bjp},{_2bjp},{total_str}\n")
         f.close()
         
