@@ -532,7 +532,10 @@ class MyTkApp(tk.Frame):
         _2leaf = int(self.result_dict['2Leaf_Count'])
         _3leaf = int(self.result_dict['3Leaf_Count'])
         _total = int(self.result_dict['Total_Bunches'])
-        _sum = (_1lb + _2lb + (_3lb/2) + _1bj)
+        try:
+            _sum = (_1lb + _2lb + (_3lb/2) + _1bj)
+        except:
+            _sum = (_1lb + _2lb + _1bj)
         if _sum == 0:
             _perc = 0.0
         else:
@@ -640,11 +643,11 @@ class MyTkApp(tk.Frame):
         total_ = int(self.result_dict["Total_Bunches"])
         total_str = str(total_)
 
-        _1lb = round((self.result_dict["1LeafBud_Count"] * 100 / total_), 1)
-        _2lb = round((self.result_dict["2LeafBud_Count"] * 100 / total_), 1)
-        _3lb = round((self.result_dict["3LeafBud_Count"] * 100 / total_), 1)
-        _1bj = round((self.result_dict["1LeafBanjhi_Count"] * 100 / total_), 1)
-        _2bj = round((self.result_dict["2LeafBanjhi_Count"] * 100 / total_), 1)
+        _1lb = round((self.result_dict["1LeafBud_Count"] * 100 / total_), 1) if self.result_dict["1LeafBud_Count"] != 0 else 0
+        _2lb = round((self.result_dict["2LeafBud_Count"] * 100 / total_), 1) if self.result_dict["2LeafBud_Count"] != 0 else 0
+        _3lb = round((self.result_dict["3LeafBud_Count"] * 100 / total_), 1) if self.result_dict["3LeafBud_Count"] != 0 else 0
+        _1bj = round((self.result_dict["1LeafBanjhi_Count"] * 100 / total_), 1) if self.result_dict["1LeafBanjhi_Count"] != 0 else 0
+        _2bj = round((self.result_dict["2LeafBanjhi_Count"] * 100 / total_), 1) if self.result_dict["2LeafBanjhi_Count"] != 0 else 0
 
         _1lb -= 8
         _2lb -= 4
