@@ -46,7 +46,7 @@ def qualix_api(token, payload, sectionId, new_fields):
                     "section_id": str(sectionId),
                     "batch_id": "Good-001",
                     "commodity_id": "4",
-                    "device_serial_no": "FLCP203208P02M2",
+                    "device_serial_no": "xyz",
                     "device_type": "FLC",
                     "device_type_id": "5",
                     "farmer_code": "QX1409936521", # str(farmer_code)
@@ -162,7 +162,7 @@ def update_spreadsheet(_1lb, _2lb, _3lb, _1bj, _2bj, _coarse, totalCount, _perc)
         SCOPES = ['https://www.googleapis.com/auth/spreadsheets']
 
         # The ID and range of a sample spreadsheet.
-        SPREADSHEET_ID = '1FF3YpzenQ49czzVHNL91jtVDz0vcoc9cayywUEYJdWM'
+        SPREADSHEET_ID = '1Ez6FJLDroIUls1T1cZlzmwZVB5uFCwQ98qgWNUxL-pQ'
         RANGE_NAME = 'Sheet1!A:H'
 
         creds = None
@@ -234,7 +234,7 @@ def free_space():
                 os.remove(i)
 
 def check_expiry(token):
-    DEVICE = "FLCP203208P02M2"
+    DEVICE = "xyz"
     url = f"http://70.37.95.226:8072/api/chemical/device/{DEVICE}?v=1"
     headers = {'Authorization': "Bearer " + token}
     response = requests.request("GET", url, headers=headers)
