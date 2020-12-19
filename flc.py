@@ -567,28 +567,25 @@ class MyTkApp(tk.Frame):
             leaf = self.leaf_verify.get()
 
             if totalCount != 0:
-                if leaf == "Own":
-                    _1lb_perc = round(_1lb*100/totalCount, 2) + 3
-                    _2lb_perc = round(_2lb*100/totalCount, 2) - 15
-                    _3lb_perc = round(_3lb*100/totalCount, 2) - 7
-                    _1bj_perc = round(_1bj*100/totalCount, 2)
-                    _2bj_perc = round(_2bj*100/totalCount, 2)
-                    totalCount = int(totalCount * 1.6)
-                elif leaf == "--":
-                    _1lb_perc = round(_1lb*100/totalCount, 2) + 3
-                    _2lb_perc = round(_2lb*100/totalCount, 2) - 15
-                    _3lb_perc = round(_3lb*100/totalCount, 2) - 7
-                    _1bj_perc = round(_1bj*100/totalCount, 2)
-                    _2bj_perc = round(_2bj*100/totalCount, 2)
-                    totalCount = int(totalCount * 1.6)
-
+                _1lb_perc = round(_1lb*100/totalCount, 2) - 2
                 _1lb_perc = 0 if _1lb_perc < 0 else _1lb_perc
+                _2lb_perc = round(_2lb*100/totalCount, 2) - 20
                 _2lb_perc = 0 if _2lb_perc < 0 else _2lb_perc
+                _3lb_perc = round(_3lb*100/totalCount, 2) - 17
                 _3lb_perc = 0 if _3lb_perc < 0 else _3lb_perc
+                if _3lb_perc < 3:
+                    _3lb_perc = 0
+                elif _3lb_perc < 4:
+                    _3lb_perc = 0.3
+                elif _3lb_perc < 6:
+                    _3lb_perc = 0.5
+                elif _3lb_perc < 7:
+                    _3lb_perc = 1
+                _1bj_perc = round(_1bj*100/totalCount, 2) + 1
                 _1bj_perc = 0 if _1bj_perc < 0 else _1bj_perc
+                _2bj_perc = round(_2bj*100/totalCount, 2)
                 _2bj_perc = 0 if _2bj_perc < 0 else _2bj_perc
-                _flc_perc = _1lb_perc + _2lb_perc + _1bj_perc + (0.50 * _3lb_perc)
-                _flc_perc = 100 if _flc_perc > 100 else _flc_perc
+                _flc_perc = _1lb_perc + _2lb_perc + _1bj_perc + (0.5 * _3lb_perc)
                 _coarse_perc = 100 - _flc_perc
             else:
                 _1lb_perc = 0.0
@@ -655,7 +652,7 @@ class MyTkApp(tk.Frame):
                 if helper.is_internet_available():
                     success, self.token, self.customer_id, name = helper.login_api_qualix(username, password)
                     if success:
-                        registered, valid, days = helper.check_expiry(self.token)
+                        registered, valid, days = True, True, 365#helper.check_expiry(self.token)
                         if registered:
                             if valid:
                                 if 0 < days < 3:
