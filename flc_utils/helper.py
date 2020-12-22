@@ -46,7 +46,7 @@ def qualix_api(token, payload, sectionId, new_fields):
                     "section_id": str(sectionId),
                     "batch_id": "Good-001",
                     "commodity_id": "4",
-                    "device_serial_no": "xyz",
+                    "device_serial_no": "FLCP203208P02M3",
                     "device_type": "FLC",
                     "device_type_id": "5",
                     "farmer_code": "QX1409936521", # str(farmer_code)
@@ -234,7 +234,7 @@ def free_space():
                 os.remove(i)
 
 def check_expiry(token):
-    DEVICE = "xyz"
+    DEVICE = "FLCP203208P02M3"
     url = f"http://70.37.95.226:8072/api/chemical/device/{DEVICE}?v=1"
     headers = {'Authorization': "Bearer " + token}
     response = requests.request("GET", url, headers=headers)

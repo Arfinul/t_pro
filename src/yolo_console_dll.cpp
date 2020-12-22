@@ -470,7 +470,7 @@ int main(int argc, char *argv[])
     }
     else if (argc > 1) filename = argv[1];
 
-    float const thresh = (argc > 5) ? std::stof(argv[5]) : 0.63;
+    float const thresh = (argc > 5) ? std::stof(argv[5]) : 0.60;
 
     Detector detector(cfg_file, weights_file);
 

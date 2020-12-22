@@ -122,10 +122,10 @@ class MyTkApp(tk.Frame):
         self.password_verify = StringVar()
          
         self.username_login_entry = Entry(self.window, textvariable=self.username_verify, font = "Helvetica 15")
-        self.username_login_entry.insert(1, "temprobin331@gmail.com")
+        self.username_login_entry.insert(1, "qlc.op@agnext.in")
 
         self.password_login_entry = Entry(self.window, textvariable=self.password_verify, show= '*', font = "Helvetica 15")
-        self.password_login_entry.insert(1, "Specx123!")
+        self.password_login_entry.insert(1, "qlc-op")
         
         self.signin = tk.Button(self.window, text="Login", command=self.login_verify, fg="white", bg="#539051", width=int(configparser.get('gui-config', 'signin_btn_width')),height=int(configparser.get('gui-config', 'signin_btn_height')), font=("Helvetica 15 bold"))
 
@@ -652,7 +652,7 @@ class MyTkApp(tk.Frame):
                 if helper.is_internet_available():
                     success, self.token, self.customer_id, name = helper.login_api_qualix(username, password)
                     if success:
-                        registered, valid, days = True, True, 365#helper.check_expiry(self.token)
+                        registered, valid, days = helper.check_expiry(self.token)
                         if registered:
                             if valid:
                                 if 0 < days < 3:
@@ -823,7 +823,7 @@ class MyTkApp(tk.Frame):
             leaf_type =  self.leaf_verify.get()
             if leaf_type == "Own":
                 self.new_fields['area_covered'] = self.area_covered_verify.get()
-                self.new_fields['weight'] = str(int(self.weight_verify.get()) / 1000)
+                self.new_fields['weight'] = str(int(self.weight_verify.get()) / 1000) if self.weight_verify.get() != "Enter Weight" else "0"
                 self.new_fields['sample_id'] = self.sample_id_verify.get()
                 self.new_fields['lot_id'] = self.lot_id_verify.get()
                 self.new_fields['region_id'] = self.region_id_name_dict[self.region_verify.get()] if self.region_verify.get() != 'Select Region' else self.region_verify.get()
