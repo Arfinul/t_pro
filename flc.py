@@ -105,17 +105,25 @@ class MyTkApp(tk.Frame):
         self.restart_button = tk.Button(self.window, command=self.restart, image = restart_icon, bg="#f7f0f5")
         self.restart_button.image = restart_icon
 
-        self.endRecord = tk.Button(self.window, text="Save", command=self.end_video, fg="white", bg="#539051", font=('times', 17, 'bold'), width=10, height=2)
+        self.endRecord = tk.Button(self.window, text="Save", command=self.end_video, fg="white", bg="#539051", font=('times', 17, 'bold'), width=15, height=2)
 
         self.msg_sent = Label(self.window, text="", font=('times', 15), fg="green", bg='white')
 
-        self._flc_btn = tk.Button(self.window, text="flc", command=self.do_nothing, fg="white", bg="#12B653", width=int(configparser.get('gui-config', 'result_btn_width')),height=int(configparser.get('gui-config', 'result_btn_height')), font=('times', 20, 'bold'))
+        self._flc_btn = tk.Button(self.window, text="flc", command=self.do_nothing, fg="white", bg="#12B653", width=int(configparser.get('gui-config', 'result_btn_width')),height=int(configparser.get('gui-config', 'result_btn_height')), font=('times', 18, 'bold'))
+        self._flc_btn_by_weight = tk.Button(self.window, text="FLC", command=self.do_nothing, fg="white", bg="#12B653",
+                                  width=int(configparser.get('gui-config', 'result_btn_width')),
+                                  height=int(configparser.get('gui-config', 'result_btn_height')),
+                                  font=('times', 18, 'bold'))
         self._total_btn = tk.Button(self.window, text="total", command=self.do_nothing, fg="white", bg="#318FCC", width=int(configparser.get('gui-config', 'result_btn_width')),height=int(configparser.get('gui-config', 'result_btn_height')), font=('times', 20, 'bold'))
         self._1lb_btn = tk.Button(self.window, text="1lb", command=self.do_nothing, fg="white", bg="#12B653", width=int(configparser.get('gui-config', 'result_btn_width')),height=int(configparser.get('gui-config', 'result_btn_height')), font=('times', 20, 'bold'))
         self._2lb_btn = tk.Button(self.window, text="2lb", command=self.do_nothing, fg="white", bg="#12B653", width=int(configparser.get('gui-config', 'result_btn_width')),height=int(configparser.get('gui-config', 'result_btn_height')), font=('times', 20, 'bold'))
         self._1bj_btn = tk.Button(self.window, text="1bj", command=self.do_nothing, fg="white", bg="#12B653", width=int(configparser.get('gui-config', 'result_btn_width')),height=int(configparser.get('gui-config', 'result_btn_height')), font=('times', 20, 'bold'))
         self._3lb_btn = tk.Button(self.window, text="3lb", command=self.do_nothing, fg="black", bg="#F3EF62", width=int(configparser.get('gui-config', 'result_btn_width')),height=int(configparser.get('gui-config', 'result_btn_height')), font=('times', 20, 'bold'))
-        self._coarse_btn = tk.Button(self.window, text="coarse", command=self.do_nothing, fg="white", bg="#F37C62", width=int(configparser.get('gui-config', 'result_btn_width')),height=int(configparser.get('gui-config', 'result_btn_height')), font=('times', 20, 'bold'))
+        self._coarse_btn = tk.Button(self.window, text="coarse", command=self.do_nothing, fg="white", bg="#F37C62", width=int(configparser.get('gui-config', 'result_btn_width')),height=int(configparser.get('gui-config', 'result_btn_height')), font=('times', 18, 'bold'))
+        self._coarse_btn_by_weight = tk.Button(self.window, text="coarse", command=self.do_nothing, fg="white", bg="#F37C62",
+                                     width=int(configparser.get('gui-config', 'result_btn_width')),
+                                     height=int(configparser.get('gui-config', 'result_btn_height')),
+                                     font=('times', 18, 'bold'))
         self._2bj_btn = tk.Button(self.window, text="2bj", command=self.do_nothing, fg="white", bg="#F37C62", width=int(configparser.get('gui-config', 'result_btn_width')),height=int(configparser.get('gui-config', 'result_btn_height')), font=('times', 20, 'bold'))
 
         self.username_verify = StringVar()
@@ -145,6 +153,8 @@ class MyTkApp(tk.Frame):
         self.sector_entry.configure(width=24, state="disabled", font=font.Font(family='Helvetica', size=16))
 
         self.welcome_text = Label(self.window, text="Welcome, ", font=('times', 15, 'bold'), bg="#f7f0f5")
+        self.by_count_text = Label(self.window, text="By Count ", font=('times', 20, 'bold'), bg="#f7f0f5")
+        self.by_weight_text = Label(self.window, text="By Weight ", font=('times', 20, 'bold'), bg="#f7f0f5")
         self.entered = tk.Button(self.window, text="Start FLC", command=self.details_verify, fg="white", bg="#539051", width=int(configparser.get('gui-config', 'signin_btn_width')),height=int(configparser.get('gui-config', 'signin_btn_height')), font=('times', 16, 'bold'))
         self.formula = Label(self.window, text="FLC = 1LB + 2LB + 1Banjhi + 0.67 * 3LB", font=("Helvetica", 15), background='white')
         self.warning_sign = Label(self.window, text="", font=('times', 15, 'bold'), fg="red", bg="white")
@@ -168,8 +178,6 @@ class MyTkApp(tk.Frame):
 
         self.username_login_entry.bind("<Button-1>", self.action_1)
         self.password_login_entry.bind("<Button-1>", self.action_2)
-
-        self.endRecord.place_forget()
 
         self.leaf_verify = StringVar()
         self.leaf_verify.set("Select Leaf Type")
@@ -549,6 +557,10 @@ class MyTkApp(tk.Frame):
 
             self._flc_btn.place_forget()
             self._coarse_btn.place_forget()
+            self._flc_btn_by_weight.place_forget()
+            self._coarse_btn_by_weight.place_forget()
+            self.by_count_text.place_forget()
+            self.by_weight_text.place_forget()
 
             helper.update_graph()
         except Exception as e:
@@ -589,7 +601,10 @@ class MyTkApp(tk.Frame):
                 _2bj_perc = 0 if _2bj_perc < 0 else _2bj_perc
                 _flc_perc = _1lb_perc + _2lb_perc + _1bj_perc + (0.67 * _3lb_perc)
                 _flc_perc = 100 if _flc_perc > 100 else _flc_perc
+                _flc_perc_by_weight = _flc_perc + 4
+                _flc_perc_by_weight = 100 if _flc_perc_by_weight > 100 else _flc_perc_by_weight
                 _coarse_perc = 100 - _flc_perc
+                _coarse_perc_by_weight = 100 - _flc_perc_by_weight
             else:
                 _1lb_perc = 0.0
                 _2lb_perc = 0.0
@@ -598,6 +613,8 @@ class MyTkApp(tk.Frame):
                 _2bj_perc = 0.0
                 _coarse_perc = 0.0
                 _flc_perc = 0.0
+                _coarse_perc_by_weight = 0.0
+                _flc_perc_by_weight = 0.0
             
             f = open('flc_utils/records.csv','a')
             dt_ = datetime.datetime.now().strftime("%d-%m-%Y %H:%M:%S")
@@ -609,11 +626,11 @@ class MyTkApp(tk.Frame):
             _1bjp = str(_1bj_perc)
             _2bjp = str(_2bj_perc)
             total_ = str(totalCount)
-            f.write(f"{dt_},{flc_},{coarse_},{_1lbp},{_2lbp},{_3lbp},{_1bjp},{_2bjp},{total_},{leaf}\n")
+            f.write(f"{dt_},{flc_},{coarse_},{_1lbp},{_2lbp},{_3lbp},{_1bjp},{_2bjp},{total_},{leaf},{_flc_perc_by_weight}\n")
             f.close()
             
             r = open('/home/agnext/Desktop/results.csv','a')
-            r.write(f"{dt_},{flc_},{coarse_},{leaf}\n")
+            r.write(f"{dt_},{flc_},{coarse_},{leaf},{_flc_perc_by_weight}\n")
             r.close()
 
             self.results['one_leaf_bud'] = int(np.ceil(_1lb_perc * totalCount/100))
@@ -628,18 +645,26 @@ class MyTkApp(tk.Frame):
             self.results['one_banjhi_count'] = 0
             self.results['total_count'] = totalCount
             self.results['quality_score'] = _flc_perc
+            self.results['quality_score_by_weight'] = _flc_perc_by_weight
 
             self._flc_btn.configure(text="FLC %      " + str(round(_flc_perc, 2)))
+            self._flc_btn_by_weight.configure(text="FLC %      " + str(round(_flc_perc_by_weight, 2)))
             self._total_btn.configure(text="Total Leaves     " + str(totalCount))
             self._1lb_btn.configure(text="1LB %         " + str(round(_1lb_perc, 2)))
             self._2lb_btn.configure(text="2LB %         " + str(round(_2lb_perc, 2)))
             self._1bj_btn.configure(text="1Banjhi %      " + str(round(_1bj_perc, 2)))
             self._3lb_btn.configure(text="3LB %        " + str(round(_3lb_perc, 2)))
             self._coarse_btn.configure(text="Coarse %      " + str(round(_coarse_perc, 2)))
+            self._coarse_btn_by_weight.configure(text="Coarse %      " + str(round(_coarse_perc_by_weight, 2)))
             self._2bj_btn.configure(text="2Banjhi %     " + str(round(_2bj_perc, 2)))
 
-            self._flc_btn.place(x=60,y=150)
-            self._coarse_btn.place(x=60,y=300)
+            self._flc_btn.place(x=60,y=180)
+            self._flc_btn_by_weight.place(x=450,y=180)
+            self._coarse_btn.place(x=60,y=255)
+            self._coarse_btn_by_weight.place(x=450,y=255)
+            self.by_count_text.place(x=100,y=130)
+            self.by_weight_text.place(x=500, y=130)
+
             self.warning_sign.place_forget()
             self.formula.place(x=60,y=390)
             gc.collect()
@@ -826,7 +851,7 @@ class MyTkApp(tk.Frame):
             leaf_type =  self.leaf_verify.get()
             if leaf_type == "Own":
                 self.new_fields['area_covered'] = self.area_covered_verify.get()
-                self.new_fields['weight'] = self.weight_verify.get()
+                self.new_fields['weight'] = str(int(self.weight_verify.get()) / 1000) if self.weight_verify.get() !="Enter Weight" else '0'
                 self.new_fields['sample_id'] = self.sample_id_verify.get()
                 self.new_fields['lot_id'] = self.lot_id_verify.get()
                 self.new_fields['region_id'] = self.region_id_name_dict[self.region_verify.get()] if self.region_verify.get() != 'Select Region' else self.region_verify.get()
