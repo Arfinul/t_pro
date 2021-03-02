@@ -1,6 +1,7 @@
 from tkinter import *
 from tkinter import messagebox
 from tkinter import font
+import tkinter as tk
 import cv2
 import os
 from PIL import Image,ImageTk
