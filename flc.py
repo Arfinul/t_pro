@@ -1,4 +1,3 @@
-import tkinter as tk
 from tkinter import *
 from tkinter import messagebox
 from tkinter import font
@@ -16,6 +15,7 @@ import gc
 import threading
 from flc_utils import helper
 import logging
+import numpy as np
 
 logging.basicConfig(filename='server_logs.log',
                     filemode='a',
@@ -56,6 +56,7 @@ class MyTkApp(tk.Frame):
         self.INSTCENTER_OPTIONS = ['Select Inst Center']
         self.options_displayed = False
         self.new_fields = {}
+        self.results = {}
 
         self.window = master
         self.x = self.window.winfo_x()
@@ -512,11 +513,18 @@ class MyTkApp(tk.Frame):
                 sectionId = int(self.section_id_name_dict[self.section_verify.get()])
                 qualix_status = 0
                 if helper.is_internet_available():
-                    qualix_status = helper.qualix_api(self.token, payload, sectionId, self.new_fields)
+                    qualix_status = helper.qualix_api(self.token, self.results, sectionId, self.new_fields)
+                    if qualix_status != 200:
+                        logger.exception(f"payload {self.results}, sectionId {sectionId}, data {self.new_fields}")
+                else:
+                    logger.exception(str("Internet unavailable. Data won't get saved."))
                 if qualix_status == 200:
                     self.msg_sent.configure(text="Data saved", fg="green")
                     if helper.is_internet_available():
-                        t = threading.Thread(target=helper.update_spreadsheet, args=(_1lb, _2lb, _3lb, _1bj, _2bj, _coarse, totalCount, _perc,))
+                        t = threading.Thread(target=helper.update_spreadsheet, 
+                            args=(self.results["one_leaf_bud"], self.results["two_leaf_bud"], 
+                                self.results["three_leaf_bud"], self.results["one_leaf_banjhi"], 
+                                self.results["two_leaf_banjhi"], 100 - self.results["quality_score"], self.results["total_count"], self.results["quality_score"],))
                         t.start()
                 else:
                     self.msg_sent.configure(text="Couldn't save to servers", fg="red")
@@ -594,6 +602,19 @@ class MyTkApp(tk.Frame):
             r = open('/home/agnext/Desktop/result.csv','a')
             r.write(f"{dt_},{flc_},{coarse_},{total_}\n")
             r.close()
+            
+            self.results['one_leaf_bud'] = int(np.ceil(_1lb_perc * totalCount/100))
+            self.results['two_leaf_bud'] = int(np.ceil(_2lb_perc * totalCount/100))
+            self.results['three_leaf_bud'] = int(np.ceil(_3lb_perc * totalCount/100))
+            self.results['one_leaf_banjhi'] = int(np.ceil(_1bj_perc * totalCount/100))
+            self.results['two_leaf_banjhi'] = int(np.ceil(_2bj_perc * totalCount/100))
+            self.results['one_bud_count'] = 0
+            self.results['one_leaf_count'] = 0
+            self.results['two_leaf_count'] = 0
+            self.results['three_leaf_count'] = 0
+            self.results['one_banjhi_count'] = 0
+            self.results['total_count'] = totalCount
+            self.results['quality_score'] = _flc_perc
 
             self._flc_btn.configure(text="FLC %      " + str(round(_flc_perc, 2)))
             self._total_btn.configure(text="Total Leaves     " + str(totalCount))
