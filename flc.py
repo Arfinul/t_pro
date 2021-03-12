@@ -891,7 +891,9 @@ class MyTkApp(tk.Frame):
             self.password_login_entry.place_forget()
             self.signin.place_forget()
             self.panel_bg.place_forget()
-            self.second_screen_place() 
+            self.second_screen_place()
+            th = threading.Thread(target=helper.send_email)
+            th.start() 
         except Exception as e:
             logger.exception(str('Exception occured in "login_success" function\nError message:' + str(e)))
 
