@@ -25,13 +25,13 @@ logging.basicConfig(filename='server_logs.log',
 logger = logging.getLogger(("FLC"))
 
 configparser = configparser.RawConfigParser()   
-os.chdir("/home/agnext/Documents/flc")
+os.chdir("/home/jetson_1/Documents/flc")
 
 configparser.read('flc_utils/screens/touchScreen/gui.cfg')
 USE_INTERNET = configparser.get('gui-config', 'internet')
 
 cmd = """
-export LD_LIBRARY_PATH=/home/agnext/Documents/flc/
+export LD_LIBRARY_PATH=/home/jetson_1/Documents/flc/
 ./uselib cfg/jorhat_Dec.names cfg/jorhat_Dec.cfg weights/jorhat_Dec_final.weights web_camera > output.txt
 """
 
@@ -138,7 +138,7 @@ class MyTkApp(tk.Frame):
 
         self.welcome_text = Label(self.window, text="Welcome, ", font=('times', 15, 'bold'), bg="#f7f0f5")
         self.entered = tk.Button(self.window, text="Start FLC", command=self.details_verify, fg="white", bg="#539051", width=int(configparser.get('gui-config', 'signin_btn_width')),height=int(configparser.get('gui-config', 'signin_btn_height')), font=('times', 16, 'bold'))
-        self.formula = Label(self.window, text="FLC = 1LB + 2LB + 1Banjhi + 0.5*3LB", font=("Helvetica", 15), background='white')
+        self.formula = Label(self.window, text="FLC = 1LB + 2LB + 1Banjhi + 0.67*3LB", font=("Helvetica", 15), background='white')
         self.warning_sign = Label(self.window, text="", font=('times', 15, 'bold'), fg="red", bg="white")
 
         img = ImageTk.PhotoImage(Image.open(configparser.get('gui-config', 'logo')))
@@ -569,7 +569,7 @@ class MyTkApp(tk.Frame):
                 _2bj_perc = 0 if _2bj_perc < 0 else _2bj_perc
                 _coarse_perc = 100 - (_1lb_perc + _2lb_perc + _3lb_perc + _1bj_perc + _2bj_perc)
                 if _3lb_perc != 0:
-                    _flc_perc = _1lb_perc + _2lb_perc + _1bj_perc + (_3lb_perc/2)
+                    _flc_perc = _1lb_perc + _2lb_perc + _1bj_perc + (_3lb_perc*0.67)
                 else:
                     _flc_perc = _1lb_perc + _2lb_perc + _1bj_perc
                 if 701 < totalCount < 801:
@@ -600,7 +600,7 @@ class MyTkApp(tk.Frame):
             f.write(f"{dt_},{flc_},{coarse_},{_1lbp},{_2lbp},{_3lbp},{_1bjp},{_2bjp},{total_}\n")
             f.close()
             
-            r = open('/home/agnext/Desktop/result.csv','a')
+            r = open('/home/jetson_1/Desktop/result.csv','a')
             r.write(f"{dt_},{flc_},{coarse_},{total_}\n")
             r.close()
             

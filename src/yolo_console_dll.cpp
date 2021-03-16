@@ -230,7 +230,7 @@ auto end_no_frame_sec_count = std::chrono::high_resolution_clock::now();
 
 cv::Mat black_image(480, 640, CV_8UC3); // Agnext black image
 bool black_background = false;
-bool clean_video = false;
+bool clean_video = true;
 int sec_for_empty_frame = 45;
 int double_tap_seconds_close = 5;   
 
