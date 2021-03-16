@@ -56,7 +56,12 @@ class MyTkApp(tk.Frame):
         self.REGIONS_OPTIONS = ['Select Region']
         self.INSTCENTER_OPTIONS = ['Select Inst Center']
         self.options_displayed = False
-        self.new_fields = {}
+        self.new_fields = {'area_covered': '5',
+                           'weight': '1',
+                           'sample_id': '1234',
+                           'lot_id': 'G-1',
+                           'device_serial_no': 'G-1',
+                           'batchId': '1',}
         self.results = {}
 
         self.window = master
