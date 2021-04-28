@@ -114,11 +114,13 @@ def login_api_qualix(username, password):
                     headers=headers,
                     cookies=cookie
                 )
+        print(response.json())
         access_token = response.json()['access_token']
         customer_id = response.json()['user']['customer_id']
         first_name = response.json()['user']['first_name']
         return True, access_token, customer_id, first_name
-    except:
+    except Exception as e:
+        print(e)
         return False, access_token, customer_id, first_name
 
 def regions_list_qualix(customer_id, token):
@@ -151,7 +153,7 @@ def inst_centers_list_qualix(region_id, customer_id, token):
 
 def is_internet_available():
     try:
-        urlopen("http://216.58.192.142", timeout=10)
+        urlopen("http://216.58.192.142", timeout=7)
         return True
     except Exception as e:
         return False
