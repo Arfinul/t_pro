@@ -38,15 +38,6 @@ def get_class_count():
     totalCount = int(_1lb + _2lb + _3lb + _1bj + _2bj + _coarse)
     return _1lb, _2lb, _3lb, _1bj, _2bj, _coarse, totalCount, _perc
 
-def get_payload():
-    _1lb, _2lb, _3lb, _1bj, _2bj, _coarse, totalCount, _perc = get_class_count()
-    payload = {'one_leaf_bud': _1lb, 'two_leaf_bud': _2lb, 'three_leaf_bud': _3lb, 
-                'one_leaf_banjhi': _1bj, 'two_leaf_banjhi': _2bj, 
-                'one_bud_count': 0, 'one_leaf_count': 0, 'two_leaf_count': 0,
-                'three_leaf_count': 0, 'one_banjhi_count': 0, 
-                'total_count': totalCount, 'quality_score': _perc}
-    return _1lb, _2lb, _3lb, _1bj, _2bj, _coarse, totalCount, _perc, payload
-
 def qualix_api(token, payload, sectionId, new_fields):
     li = []
     for i in payload:
@@ -90,31 +81,6 @@ def qualix_api(token, payload, sectionId, new_fields):
                      "Authorization": "Bearer " + token
                      }
         )
-    print(token)
-    print(li)
-    print({
-                    "section_id": str(sectionId),
-                    "batch_id": "Good-001",
-                    "commodity_id": "4",
-                    "device_serial_no": "FLCP203208P01M2",
-                    "device_type": "FLC",
-                    "device_type_id": "5",
-                    "farmer_code": "QX1409936521", # str(farmer_code)
-                    "location": "30.703239_76.692094",
-                    "lot_id": str(new_fields['lot_id']),
-                    "quantity": str(new_fields['weight']),
-                    "quantity_unit": "kg",
-                    "sample_id": str(new_fields['sample_id']),
-                    "scan_by_user_code": "128",
-                    "vendor_code": "1",
-                    "inst_center_type_Id":"2",
-                    "inst_center_id": str(new_fields['inst_center_id']),
-                    "region_id": str(new_fields['region_id']),
-                    "weight": str(new_fields['weight']),
-                    "commodity_category_id":"2",
-                    "commodity_name":"Tea",
-                    "area_covered": str(new_fields['area_covered'])
-                    })
     print(response.text)
     return response.status_code
 
@@ -185,7 +151,7 @@ def inst_centers_list_qualix(region_id, customer_id, token):
 
 def is_internet_available():
     try:
-        urlopen("http://216.58.192.142", timeout=3)
+        urlopen("http://216.58.192.142", timeout=10)
         return True
     except Exception as e:
         return False
@@ -267,15 +233,19 @@ def free_space():
             for i in delete_files:
                 os.remove(i)
 
-def check_expiry():
-    from dateutil.relativedelta import relativedelta
-
-    START_DATE = datetime.datetime(2020, 10, 23, 0, 0)
-    EXPIRY_MONTHS = 6
-    FINAL_DATE = START_DATE + relativedelta(months=+EXPIRY_MONTHS)
-    # NOW = datetime.datetime(2021, 4, 20, 0, 0)
-    NOW = datetime.datetime.now()
-    return NOW < FINAL_DATE, (FINAL_DATE - NOW).days
+def check_expiry(token):
+    DEVICE = "FLCP203208P01M2"
+    url = f"http://70.37.95.226:8072/api/chemical/device/{DEVICE}?v=1"
+    headers = {'Authorization': "Bearer " + token}
+    response = requests.request("GET", url, headers=headers)
+    data = response.json()
+    if data:
+        EPOCH_DATE = data['crops'][0]["licence_valid"]
+        FINAL_DATE = datetime.datetime.fromtimestamp(float(EPOCH_DATE)/1000.)
+        NOW = datetime.datetime.now()
+        return True, NOW < FINAL_DATE, (FINAL_DATE - NOW).days
+    else:
+        return False, "", ""
 
 
 def send_email():

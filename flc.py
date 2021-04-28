@@ -25,13 +25,18 @@ logging.basicConfig(filename='server_logs.log',
 logger = logging.getLogger(("FLC"))
 
 configparser = configparser.RawConfigParser()   
-os.chdir("/home/agnext/Documents/flc")
+os.chdir("/home/jetson_1/Documents/flc")
+
+def cam_fresh():
+    subprocess.Popen("python3 flc_utils/guvcview-config/cam_initialise.py", stdout= subprocess.PIPE, shell=True)
+    th = threading.Thread(target=cam_fresh)
+    th.start()
 
 configparser.read('flc_utils/screens/touchScreen/gui.cfg')
 USE_INTERNET = configparser.get('gui-config', 'internet')
 
 cmd = """
-export LD_LIBRARY_PATH=/home/agnext/Documents/flc/
+export LD_LIBRARY_PATH=/home/jetson_1/Documents/flc/
 ./uselib cfg/jorhat_Dec.names cfg/jorhat_Dec.cfg weights/jorhat_Dec_final.weights web_camera > output.txt
 """
 
@@ -56,7 +61,12 @@ class MyTkApp(tk.Frame):
         self.REGIONS_OPTIONS = ['Select Region']
         self.INSTCENTER_OPTIONS = ['Select Inst Center']
         self.options_displayed = False
-        self.new_fields = {}
+        self.new_fields = {'area_covered': '5',
+                           'weight': '1',
+                           'sample_id': '1234',
+                           'lot_id': 'G-1',
+                           'device_serial_no': 'G-1',
+                           'batchId': '1',}
         self.results = {}
 
         self.window = master
@@ -101,7 +111,7 @@ class MyTkApp(tk.Frame):
 
         self.msg_sent = Label(self.window, text="", font=('times', 15), fg="green", bg='white')
 
-        self._flc_btn = tk.Button(self.window, text="flc", command=self.do_nothing, fg="white", bg="#318FCC", width=int(configparser.get('gui-config', 'result_btn_width')),height=int(configparser.get('gui-config', 'result_btn_height')), font=('times', 20, 'bold'))
+        self._flc_btn = tk.Button(self.window, text="flc", command=self.do_nothing, fg="white", bg="#12B653", width=int(configparser.get('gui-config', 'result_btn_width')),height=int(configparser.get('gui-config', 'result_btn_height')), font=('times', 20, 'bold'))
         self._total_btn = tk.Button(self.window, text="total", command=self.do_nothing, fg="white", bg="#318FCC", width=int(configparser.get('gui-config', 'result_btn_width')),height=int(configparser.get('gui-config', 'result_btn_height')), font=('times', 20, 'bold'))
         self._1lb_btn = tk.Button(self.window, text="1lb", command=self.do_nothing, fg="white", bg="#12B653", width=int(configparser.get('gui-config', 'result_btn_width')),height=int(configparser.get('gui-config', 'result_btn_height')), font=('times', 20, 'bold'))
         self._2lb_btn = tk.Button(self.window, text="2lb", command=self.do_nothing, fg="white", bg="#12B653", width=int(configparser.get('gui-config', 'result_btn_width')),height=int(configparser.get('gui-config', 'result_btn_height')), font=('times', 20, 'bold'))
@@ -138,7 +148,7 @@ class MyTkApp(tk.Frame):
 
         self.welcome_text = Label(self.window, text="Welcome, ", font=('times', 15, 'bold'), bg="#f7f0f5")
         self.entered = tk.Button(self.window, text="Start FLC", command=self.details_verify, fg="white", bg="#539051", width=int(configparser.get('gui-config', 'signin_btn_width')),height=int(configparser.get('gui-config', 'signin_btn_height')), font=('times', 16, 'bold'))
-        self.formula = Label(self.window, text="FLC = 1LB + 2LB + 1Banjhi + 0.5*3LB", font=("Helvetica", 15), background='white')
+        self.formula = Label(self.window, text="FLC = 1LB + 2LB + 1Banjhi + 0.67*3LB", font=("Helvetica", 15), background='white')
         self.warning_sign = Label(self.window, text="", font=('times', 15, 'bold'), fg="red", bg="white")
 
         img = ImageTk.PhotoImage(Image.open(configparser.get('gui-config', 'logo')))
@@ -508,8 +518,6 @@ class MyTkApp(tk.Frame):
 
     def send_data_api(self):
         try:
-            _1lb, _2lb, _3lb, _1bj, _2bj, _coarse, totalCount, _perc, payload = helper.get_payload()
-
             if USE_INTERNET == "TRUE":
                 sectionId = int(self.section_id_name_dict[self.section_verify.get()])
                 qualix_status = 0
@@ -569,7 +577,7 @@ class MyTkApp(tk.Frame):
                 _2bj_perc = 0 if _2bj_perc < 0 else _2bj_perc
                 _coarse_perc = 100 - (_1lb_perc + _2lb_perc + _3lb_perc + _1bj_perc + _2bj_perc)
                 if _3lb_perc != 0:
-                    _flc_perc = _1lb_perc + _2lb_perc + _1bj_perc + (_3lb_perc/2)
+                    _flc_perc = _1lb_perc + _2lb_perc + _1bj_perc + (_3lb_perc*0.67)
                 else:
                     _flc_perc = _1lb_perc + _2lb_perc + _1bj_perc
                 if 701 < totalCount < 801:
@@ -600,7 +608,7 @@ class MyTkApp(tk.Frame):
             f.write(f"{dt_},{flc_},{coarse_},{_1lbp},{_2lbp},{_3lbp},{_1bjp},{_2bjp},{total_}\n")
             f.close()
             
-            r = open('/home/agnext/Desktop/result.csv','a')
+            r = open('/home/jetson_1/Desktop/result.csv','a')
             r.write(f"{dt_},{flc_},{coarse_},{total_}\n")
             r.close()
             
@@ -650,15 +658,21 @@ class MyTkApp(tk.Frame):
                 if helper.is_internet_available():
                     success, self.token, self.customer_id, name = helper.login_api_qualix(username, password)
                     if success:
-                        valid, days = helper.check_expiry()
-                        if valid:
-                            if 0 < days < 7:
-                                self.warning_sign.configure(text=f"License expiring in {days} days")
-                                self.warning_sign.place(x=10, y=390)
-                            self.login_success()
-                            self.welcome_text.configure(text="Welcome, " + name.title())
+                        registered, valid, days = helper.check_expiry(self.token)
+                        if registered:
+                            if valid:
+                                if 0 < days < 3:
+                                    self.warning_sign.configure(text=f"License - {days} days left", fg="red")
+                                    self.warning_sign.place(x=10, y=390)
+                                else:
+                                    self.warning_sign.configure(text=f"License - {days} days left", fg="green")
+                                    self.warning_sign.place(x=10, y=390)
+                                self.login_success()
+                                self.welcome_text.configure(text="Welcome, " + name.title())
+                            else:
+                                self.show_error_msg("License expired.")
                         else:
-                            self.show_error_msg("License expired.")
+                            self.show_error_msg("Device not registered.")
                     else:
                         self.show_error_msg("User Not Found")
                 else:
@@ -666,7 +680,9 @@ class MyTkApp(tk.Frame):
             else:
                 self.login_success()
                 self.welcome_text.configure(text="Welcome, Demo")
+            
             gc.collect()
+
         except Exception as e:
             logger.exception(str('Exception occured in "login_verify" function\nError message:' + str(e)))
 
@@ -847,8 +863,6 @@ class MyTkApp(tk.Frame):
             self.signin.place_forget()
             self.panel_bg.place_forget()
             self.second_screen_place() 
-            th = threading.Thread(helper.send_email)
-            th.start()
         except Exception as e:
             logger.exception(str('Exception occured in "login_success" function\nError message:' + str(e)))
 
