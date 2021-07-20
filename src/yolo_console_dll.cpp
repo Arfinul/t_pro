@@ -459,6 +459,15 @@ int main(int argc, char *argv[])
     std::string  cfg_file = "cfg/yolov3.cfg";
     std::string  weights_file = "yolov3.weights";
     std::string filename;
+    
+    int capture_width = 640 ;
+    int capture_height = 480 ;
+    int display_width = 640 ;
+    int display_height = 480 ;
+    int framerate = 30 ;
+    int flip_method = 0 ;
+
+    std::string gst_pipeline = "nvarguscamerasrc ! video/x-raw(memory:NVMM), width=(int)" + std::to_string(capture_width) + ", height=(int)" + std::to_string(capture_height) + ", format=(string)NV12, framerate=(fraction)" + std::to_string(framerate) + "/1 ! nvvidconv flip-method=" + std::to_string(flip_method) + " ! video/x-raw, width=(int)" + std::to_string(display_width) + ", height=(int)" + std::to_string(display_height) + ", format=(string)BGRx ! videoconvert ! video/x-raw, format=(string)BGR ! appsink";
 
     auto t_start = std::chrono::high_resolution_clock::now(); // Agnext TIMER
 
@@ -550,9 +559,12 @@ int main(int argc, char *argv[])
                 }
 #endif  // ZED_STEREO
 
-                cv::VideoCapture cap;
+                cv::VideoCapture cap(gst_pipeline);
                 if (filename == "web_camera") {
-                    cap.open(0);
+                    if(!cap.isOpened()) {
+			std::cout<<"Failed to open camera."<<std::endl;
+			return (-1);
+		    }
                     cap >> cur_frame;
                 } else if (!use_zed_camera) {
                     cap.open(filename);

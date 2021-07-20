@@ -12,6 +12,7 @@ import cv2
 import glob
 from requests_toolbelt.multipart.encoder import MultipartEncoder
 
+import socket
 import pickle
 import os.path
 from googleapiclient.discovery import build
@@ -152,10 +153,19 @@ def inst_centers_list_qualix(region_id, customer_id, token):
 
 def is_internet_available():
     try:
-        urlopen("http://216.58.192.142", timeout=10)
+        # see if we can resolve the host name -- tells us if there is
+        # a DNS listening
+        host = socket.gethostbyname("1.1.1.1")
+        # connect to the host -- tells us if the host is actually
+        # reachable
+        s = socket.create_connection((host, 80), 2)
+        s.close()
+        print("Internet good")
         return True
-    except Exception as e:
+    except:
+        print("No internet")
         return False
+
 
 def update_spreadsheet(_1lb, _2lb, _3lb, _1bj, _2bj, _coarse, totalCount, _perc):
     if is_internet_available():

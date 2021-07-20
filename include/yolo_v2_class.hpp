@@ -70,6 +70,7 @@ extern "C" LIB_API void send_json_custom(char const* send_buf, int port, int tim
 class Detector {
     std::shared_ptr<void> detector_gpu_ptr;
     std::deque<std::vector<bbox_t>> prev_bbox_vec_deque;
+    std::string _cfg_filename, _weight_filename;
 public:
     const int cur_gpu_id;
     float nms = .4;
@@ -86,12 +87,8 @@ public:
     LIB_API int get_net_height() const;
     LIB_API int get_net_color_depth() const;
 
-    // LIB_API std::vector<bbox_t> tracking_id(std::vector<bbox_t> cur_bbox_vec, bool const change_history = true,
-    //                                             int const frames_story = 10, int const max_dist =150);  // Original
-
-
     LIB_API std::vector<bbox_t> tracking_id(std::vector<bbox_t> cur_bbox_vec, bool const change_history = true,
-                                                int const frames_story = 30, int const max_dist =30);  // AgNext
+                                                int const frames_story = 5, int const max_dist = 40);
 
     LIB_API void *get_cuda_context();
 
@@ -700,8 +697,7 @@ public:
 
 class track_kalman_t
 {
-    // int track_id_counter;  //original
-    std::vector<int> track_id_vec; // agnext
+    int track_id_counter;
     std::chrono::steady_clock::time_point global_last_time;
     float dT;
 
@@ -854,9 +850,8 @@ public:
 
 
 
-    track_kalman_t(int _max_objects = 1000, int _min_frames = 3, int classes_number = 7, float _max_dist = 40, cv::Size _img_size = cv::Size(10000, 10000)) :
-        max_objects(_max_objects), min_frames(_min_frames), max_dist(_max_dist), img_size(_img_size),
-        track_id_vec(classes_number)
+    track_kalman_t(int _max_objects = 1000, int _min_frames = 3, float _max_dist = 40, cv::Size _img_size = cv::Size(10000, 10000)) :
+        track_id_counter(0), max_objects(_max_objects), min_frames(_min_frames), max_dist(_max_dist), img_size(_img_size)
     {
         kalman_vec.resize(max_objects);
         track_id_state_id_time.resize(max_objects);
@@ -1004,15 +999,10 @@ public:
 
                 if (tst.detection_count >= min_frames)
                 {
-                    if (track_id_state_id_time[i].track_id == 0){ // Agnext
-                        track_id_state_id_time[i].track_id = ++track_id_vec[result_vec_pred[i].obj_id];  //Agnext
-                        result_vec_pred[i].track_id = track_id_vec[result_vec_pred[i].obj_id];  //Agnext
+                    if (track_id_state_id_time[i].track_id == 0) {
+                        track_id_state_id_time[i].track_id = ++track_id_counter;
+                        result_vec_pred[i].track_id = track_id_counter;
                     }
-
-                    // {
-                    //     track_id_state_id_time[i].track_id = ++track_id_counter;  //Original
-                    //     result_vec_pred[i].track_id = track_id_counter;  //original
-                    // }
 
                     result_vec.push_back(result_vec_pred[i]);
                 }
@@ -1060,3 +1050,4 @@ public:
 #endif    // __cplusplus
 
 #endif    // YOLO_V2_CLASS_HPP
+
