@@ -27,7 +27,10 @@ logging.basicConfig(filename='server_logs.log',
 logger = logging.getLogger(("FLC"))
 
 configparser = configparser.RawConfigParser()   
-os.chdir("/home/agnext/Desktop/darknet")
+
+HOME = os.environ["HOME"]
+DIR_PATH = os.path.join(HOME, "Documents", "tragnext")
+os.chdir(DIR_PATH)
 
 def cam_fresh():
     subprocess.Popen("python3 flc_utils/guvcview-config/cam_initialise.py", stdout= subprocess.PIPE, shell=True)
@@ -39,8 +42,8 @@ configparser.read('flc_utils/screens/touchScreen/gui.cfg')
 
 USE_INTERNET = configparser.get('gui-config', 'internet')
 
-cmd = """
-export LD_LIBRARY_PATH=/home/agnext/Desktop/darknet
+cmd = f"""
+export LD_LIBRARY_PATH={DIR_PATH}
 ./uselib cfg/jorhat_Dec.names cfg/jorhat_Dec.cfg weights/jorhat_Dec_final.weights web_camera > output.txt
 """
 pwd = configparser.get('gui-config', 'sys_password')
@@ -650,11 +653,11 @@ class MyTkApp(tk.Frame):
             _1bjp = str(_1bj_perc)
             _2bjp = str(_2bj_perc)
             total_ = str(totalCount)
-           ## f.write(f"{dt_},{flc_},{coarse_},{_1lbp},{_2lbp},{_3lbp},{_1bjp},{_2bjp},{total_},{leaf},{_flc_perc_by_weight}\n")
+            f.write(f"{dt_},{flc_},{coarse_},{_1lbp},{_2lbp},{_3lbp},{_1bjp},{_2bjp},{total_},{leaf},{_flc_perc_by_weight}\n")
             f.close()
             
-            r = open('/home/agnext/Desktop/darknet/results.csv','a')
-           # r.write(f"{dt_},{flc_},{coarse_},{leaf},{_flc_perc_by_weight}\n")
+            r = open(f'{HOME}/Desktop/results.csv','a')
+            r.write(f"{dt_},{flc_},{coarse_},{leaf},{_flc_perc_by_weight}\n")
             r.close()
 
             self.results['one_leaf_bud'] = int(np.ceil(_1lb_perc * totalCount/100))
@@ -943,8 +946,6 @@ class MyTkApp(tk.Frame):
             self.signin.place_forget()
             self.panel_bg.place_forget()
             self.second_screen_place()
-            #th = threading.Thread(target=helper.send_email)
-            #th.start() 
         except Exception as e:
             logger.exception(str('Exception occured in "login_success" function\nError message:' + str(e)))
 

@@ -12,9 +12,7 @@ import cv2
 import glob
 from requests_toolbelt.multipart.encoder import MultipartEncoder
 
-import socket
 import pickle
-import os.path
 from googleapiclient.discovery import build
 from google_auth_oauthlib.flow import InstalledAppFlow
 from google.auth.transport.requests import Request
@@ -153,14 +151,7 @@ def inst_centers_list_qualix(region_id, customer_id, token):
 
 def is_internet_available():
     try:
-        # see if we can resolve the host name -- tells us if there is
-        # a DNS listening
-        host = socket.gethostbyname("1.1.1.1")
-        # connect to the host -- tells us if the host is actually
-        # reachable
-        s = socket.create_connection((host, 80), 2)
-        s.close()
-        print("Internet good")
+        urlopen("https://google.com", timeout=5)
         return True
     except:
         print("No internet")
@@ -173,7 +164,7 @@ def update_spreadsheet(_1lb, _2lb, _3lb, _1bj, _2bj, _coarse, totalCount, _perc)
         SCOPES = ['https://www.googleapis.com/auth/spreadsheets']
 
         # The ID and range of a sample spreadsheet.
-        SPREADSHEET_ID = '1e2tH5u0KDqQWKd_UOcctT2D0GejOmU1fP-mqIQTALnw'
+        SPREADSHEET_ID = '16UjlkkHAo5jVMmhrg8n5dFKPuEZL3WJvYVZYeizjk3I'
         RANGE_NAME = 'Sheet1!A:H'
 
         creds = None
@@ -257,28 +248,3 @@ def check_expiry(token):
         return True, NOW < FINAL_DATE, (FINAL_DATE - NOW).days
     else:
         return False, "", ""
-
-def send_email():
-    import requests
-    import smtplib
-    from email.mime.text import MIMEText
-    import datetime
-
-    stamp = str(datetime.datetime.now().strftime('%d-%m-%Y %H-%M-%S'))
-
-    email_id = "agnexttechnology@gmail.com"
-    email_pws = "Agnexttechnologytragnext"
-
-    TO = 'xyz@gmail.com'
-    SUBJECT = 'TrAgnext Login'
-    TEXT = 'Login done at Denguajhar location at ' + stamp
-
-    msg = MIMEText(TEXT, 'plain')
-    msg['To'] = TO
-    msg['Subject'] = SUBJECT
-
-    server = smtplib.SMTP('smtp.gmail.com', 587)
-    server.starttls()
-    server.login(email_id, email_pws)
-    server.sendmail(email_id, "agnexttechnology@gmail.com", msg.as_string())
-    server.quit()
