@@ -1003,13 +1003,13 @@ class MyTkApp(tk.Frame):
         #measure_weight = tk.Button(self.window, text="Measure Final Weight", command=lambda:[self.get_final_weight(), self.wait_till_mlc.set(1)], fg="white", bg="#539051", font=('times', 16, 'bold'))
         self.measure_final_weight.place(x=500, y=110, height=30, width=230)
         #measure_weight.grab_set()
-        measure_weight.wait_variable(self.wait_till_mlc)
+        measure_final_weight.wait_variable(self.wait_till_mlc)
         if self.initial_weight is not 0 and self.final_weight is not 0 and self.final_weight < self.initial_weight:
             self.mlc_value = ((self.initial_weight - self.final_weight)/self.initial_weight)*100
         else:
             # TODO: POP-UP ERROR FOR RE-MEASURING
             print("Measured Initial weight cannot be Zero or greater than the final weight measured")
-        measure_weight.place_forget()
+        measure_final_weight.place_forget()
 
 def launchApp():
     window = tk.Tk()
