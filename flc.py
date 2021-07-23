@@ -113,14 +113,18 @@ class MyTkApp(tk.Frame):
         self.msg_sent = Label(self.window, text="", font=('times', 15), fg="green", bg='white')
 
         self._flc_btn = tk.Button(self.window, text="flc", command=self.do_nothing, fg="white", bg="#12B653", width=int(configparser.get('gui-config', 'result_btn_width')),height=int(configparser.get('gui-config', 'result_btn_height')), font=('times', 18, 'bold'))
-        #self._flc_btn_by_weight = tk.Button(self.window, text="FLC", command=self.do_nothing, fg="white", bg="#12B653", width=int(configparser.get('gui-config', 'result_btn_width')),                                  height=int(configparser.get('gui-config', 'result_btn_height')), font=('times', 18, 'bold'))
+        
         self._total_btn = tk.Button(self.window, text="total", command=self.do_nothing, fg="white", bg="#318FCC", width=int(configparser.get('gui-config', 'result_btn_width')),height=int(configparser.get('gui-config', 'result_btn_height')), font=('times', 20, 'bold'))
+        
         self._1lb_btn = tk.Button(self.window, text="1lb", command=self.do_nothing, fg="white", bg="#12B653", width=int(configparser.get('gui-config', 'result_btn_width')),height=int(configparser.get('gui-config', 'result_btn_height')), font=('times', 20, 'bold'))
+        
         self._2lb_btn = tk.Button(self.window, text="2lb", command=self.do_nothing, fg="white", bg="#12B653", width=int(configparser.get('gui-config', 'result_btn_width')),height=int(configparser.get('gui-config', 'result_btn_height')), font=('times', 20, 'bold'))
+        
         self._1bj_btn = tk.Button(self.window, text="1bj", command=self.do_nothing, fg="white", bg="#12B653", width=int(configparser.get('gui-config', 'result_btn_width')),height=int(configparser.get('gui-config', 'result_btn_height')), font=('times', 20, 'bold'))
+        
         self._3lb_btn = tk.Button(self.window, text="3lb", command=self.do_nothing, fg="black", bg="#F3EF62", width=int(configparser.get('gui-config', 'result_btn_width')),height=int(configparser.get('gui-config', 'result_btn_height')), font=('times', 20, 'bold'))
+
         self._coarse_btn = tk.Button(self.window, text="coarse", command=self.do_nothing, fg="white", bg="#F37C62", width=int(configparser.get('gui-config', 'result_btn_width')),height=int(configparser.get('gui-config', 'result_btn_height')), font=('times', 18, 'bold'))
-        #self._coarse_btn_by_weight = tk.Button(self.window, text="coarse", command=self.do_nothing, fg="white", bg="#F37C62", width=int(configparser.get('gui-config', 'result_btn_width')), height=int(configparser.get('gui-config', 'result_btn_height')),font=('times', 18, 'bold'))
 
         self._2bj_btn = tk.Button(self.window, text="2bj", command=self.do_nothing, fg="white", bg="#F37C62", width=int(configparser.get('gui-config', 'result_btn_width')),height=int(configparser.get('gui-config', 'result_btn_height')), font=('times', 20, 'bold'))
 
@@ -152,7 +156,6 @@ class MyTkApp(tk.Frame):
 
         self.welcome_text = Label(self.window, text="Welcome, ", font=('times', 15, 'bold'), bg="#f7f0f5")
         self.by_count_text = Label(self.window, text="By Count ", font=('times', 20, 'bold'), bg="#f7f0f5")
-       # self.by_weight_text = Label(self.window, text="By Weight ", font=('times', 20, 'bold'), bg="#f7f0f5")
         self.entered = tk.Button(self.window, text="Start FLC", command=self.details_verify, fg="white", bg="#539051", width=int(configparser.get('gui-config', 'signin_btn_width')),height=int(configparser.get('gui-config', 'signin_btn_height')), font=('times', 16, 'bold'))
 
         self.formula = Label(self.window, text="FLC = 1LB + 2LB + 1Banjhi + 0.67 * 3LB", font=("Helvetica", 10), background='white')
@@ -278,48 +281,99 @@ class MyTkApp(tk.Frame):
         # Garden Selection Declarations
         self.section_area_entry = Entry(self.window, textvariable=self.section_area_verify)
         self.section_area_entry.configure(font=font.Font(family='Helvetica', size=entry_font_size), state="disabled")
+        self.section_area_entry.bind("<Button-1>", self.action_section_area)
+
         self.prune_type_entry = Entry(self.window, textvariable=self.prune_type_verify)
         self.prune_type_entry.configure(font=font.Font(family='Helvetica', size=entry_font_size), state="disabled")
+        self.prune_type_entry.bind("<Button-1>", self.action_prune_type)
+
         self.planting_material_entry = Entry(self.window, textvariable=self.planting_material_verify)
         self.planting_material_entry.configure(font=font.Font(family='Helvetica', size=entry_font_size), state="disabled")
+        self.planting_material_entry.bind("<Button-1>", self.action_planting_material)
+
         self.sarder_incharge_entry = Entry(self.window, textvariable=self.sarder_incharge_verify)
         self.sarder_incharge_entry.configure(font=font.Font(family='Helvetica', size=entry_font_size), state="disabled")
+        self.sarder_incharge_entry.bind("<Button-1>", self.action_sarder_incharge)
+
         #self.shade_status = Entry(self.window, textvariable=self.shade_status_verify)
         #self.shade_status.configure(font=font.Font(family='Helvetica', size=entry_font_size), state="disabled")
         self.planting_year_entry = Entry(self.window, textvariable=self.planting_year_verify)
         self.planting_year_entry.configure(font=font.Font(family='Helvetica', size=entry_font_size), state="disabled")
+        self.planting_year_entry.bind("<Button-1>", self.action_planting_year)
+
         
         # Supplier related Declarations
         self.vehicle_no_entry = Entry(self.window, textvariable=self.vehicle_no_verify)
         self.vehicle_no_entry.configure(font=font.Font(family='Helvetica', size=entry_font_size), state="disabled")
+        self.vehicle_no_entry.bind("<Button-1>", self.action_vehicle_no)
+
         self.vehicle_type_entry = Entry(self.window, textvariable=self.vehicle_type_verify)
-        self.vehicle_type_Entry.configure(font=font.Font(family='Helvetica', size=entry_font_size), state="disabled")
+        self.vehicle_type_entry.configure(font=font.Font(family='Helvetica', size=entry_font_size), state="disabled")
+        self.vehicle_type_entry.bind("<Button-1>", self.action_vehicle_type)
+
         self.quantity_year_entry = Entry(self.window, textvariable=self.quantity_year_verify)
         self.quantity_year_entry.configure(font=font.Font(family='Helvetica', size=entry_font_size), state="disabled")
+        self.quantity_year_entry.bind("<Button-1>", self.action_quantity_year)
+
         self.planting_area_entry = Entry(self.window, textvariable=self.planting_area_verify)
         self.planting_area_entry.configure(font=font.Font(family='Helvetica', size=entry_font_size), state="disabled")
+        self.planting_area_entry.bind("<Button-1>", self.action_planting_area)
+
         #self.no_of_supplier = Entry(self.window, textvariable=self.no_of_supplier_verify)
         #self.no_of_supplier.configure(font=font.Font(family='Helvetica', size=entry_font_size), state="disabled")
 
     def garden_selection_window(self):
         x_col1, x_col2, x_col3, x_col4 = 70, 300, 520, 650
         y_row1, y_row2, y_row3, y_row4 = 150, 210, 290, 330
+       
+        garden_fields = {}
 
+        self.section_area_label.place(x=x_col1-10, y=y_row1-10)
         self.section_area_entry.place(x=x_col1-10, y=y_row1-10)
+        
+        self.prune_type_label.place(x=x_col1-10, y=y_row1-10)
         self.prune_type_entry.place(x=x_col2-11, y=y_row1-22)
+        
+        self.planting_material_label(x=x_col1-10, y=y_row1-10)
         self.planting_material_entry.place(x=x_col3-20, y=y_row3-22)
+        
+        self.sarder_incharge_label.place(x=x_col1-10, y=y_row1-10)
         self.sarder_incharge_entry.place(x=x_col4-33, y=y_row3-22)
+        
+        self.planting_year_label(x=x_col1-10, y=y_row1-10)
         self.planting_year_entry.place(x=x_col4-43, y=y_row3-22)
+        
+        self.section_area_entry.configure(state="normal")
+        self.prune_type_entry.configure(state="normal")
+        self.planting_material_entry.configure(state="normal")
+        self.sarder_incharge_entry.configure(state="normal")
+        self.planting_year_entry.configure(state="normal")
+
 
     def supplier_selection_window(self):
         x_col1, x_col2, x_col3, x_col4 = 70, 300, 520, 650
         y_row1, y_row2, y_row3, y_row4 = 150, 210, 290, 330
 
+        self.planting_year_label.place(x=x_col1, y=y_row1)
         self.planting_year_entry.place(x=x_col1-10, y=y_row1-10)
+        
+        self.vehicle_no_label.place(x=x_col1-10, y=y_row1-10)
         self.vehicle_no_entry.place(x=x_col4-11, y=y_row3-22)
+        
+        self.vehicle_type_label.place(x=x_col1-10, y=y_row1-10)
         self.vehicle_type_entry.place(x=x_col4-20, y=y_row3-22)
+        
+        self.quantity_year_label.place(x=x_col1-10, y=y_row1-10)
         self.quantity_year_entry.place(x=x_col4-33, y=y_row3-22)
+        
+        self.planting_area_label.place(x=x_col1-10, y=y_row1-10)
         self.planting_area_entry.place(x=x_col4-33, y=y_row3-22)
+      
+        self.planting_year_entry.configure(state="normal")
+        self.vehicle_no_entry.configure(state="normal")
+        self.vehicle_type_entry.configure(state="normal")
+        self.quantity_year_entry.configure(state="normal")
+        self.planting_area_entry.configure(state="normal")
 
     def restart(self):
         if messagebox.askokcancel("Quit", "Do you really want to restart the system?"):
@@ -618,6 +672,51 @@ class MyTkApp(tk.Frame):
             self.batch_id_entry.delete(0, tk.END)
         self.popup_keyboard(event)
 
+    def action_section_area(self, event):
+        if self.section_area_verify.get() == "Enter Section Area":
+            self.section_area_entry.delete(0, tk.END)
+        self.popup_keyboard(event)
+
+    def action_prune_type(self, event):
+        if self.prune_type_verify.get() == "Enter Prune Type":
+            self.prune_type_entry.delete(0, tk.END)
+        self.popup_keyboard(event)
+
+    def action_planting_material(self, event):
+        if self.planting_material_verify.get() == "Enter Planting Material":
+            self.planting_material_entry.delete(0, tk.END)
+        self.popup_keyboard(event)
+
+    def action_sarder_incharge(self, event):
+        if self.sarder_incharge_verify.get() == "Enter Sarder Incharge":
+            self.sarder_incharge_entry.delete(0, tk.END)
+        self.popup_keyboard(event)
+
+    def action_planting_year(self, event):
+        if self.planting_year_verify.get() == "Enter Planting Year":
+            self.planting_year_entry.delete(0, tk.END)
+        self.popup_keyboard(event)
+
+    def action_vehicle_no(self, event):
+        if self.vehicle_no_verify.get() == "Enter Vehicle No.":
+            self.vehicle_no_verify.delete(0, tk.END)
+        self.popup_keyboard(event)
+
+    def action_vehicle_type(self, event):
+        if self.vehicle_type_verify.get() == "Enter Vehicle Type":
+            self.vehicle_type_entry.delete(0, tk.END)
+        self.popup_keyboard(event)
+
+    def action_quantity_year(self, event):
+        if self.quantity_year_verify.get() == "Enter Yearly Quantity":
+            self.quantity_year_entry.delete(0, tk.END)
+        self.popup_keyboard(event)
+
+    def action_planting_area(self, event):
+        if self.planting_area_verify.get() == "Enter Planting Area":
+            self.planting_area_entry.delete(0, tk.END)
+        self.popup_keyboard(event)
+
 
     def send_data_api(self):
         try:
@@ -645,10 +744,7 @@ class MyTkApp(tk.Frame):
 
             self._flc_btn.place_forget()
             self._coarse_btn.place_forget()
-            #self._flc_btn_by_weight.place_forget()
-            #self._coarse_btn_by_weight.place_forget()
             self.by_count_text.place_forget()
-            #self.by_weight_text.place_forget()
             
             self.initial_weight_label.place_forget()
             self.mlc_label.place_forget()
@@ -697,10 +793,7 @@ class MyTkApp(tk.Frame):
                 _2bj_perc = 0 if _2bj_perc < 0 else _2bj_perc
                 _flc_perc = _1lb_perc + _2lb_perc + _1bj_perc + (0.67 * _3lb_perc)
                 _flc_perc = 100 if _flc_perc > 100 else _flc_perc
-               # _flc_perc_by_weight = _flc_perc + 4
-               # _flc_perc_by_weight = 100 if _flc_perc_by_weight > 100 else _flc_perc_by_weight
                 _coarse_perc = 100 - _flc_perc
-               # _coarse_perc_by_weight = 100 - _flc_perc_by_weight
             else:
                 _1lb_perc = 0.0
                 _2lb_perc = 0.0
@@ -709,8 +802,6 @@ class MyTkApp(tk.Frame):
                 _2bj_perc = 0.0
                 _coarse_perc = 0.0
                 _flc_perc = 0.0
-               # _coarse_perc_by_weight = 0.0
-               # _flc_perc_by_weight = 0.0
             
             f = open('flc_utils/records.csv','a')
             dt_ = datetime.datetime.now().strftime("%d-%m-%Y %H:%M:%S")
@@ -741,36 +832,27 @@ class MyTkApp(tk.Frame):
             self.results['one_banjhi_count'] = 0
             self.results['total_count'] = totalCount
             self.results['quality_score'] = _flc_perc
-           # self.results['quality_score_by_weight'] = _flc_perc_by_weight
 
             self._flc_btn.configure(text="FLC %      " + str(round(_flc_perc, 2)))
-           # self._flc_btn_by_weight.configure(text="FLC %      " + str(round(_flc_perc_by_weight, 2)))
             self._total_btn.configure(text="Total Leaves     " + str(totalCount))
             self._1lb_btn.configure(text="1LB %         " + str(round(_1lb_perc, 2)))
             self._2lb_btn.configure(text="2LB %         " + str(round(_2lb_perc, 2)))
             self._1bj_btn.configure(text="1Banjhi %      " + str(round(_1bj_perc, 2)))
             self._3lb_btn.configure(text="3LB %        " + str(round(_3lb_perc, 2)))
             self._coarse_btn.configure(text="Coarse %      " + str(round(_coarse_perc, 2)))
-           # self._coarse_btn_by_weight.configure(text="Coarse %      " + str(round(_coarse_perc_by_weight, 2)))
             self._2bj_btn.configure(text="2Banjhi %     " + str(round(_2bj_perc, 2)))
 
-            #self.mlc_label = tk.Label(self.window, text="Surface Moisture: " + '{:.2f}'.format(self.mlc_value) + "%", font=('times', 15, 'bold'), bg="#f7f0f5")
             self.mlc_label.place(x=520, y=180)
 
-            #self.initial_weight_label = tk.Label(self.window, text="Initial Weight (kg): " + '{:.2f}'.format(self.initial_weight), font=('times', 15, 'bold'), bg="#f7f0f5")
             self.initial_weight_label.place(x=520, y=210)
 
-            #self.final_weight_label = tk.Label(self.window, text="Final Weight (kg): " + '{:.2f}'.format(self.final_weight), font=('times', 15, 'bold'), bg="#f7f0f5")
             self.final_weight_label.place(x=520, y=240)
 
-            #self.mlc_formula_label = tk.Label(self.window, text="Surface Moisture Formula: ((Initial Weight - Final Weight)/Initial Weight)*100", font=('times', 10), bg="#f7f0f5")
             #self.mlc_formula_label.pack()
             self.mlc_formula_label.place(x=350, y=400)
             
             self._flc_btn.place(x=30,y=180)
-            #self._flc_btn_by_weight.place(x=280,y=180)
             self._coarse_btn.place(x=30,y=255)
-            #self._coarse_btn_by_weight.place(x=280,y=255)
             self.by_count_text.place(x=100,y=130)
             self.by_weight_text.place(x=320, y=130)
 
@@ -875,8 +957,8 @@ class MyTkApp(tk.Frame):
             logger.exception(str('Exception occured in "enter_details" function\nError message:' + str(e)))
 
     def second_screen_place(self):
-        #self.garden_selection_window()
-        #sleep(30)
+        self.garden_selection_window()
+        sleep(30)
         try:
             self.measure_final_weight.place_forget()
             self._flc_btn.place_forget()
