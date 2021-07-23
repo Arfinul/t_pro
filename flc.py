@@ -55,7 +55,7 @@ class MyTkApp(tk.Frame):
         tk.Frame.__init__(self, master)   
         self.token = ""
         self.customer_id = ''
-        self.garden_id_name_dict = {}
+        #self.garden_id_name_dict = {}
         self.section_id_name_dict = {}
         self.division_id_name_dict = {}
         self.region_id_name_dict = {}
@@ -255,7 +255,7 @@ class MyTkApp(tk.Frame):
        
         self.measure_final_weight = tk.Button(self.window, text="Measure Final Weight", command=lambda:[self.get_final_weight(), self.wait_till_mlc.set(1)], fg="white", bg="#539051", font=('times', 16, 'bold'))
         # Variable declaration
-        self.area_of_section_verify = StringVar()
+        self.section_area_verify = StringVar()
         self.prune_type_verify = StringVar()
         self.planting_material_verify = StringVar()
         self.sarder_incharge_verify = StringVar()
@@ -265,29 +265,39 @@ class MyTkApp(tk.Frame):
         self.quantity_year_verify = StringVar()
         self.planting_area_verify = StringVar()
 
+        self.section_area_label = Label(self.window, text="Section Area:", font=('times', label_font_size, 'bold'), bg="#f7f0f5")
+        self.prune_type_label = Label(self.window, text="Prune Type:", font=('times', label_font_size, 'bold'), bg="#f7f0f5")
+        self.planting_material_label = Label(self.window, text="Planting Material", font=('times', label_font_size, 'bold'), bg="#f7f0f5")
+        self.sarder_incharge_label = Label(self.window, text="Sarder Incharge:", font=('times', label_font_size, 'bold'), bg="#f7f0f5")
+        self.planting_year_label = Label(self.window, text="Planting Year", font=('times', label_font_size, 'bold'), bg="#f7f0f5")
+        self.vehicle_no_label = Label(self.window, text="Vehicle No.:", font=('times', label_font_size, 'bold'), bg="#f7f0f5")
+        self.vehicle_type_label = Label(self.window, text="Vehicle Type", font=('times', label_font_size, 'bold'), bg="#f7f0f5")
+        self.quantity_year_label = Label(self.window, text="Quantity Year", font=('times', label_font_size, 'bold'), bg="#f7f0f5")
+        self.planting_area_label = Label(self.window, text="Planting Area", font=('times', label_font_size, 'bold'), bg="#f7f0f5")
+
         # Garden Selection Declarations
-        self.area_of_section = Entry(self.window, textvariable=self.area_of_section_verify)
-        self.area_of_section.configure(font=font.Font(family='Helvetica', size=entry_font_size), state="disabled")
-        self.prune_type = Entry(self.window, textvariable=self.prune_type_verify)
-        self.prune_type.configure(font=font.Font(family='Helvetica', size=entry_font_size), state="disabled")
-        self.planting_material = Entry(self.window, textvariable=self.planting_material_verify)
-        self.planting_material.configure(font=font.Font(family='Helvetica', size=entry_font_size), state="disabled")
-        self.sarder_incharge = Entry(self.window, textvariable=self.sarder_incharge_verify)
-        self.sarder_incharge.configure(font=font.Font(family='Helvetica', size=entry_font_size), state="disabled")
+        self.section_area_entry = Entry(self.window, textvariable=self.section_area_verify)
+        self.section_area_entry.configure(font=font.Font(family='Helvetica', size=entry_font_size), state="disabled")
+        self.prune_type_entry = Entry(self.window, textvariable=self.prune_type_verify)
+        self.prune_type_entry.configure(font=font.Font(family='Helvetica', size=entry_font_size), state="disabled")
+        self.planting_material_entry = Entry(self.window, textvariable=self.planting_material_verify)
+        self.planting_material_entry.configure(font=font.Font(family='Helvetica', size=entry_font_size), state="disabled")
+        self.sarder_incharge_entry = Entry(self.window, textvariable=self.sarder_incharge_verify)
+        self.sarder_incharge_entry.configure(font=font.Font(family='Helvetica', size=entry_font_size), state="disabled")
         #self.shade_status = Entry(self.window, textvariable=self.shade_status_verify)
         #self.shade_status.configure(font=font.Font(family='Helvetica', size=entry_font_size), state="disabled")
-        self.planting_year = Entry(self.window, textvariable=self.planting_year_verify)
-        self.planting_year.configure(font=font.Font(family='Helvetica', size=entry_font_size), state="disabled")
+        self.planting_year_entry = Entry(self.window, textvariable=self.planting_year_verify)
+        self.planting_year_entry.configure(font=font.Font(family='Helvetica', size=entry_font_size), state="disabled")
         
         # Supplier related Declarations
-        self.vehicle_no = Entry(self.window, textvariable=self.vehicle_no_verify)
-        self.vehicle_no.configure(font=font.Font(family='Helvetica', size=entry_font_size), state="disabled")
-        self.vehicle_type = Entry(self.window, textvariable=self.vehicle_type_verify)
-        self.vehicle_type.configure(font=font.Font(family='Helvetica', size=entry_font_size), state="disabled")
-        self.quantity_year = Entry(self.window, textvariable=self.quantity_year_verify)
-        self.quantity_year.configure(font=font.Font(family='Helvetica', size=entry_font_size), state="disabled")
-        self.planting_area = Entry(self.window, textvariable=self.planting_area_verify)
-        self.planting_area.configure(font=font.Font(family='Helvetica', size=entry_font_size), state="disabled")
+        self.vehicle_no_entry = Entry(self.window, textvariable=self.vehicle_no_verify)
+        self.vehicle_no_entry.configure(font=font.Font(family='Helvetica', size=entry_font_size), state="disabled")
+        self.vehicle_type_entry = Entry(self.window, textvariable=self.vehicle_type_verify)
+        self.vehicle_type_Entry.configure(font=font.Font(family='Helvetica', size=entry_font_size), state="disabled")
+        self.quantity_year_entry = Entry(self.window, textvariable=self.quantity_year_verify)
+        self.quantity_year_entry.configure(font=font.Font(family='Helvetica', size=entry_font_size), state="disabled")
+        self.planting_area_entry = Entry(self.window, textvariable=self.planting_area_verify)
+        self.planting_area_entry.configure(font=font.Font(family='Helvetica', size=entry_font_size), state="disabled")
         #self.no_of_supplier = Entry(self.window, textvariable=self.no_of_supplier_verify)
         #self.no_of_supplier.configure(font=font.Font(family='Helvetica', size=entry_font_size), state="disabled")
 
@@ -295,21 +305,21 @@ class MyTkApp(tk.Frame):
         x_col1, x_col2, x_col3, x_col4 = 70, 300, 520, 650
         y_row1, y_row2, y_row3, y_row4 = 150, 210, 290, 330
 
-        self.area_of_section.place(x=x_col1-10, y=y_row1-10)
-        self.prune_type.place(x=x_col2-11, y=y_row1-22)
-        self.planting_material.place(x=x_col3-20, y=y_row3-22)
-        self.sarder_incharge.place(x=x_col4-33, y=y_row3-22)
-        self.planting_year.place(x=x_col4-43, y=y_row3-22)
+        self.section_area_entry.place(x=x_col1-10, y=y_row1-10)
+        self.prune_type_entry.place(x=x_col2-11, y=y_row1-22)
+        self.planting_material_entry.place(x=x_col3-20, y=y_row3-22)
+        self.sarder_incharge_entry.place(x=x_col4-33, y=y_row3-22)
+        self.planting_year_entry.place(x=x_col4-43, y=y_row3-22)
 
     def supplier_selection_window(self):
         x_col1, x_col2, x_col3, x_col4 = 70, 300, 520, 650
         y_row1, y_row2, y_row3, y_row4 = 150, 210, 290, 330
 
-        self.planting_year.place(x=x_col1-10, y=y_row1-10)
-        self.vehicle_no.place(x=x_col4-11, y=y_row3-22)
-        self.vehicle_type.place(x=x_col4-20, y=y_row3-22)
-        self.quantity_year.place(x=x_col4-33, y=y_row3-22)
-        self.planting_area.place(x=x_col4-33, y=y_row3-22)
+        self.planting_year_entry.place(x=x_col1-10, y=y_row1-10)
+        self.vehicle_no_entry.place(x=x_col4-11, y=y_row3-22)
+        self.vehicle_type_entry.place(x=x_col4-20, y=y_row3-22)
+        self.quantity_year_entry.place(x=x_col4-33, y=y_row3-22)
+        self.planting_area_entry.place(x=x_col4-33, y=y_row3-22)
 
     def restart(self):
         if messagebox.askokcancel("Quit", "Do you really want to restart the system?"):
@@ -367,7 +377,6 @@ class MyTkApp(tk.Frame):
             p = subprocess.Popen("exec " + command, stdout= subprocess.PIPE, shell=True)
             p.wait()
             os.rename("flc_utils/trainVideo/testing/result.avi", "flc_utils/trainVideo/testing/" + datetime.datetime.now().strftime("%d-%m-%Y %H:%M:%S") + "_" + str(self.customer_id) + ".avi")
-            self.garden_selection_window()
             self.moisture_loss_count()
             self.show_results_on_display()
             self.endRecord.place(x=int(configparser.get('gui-config', 'endrecord_btn_x')), y=int(configparser.get('gui-config', 'endrecord_btn_y')))
@@ -866,6 +875,8 @@ class MyTkApp(tk.Frame):
             logger.exception(str('Exception occured in "enter_details" function\nError message:' + str(e)))
 
     def second_screen_place(self):
+        #self.garden_selection_window()
+        #sleep(30)
         try:
             self.measure_final_weight.place_forget()
             self._flc_btn.place_forget()
