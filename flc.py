@@ -249,7 +249,9 @@ class MyTkApp(tk.Frame):
         self.wait_till_mlc = tk.IntVar()
         
         self.measure_weight = tk.Button(self.window, text="Measure Initial Weight", command=self.get_initial_weight, fg="white", bg="#539051", font=('times', 16, 'bold'))
-       
+      
+        #self.measure_final_weight = tk.Button(self.window, text="Measure Final Weight", command=self.get_final_weight(), fg="white", bg="#539051", font=('times', 16, 'bold'))
+
         self.measure_final_weight = tk.Button(self.window, text="Measure Final Weight", command=lambda:[self.get_final_weight(), self.wait_till_mlc.set(1)], fg="white", bg="#539051", font=('times', 16, 'bold'))
 
     def restart(self):
@@ -600,6 +602,7 @@ class MyTkApp(tk.Frame):
 
     def show_results_on_display(self):
         try:
+            self.measure_final_weight.place_forget()
             self.forget_graph()
 
             _1lb, _2lb, _3lb, _1bj, _2bj, _coarse, totalCount, _perc = helper.get_class_count()
@@ -963,7 +966,11 @@ class MyTkApp(tk.Frame):
                     if one_byte == b"]":  # method should returns bytes
                         serial_weight = buffer.replace("[", "")
                         try:
-                            weight_to_float = float(serial_weight)
+                            if '.' not in serial_weight:
+                                serial_weight_dot = serial_weight[:2] + '.' + serial_weight[2:]
+                                weight_to_float = float(serial_weight_dot)
+                            else:
+                                weight_to_float = float(serial_weight)
                         except ValueError:
                             print("Not a valid float")
                             break;
@@ -974,6 +981,7 @@ class MyTkApp(tk.Frame):
                 filtered_wt = max(set(weight_list), key=weight_list.count)
                 if filtered_wt is not 0.0:
                     break;
+            messagebox.showinfo("Weight", filtered_wt)
             print(filtered_wt)
             ser.close()
             return filtered_wt
@@ -1003,13 +1011,13 @@ class MyTkApp(tk.Frame):
         #measure_weight = tk.Button(self.window, text="Measure Final Weight", command=lambda:[self.get_final_weight(), self.wait_till_mlc.set(1)], fg="white", bg="#539051", font=('times', 16, 'bold'))
         self.measure_final_weight.place(x=500, y=110, height=30, width=230)
         #measure_weight.grab_set()
-        measure_final_weight.wait_variable(self.wait_till_mlc)
+        self.measure_final_weight.wait_variable(self.wait_till_mlc)
         if self.initial_weight is not 0 and self.final_weight is not 0 and self.final_weight < self.initial_weight:
             self.mlc_value = ((self.initial_weight - self.final_weight)/self.initial_weight)*100
         else:
             # TODO: POP-UP ERROR FOR RE-MEASURING
             print("Measured Initial weight cannot be Zero or greater than the final weight measured")
-        measure_final_weight.place_forget()
+        #self.measure_final_weight.place_forget()
 
 def launchApp():
     window = tk.Tk()
