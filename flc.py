@@ -985,17 +985,9 @@ class MyTkApp(tk.Frame):
     def get_final_weight(self):
         self.final_weight = self.get_weight_from_scale()
 
-    # Actual Formula
-    # UI + Formula
-    # Formula is simple percentage to measure the final moisture loss
+    # Moisture Loss Formula
     def moisture_loss_count(self):
-        print("INITIAL", str(self.initial_weight))
-        print("FINAL", str(self.final_weight))
-
-        #top = tk.Toplevel()
-        #measure_weight = tk.Button(self.window, text="Measure Final Weight", command=lambda:[self.get_final_weight(), self.wait_till_mlc.set(1)], fg="white", bg="#539051", font=('times', 16, 'bold'))
         self.measure_final_weight.place(x=500, y=110, height=30, width=230)
-        #measure_weight.grab_set()
         self.measure_final_weight.wait_variable(self.wait_till_mlc)
         if self.initial_weight is not 0 and self.final_weight is not 0 and self.final_weight < self.initial_weight:
             self.mlc_value = ((self.initial_weight - self.final_weight)/self.initial_weight)*100
@@ -1006,6 +998,7 @@ class MyTkApp(tk.Frame):
 
 def launchApp():
     window = tk.Tk()
+    window.wm_attributes('-fullscreen','true')
     MyTkApp(window)
     tk.mainloop()
 
