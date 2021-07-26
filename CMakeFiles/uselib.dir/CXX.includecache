@@ -6,7 +6,7 @@
 
 #IncludeRegexTransform: 
 
-/home/agnext/Desktop/darknet/src/yolo_console_dll.cpp
+/home/agnext/Documents/tragnext/src/yolo_console_dll.cpp
 iostream
 -
 fstream
@@ -38,7 +38,7 @@ chrono
 sstream
 -
 yolo_v2_class.hpp
-/home/agnext/Desktop/darknet/src/yolo_v2_class.hpp
+/home/agnext/Documents/tragnext/src/yolo_v2_class.hpp
 sl_zed/Camera.hpp
 -
 opencv2/opencv.hpp

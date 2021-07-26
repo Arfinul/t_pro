@@ -32,11 +32,11 @@ HOME = os.environ["HOME"]
 DIR_PATH = os.path.join(HOME, "Documents", "tragnext")
 os.chdir(DIR_PATH)
 
-def cam_fresh():
-    subprocess.Popen("python3 flc_utils/guvcview-config/cam_initialise.py", stdout= subprocess.PIPE, shell=True)
+#def cam_fresh():
+    #subprocess.Popen("python3 flc_utils/guvcview-config/cam_initialise.py", stdout= subprocess.PIPE, shell=True)
 
-th = threading.Thread(target=cam_fresh)
-th.start()
+#th = threading.Thread(target=cam_fresh)
+#th.start()
 
 configparser.read('flc_utils/screens/touchScreen/gui.cfg')
 
@@ -237,15 +237,6 @@ class MyTkApp(tk.Frame):
         self.final_weight = -1
         self.mlc_value = -1
 
-        self.mlc_label = tk.Label(self.window, text="Surface Moisture: " + '{:.2f}'.format(self.mlc_value) + "%", font=('times', 15, 'bold'), bg="#f7f0f5")
-
-        self.initial_weight_label = tk.Label(self.window, text="Initial Weight (kg): " + '{:.2f}'.format(self.initial_weight), font=('times', 15, 'bold'), bg="#f7f0f5")
-
-        self.final_weight_label = tk.Label(self.window, text="Final Weight (kg): " + '{:.2f}'.format(self.final_weight), font=('times', 15, 'bold'), bg="#f7f0f5")
-
-        self.mlc_formula_label = tk.Label(self.window, text="Surface Moisture Formula: ((Initial Weight - Final Weight)/Initial Weight)*100", font=('times', 10), bg="#f7f0f5")
-        #self.mlc_formula_label.pack()
-            
         self.wait_till_mlc = tk.IntVar()
         
         self.measure_weight = tk.Button(self.window, text="Measure Initial Weight", command=self.get_initial_weight, fg="white", bg="#539051", font=('times', 16, 'bold'))
@@ -583,14 +574,11 @@ class MyTkApp(tk.Frame):
             self.by_count_text.place_forget()
             #self.by_weight_text.place_forget()
             
-            self.initial_weight_label.place_forget()
             self.mlc_label.place_forget()
             self.final_weight_label.place_forget()
             self.mlc_formula_label.place_forget()
             
-            self.final_weight_label.place_forget()
             self.initial_weight_label.place_forget()
-            self.mlc_label.place_forget()
             helper.update_graph()
         except Exception as e:
             logger.exception(str('Exception occured in "send_data_api" function\nError message:' + str(e)))
@@ -687,19 +675,6 @@ class MyTkApp(tk.Frame):
             self._coarse_btn.configure(text="Coarse %      " + str(round(_coarse_perc, 2)))
            # self._coarse_btn_by_weight.configure(text="Coarse %      " + str(round(_coarse_perc_by_weight, 2)))
             self._2bj_btn.configure(text="2Banjhi %     " + str(round(_2bj_perc, 2)))
-
-            #self.mlc_label = tk.Label(self.window, text="Surface Moisture: " + '{:.2f}'.format(self.mlc_value) + "%", font=('times', 15, 'bold'), bg="#f7f0f5")
-            self.mlc_label.place(x=520, y=180)
-
-            #self.initial_weight_label = tk.Label(self.window, text="Initial Weight (kg): " + '{:.2f}'.format(self.initial_weight), font=('times', 15, 'bold'), bg="#f7f0f5")
-            self.initial_weight_label.place(x=520, y=210)
-
-            #self.final_weight_label = tk.Label(self.window, text="Final Weight (kg): " + '{:.2f}'.format(self.final_weight), font=('times', 15, 'bold'), bg="#f7f0f5")
-            self.final_weight_label.place(x=520, y=240)
-
-            #self.mlc_formula_label = tk.Label(self.window, text="Surface Moisture Formula: ((Initial Weight - Final Weight)/Initial Weight)*100", font=('times', 10), bg="#f7f0f5")
-            #self.mlc_formula_label.pack()
-            self.mlc_formula_label.place(x=350, y=400)
             
             self._flc_btn.place(x=30,y=180)
             #self._flc_btn_by_weight.place(x=280,y=180)
@@ -713,7 +688,21 @@ class MyTkApp(tk.Frame):
             gc.collect()
         except Exception as e:
             logger.exception(str('Exception occured in "show_results_on_display" function\nError message:' + str(e)))
-             
+        
+        self.mlc_label = tk.Label(self.window, text="Surface Moisture: " + '{:.2f}'.format(self.mlc_value) + "%", font=('times', 15, 'bold'), bg="#f7f0f5")
+
+        self.initial_weight_label = tk.Label(self.window, text="Initial Weight (kg): " + '{:.2f}'.format(self.initial_weight), font=('times', 15, 'bold'), bg="#f7f0f5")
+
+        self.final_weight_label = tk.Label(self.window, text="Final Weight (kg): " + '{:.2f}'.format(self.final_weight), font=('times', 15, 'bold'), bg="#f7f0f5")
+
+        self.mlc_formula_label = tk.Label(self.window, text="Surface Moisture Formula: ((Initial Weight - Final Weight)/Initial Weight)*100", font=('times', 10), bg="#f7f0f5")
+
+        self.mlc_label.place(x=520, y=180)
+        self.initial_weight_label.place(x=520, y=210)
+        self.final_weight_label.place(x=520, y=240)
+        self.mlc_formula_label.pack()
+        self.mlc_formula_label.place(x=350, y=400)
+
      
     def login_verify(self):
         try:
@@ -810,7 +799,6 @@ class MyTkApp(tk.Frame):
 
     def second_screen_place(self):
         try:
-            self.measure_final_weight.place_forget()
             self._flc_btn.place_forget()
             self._total_btn.place_forget()
             self._1lb_btn.place_forget()
@@ -989,24 +977,21 @@ class MyTkApp(tk.Frame):
             self.show_error_msg("Connect Weighing Scale")
             print("Weighing scale Serial ERROR")
 
-    #
     # Initial Weight wrapepr
-    #
     def get_initial_weight(self):
         self.initial_weight = self.get_weight_from_scale()
 
-    #
     # Final Weight wrapper
-    #
     def get_final_weight(self):
         self.final_weight = self.get_weight_from_scale()
 
-    #
     # Actual Formula
     # UI + Formula
     # Formula is simple percentage to measure the final moisture loss
-    #
     def moisture_loss_count(self):
+        print("INITIAL", str(self.initial_weight))
+        print("FINAL", str(self.final_weight))
+
         #top = tk.Toplevel()
         #measure_weight = tk.Button(self.window, text="Measure Final Weight", command=lambda:[self.get_final_weight(), self.wait_till_mlc.set(1)], fg="white", bg="#539051", font=('times', 16, 'bold'))
         self.measure_final_weight.place(x=500, y=110, height=30, width=230)
@@ -1017,7 +1002,7 @@ class MyTkApp(tk.Frame):
         else:
             # TODO: POP-UP ERROR FOR RE-MEASURING
             print("Measured Initial weight cannot be Zero or greater than the final weight measured")
-        #self.measure_final_weight.place_forget()
+        self.measure_final_weight.place_forget()
 
 def launchApp():
     window = tk.Tk()

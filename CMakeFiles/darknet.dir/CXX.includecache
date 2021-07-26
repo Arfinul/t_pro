@@ -6,23 +6,23 @@
 
 #IncludeRegexTransform: 
 
-/home/agnext/Desktop/darknet/src/blas.h
+/home/agnext/Documents/tragnext/src/blas.h
 stdlib.h
 -
 darknet.h
-/home/agnext/Desktop/darknet/src/darknet.h
+/home/agnext/Documents/tragnext/src/darknet.h
 dark_cuda.h
-/home/agnext/Desktop/darknet/src/dark_cuda.h
+/home/agnext/Documents/tragnext/src/dark_cuda.h
 tree.h
-/home/agnext/Desktop/darknet/src/tree.h
+/home/agnext/Documents/tragnext/src/tree.h
 
-/home/agnext/Desktop/darknet/src/box.h
+/home/agnext/Documents/tragnext/src/box.h
 darknet.h
-/home/agnext/Desktop/darknet/src/darknet.h
+/home/agnext/Documents/tragnext/src/darknet.h
 
-/home/agnext/Desktop/darknet/src/dark_cuda.h
+/home/agnext/Documents/tragnext/src/dark_cuda.h
 darknet.h
-/home/agnext/Desktop/darknet/src/darknet.h
+/home/agnext/Documents/tragnext/src/darknet.h
 cuda.h
 -
 cuda_runtime.h
@@ -36,13 +36,13 @@ cuda_runtime_api.h
 cudnn.h
 -
 
-/home/agnext/Desktop/darknet/src/darkunistd.h
+/home/agnext/Documents/tragnext/src/darkunistd.h
 winsock2.h
 -
 direct.h
 -
 getopt.h
-/home/agnext/Desktop/darknet/src/getopt.h
+/home/agnext/Documents/tragnext/src/getopt.h
 io.h
 -
 process.h
@@ -52,7 +52,7 @@ stdlib.h
 unistd.h
 -
 
-/home/agnext/Desktop/darknet/src/getopt.h
+/home/agnext/Documents/tragnext/src/getopt.h
 crtdefs.h
 -
 errno.h
@@ -68,7 +68,7 @@ string.h
 windows.h
 -
 
-/home/agnext/Desktop/darknet/src/gettimeofday.h
+/home/agnext/Documents/tragnext/src/gettimeofday.h
 windows.h
 -
 winsock2.h
@@ -78,13 +78,13 @@ stdint.h
 time.h
 -
 darknet.h
-/home/agnext/Desktop/darknet/src/darknet.h
+/home/agnext/Documents/tragnext/src/darknet.h
 
-/home/agnext/Desktop/darknet/src/http_stream.cpp
+/home/agnext/Documents/tragnext/src/http_stream.cpp
 image.h
-/home/agnext/Desktop/darknet/src/image.h
+/home/agnext/Documents/tragnext/src/image.h
 http_stream.h
-/home/agnext/Desktop/darknet/src/http_stream.h
+/home/agnext/Documents/tragnext/src/http_stream.h
 cstdio
 -
 vector
@@ -110,9 +110,9 @@ winsock2.h
 ws2tcpip.h
 -
 gettimeofday.h
-/home/agnext/Desktop/darknet/src/gettimeofday.h
+/home/agnext/Documents/tragnext/src/gettimeofday.h
 darkunistd.h
-/home/agnext/Desktop/darknet/src/darkunistd.h
+/home/agnext/Documents/tragnext/src/darkunistd.h
 fcntl.h
 -
 sys/time.h
@@ -140,7 +140,7 @@ opencv2/imgproc/imgproc_c.h
 opencv2/videoio/videoio.hpp
 -
 httplib.h
-/home/agnext/Desktop/darknet/src/httplib.h
+/home/agnext/Documents/tragnext/src/httplib.h
 chrono
 -
 iostream
@@ -154,19 +154,19 @@ vector
 iostream
 -
 blas.h
-/home/agnext/Desktop/darknet/src/blas.h
+/home/agnext/Documents/tragnext/src/blas.h
 utils.h
-/home/agnext/Desktop/darknet/src/utils.h
+/home/agnext/Documents/tragnext/src/utils.h
 
-/home/agnext/Desktop/darknet/src/http_stream.h
+/home/agnext/Documents/tragnext/src/http_stream.h
 darknet.h
-/home/agnext/Desktop/darknet/src/darknet.h
+/home/agnext/Documents/tragnext/src/darknet.h
 image.h
-/home/agnext/Desktop/darknet/src/image.h
+/home/agnext/Documents/tragnext/src/image.h
 stdint.h
 -
 
-/home/agnext/Desktop/darknet/src/httplib.h
+/home/agnext/Documents/tragnext/src/httplib.h
 io.h
 -
 winsock2.h
@@ -238,9 +238,9 @@ openssl/crypto.h
 zlib.h
 -
 
-/home/agnext/Desktop/darknet/src/image.h
+/home/agnext/Documents/tragnext/src/image.h
 darknet.h
-/home/agnext/Desktop/darknet/src/darknet.h
+/home/agnext/Documents/tragnext/src/darknet.h
 stdlib.h
 -
 stdio.h
@@ -252,17 +252,17 @@ string.h
 math.h
 -
 image_opencv.h
-/home/agnext/Desktop/darknet/src/image_opencv.h
+/home/agnext/Documents/tragnext/src/image_opencv.h
 box.h
-/home/agnext/Desktop/darknet/src/box.h
+/home/agnext/Documents/tragnext/src/box.h
 
-/home/agnext/Desktop/darknet/src/image_opencv.cpp
+/home/agnext/Documents/tragnext/src/image_opencv.cpp
 image_opencv.h
-/home/agnext/Desktop/darknet/src/image_opencv.h
+/home/agnext/Documents/tragnext/src/image_opencv.h
 iostream
 -
 utils.h
-/home/agnext/Desktop/darknet/src/utils.h
+/home/agnext/Documents/tragnext/src/utils.h
 cstdio
 -
 cstdlib
@@ -306,29 +306,29 @@ opencv2/core/types_c.h
 opencv2/core/version.hpp
 -
 http_stream.h
-/home/agnext/Desktop/darknet/src/http_stream.h
+/home/agnext/Documents/tragnext/src/http_stream.h
 
-/home/agnext/Desktop/darknet/src/image_opencv.h
+/home/agnext/Documents/tragnext/src/image_opencv.h
 image.h
-/home/agnext/Desktop/darknet/src/image.h
+/home/agnext/Documents/tragnext/src/image.h
 matrix.h
-/home/agnext/Desktop/darknet/src/matrix.h
+/home/agnext/Documents/tragnext/src/matrix.h
 
-/home/agnext/Desktop/darknet/src/list.h
+/home/agnext/Documents/tragnext/src/list.h
 
-/home/agnext/Desktop/darknet/src/matrix.h
+/home/agnext/Documents/tragnext/src/matrix.h
 darknet.h
-/home/agnext/Desktop/darknet/src/darknet.h
+/home/agnext/Documents/tragnext/src/darknet.h
 
-/home/agnext/Desktop/darknet/src/tree.h
+/home/agnext/Documents/tragnext/src/tree.h
 darknet.h
-/home/agnext/Desktop/darknet/src/darknet.h
+/home/agnext/Documents/tragnext/src/darknet.h
 
-/home/agnext/Desktop/darknet/src/utils.h
+/home/agnext/Documents/tragnext/src/utils.h
 darknet.h
-/home/agnext/Desktop/darknet/src/darknet.h
+/home/agnext/Documents/tragnext/src/darknet.h
 list.h
-/home/agnext/Desktop/darknet/src/list.h
+/home/agnext/Documents/tragnext/src/list.h
 stdio.h
 -
 time.h

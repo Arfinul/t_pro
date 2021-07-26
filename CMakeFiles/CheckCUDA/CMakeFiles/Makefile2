@@ -63,10 +63,10 @@ RM = /opt/cmake-3.19.8-Linux-aarch64/bin/cmake -E rm -f
 EQUALS = =
 
 # The top-level source directory on which CMake was run.
-CMAKE_SOURCE_DIR = /home/agnext/Desktop/darknet/CMakeFiles/CheckCUDA
+CMAKE_SOURCE_DIR = /home/agnext/Documents/tragnext/CMakeFiles/CheckCUDA
 
 # The top-level build directory on which CMake was run.
-CMAKE_BINARY_DIR = /home/agnext/Desktop/darknet/CMakeFiles/CheckCUDA
+CMAKE_BINARY_DIR = /home/agnext/Documents/tragnext/CMakeFiles/CheckCUDA
 
 #=============================================================================
 # Directory level rules for the build root directory

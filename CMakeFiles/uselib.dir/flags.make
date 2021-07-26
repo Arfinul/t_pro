@@ -4,7 +4,7 @@
 # compile CXX with /usr/bin/c++
 CXX_DEFINES = -DCUDNN -DGPU -DOPENCV -DUSE_CMAKE_LIBS
 
-CXX_INCLUDES = -I/home/agnext/Desktop/darknet/include -I/home/agnext/Desktop/darknet/src -I/home/agnext/Desktop/darknet/3rdparty/stb/include -I/usr/local/cuda-10.2/targets/aarch64-linux/include -isystem /usr/include/opencv4
+CXX_INCLUDES = -I/home/agnext/Documents/tragnext/include -I/home/agnext/Documents/tragnext/src -I/home/agnext/Documents/tragnext/3rdparty/stb/include -I/usr/local/cuda-10.2/targets/aarch64-linux/include -isystem /usr/include/opencv4
 
 CXX_FLAGS = -Wall -Wno-unused-result -Wno-unknown-pragmas -Wfatal-errors -Wno-deprecated-declarations -Wno-write-strings -Wl,-Bsymbolic  -Ofast -DNDEBUG -fopenmp -std=gnu++11
 
