@@ -882,10 +882,6 @@ class MyTkApp(tk.Frame):
             self.batch_id_label.place_forget()
             self.batch_id_entry.place_forget()
             self.nextBtn.place_forget()
-           # self.initial_weight_label.place_forget()
-           # self.mlc_label.place_forget()
-           # self.final_weight_label.place_forget()
-           # self.mlc_formula_label.place_forget()
 
             #self.nextBtn.place_forget()
         except Exception as e:
@@ -976,6 +972,12 @@ class MyTkApp(tk.Frame):
         except:
             self.show_error_msg("Connect Weighing Scale")
             print("Weighing scale Serial ERROR")
+    
+    def mlc_labels_forget(self):
+        self.initial_weight_label.place_forget()
+        self.mlc_label.place_forget()
+        self.final_weight_label.place_forget()
+        self.mlc_formula_label.place_forget()
 
     # Initial Weight wrapepr
     def get_initial_weight(self):
@@ -998,7 +1000,7 @@ class MyTkApp(tk.Frame):
 
 def launchApp():
     window = tk.Tk()
-    window.wm_attributes('-fullscreen','true')
+    #window.wm_attributes('-fullscreen','true')
     MyTkApp(window)
     tk.mainloop()
 
