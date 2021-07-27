@@ -47,7 +47,7 @@ export LD_LIBRARY_PATH={DIR_PATH}
 ./uselib cfg/jorhat_Dec.names cfg/jorhat_Dec.cfg weights/jorhat_Dec_final.weights web_camera > output.txt
 """
 pwd = configparser.get('gui-config', 'sys_password')
-jetson_clock_cmd = 'jetson_clocks'
+jetson_clock_cmd = 'jetson_clocks --fan'
 
 class MyTkApp(tk.Frame):
 
