@@ -653,11 +653,11 @@ class MyTkApp(tk.Frame):
             _1bjp = str(_1bj_perc)
             _2bjp = str(_2bj_perc)
             total_ = str(totalCount)
-            f.write(f"{dt_},{flc_},{coarse_},{_1lbp},{_2lbp},{_3lbp},{_1bjp},{_2bjp},{total_},{leaf},{_flc_perc_by_weight}\n")
+            f.write(f"{dt_},{flc_},{coarse_},{_1lbp},{_2lbp},{_3lbp},{_1bjp},{_2bjp},{total_},{leaf}\n")
             f.close()
             
             r = open(f'{HOME}/Desktop/results.csv','a')
-            r.write(f"{dt_},{flc_},{coarse_},{leaf},{_flc_perc_by_weight}\n")
+            r.write(f"{dt_},{flc_},{coarse_},{leaf}\n")
             r.close()
 
             self.results['one_leaf_bud'] = int(np.ceil(_1lb_perc * totalCount/100))
