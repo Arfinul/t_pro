@@ -4,7 +4,7 @@ set(CMAKE_DEPENDS_LANGUAGES
   )
 # The set of files for implicit dependencies of each language:
 set(CMAKE_DEPENDS_CHECK_CXX
-  "/home/agnext/Desktop/darknet/src/yolo_console_dll.cpp" "/home/agnext/Desktop/darknet/CMakeFiles/uselib.dir/src/yolo_console_dll.cpp.o"
+  "/home/agnext/Documents/tragnext/src/yolo_console_dll.cpp" "/home/agnext/Documents/tragnext/CMakeFiles/uselib.dir/src/yolo_console_dll.cpp.o"
   )
 set(CMAKE_CXX_COMPILER_ID "GNU")
 
@@ -27,7 +27,7 @@ set(CMAKE_CXX_TARGET_INCLUDE_PATH
 
 # Targets to which this target links.
 set(CMAKE_TARGET_LINKED_INFO_FILES
-  "/home/agnext/Desktop/darknet/CMakeFiles/dark.dir/DependInfo.cmake"
+  "/home/agnext/Documents/tragnext/CMakeFiles/dark.dir/DependInfo.cmake"
   )
 
 # Fortran module output directory.

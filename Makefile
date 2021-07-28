@@ -70,10 +70,10 @@ RM = /opt/cmake-3.19.8-Linux-aarch64/bin/cmake -E rm -f
 EQUALS = =
 
 # The top-level source directory on which CMake was run.
-CMAKE_SOURCE_DIR = /home/agnext/Desktop/darknet
+CMAKE_SOURCE_DIR = /home/agnext/Documents/tragnext
 
 # The top-level build directory on which CMake was run.
-CMAKE_BINARY_DIR = /home/agnext/Desktop/darknet
+CMAKE_BINARY_DIR = /home/agnext/Documents/tragnext
 
 #=============================================================================
 # Targets provided globally by CMake.
@@ -148,9 +148,9 @@ list_install_components/fast: list_install_components
 
 # The main all target
 all: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/agnext/Desktop/darknet/CMakeFiles /home/agnext/Desktop/darknet//CMakeFiles/progress.marks
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/agnext/Documents/tragnext/CMakeFiles /home/agnext/Documents/tragnext//CMakeFiles/progress.marks
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 all
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/agnext/Desktop/darknet/CMakeFiles 0
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/agnext/Documents/tragnext/CMakeFiles 0
 .PHONY : all
 
 # The main clean target

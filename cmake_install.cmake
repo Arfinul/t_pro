@@ -1,8 +1,8 @@
-# Install script for directory: /home/agnext/Desktop/darknet
+# Install script for directory: /home/agnext/Documents/tragnext
 
 # Set the install prefix
 if(NOT DEFINED CMAKE_INSTALL_PREFIX)
-  set(CMAKE_INSTALL_PREFIX "/home/agnext/Desktop/darknet")
+  set(CMAKE_INSTALL_PREFIX "/home/agnext/Documents/tragnext")
 endif()
 string(REGEX REPLACE "/$" "" CMAKE_INSTALL_PREFIX "${CMAKE_INSTALL_PREFIX}")
 
@@ -43,25 +43,25 @@ if(NOT DEFINED CMAKE_OBJDUMP)
 endif()
 
 if("x${CMAKE_INSTALL_COMPONENT}x" STREQUAL "xUnspecifiedx" OR NOT CMAKE_INSTALL_COMPONENT)
-  if(EXISTS "$ENV{DESTDIR}/home/agnext/Desktop/darknet/libdarknet.so" AND
-     NOT IS_SYMLINK "$ENV{DESTDIR}/home/agnext/Desktop/darknet/libdarknet.so")
+  if(EXISTS "$ENV{DESTDIR}/home/agnext/Documents/tragnext/libdarknet.so" AND
+     NOT IS_SYMLINK "$ENV{DESTDIR}/home/agnext/Documents/tragnext/libdarknet.so")
     file(RPATH_CHECK
-         FILE "$ENV{DESTDIR}/home/agnext/Desktop/darknet/libdarknet.so"
+         FILE "$ENV{DESTDIR}/home/agnext/Documents/tragnext/libdarknet.so"
          RPATH "")
   endif()
   list(APPEND CMAKE_ABSOLUTE_DESTINATION_FILES
-   "/home/agnext/Desktop/darknet/libdarknet.so")
+   "/home/agnext/Documents/tragnext/libdarknet.so")
   if(CMAKE_WARN_ON_ABSOLUTE_INSTALL_DESTINATION)
     message(WARNING "ABSOLUTE path INSTALL DESTINATION : ${CMAKE_ABSOLUTE_DESTINATION_FILES}")
   endif()
   if(CMAKE_ERROR_ON_ABSOLUTE_INSTALL_DESTINATION)
     message(FATAL_ERROR "ABSOLUTE path INSTALL DESTINATION forbidden (by caller): ${CMAKE_ABSOLUTE_DESTINATION_FILES}")
   endif()
-file(INSTALL DESTINATION "/home/agnext/Desktop/darknet" TYPE SHARED_LIBRARY FILES "/home/agnext/Desktop/darknet/libdarknet.so")
-  if(EXISTS "$ENV{DESTDIR}/home/agnext/Desktop/darknet/libdarknet.so" AND
-     NOT IS_SYMLINK "$ENV{DESTDIR}/home/agnext/Desktop/darknet/libdarknet.so")
+file(INSTALL DESTINATION "/home/agnext/Documents/tragnext" TYPE SHARED_LIBRARY FILES "/home/agnext/Documents/tragnext/libdarknet.so")
+  if(EXISTS "$ENV{DESTDIR}/home/agnext/Documents/tragnext/libdarknet.so" AND
+     NOT IS_SYMLINK "$ENV{DESTDIR}/home/agnext/Documents/tragnext/libdarknet.so")
     if(CMAKE_INSTALL_DO_STRIP)
-      execute_process(COMMAND "/usr/bin/strip" "$ENV{DESTDIR}/home/agnext/Desktop/darknet/libdarknet.so")
+      execute_process(COMMAND "/usr/bin/strip" "$ENV{DESTDIR}/home/agnext/Documents/tragnext/libdarknet.so")
     endif()
   endif()
 endif()
@@ -71,59 +71,59 @@ endif()
 
 if("x${CMAKE_INSTALL_COMPONENT}x" STREQUAL "xdevx" OR NOT CMAKE_INSTALL_COMPONENT)
   file(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/include/darknet" TYPE FILE FILES
-    "/home/agnext/Desktop/darknet/include/darknet.h"
-    "/home/agnext/Desktop/darknet/include/yolo_v2_class.hpp"
+    "/home/agnext/Documents/tragnext/include/darknet.h"
+    "/home/agnext/Documents/tragnext/include/yolo_v2_class.hpp"
     )
 endif()
 
 if("x${CMAKE_INSTALL_COMPONENT}x" STREQUAL "xUnspecifiedx" OR NOT CMAKE_INSTALL_COMPONENT)
-  if(EXISTS "$ENV{DESTDIR}/home/agnext/Desktop/darknet/uselib" AND
-     NOT IS_SYMLINK "$ENV{DESTDIR}/home/agnext/Desktop/darknet/uselib")
+  if(EXISTS "$ENV{DESTDIR}/home/agnext/Documents/tragnext/uselib" AND
+     NOT IS_SYMLINK "$ENV{DESTDIR}/home/agnext/Documents/tragnext/uselib")
     file(RPATH_CHECK
-         FILE "$ENV{DESTDIR}/home/agnext/Desktop/darknet/uselib"
+         FILE "$ENV{DESTDIR}/home/agnext/Documents/tragnext/uselib"
          RPATH "")
   endif()
   list(APPEND CMAKE_ABSOLUTE_DESTINATION_FILES
-   "/home/agnext/Desktop/darknet/uselib")
+   "/home/agnext/Documents/tragnext/uselib")
   if(CMAKE_WARN_ON_ABSOLUTE_INSTALL_DESTINATION)
     message(WARNING "ABSOLUTE path INSTALL DESTINATION : ${CMAKE_ABSOLUTE_DESTINATION_FILES}")
   endif()
   if(CMAKE_ERROR_ON_ABSOLUTE_INSTALL_DESTINATION)
     message(FATAL_ERROR "ABSOLUTE path INSTALL DESTINATION forbidden (by caller): ${CMAKE_ABSOLUTE_DESTINATION_FILES}")
   endif()
-file(INSTALL DESTINATION "/home/agnext/Desktop/darknet" TYPE EXECUTABLE FILES "/home/agnext/Desktop/darknet/uselib")
-  if(EXISTS "$ENV{DESTDIR}/home/agnext/Desktop/darknet/uselib" AND
-     NOT IS_SYMLINK "$ENV{DESTDIR}/home/agnext/Desktop/darknet/uselib")
+file(INSTALL DESTINATION "/home/agnext/Documents/tragnext" TYPE EXECUTABLE FILES "/home/agnext/Documents/tragnext/uselib")
+  if(EXISTS "$ENV{DESTDIR}/home/agnext/Documents/tragnext/uselib" AND
+     NOT IS_SYMLINK "$ENV{DESTDIR}/home/agnext/Documents/tragnext/uselib")
     file(RPATH_CHANGE
-         FILE "$ENV{DESTDIR}/home/agnext/Desktop/darknet/uselib"
-         OLD_RPATH "/home/agnext/Desktop/darknet:"
+         FILE "$ENV{DESTDIR}/home/agnext/Documents/tragnext/uselib"
+         OLD_RPATH "/home/agnext/Documents/tragnext:"
          NEW_RPATH "")
     if(CMAKE_INSTALL_DO_STRIP)
-      execute_process(COMMAND "/usr/bin/strip" "$ENV{DESTDIR}/home/agnext/Desktop/darknet/uselib")
+      execute_process(COMMAND "/usr/bin/strip" "$ENV{DESTDIR}/home/agnext/Documents/tragnext/uselib")
     endif()
   endif()
 endif()
 
 if("x${CMAKE_INSTALL_COMPONENT}x" STREQUAL "xUnspecifiedx" OR NOT CMAKE_INSTALL_COMPONENT)
-  if(EXISTS "$ENV{DESTDIR}/home/agnext/Desktop/darknet/darknet" AND
-     NOT IS_SYMLINK "$ENV{DESTDIR}/home/agnext/Desktop/darknet/darknet")
+  if(EXISTS "$ENV{DESTDIR}/home/agnext/Documents/tragnext/darknet" AND
+     NOT IS_SYMLINK "$ENV{DESTDIR}/home/agnext/Documents/tragnext/darknet")
     file(RPATH_CHECK
-         FILE "$ENV{DESTDIR}/home/agnext/Desktop/darknet/darknet"
+         FILE "$ENV{DESTDIR}/home/agnext/Documents/tragnext/darknet"
          RPATH "")
   endif()
   list(APPEND CMAKE_ABSOLUTE_DESTINATION_FILES
-   "/home/agnext/Desktop/darknet/darknet")
+   "/home/agnext/Documents/tragnext/darknet")
   if(CMAKE_WARN_ON_ABSOLUTE_INSTALL_DESTINATION)
     message(WARNING "ABSOLUTE path INSTALL DESTINATION : ${CMAKE_ABSOLUTE_DESTINATION_FILES}")
   endif()
   if(CMAKE_ERROR_ON_ABSOLUTE_INSTALL_DESTINATION)
     message(FATAL_ERROR "ABSOLUTE path INSTALL DESTINATION forbidden (by caller): ${CMAKE_ABSOLUTE_DESTINATION_FILES}")
   endif()
-file(INSTALL DESTINATION "/home/agnext/Desktop/darknet" TYPE EXECUTABLE FILES "/home/agnext/Desktop/darknet/darknet")
-  if(EXISTS "$ENV{DESTDIR}/home/agnext/Desktop/darknet/darknet" AND
-     NOT IS_SYMLINK "$ENV{DESTDIR}/home/agnext/Desktop/darknet/darknet")
+file(INSTALL DESTINATION "/home/agnext/Documents/tragnext" TYPE EXECUTABLE FILES "/home/agnext/Documents/tragnext/darknet")
+  if(EXISTS "$ENV{DESTDIR}/home/agnext/Documents/tragnext/darknet" AND
+     NOT IS_SYMLINK "$ENV{DESTDIR}/home/agnext/Documents/tragnext/darknet")
     if(CMAKE_INSTALL_DO_STRIP)
-      execute_process(COMMAND "/usr/bin/strip" "$ENV{DESTDIR}/home/agnext/Desktop/darknet/darknet")
+      execute_process(COMMAND "/usr/bin/strip" "$ENV{DESTDIR}/home/agnext/Documents/tragnext/darknet")
     endif()
   endif()
 endif()
@@ -132,7 +132,7 @@ if("x${CMAKE_INSTALL_COMPONENT}x" STREQUAL "xUnspecifiedx" OR NOT CMAKE_INSTALL_
   if(EXISTS "$ENV{DESTDIR}${CMAKE_INSTALL_PREFIX}/share/darknet/DarknetTargets.cmake")
     file(DIFFERENT EXPORT_FILE_CHANGED FILES
          "$ENV{DESTDIR}${CMAKE_INSTALL_PREFIX}/share/darknet/DarknetTargets.cmake"
-         "/home/agnext/Desktop/darknet/CMakeFiles/Export/share/darknet/DarknetTargets.cmake")
+         "/home/agnext/Documents/tragnext/CMakeFiles/Export/share/darknet/DarknetTargets.cmake")
     if(EXPORT_FILE_CHANGED)
       file(GLOB OLD_CONFIG_FILES "$ENV{DESTDIR}${CMAKE_INSTALL_PREFIX}/share/darknet/DarknetTargets-*.cmake")
       if(OLD_CONFIG_FILES)
@@ -141,16 +141,16 @@ if("x${CMAKE_INSTALL_COMPONENT}x" STREQUAL "xUnspecifiedx" OR NOT CMAKE_INSTALL_
       endif()
     endif()
   endif()
-  file(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/share/darknet" TYPE FILE FILES "/home/agnext/Desktop/darknet/CMakeFiles/Export/share/darknet/DarknetTargets.cmake")
+  file(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/share/darknet" TYPE FILE FILES "/home/agnext/Documents/tragnext/CMakeFiles/Export/share/darknet/DarknetTargets.cmake")
   if("${CMAKE_INSTALL_CONFIG_NAME}" MATCHES "^([Rr][Ee][Ll][Ee][Aa][Ss][Ee])$")
-    file(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/share/darknet" TYPE FILE FILES "/home/agnext/Desktop/darknet/CMakeFiles/Export/share/darknet/DarknetTargets-release.cmake")
+    file(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/share/darknet" TYPE FILE FILES "/home/agnext/Documents/tragnext/CMakeFiles/Export/share/darknet/DarknetTargets-release.cmake")
   endif()
 endif()
 
 if("x${CMAKE_INSTALL_COMPONENT}x" STREQUAL "xUnspecifiedx" OR NOT CMAKE_INSTALL_COMPONENT)
   file(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/share/darknet" TYPE FILE FILES
-    "/home/agnext/Desktop/darknet/CMakeFiles/DarknetConfig.cmake"
-    "/home/agnext/Desktop/darknet/DarknetConfigVersion.cmake"
+    "/home/agnext/Documents/tragnext/CMakeFiles/DarknetConfig.cmake"
+    "/home/agnext/Documents/tragnext/DarknetConfigVersion.cmake"
     )
 endif()
 
@@ -162,5 +162,5 @@ endif()
 
 string(REPLACE ";" "\n" CMAKE_INSTALL_MANIFEST_CONTENT
        "${CMAKE_INSTALL_MANIFEST_FILES}")
-file(WRITE "/home/agnext/Desktop/darknet/${CMAKE_INSTALL_MANIFEST}"
+file(WRITE "/home/agnext/Documents/tragnext/${CMAKE_INSTALL_MANIFEST}"
      "${CMAKE_INSTALL_MANIFEST_CONTENT}")

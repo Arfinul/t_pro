@@ -67,10 +67,10 @@ RM = /opt/cmake-3.19.8-Linux-aarch64/bin/cmake -E rm -f
 EQUALS = =
 
 # The top-level source directory on which CMake was run.
-CMAKE_SOURCE_DIR = /home/agnext/Desktop/darknet/CMakeFiles/CheckCUDA
+CMAKE_SOURCE_DIR = /home/agnext/Documents/tragnext/CMakeFiles/CheckCUDA
 
 # The top-level build directory on which CMake was run.
-CMAKE_BINARY_DIR = /home/agnext/Desktop/darknet/CMakeFiles/CheckCUDA
+CMAKE_BINARY_DIR = /home/agnext/Documents/tragnext/CMakeFiles/CheckCUDA
 
 #=============================================================================
 # Targets provided globally by CMake.
@@ -99,9 +99,9 @@ edit_cache/fast: edit_cache
 
 # The main all target
 all: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/agnext/Desktop/darknet/CMakeFiles/CheckCUDA/CMakeFiles /home/agnext/Desktop/darknet/CMakeFiles/CheckCUDA//CMakeFiles/progress.marks
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/agnext/Documents/tragnext/CMakeFiles/CheckCUDA/CMakeFiles /home/agnext/Documents/tragnext/CMakeFiles/CheckCUDA//CMakeFiles/progress.marks
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 all
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/agnext/Desktop/darknet/CMakeFiles/CheckCUDA/CMakeFiles 0
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/agnext/Documents/tragnext/CMakeFiles/CheckCUDA/CMakeFiles 0
 .PHONY : all
 
 # The main clean target

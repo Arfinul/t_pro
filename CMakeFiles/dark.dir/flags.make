@@ -6,19 +6,19 @@
 # compile CXX with /usr/bin/c++
 C_DEFINES = -DCUDNN -DGPU -DLIB_EXPORTS=1 -DOPENCV -DUSE_CMAKE_LIBS -Ddark_EXPORTS
 
-C_INCLUDES = -I/home/agnext/Desktop/darknet/include -I/home/agnext/Desktop/darknet/src -I/home/agnext/Desktop/darknet/3rdparty/stb/include -I/usr/local/cuda-10.2/targets/aarch64-linux/include -isystem /usr/include/opencv4
+C_INCLUDES = -I/home/agnext/Documents/tragnext/include -I/home/agnext/Documents/tragnext/src -I/home/agnext/Documents/tragnext/3rdparty/stb/include -I/usr/local/cuda-10.2/targets/aarch64-linux/include -isystem /usr/include/opencv4
 
 C_FLAGS = -Wall -Wno-unused-result -Wno-unknown-pragmas -Wfatal-errors -Wno-deprecated-declarations -Wno-write-strings -Wl,-Bsymbolic  -Ofast -DNDEBUG -fPIC -fopenmp
 
 CUDA_DEFINES = -DCUDNN -DGPU -DLIB_EXPORTS=1 -DOPENCV -DUSE_CMAKE_LIBS -Ddark_EXPORTS
 
-CUDA_INCLUDES = -I/home/agnext/Desktop/darknet/include -I/home/agnext/Desktop/darknet/src -I/home/agnext/Desktop/darknet/3rdparty/stb/include -I/usr/local/cuda-10.2/targets/aarch64-linux/include -isystem=/usr/include/opencv4
+CUDA_INCLUDES = -I/home/agnext/Documents/tragnext/include -I/home/agnext/Documents/tragnext/src -I/home/agnext/Documents/tragnext/3rdparty/stb/include -I/usr/local/cuda-10.2/targets/aarch64-linux/include -isystem=/usr/include/opencv4
 
 CUDA_FLAGS =  --compiler-options " -Wall -Wno-unused-result -Wno-unknown-pragmas -Wfatal-errors -Wno-deprecated-declarations -Wno-write-strings -DGPU -DCUDNN -DOPENCV -fPIC -fopenmp -Ofast "  -O3 -DNDEBUG --generate-code=arch=compute_30,code=[compute_30,sm_30] -Xcompiler=-fPIC -std=c++11
 
 CXX_DEFINES = -DCUDNN -DGPU -DLIB_EXPORTS=1 -DOPENCV -DUSE_CMAKE_LIBS -Ddark_EXPORTS
 
-CXX_INCLUDES = -I/home/agnext/Desktop/darknet/include -I/home/agnext/Desktop/darknet/src -I/home/agnext/Desktop/darknet/3rdparty/stb/include -I/usr/local/cuda-10.2/targets/aarch64-linux/include -isystem /usr/include/opencv4
+CXX_INCLUDES = -I/home/agnext/Documents/tragnext/include -I/home/agnext/Documents/tragnext/src -I/home/agnext/Documents/tragnext/3rdparty/stb/include -I/usr/local/cuda-10.2/targets/aarch64-linux/include -isystem /usr/include/opencv4
 
 CXX_FLAGS = -Wall -Wno-unused-result -Wno-unknown-pragmas -Wfatal-errors -Wno-deprecated-declarations -Wno-write-strings -Wl,-Bsymbolic  -Ofast -DNDEBUG -fPIC -fvisibility=hidden -fopenmp -std=gnu++11
 
