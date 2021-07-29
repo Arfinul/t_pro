@@ -17,6 +17,9 @@ import threading
 from flc_utils import helper
 import logging
 import numpy as np
+import serial
+import time
+import re
 
 logging.basicConfig(filename='server_logs.log',
                     filemode='a',
@@ -25,7 +28,10 @@ logging.basicConfig(filename='server_logs.log',
 logger = logging.getLogger(("FLC"))
 
 configparser = configparser.RawConfigParser()   
-os.chdir("/home/agnext/Documents/flc")
+os.chdir("/home/agnext/Documents/tragnext")
+#HOME = os.environ["HOME"]
+#DIR_PATH = os.path.join(HOME, "Documents", "tragnext")
+#os.chdir(DIR_PATH)
 
 def cam_fresh():
     subprocess.Popen("python3 flc_utils/guvcview-config/cam_initialise.py", stdout= subprocess.PIPE, shell=True)
@@ -38,7 +44,7 @@ configparser.read('flc_utils/screens/touchScreen/gui.cfg')
 USE_INTERNET = configparser.get('gui-config', 'internet')
 
 cmd = """
-export LD_LIBRARY_PATH=/home/agnext/Documents/flc/
+export LD_LIBRARY_PATH=/home/agnext/Documents/tragnext/
 ./uselib cfg/jorhat_Dec.names cfg/jorhat_Dec.cfg weights/jorhat_Dec_final.weights web_camera > output.txt
 """
 
@@ -232,7 +238,16 @@ class MyTkApp(tk.Frame):
         self.inst_center_entry.configure(width=24, state="disabled", font=font.Font(family='times', size=16))
 
         self.nextBtn = tk.Button(self.window, text="Next", command=self.main_screen, fg="white", bg="#F37C62", width=12,height=2, font=('times', 16, 'bold'))
+        # Weight Integration labels
+        self.initial_weight = -1
+        self.final_weight = -1
+        self.mlc_value = -1
 
+        self.wait_till_mlc = tk.IntVar()
+        
+        self.measure_weight = tk.Button(self.window, text="Measure Initial Weight", command=self.get_initial_weight, fg="white", bg="#539051", font=('times', 16, 'bold'))
+        self.measure_final_weight = tk.Button(self.window, text="Measure Final Weight", command=lambda:[self.get_final_weight(), self.wait_till_mlc.set(1)], fg="white", bg="#539051", font=('times', 16, 'bold'))
+    
     def restart(self):
         if messagebox.askokcancel("Quit", "Do you really want to restart the system?"):
             self.window.destroy()
@@ -259,6 +274,7 @@ class MyTkApp(tk.Frame):
 
     def details_entered_success(self):
         try:
+            self.measure_weight.place_forget()
             self.endRecord.place_forget()
             self.entered.place_forget()
             self.sector_entry.place_forget()
@@ -290,6 +306,7 @@ class MyTkApp(tk.Frame):
             p = subprocess.Popen("exec " + command, stdout= subprocess.PIPE, shell=True)
             p.wait()
             os.rename("flc_utils/trainVideo/testing/result.avi", "flc_utils/trainVideo/testing/" + datetime.datetime.now().strftime("%d-%m-%Y %H:%M:%S") + "_" + str(self.customer_id) + ".avi")
+            self.moisture_loss_count()
             self.show_results_on_display()
             self.endRecord.place(x=int(configparser.get('gui-config', 'endrecord_btn_x')), y=int(configparser.get('gui-config', 'endrecord_btn_y')))
         except Exception as e:
@@ -477,6 +494,7 @@ class MyTkApp(tk.Frame):
             self.division_entry.place(x=520, y=200, height=40, width=190)
             self.sector_entry.place(x=520, y=245, height=40, width=190)
             self.entered.place(x=520, y=305)
+            self.measure_weight.place(x=500, y=110, height=30, width=230)
         except Exception as e:
             logger.exception(str('Exception occured in "place_inputs" function\nError message:' + str(e)))
 
@@ -573,6 +591,7 @@ class MyTkApp(tk.Frame):
 
     def show_results_on_display(self):
         try:
+            self.measure_final_weight.place_forget()          
             self.forget_graph()
 
             _1lb, _2lb, _3lb, _1bj, _2bj, _coarse, totalCount, _perc = helper.get_class_count()
@@ -601,7 +620,8 @@ class MyTkApp(tk.Frame):
                 _2bj_perc = 0 if _2bj_perc < 0 else _2bj_perc
                 _flc_perc = _1lb_perc + _2lb_perc + _1bj_perc + (0.67 * _3lb_perc)
                 _flc_perc = 100 if _flc_perc > 100 else _flc_perc
-                _flc_perc_by_weight = _flc_perc + 4
+                #_flc_perc_by_weight = _flc_perc + 4
+                _flc_perc_by_weight = self.mlc_value
                 _flc_perc_by_weight = 100 if _flc_perc_by_weight > 100 else _flc_perc_by_weight
                 _coarse_perc = 100 - _flc_perc
                 _coarse_perc_by_weight = 100 - _flc_perc_by_weight
@@ -767,6 +787,7 @@ class MyTkApp(tk.Frame):
 
     def second_screen_place(self):
         try:
+            self.measure_final_weight.place_forget()
             self.forget_graph()
             self.details_entered_success()
             try:
@@ -892,11 +913,49 @@ class MyTkApp(tk.Frame):
             self.signin.place_forget()
             self.panel_bg.place_forget()
             self.second_screen_place()
-            th = threading.Thread(target=helper.send_email)
-            th.start() 
+            #th = threading.Thread(target=helper.send_email)
+            #th.start() 
         except Exception as e:
             logger.exception(str('Exception occured in "login_success" function\nError message:' + str(e)))
+    def get_weight_from_scale(self):
+        buffer = ""
+        weight_list = []
+        # Get values for 30 x 0.2 = 6 seconds
+        try:
+            ser = serial.Serial('/dev/ttyUSB0', 9600)
+            t_end = time.time() + 30 * 0.2
+            while time.time() < t_end:
+                one_byte = ser.read(1)
+                buffer += one_byte.decode("ascii")
+            
+            weights_list = re.findall(r'\[([^]]*)\]', buffer)
+            filtered_wt = max(set(weights_list), key=weight_list.count)
+            weight_to_float = float(filtered_wt)
+            messagebox.showinfo("Weight:", weight_to_float)
+            ser.close()
+            return weight_to_float
+        except:
+            self.show_error_msg("Connect Weighing Scale")
+            print("Weighing scale Serial ERROR")
 
+    # Initial Weight wrapepr
+    def get_initial_weight(self):
+        self.initial_weight = self.get_weight_from_scale()
+
+    # Final Weight wrapper
+    def get_final_weight(self):
+        self.final_weight = self.get_weight_from_scale()
+
+    # Moisture Loss Formula
+    def moisture_loss_count(self):
+        self.measure_final_weight.place(x=500, y=110, height=30, width=230)
+        self.measure_final_weight.wait_variable(self.wait_till_mlc)
+        if self.initial_weight is not 0 and self.final_weight is not 0 and self.final_weight < self.initial_weight:
+            self.mlc_value = ((self.initial_weight - self.final_weight)/self.initial_weight)*100
+        else:
+            # TODO: POP-UP ERROR FOR RE-MEASURING
+            print("Measured Initial weight cannot be Zero or greater than the final weight measured")
+        self.measure_final_weight.place_forget()
 
 def launchApp():
     window = tk.Tk()
