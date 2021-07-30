@@ -247,7 +247,11 @@ class MyTkApp(tk.Frame):
         
         self.measure_weight = tk.Button(self.window, text="Measure Initial Weight", command=self.get_initial_weight, fg="white", bg="#539051", font=('times', 16, 'bold'))
         self.measure_final_weight = tk.Button(self.window, text="Measure Final Weight", command=lambda:[self.get_final_weight(), self.wait_till_mlc.set(1)], fg="white", bg="#539051", font=('times', 16, 'bold'))
-    
+        #self.mlc_label = tk.Label(self.window, text="Surface Moisture: " + '{:.2f}'.format(self.mlc_value) + "%", font=('times', 15, 'bold'), bg="#f7f0f5")
+        #self.initial_weight_label = tk.Label(self.window, text="Initial Weight (kg): " + '{:.2f}'.format(self.initial_weight), font=('times', 15, 'bold'), bg="#f7f0f5")
+        #self.final_weight_label = tk.Label(self.window, text="Final Weight (kg): " + '{:.2f}'.format(self.final_weight), font=('times', 15, 'bold'), bg="#f7f0f5")
+        #self.mlc_formula_label = tk.Label(self.window, text="Surface Moisture Formula: ((Initial Weight - Final Weight)/Initial Weight)*100", font=('times', 10), bg="#f7f0f5")
+
     def restart(self):
         if messagebox.askokcancel("Quit", "Do you really want to restart the system?"):
             self.window.destroy()
@@ -579,6 +583,10 @@ class MyTkApp(tk.Frame):
             self._coarse_btn_by_weight.place_forget()
             self.by_count_text.place_forget()
             self.by_weight_text.place_forget()
+            self.mlc_label.place_forget()
+            self.final_weight_label.place_forget()
+            self.mlc_formula_label.place_forget()
+            self.initial_weight_label.place_forget()
 
             helper.update_graph()
         except Exception as e:
@@ -620,8 +628,8 @@ class MyTkApp(tk.Frame):
                 _2bj_perc = 0 if _2bj_perc < 0 else _2bj_perc
                 _flc_perc = _1lb_perc + _2lb_perc + _1bj_perc + (0.67 * _3lb_perc)
                 _flc_perc = 100 if _flc_perc > 100 else _flc_perc
-                #_flc_perc_by_weight = _flc_perc + 4
-                _flc_perc_by_weight = self.mlc_value
+                _flc_perc_by_weight = 0
+                #_flc_perc_by_weight = self.mlc_value
                 _flc_perc_by_weight = 100 if _flc_perc_by_weight > 100 else _flc_perc_by_weight
                 _coarse_perc = 100 - _flc_perc
                 _coarse_perc_by_weight = 100 - _flc_perc_by_weight
@@ -636,6 +644,10 @@ class MyTkApp(tk.Frame):
                 _coarse_perc_by_weight = 0.0
                 _flc_perc_by_weight = 0.0
             
+            _mlc_val_csv = self.mlc_value
+            _ini_wt_csv = self.initial_weight
+            _fin_wt_csv = self.final_weight
+
             f = open('flc_utils/records.csv','a')
             dt_ = datetime.datetime.now().strftime("%d-%m-%Y %H:%M:%S")
             flc_ = str(_flc_perc)
@@ -646,11 +658,11 @@ class MyTkApp(tk.Frame):
             _1bjp = str(_1bj_perc)
             _2bjp = str(_2bj_perc)
             total_ = str(totalCount)
-            f.write(f"{dt_},{flc_},{coarse_},{_1lbp},{_2lbp},{_3lbp},{_1bjp},{_2bjp},{total_},{leaf},{_flc_perc_by_weight}\n")
+            f.write(f"{dt_},{flc_},{coarse_},{_1lbp},{_2lbp},{_3lbp},{_1bjp},{_2bjp},{total_},{leaf},{_flc_perc_by_weight},{_mlc_val_csv},{_ini_wt_csv},{_fin_wt_csv}\n")
             f.close()
             
             r = open('/home/agnext/Desktop/results.csv','a')
-            r.write(f"{dt_},{flc_},{coarse_},{leaf},{_flc_perc_by_weight}\n")
+            r.write(f"{dt_},{flc_},{coarse_},{leaf},{_flc_perc_by_weight},{_mlc_val_csv},{_ini_wt_csv},{_fin_wt_csv}\n")
             r.close()
 
             self.results['one_leaf_bud'] = int(np.ceil(_1lb_perc * totalCount/100))
@@ -679,18 +691,28 @@ class MyTkApp(tk.Frame):
             self._2bj_btn.configure(text="2Banjhi %     " + str(round(_2bj_perc, 2)))
 
             self._flc_btn.place(x=60,y=180)
-            self._flc_btn_by_weight.place(x=450,y=180)
+            self._flc_btn_by_weight.place(x=320,y=180)
             self._coarse_btn.place(x=60,y=255)
-            self._coarse_btn_by_weight.place(x=450,y=255)
+            self._coarse_btn_by_weight.place(x=320,y=255)
             self.by_count_text.place(x=100,y=130)
-            self.by_weight_text.place(x=500, y=130)
+            self.by_weight_text.place(x=330, y=130)
 
             self.warning_sign.place_forget()
             self.formula.place(x=60,y=390)
             gc.collect()
         except Exception as e:
             logger.exception(str('Exception occured in "show_results_on_display" function\nError message:' + str(e)))
-             
+        
+        self.mlc_label = tk.Label(self.window, text="Surface Moisture: " + '{:.2f}'.format(self.mlc_value) + "%", font=('times', 15, 'bold'), bg="#f7f0f5")
+        self.initial_weight_label = tk.Label(self.window, text="Initial Weight (kg): " + '{:.2f}'.format(self.initial_weight), font=('times', 15, 'bold'), bg="#f7f0f5")
+        self.final_weight_label = tk.Label(self.window, text="Final Weight (kg): " + '{:.2f}'.format(self.final_weight), font=('times', 15, 'bold'), bg="#f7f0f5")
+        self.mlc_formula_label = tk.Label(self.window, text="Surface Moisture Formula: ((Initial Weight - Final Weight)/Initial Weight)*100", font=('times', 10), bg="#f7f0f5")
+
+        self.mlc_label.place(x=520, y=180)
+        self.initial_weight_label.place(x=520, y=210)
+        self.final_weight_label.place(x=520, y=240)
+        self.mlc_formula_label.pack()
+        self.mlc_formula_label.place(x=350, y=400) 
      
     def login_verify(self):
         try:
@@ -787,6 +809,22 @@ class MyTkApp(tk.Frame):
 
     def second_screen_place(self):
         try:
+            #self.initial_weight_label.place_forget()
+            #self.mlc_label.place_forget()
+            #self.final_weight_label.place_forget()
+            #self.mlc_formula_label.place_forget()
+            self.by_weight_text.place_forget()
+            self.by_count_text.place_forget()
+            self._flc_btn_by_weight.place_forget()
+            self._coarse_btn_by_weight.place_forget()
+            self._flc_btn.place_forget()
+            self._total_btn.place_forget()
+            self._1lb_btn.place_forget()
+            self._2lb_btn.place_forget()
+            self._1bj_btn.place_forget()
+            self._3lb_btn.place_forget()
+            self._coarse_btn.place_forget()
+            self._2bj_btn.place_forget()
             self.measure_final_weight.place_forget()
             self.forget_graph()
             self.details_entered_success()
