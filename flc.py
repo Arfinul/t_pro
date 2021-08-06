@@ -556,10 +556,14 @@ class MyTkApp(tk.Frame):
     def send_data_api(self):
         try:
             if USE_INTERNET == "TRUE":
+                if self.mlc_value == -1:
+                    mlc_perc = 'n/a'
+                else:
+                    mlc_perc = str(self.mlc_value)
                 sectionId = int(self.section_id_name_dict[self.section_verify.get()])
                 qualix_status = 0
                 if helper.is_internet_available():
-                    qualix_status = helper.qualix_api(self.token, self.results, sectionId, self.new_fields)
+                    qualix_status = helper.qualix_api(self.token, self.results, sectionId, self.new_fields, mlc_perc)
                     if qualix_status != 200:
                         logger.exception(f"payload {self.results}, sectionId {sectionId}, data {self.new_fields}")
                 else:
@@ -604,7 +608,7 @@ class MyTkApp(tk.Frame):
 
             _1lb, _2lb, _3lb, _1bj, _2bj, _coarse, totalCount, _perc = helper.get_class_count()
             leaf = self.leaf_verify.get()
-
+            
             if totalCount != 0:
                 if leaf == "Own":
                     _1lb_perc = round(_1lb*100/totalCount, 2) + 3
@@ -628,7 +632,7 @@ class MyTkApp(tk.Frame):
                 _2bj_perc = 0 if _2bj_perc < 0 else _2bj_perc
                 _flc_perc = _1lb_perc + _2lb_perc + _1bj_perc + (0.67 * _3lb_perc)
                 _flc_perc = 100 if _flc_perc > 100 else _flc_perc
-                _flc_perc_by_weight = 0
+                _flc_perc_by_weight = 24.53 + (0.45 * _flc_perc)
                 #_flc_perc_by_weight = self.mlc_value
                 _flc_perc_by_weight = 100 if _flc_perc_by_weight > 100 else _flc_perc_by_weight
                 _coarse_perc = 100 - _flc_perc
@@ -654,15 +658,16 @@ class MyTkApp(tk.Frame):
             coarse_ = str(_coarse_perc)
             _1lbp = str(_1lb_perc)
             _2lbp = str(_2lb_perc)
+
             _3lbp = str(_3lb_perc)
             _1bjp = str(_1bj_perc)
             _2bjp = str(_2bj_perc)
             total_ = str(totalCount)
-            f.write(f"{dt_},{flc_},{coarse_},{_1lbp},{_2lbp},{_3lbp},{_1bjp},{_2bjp},{total_},{leaf},{_flc_perc_by_weight},{_mlc_val_csv},{_ini_wt_csv},{_fin_wt_csv}\n")
+            f.write(f"{dt_},{flc_},{coarse_},{_1lbp},{_2lbp},{_3lbp},{_1bjp},{_2bjp},{total_},{leaf},{_flc_perc_by_weight},{_coarse_perc_by_weight},{_mlc_val_csv},{_ini_wt_csv},{_fin_wt_csv}\n")
             f.close()
             
             r = open('/home/agnext/Desktop/results.csv','a')
-            r.write(f"{dt_},{flc_},{coarse_},{leaf},{_flc_perc_by_weight},{_mlc_val_csv},{_ini_wt_csv},{_fin_wt_csv}\n")
+            r.write(f"{dt_},{flc_},{coarse_},{leaf},{_flc_perc_by_weight},{_coarse_perc_by_weight},{_mlc_val_csv},{_ini_wt_csv},{_fin_wt_csv}\n")
             r.close()
 
             self.results['one_leaf_bud'] = int(np.ceil(_1lb_perc * totalCount/100))
@@ -678,6 +683,14 @@ class MyTkApp(tk.Frame):
             self.results['total_count'] = totalCount
             self.results['quality_score'] = _flc_perc
             self.results['quality_score_by_weight'] = _flc_perc_by_weight
+            
+            if _ini_wt_csv == -1 or _fin_wt_csv == -1:
+                self.results['initial_weight'] = 'n/a'
+                self.results['final_weight'] = 'n/a'
+            else:
+                self.results['initial_weight'] = str(_ini_wt_csv)
+                self.results['final_weight'] = str(_fin_wt_csv)
+
 
             self._flc_btn.configure(text="FLC %      " + str(round(_flc_perc, 2)))
             self._flc_btn_by_weight.configure(text="FLC %      " + str(round(_flc_perc_by_weight, 2)))

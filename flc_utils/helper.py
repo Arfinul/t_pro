@@ -39,7 +39,7 @@ def get_class_count():
     return _1lb, _2lb, _3lb, _1bj, _2bj, _coarse, totalCount, _perc
 
 
-def qualix_api(token, payload, sectionId, new_fields):
+def qualix_api(token, payload, sectionId, new_fields, moisture_percentage):
     li = []
     for i in payload:
         li.append({"analysisName": i, "totalAmount": payload[i]})
@@ -64,11 +64,14 @@ def qualix_api(token, payload, sectionId, new_fields):
                     "weight": str(new_fields['weight']),
                     "commodity_category_id":"2",
                     "commodity_name":"Tea",
-                    "area_covered": str(new_fields['area_covered'])
+                    "area_covered": str(new_fields['area_covered']),
+                    "moisture_percentage": moisture_percentage
                     })
     data_ = data_.replace("'", '"')
+    print("DEBUG: ", data_)
     analyses_ = json.dumps(li)
     analyses_ = analyses_.replace("'", '"')
+    print("DEBUG: ", analyses_)
     mp_encoder = MultipartEncoder(
             fields={
                 "data": data_,
