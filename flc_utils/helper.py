@@ -153,7 +153,7 @@ def inst_centers_list_qualix(region_id, customer_id, token):
 
 def is_internet_available():
     try:
-        urlopen("http://216.58.192.142", timeout=7)
+        urlopen("https://google.com", timeout=7)
         return True
     except Exception as e:
         return False
@@ -231,7 +231,7 @@ def free_space():
         rest_files_names = glob.glob("flc_utils/trainVideo/testing/*.avi")
         if len(rest_files_names) > 0:
             rest_files_names.sort()
-            delete_files = rest_files_names[:-10]
+            delete_files = rest_files_names[:-5]
             for i in delete_files:
                 os.remove(i)
 

@@ -25,7 +25,7 @@ logging.basicConfig(filename='server_logs.log',
 logger = logging.getLogger(("FLC"))
 
 configparser = configparser.RawConfigParser()   
-os.chdir("/home/jetson_1/Documents/flc")
+os.chdir("/home/agnext/Documents/tragnext")
 
 def cam_fresh():
     subprocess.Popen("python3 flc_utils/guvcview-config/cam_initialise.py", stdout= subprocess.PIPE, shell=True)
@@ -37,7 +37,7 @@ configparser.read('flc_utils/screens/touchScreen/gui.cfg')
 USE_INTERNET = configparser.get('gui-config', 'internet')
 
 cmd = """
-export LD_LIBRARY_PATH=/home/jetson_1/Documents/flc/
+export LD_LIBRARY_PATH=/home/agnext/Documents/tragnext/
 ./uselib cfg/jorhat_Dec.names cfg/jorhat_Dec.cfg weights/jorhat_Dec_final.weights web_camera > output.txt
 """
 
@@ -609,7 +609,7 @@ class MyTkApp(tk.Frame):
             f.write(f"{dt_},{flc_},{coarse_},{_1lbp},{_2lbp},{_3lbp},{_1bjp},{_2bjp},{total_}\n")
             f.close()
             
-            r = open('/home/jetson_1/Desktop/result.csv','a')
+            r = open('/home/agnext/Desktop/result.csv','a')
             r.write(f"{dt_},{flc_},{coarse_},{total_}\n")
             r.close()
             
