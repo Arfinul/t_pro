@@ -559,7 +559,7 @@ class MyTkApp(tk.Frame):
                 if self.mlc_value == -1:
                     mlc_perc = 'n/a'
                 else:
-                    mlc_perc = str(self.mlc_value)
+                    mlc_perc = str("{:.2f}".format(self.mlc_value))
                 sectionId = int(self.section_id_name_dict[self.section_verify.get()])
                 qualix_status = 0
                 if helper.is_internet_available():
@@ -684,7 +684,7 @@ class MyTkApp(tk.Frame):
             self.results['quality_score'] = _flc_perc
             self.results['quality_score_by_weight'] = _flc_perc_by_weight
             
-            if _ini_wt_csv == -1 or _fin_wt_csv == -1:
+            if _ini_wt_csv == -1 or _fin_wt_csv == -1 or _ini_wt_csv < _fin_wt_csv:
                 self.results['initial_weight'] = 'n/a'
                 self.results['final_weight'] = 'n/a'
             else:
