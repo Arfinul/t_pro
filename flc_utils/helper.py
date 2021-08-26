@@ -79,6 +79,7 @@ def qualix_api(token, payload, sectionId, new_fields, moisture_percentage):
                    }
                 )
     response = requests.post(
+            #'http://70.37.95.226:7019/api/scan',
             'http://23.98.216.140:8085/api/scan',
             data=mp_encoder,
             headers={'Content-Type': mp_encoder.content_type,
