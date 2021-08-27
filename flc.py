@@ -18,14 +18,15 @@ from flc_utils import helper
 import logging
 import numpy as np
 
+os.chdir("/home/agnext/Documents/tragnext")
+
 logging.basicConfig(filename='server_logs.log',
                     filemode='a',
                     format='%(asctime)s - %(name)s - %(levelname)s - %(message)s',
                     level=logging.INFO)
 logger = logging.getLogger(("FLC"))
 
-configparser = configparser.RawConfigParser()   
-os.chdir("/home/agnext/Documents/tragnext")
+configparser = configparser.RawConfigParser()
 
 def cam_fresh():
     subprocess.Popen("python3 flc_utils/guvcview-config/cam_initialise.py", stdout= subprocess.PIPE, shell=True)
@@ -569,7 +570,7 @@ class MyTkApp(tk.Frame):
                 _1lb_perc = round(_1lb*100/totalCount, 2) - 8.6
                 _1lb_perc = round(_1lb*100/totalCount, 2) if _1lb_perc < 0 else _1lb_perc
                 
-                if round(_2lb*100/totalCount, 2) > 50 & round(_2lb*100/totalCount, 2) < 60:
+                if round(_2lb*100/totalCount, 2) > 50 & round(_2lb*100/totalCount, 2) < 60.0:
                     _2lb_perc = round(_2lb*100/totalCount, 2) - 28.50
                     _2lb_perc = round(_2lb*100/totalCount, 2) if _2lb_perc < 0 else _2lb_perc
                 elif round(_2lb*100/totalCount, 2) >= 60:
