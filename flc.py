@@ -556,10 +556,12 @@ class MyTkApp(tk.Frame):
     def send_data_api(self):
         try:
             if USE_INTERNET == "TRUE":
-                if self.mlc_value == -1:
+                if self.mlc_value == -1 or self.mlc_value == 0:
                     mlc_perc = 'n/a'
                 else:
                     mlc_perc = str("{:.2f}".format(self.mlc_value))
+                    self.mlc_value = -1
+
                 sectionId = int(self.section_id_name_dict[self.section_verify.get()])
                 qualix_status = 0
                 if helper.is_internet_available():
