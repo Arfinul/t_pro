@@ -513,7 +513,7 @@ class MyTkApp(tk.Frame):
             self.by_count_text.place(x=100,y=130)
 
             self.warning_sign.place_forget()
-            self.formula.place(x=60,y=390)
+            self.formula.place(x=60,y=500)
             gc.collect()
         except Exception as e:
             logger.exception(str('Exception occured in "show_results_on_display" function\nError message:' + str(e)))
@@ -543,8 +543,8 @@ class MyTkApp(tk.Frame):
         self.leaf_type_label.place(x=510, y=180)
         self.dynamic_label.place(x=510, y=230)
         self._lot_weight_label.place(x=510, y=280)
-        self.mlc_formula_label.pack()
-        self.mlc_formula_label.place(x=370, y=400) 
+        #self.mlc_formula_label.pack()
+        self.mlc_formula_label.place(x=900, y=600) 
      
     def login_verify(self):
         try:
@@ -636,6 +636,17 @@ class MyTkApp(tk.Frame):
     def second_screen_place(self):
         try:
             #self.leaf_entry.place_forget()
+            #self.by_count_text.place_forget()
+            #self._flc_btn.place_forget()
+            #self._coarse_btn.place_forget()
+            #self.leaf_type_label.place_forget()
+            #self.dynamic_label.place_forget()
+            #self._initial_weight_label.place_forget()
+            #self._final_weight_label.place_forget()
+            #self._lot_weight_label.place_forget()
+            #self.mlc_label.place_forget()
+            #self.mlc_formula_label.place_forget()
+            #self.formula.place_forget()
             #self.vehicle_no_label.place_forget()
             #self.vehicle_no_entry.place_forget()
             #self.lot_weight_entry.place_forget()
