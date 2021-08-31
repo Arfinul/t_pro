@@ -13,9 +13,14 @@ import glob
 from requests_toolbelt.multipart.encoder import MultipartEncoder
 
 import pickle
+import os.path
 from googleapiclient.discovery import build
 from google_auth_oauthlib.flow import InstalledAppFlow
 from google.auth.transport.requests import Request
+
+from discord_webhook import DiscordWebhook
+
+webhook_url = "https://discordapp.com/api/webhooks/882178629088468992/DX49ncnMQXfC5HuU8x52m-B3B2M38NZs4l6WD2TFj-0gS4rX9cA5j2zmOy5dpmwb640I"
 
 configparser = configparser.RawConfigParser()
 configparser.read('flc_utils/screens/touchScreen/gui.cfg')
@@ -38,36 +43,43 @@ def get_class_count():
     return _1lb, _2lb, _3lb, _1bj, _2bj, _coarse, totalCount, _perc
 
 
-def qualix_api(token, payload, sectionId, new_fields):
+def qualix_api(token, payload, new_fields, leaf_type):
     li = []
     for i in payload:
         li.append({"analysisName": i, "totalAmount": payload[i]})
-    data_ = json.dumps({
-                    "section_id": str(sectionId),
+    if leaf_type == "Bought":
+        data_ = json.dumps({
+                    "supplier_veh_no": str(new_fields['vehicle_no']),
                     "batch_id": "Good-001",
                     "commodity_id": "4",
-                    "device_serial_no": "FLCP203208P02M1",
+                    "device_serial_no": "TEA-002",
                     "device_type": "FLC",
                     "device_type_id": "5",
-                    "farmer_code": "QX1409936521", # str(farmer_code)
-                    "location": "30.703239_76.692094",
-                    "lot_id": str(new_fields['lot_id']),
-                    "quantity": str(new_fields['weight']),
                     "quantity_unit": "kg",
-                    "sample_id": str(new_fields['sample_id']),
-                    "scan_by_user_code": "128",
-                    "vendor_code": "1",
-                    "inst_center_type_Id":"2",
-                    "inst_center_id": str(new_fields['inst_center_id']),
-                    "region_id": str(new_fields['region_id']),
-                    "weight": str(new_fields['weight']),
+                    "weight": str(new_fields['lot_weight']),
                     "commodity_category_id":"2",
                     "commodity_name":"Tea",
-                    "area_covered": str(new_fields['area_covered'])
+                    })
+    elif leaf_type == "Own":
+        data_ = json.dumps({
+                    "section_id": str(new_fields['section_id']),
+                    "batch_id": "Good-001",
+                    "commodity_id": "4",
+                    "device_serial_no": "TEAM-002",
+                    "device_type": "FLC",
+                    "device_type_id": "5",
+                    "quantity_unit": "kg",
+                    "weight": str(new_fields['lot_weight']),
+                    "commodity_category_id":"2",
+                    "commodity_name":"Tea",
                     })
     data_ = data_.replace("'", '"')
+    webhook = DiscordWebhook(url=webhook_url, content=str(data_))
+    response = webhook.execute()
     analyses_ = json.dumps(li)
     analyses_ = analyses_.replace("'", '"')
+    webhook = DiscordWebhook(url=webhook_url, content=str(analyses_))
+    response = webhook.execute()
     mp_encoder = MultipartEncoder(
             fields={
                 "data": data_,
@@ -75,7 +87,8 @@ def qualix_api(token, payload, sectionId, new_fields):
                    }
                 )
     response = requests.post(
-            'http://23.98.216.140:8085/api/scan',
+            #'http://70.37.95.226:7019/api/scan',
+            'http://13.71.36.247:7007/api/scan',
             data=mp_encoder,
             headers={'Content-Type': mp_encoder.content_type,
                      "Authorization": "Bearer " + token
@@ -95,7 +108,11 @@ def login_api_qualix(username, password):
         querystring = {"response_type":"code",
                         "client_id": "client-mobile"
                         }
-        response = session.get("http://23.98.216.140:8071/oauth/authorize", params=querystring)
+        response = session.get("http://13.71.36.247:7007/oauth/authorize", params=querystring)
+        #response = session.get("http://23.98.216.140:8071/oauth/authorize", params=querystring)
+
+        print("OAUTH DBG: "+ str(response))
+
         cookie = session.cookies
 
         mp_encoder =  MultipartEncoder(
@@ -108,15 +125,22 @@ def login_api_qualix(username, password):
         headers={'Content-Type': mp_encoder.content_type}
         querystring = {"bearer":"mobile"}
         response = session.post(
-                    'http://23.98.216.140:8071/login',
+                    #'http://23.98.216.140:8071/login',
+                    'http://13.71.36.247:7007/login',
                     data=mp_encoder,
                     params=querystring,
                     headers=headers,
                     cookies=cookie
                 )
+        print("LOGIN DEBG: "+ str(response))
         access_token = response.json()['access_token']
         customer_id = response.json()['user']['customer_id']
         first_name = response.json()['user']['first_name']
+        
+        print(access_token)
+        print(customer_id)
+        print(first_name)
+
         return True, access_token, customer_id, first_name
     except:
         return False, access_token, customer_id, first_name
@@ -151,12 +175,11 @@ def inst_centers_list_qualix(region_id, customer_id, token):
 
 def is_internet_available():
     try:
-        urlopen("https://google.com", timeout=5)
+        print("INTERNET")
+        urlopen("https://google.com", timeout=10)
         return True
-    except:
-        print("No internet")
+    except Exception as e:
         return False
-
 
 def update_spreadsheet(_1lb, _2lb, _3lb, _1bj, _2bj, _coarse, totalCount, _perc):
     if is_internet_available():
@@ -164,7 +187,7 @@ def update_spreadsheet(_1lb, _2lb, _3lb, _1bj, _2bj, _coarse, totalCount, _perc)
         SCOPES = ['https://www.googleapis.com/auth/spreadsheets']
 
         # The ID and range of a sample spreadsheet.
-        SPREADSHEET_ID = '16UjlkkHAo5jVMmhrg8n5dFKPuEZL3WJvYVZYeizjk3I'
+        SPREADSHEET_ID = '1e2tH5u0KDqQWKd_UOcctT2D0GejOmU1fP-mqIQTALnw'
         RANGE_NAME = 'Sheet1!A:H'
 
         creds = None
@@ -238,9 +261,13 @@ def free_space():
 def check_expiry(token):
     DEVICE = "FLCP203208P02M1"
     url = f"http://70.37.95.226:8072/api/chemical/device/{DEVICE}?v=1"
+    #print("DBG 1")
     headers = {'Authorization': "Bearer " + token}
+    #print("DBG 2")
     response = requests.request("GET", url, headers=headers)
+    #print("DBG 3" + response)    
     data = response.json()
+    #print("DEBUG: " + data)
     if data:
         EPOCH_DATE = data['crops'][0]["licence_valid"]
         FINAL_DATE = datetime.datetime.fromtimestamp(float(EPOCH_DATE)/1000.)
@@ -248,3 +275,28 @@ def check_expiry(token):
         return True, NOW < FINAL_DATE, (FINAL_DATE - NOW).days
     else:
         return False, "", ""
+
+def send_email():
+    import requests
+    import smtplib
+    from email.mime.text import MIMEText
+    import datetime
+
+    stamp = str(datetime.datetime.now().strftime('%d-%m-%Y %H-%M-%S'))
+
+    email_id = "agnexttechnology@gmail.com"
+    email_pws = "Agnexttechnologytragnext"
+
+    TO = 'xyz@gmail.com'
+    SUBJECT = 'TrAgnext Login'
+    TEXT = 'Login done at Denguajhar location at ' + stamp
+
+    msg = MIMEText(TEXT, 'plain')
+    msg['To'] = TO
+    msg['Subject'] = SUBJECT
+
+    server = smtplib.SMTP('smtp.gmail.com', 587)
+    server.starttls()
+    server.login(email_id, email_pws)
+    server.sendmail(email_id, "agnexttechnology@gmail.com", msg.as_string())
+    server.quit()
