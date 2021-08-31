@@ -1,3 +1,5 @@
+# cython: language_level=3
+
 import tkinter as tk
 from tkinter import *
 from tkinter import messagebox
@@ -141,7 +143,7 @@ class MyTkApp(tk.Frame):
 
         self.header.place(x=int(configparser.get('gui-config', 'title_x')), y=int(configparser.get('gui-config', 'title_y')))
         self.panel.place(x=int(configparser.get('gui-config', 'login_image_x')), y=int(configparser.get('gui-config', 'login_image_y')))
-        self.footer.place(x=0, y=420)
+        self.footer.place(x=1, y=560)
 
         img_bg = ImageTk.PhotoImage(Image.open(configparser.get('gui-config', 'bg_image')))
         self.panel_bg.configure(image=img_bg)
@@ -261,6 +263,7 @@ class MyTkApp(tk.Frame):
     def end_video(self):
         try:
             print("END RECORD")
+            self.by_count_text.place_forget()
             self._flc_btn.place_forget()
             self._coarse_btn.place_forget()
             self.leaf_type_label.place_forget()
@@ -378,7 +381,7 @@ class MyTkApp(tk.Frame):
                     self.msg_sent.configure(text="Couldn't save to servers", fg="red")
 
             helper.free_space()
-
+            self.by_count_text.place_forget()
             self._flc_btn.place_forget()
             self._coarse_btn.place_forget()
             self._flc_btn_by_weight.place_forget()
@@ -475,8 +478,8 @@ class MyTkApp(tk.Frame):
             self.results['three_leaf_count'] = 0
             self.results['one_banjhi_count'] = 0
             self.results['total_count'] = totalCount
-            self.results['quality_score'] = _flc_perc
-            self.results['quality_score_by_weight'] = _flc_perc_by_weight
+            self.results['quality_score'] = "{:.2f}".format(_flc_perc)
+            self.results['quality_score_by_weight'] = "{:.2f}".format(_flc_perc_by_weight)
             
             
             if _ini_wt_csv == -1 or _fin_wt_csv == -1 or _ini_wt_csv < _fin_wt_csv:
@@ -486,8 +489,8 @@ class MyTkApp(tk.Frame):
                 self.results['initial_weight'] = str(_ini_wt_csv)
                 self.results['final_weight'] = str(_fin_wt_csv)
 
-            self.analysis_params['FLC'] = _flc_perc
-            self.analysis_params['Coarse'] = 100 - _flc_perc
+            self.analysis_params['FLC'] = "{:.2f}".format(_flc_perc)
+            self.analysis_params['Coarse'] = "{:.2f}".format(100 - _flc_perc)
            
             if _ini_wt_csv == -1 or _fin_wt_csv == -1 or _ini_wt_csv < _fin_wt_csv:
                 self.analysis_params['initial_weight'] = 'n/a'
@@ -556,10 +559,10 @@ class MyTkApp(tk.Frame):
                             if valid:
                                 if 0 < days < 3:
                                     self.warning_sign.configure(text=f"License - {days} days left", fg="red")
-                                    self.warning_sign.place(x=10, y=390)
+                                    self.warning_sign.place(x=1, y=520)
                                 else:
                                     self.warning_sign.configure(text=f"License - {days} days left", fg="green")
-                                    self.warning_sign.place(x=10, y=390)
+                                    self.warning_sign.place(x=1, y=520)
                                 self.login_success()
                               
                                 self.welcome_text.configure(text="Welcome, " + name.title())
@@ -626,7 +629,7 @@ class MyTkApp(tk.Frame):
             self.place_inputs()
             self.display_all_options()
 
-            self.poweroff.place(x=750, y=80)
+            self.poweroff.place(x=960, y=80)
         except Exception as e:
             logger.exception(str('Exception occured in "enter_details" function\nError message:' + str(e)))
 
@@ -675,7 +678,7 @@ class MyTkApp(tk.Frame):
             self.vehicle_no_entry.insert(1, vehicle_no)
 
             self.nextBtn.place(x=350,y=330)  
-            self.poweroff.place(x=750, y=80)  
+            self.poweroff.place(x=960, y=80)  
         except Exception as e:
             logger.exception(str('Exception occured in "second_screen_place" function\nError message:' + str(e)))    
 
@@ -775,6 +778,7 @@ class MyTkApp(tk.Frame):
 
 def launchApp():
     window = tk.Tk()
+    window.attributes('-fullscreen',True)
     MyTkApp(window)
     tk.mainloop()
 
