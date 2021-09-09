@@ -239,9 +239,9 @@ class MyTkApp(tk.Frame):
 
         self.nextBtn = tk.Button(self.window, text="Next", command=self.main_screen, fg="white", bg="#F37C62", width=12,height=2, font=('times', 16, 'bold'))
         # Weight Integration labels
-        self.initial_weight = -1
-        self.final_weight = -1
-        self.mlc_value = -1
+        self.initial_weight = 0
+        self.final_weight = 0
+        self.mlc_value = 0
 
         self.wait_till_mlc = tk.IntVar()
         
@@ -556,11 +556,11 @@ class MyTkApp(tk.Frame):
     def send_data_api(self):
         try:
             if USE_INTERNET == "TRUE":
-                if self.mlc_value == -1 or self.mlc_value == 0:
+                if self.mlc_value == 0:
                     mlc_perc = 'n/a'
                 else:
                     mlc_perc = str("{:.2f}".format(self.mlc_value))
-                    self.mlc_value = -1
+                    self.mlc_value = 0
 
                 sectionId = int(self.section_id_name_dict[self.section_verify.get()])
                 qualix_status = 0
@@ -686,7 +686,7 @@ class MyTkApp(tk.Frame):
             self.results['quality_score'] = _flc_perc
             self.results['quality_score_by_weight'] = _flc_perc_by_weight
             
-            if _ini_wt_csv == -1 or _fin_wt_csv == -1 or _ini_wt_csv < _fin_wt_csv:
+            if _ini_wt_csv == 0 or _fin_wt_csv == 0 or _ini_wt_csv < _fin_wt_csv:
                 self.results['initial_weight'] = 'n/a'
                 self.results['final_weight'] = 'n/a'
             else:
