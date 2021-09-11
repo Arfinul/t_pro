@@ -570,7 +570,7 @@ class MyTkApp(tk.Frame):
                 _1lb_perc = round(_1lb*100/totalCount, 2) - 8.6
                 _1lb_perc = round(_1lb*100/totalCount, 2) if _1lb_perc < 0 else _1lb_perc
                 
-                if round(_2lb*100/totalCount, 2) > 50 & round(_2lb*100/totalCount, 2) < 60.0:
+                if round(_2lb*100/totalCount, 2) > 50 and round(_2lb*100/totalCount, 2) < 60.0:
                     _2lb_perc = round(_2lb*100/totalCount, 2) - 28.50
                     _2lb_perc = round(_2lb*100/totalCount, 2) if _2lb_perc < 0 else _2lb_perc
                 elif round(_2lb*100/totalCount, 2) >= 60:
