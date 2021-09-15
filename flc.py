@@ -23,17 +23,14 @@ import serial
 import time
 import re
 
+configparser = configparser.RawConfigParser()   
+os.chdir("/home/agnext/Documents/tragnext")
+
 logging.basicConfig(filename='server_logs.log',
                     filemode='a',
                     format='%(asctime)s - %(name)s - %(levelname)s - %(message)s',
                     level=logging.INFO)
 logger = logging.getLogger(("FLC"))
-
-configparser = configparser.RawConfigParser()   
-os.chdir("/home/agnext/Documents/tragnext")
-#HOME = os.environ["HOME"]
-#DIR_PATH = os.path.join(HOME, "Documents", "tragnext")
-#os.chdir(DIR_PATH)
 
 def cam_fresh():
     subprocess.Popen("python3 flc_utils/guvcview-config/cam_initialise.py", stdout= subprocess.PIPE, shell=True)
