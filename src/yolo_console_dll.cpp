@@ -15,6 +15,7 @@
 #include <sstream>      // Agnext video timestamp
 
 
+#include <opencv2/videoio/videoio_c.h>
 
 // It makes sense only for video-Camera (not for video-File)
 // To use - uncomment the following line. Optical-flow is supported only by OpenCV 3.x - 4.x
@@ -459,7 +460,16 @@ int main(int argc, char *argv[])
     std::string  cfg_file = "cfg/yolov3.cfg";
     std::string  weights_file = "yolov3.weights";
     std::string filename;
+    
+    int capture_width = 640 ;
+    int capture_height = 480 ;
+    int display_width = 640 ;
+    int display_height = 480 ;
+    int framerate = 120 ;
+    int flip_method = 0 ;
 
+    //std::string gst_pipeline = "v4l2src ! video/x-raw(memory:NVMM), width=(int)" + std::to_string(capture_width) + ", height=(int)" + std::to_string(capture_height) + ", format=(string)YUV2, framerate=(fraction)" + std::to_string(framerate) + "/1 ! videoconvert !appsink";
+   //  std::string gst_pipeline = "nvarguscamerasrc ! video/x-raw, format=(fourcc)UYVY, width=(int)640, height=(int)480, framerate=(fraction)60/1 ! videoconvert ! appsink";
     auto t_start = std::chrono::high_resolution_clock::now(); // Agnext TIMER
 
     if (argc > 4) {    //voc.names yolo-voc.cfg yolo-voc.weights test.mp4
@@ -550,11 +560,22 @@ int main(int argc, char *argv[])
                 }
 #endif  // ZED_STEREO
 
-                cv::VideoCapture cap;
+                cv::VideoCapture cap(0);//(gst_pipeline);
                 if (filename == "web_camera") {
-                    cap.open(0);
-                    cap >> cur_frame;
-                } else if (!use_zed_camera) {
+                    if(!cap.isOpened()) {
+			std::cout<<"Failed to open camera."<<std::endl;
+			return (-1);
+		    }
+		    //cap.open(0);
+		    //cap >> cur_frame;
+		    //cap.set(cv::CAP_PROP_FOURCC, cv::VideoWriter::fourcc('U','Y','V','Y'));
+		    //cap.set(CV_CAP_PROP_FOURCC, CV_FOURCC('M', 'J', 'P', 'G'));
+		    cap.set(cv::CAP_PROP_FRAME_WIDTH,640);
+		    cap.set(cv::CAP_PROP_FRAME_HEIGHT,480);
+		    //cap.set(cv::CAP_PROP_CONVERT_RGB , false); 
+		    cap.set(cv::CAP_PROP_FPS, 120);
+		    cap >> cur_frame;
+		} else if (!use_zed_camera) {
                     cap.open(filename);
                     cap >> cur_frame;
                 }
@@ -579,8 +600,10 @@ int main(int argc, char *argv[])
                     output_video.open(out_videofile, CV_FOURCC('D', 'I', 'V', 'X'), std::max(1, video_fps), frame_size, true);  // Agnext
 #else
                     // output_video.open(out_videofile, cv::VideoWriter::fourcc('D', 'I', 'V', 'X'), std::max(35, video_fps), frame_size, true);
-                output_video.open(out_videofile, cv::VideoWriter::fourcc('D', 'I', 'V', 'X'), std::max(1, video_fps), frame_size, true);  // AgNext
-#endif
+               output_video.open(out_videofile, cv::VideoWriter::fourcc('D', 'I', 'V', 'X'), std::max(1, video_fps), frame_size, true);  // AgNext
+		//output_video.open(out_videofile, cv::VideoWriter::fourcc('U', 'Y', 'V', 'Y'), std::max(120, video_fps), frame_size, true);  // AgNext
+
+#endif	
 
                 const bool sync = detection_sync; // sync data exchange
                 send_one_replaceable_object_t<detection_data_t> cap2prepare(sync), cap2draw(sync),
@@ -1018,3 +1041,5 @@ int main(int argc, char *argv[])
 
     return 0;
 }
+
+

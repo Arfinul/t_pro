@@ -195,7 +195,7 @@ class MyTkApp(tk.Frame):
         self.wait_till_mlc = tk.IntVar()
         
         self.measure_weight = tk.Button(self.window, text="Measure Initial Weight", command=self.get_initial_weight, fg="white", bg="#539051", font=('times', 16, 'bold'))
-        #self.measure_final_weight = tk.Button(self.window, text="Measure Final Weight", command=lambda:[self.get_final_weight(), self.wait_till_mlc.set(1)], fg="white", bg="#539051", font=('times', 16, 'bold'))
+        self.measure_final_weight = tk.Button(self.window, text="Measure Final Weight", command=lambda:[self.get_final_weight(), self.wait_till_mlc.set(1)], fg="white", bg="#539051", font=('times', 16, 'bold'))
 
     def restart(self):
         if messagebox.askokcancel("Quit", "Do you really want to restart the system?"):
@@ -252,7 +252,7 @@ class MyTkApp(tk.Frame):
             p = subprocess.Popen("exec " + command, stdout= subprocess.PIPE, shell=True)
             p.wait()
             os.rename("flc_utils/trainVideo/testing/result.avi", "flc_utils/trainVideo/testing/" + datetime.datetime.now().strftime("%d-%m-%Y %H:%M:%S") + "_" + str(self.customer_id) + ".avi")
-            self.moisture_loss_count()
+            #self.moisture_loss_count()
             self.show_results_on_display()
             self.endRecord.place(x=int(configparser.get('gui-config', 'endrecord_btn_x')), y=int(configparser.get('gui-config', 'endrecord_btn_y')))
         except Exception as e:
