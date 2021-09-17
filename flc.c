@@ -1889,7 +1889,7 @@ static const char __pyx_k_MyTkApp_do_nothing[] = "MyTkApp.do_nothing";
 static const char __pyx_k_MyTkApp_load_graph[] = "MyTkApp.load_graph";
 static const char __pyx_k_MyTkApp_on_closing[] = "MyTkApp.on_closing";
 static const char __pyx_k_cline_in_traceback[] = "cline_in_traceback";
-static const char __pyx_k_final_weight_label[] = "_final_weight_label";
+static const char __pyx_k_final_weight_label[] = "final_weight_label";
 static const char __pyx_k_flc_perc_by_weight[] = "_flc_perc_by_weight";
 static const char __pyx_k_get_initial_weight[] = "get_initial_weight";
 static const char __pyx_k_lot_weight_label_2[] = "_lot_weight_label";
@@ -1912,8 +1912,7 @@ static const char __pyx_k_MyTkApp_place_inputs[] = "MyTkApp.place_inputs";
 static const char __pyx_k_MyTkApp_show_options[] = "MyTkApp.show_options";
 static const char __pyx_k_coarse_btn_by_weight[] = "_coarse_btn_by_weight";
 static const char __pyx_k_exec_killall_onboard[] = "exec killall onboard";
-static const char __pyx_k_final_weight_label_2[] = "final_weight_label";
-static const char __pyx_k_initial_weight_label[] = "_initial_weight_label";
+static const char __pyx_k_initial_weight_label[] = "initial_weight_label";
 static const char __pyx_k_measure_final_weight[] = "measure_final_weight";
 static const char __pyx_k_password_login_entry[] = "password_login_entry";
 static const char __pyx_k_second_screen_forget[] = "second_screen_forget";
@@ -1935,7 +1934,6 @@ static const char __pyx_k_Measure_Initial_Weight[] = "Measure Initial Weight";
 static const char __pyx_k_MyTkApp_details_verify[] = "MyTkApp.details_verify";
 static const char __pyx_k_MyTkApp_popup_keyboard[] = "MyTkApp.popup_keyboard";
 static const char __pyx_k_MyTkApp_show_error_msg[] = "MyTkApp.show_error_msg";
-static const char __pyx_k_initial_weight_label_2[] = "initial_weight_label";
 static const char __pyx_k_Please_fill_all_details[] = "Please fill all details.";
 static const char __pyx_k_Please_select_leaf_type[] = "Please select leaf type";
 static const char __pyx_k_details_entered_success[] = "details_entered_success";
@@ -2273,7 +2271,6 @@ static PyObject *__pyx_n_s_fin_wt_csv;
 static PyObject *__pyx_n_s_final_weight;
 static PyObject *__pyx_n_u_final_weight;
 static PyObject *__pyx_n_s_final_weight_label;
-static PyObject *__pyx_n_s_final_weight_label_2;
 static PyObject *__pyx_n_s_flc;
 static PyObject *__pyx_n_u_flc;
 static PyObject *__pyx_n_s_flc_2;
@@ -2328,7 +2325,6 @@ static PyObject *__pyx_n_s_init;
 static PyObject *__pyx_n_s_initial_weight;
 static PyObject *__pyx_n_u_initial_weight;
 static PyObject *__pyx_n_s_initial_weight_label;
-static PyObject *__pyx_n_s_initial_weight_label_2;
 static PyObject *__pyx_n_s_insert;
 static PyObject *__pyx_n_u_internet;
 static PyObject *__pyx_n_s_is_internet_available;
@@ -8802,7 +8798,7 @@ static PyObject *__pyx_pf_3flc_7MyTkApp_16end_video(CYTHON_UNUSED PyObject *__py
  *             self._coarse_btn.place_forget()
  *             self.leaf_type_label.place_forget()             # <<<<<<<<<<<<<<
  *             self.dynamic_label.place_forget()
- *             self._initial_weight_label.place_forget()
+ *        #     self._initial_weight_label.place_forget()
  */
       __pyx_t_6 = __Pyx_PyObject_GetAttrStr(__pyx_v_self, __pyx_n_s_leaf_type_label); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 269, __pyx_L3_error)
       __Pyx_GOTREF(__pyx_t_6);
@@ -8830,8 +8826,8 @@ static PyObject *__pyx_pf_3flc_7MyTkApp_16end_video(CYTHON_UNUSED PyObject *__py
  *             self._coarse_btn.place_forget()
  *             self.leaf_type_label.place_forget()
  *             self.dynamic_label.place_forget()             # <<<<<<<<<<<<<<
- *             self._initial_weight_label.place_forget()
- *             self._final_weight_label.place_forget()
+ *        #     self._initial_weight_label.place_forget()
+ *         #    self._final_weight_label.place_forget()
  */
       __pyx_t_5 = __Pyx_PyObject_GetAttrStr(__pyx_v_self, __pyx_n_s_dynamic_label); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 270, __pyx_L3_error)
       __Pyx_GOTREF(__pyx_t_5);
@@ -8855,67 +8851,9 @@ static PyObject *__pyx_pf_3flc_7MyTkApp_16end_video(CYTHON_UNUSED PyObject *__py
       __Pyx_DECREF(__pyx_t_6); __pyx_t_6 = 0;
       __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
 
-      /* "flc.py":271
- *             self.leaf_type_label.place_forget()
- *             self.dynamic_label.place_forget()
- *             self._initial_weight_label.place_forget()             # <<<<<<<<<<<<<<
- *             self._final_weight_label.place_forget()
- *             self._lot_weight_label.place_forget()
- */
-      __pyx_t_6 = __Pyx_PyObject_GetAttrStr(__pyx_v_self, __pyx_n_s_initial_weight_label); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 271, __pyx_L3_error)
-      __Pyx_GOTREF(__pyx_t_6);
-      __pyx_t_5 = __Pyx_PyObject_GetAttrStr(__pyx_t_6, __pyx_n_s_place_forget); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 271, __pyx_L3_error)
-      __Pyx_GOTREF(__pyx_t_5);
-      __Pyx_DECREF(__pyx_t_6); __pyx_t_6 = 0;
-      __pyx_t_6 = NULL;
-      if (CYTHON_UNPACK_METHODS && likely(PyMethod_Check(__pyx_t_5))) {
-        __pyx_t_6 = PyMethod_GET_SELF(__pyx_t_5);
-        if (likely(__pyx_t_6)) {
-          PyObject* function = PyMethod_GET_FUNCTION(__pyx_t_5);
-          __Pyx_INCREF(__pyx_t_6);
-          __Pyx_INCREF(function);
-          __Pyx_DECREF_SET(__pyx_t_5, function);
-        }
-      }
-      __pyx_t_4 = (__pyx_t_6) ? __Pyx_PyObject_CallOneArg(__pyx_t_5, __pyx_t_6) : __Pyx_PyObject_CallNoArg(__pyx_t_5);
-      __Pyx_XDECREF(__pyx_t_6); __pyx_t_6 = 0;
-      if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 271, __pyx_L3_error)
-      __Pyx_GOTREF(__pyx_t_4);
-      __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
-      __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
-
-      /* "flc.py":272
- *             self.dynamic_label.place_forget()
- *             self._initial_weight_label.place_forget()
- *             self._final_weight_label.place_forget()             # <<<<<<<<<<<<<<
- *             self._lot_weight_label.place_forget()
- *             self.mlc_label.place_forget()
- */
-      __pyx_t_5 = __Pyx_PyObject_GetAttrStr(__pyx_v_self, __pyx_n_s_final_weight_label); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 272, __pyx_L3_error)
-      __Pyx_GOTREF(__pyx_t_5);
-      __pyx_t_6 = __Pyx_PyObject_GetAttrStr(__pyx_t_5, __pyx_n_s_place_forget); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 272, __pyx_L3_error)
-      __Pyx_GOTREF(__pyx_t_6);
-      __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
-      __pyx_t_5 = NULL;
-      if (CYTHON_UNPACK_METHODS && likely(PyMethod_Check(__pyx_t_6))) {
-        __pyx_t_5 = PyMethod_GET_SELF(__pyx_t_6);
-        if (likely(__pyx_t_5)) {
-          PyObject* function = PyMethod_GET_FUNCTION(__pyx_t_6);
-          __Pyx_INCREF(__pyx_t_5);
-          __Pyx_INCREF(function);
-          __Pyx_DECREF_SET(__pyx_t_6, function);
-        }
-      }
-      __pyx_t_4 = (__pyx_t_5) ? __Pyx_PyObject_CallOneArg(__pyx_t_6, __pyx_t_5) : __Pyx_PyObject_CallNoArg(__pyx_t_6);
-      __Pyx_XDECREF(__pyx_t_5); __pyx_t_5 = 0;
-      if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 272, __pyx_L3_error)
-      __Pyx_GOTREF(__pyx_t_4);
-      __Pyx_DECREF(__pyx_t_6); __pyx_t_6 = 0;
-      __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
-
       /* "flc.py":273
- *             self._initial_weight_label.place_forget()
- *             self._final_weight_label.place_forget()
+ *        #     self._initial_weight_label.place_forget()
+ *         #    self._final_weight_label.place_forget()
  *             self._lot_weight_label.place_forget()             # <<<<<<<<<<<<<<
  *             self.mlc_label.place_forget()
  *             self.mlc_formula_label.place_forget()
@@ -8943,7 +8881,7 @@ static PyObject *__pyx_pf_3flc_7MyTkApp_16end_video(CYTHON_UNUSED PyObject *__py
       __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
 
       /* "flc.py":274
- *             self._final_weight_label.place_forget()
+ *         #    self._final_weight_label.place_forget()
  *             self._lot_weight_label.place_forget()
  *             self.mlc_label.place_forget()             # <<<<<<<<<<<<<<
  *             self.mlc_formula_label.place_forget()
@@ -13208,7 +13146,7 @@ static PyObject *__pyx_pf_3flc_7MyTkApp_42send_data_api(CYTHON_UNUSED PyObject *
  *             self.mlc_formula_label.place_forget()
  *             self.initial_weight_label.place_forget()
  */
-      __pyx_t_12 = __Pyx_PyObject_GetAttrStr(__pyx_v_self, __pyx_n_s_final_weight_label_2); if (unlikely(!__pyx_t_12)) __PYX_ERR(0, 391, __pyx_L3_error)
+      __pyx_t_12 = __Pyx_PyObject_GetAttrStr(__pyx_v_self, __pyx_n_s_final_weight_label); if (unlikely(!__pyx_t_12)) __PYX_ERR(0, 391, __pyx_L3_error)
       __Pyx_GOTREF(__pyx_t_12);
       __pyx_t_16 = __Pyx_PyObject_GetAttrStr(__pyx_t_12, __pyx_n_s_place_forget); if (unlikely(!__pyx_t_16)) __PYX_ERR(0, 391, __pyx_L3_error)
       __Pyx_GOTREF(__pyx_t_16);
@@ -13266,7 +13204,7 @@ static PyObject *__pyx_pf_3flc_7MyTkApp_42send_data_api(CYTHON_UNUSED PyObject *
  *             helper.update_graph()
  *         except Exception as e:
  */
-      __pyx_t_12 = __Pyx_PyObject_GetAttrStr(__pyx_v_self, __pyx_n_s_initial_weight_label_2); if (unlikely(!__pyx_t_12)) __PYX_ERR(0, 393, __pyx_L3_error)
+      __pyx_t_12 = __Pyx_PyObject_GetAttrStr(__pyx_v_self, __pyx_n_s_initial_weight_label); if (unlikely(!__pyx_t_12)) __PYX_ERR(0, 393, __pyx_L3_error)
       __Pyx_GOTREF(__pyx_t_12);
       __pyx_t_16 = __Pyx_PyObject_GetAttrStr(__pyx_t_12, __pyx_n_s_place_forget); if (unlikely(!__pyx_t_16)) __PYX_ERR(0, 393, __pyx_L3_error)
       __Pyx_GOTREF(__pyx_t_16);
@@ -24155,7 +24093,6 @@ static __Pyx_StringTabEntry __pyx_string_tab[] = {
   {&__pyx_n_s_final_weight, __pyx_k_final_weight, sizeof(__pyx_k_final_weight), 0, 0, 1, 1},
   {&__pyx_n_u_final_weight, __pyx_k_final_weight, sizeof(__pyx_k_final_weight), 0, 1, 0, 1},
   {&__pyx_n_s_final_weight_label, __pyx_k_final_weight_label, sizeof(__pyx_k_final_weight_label), 0, 0, 1, 1},
-  {&__pyx_n_s_final_weight_label_2, __pyx_k_final_weight_label_2, sizeof(__pyx_k_final_weight_label_2), 0, 0, 1, 1},
   {&__pyx_n_s_flc, __pyx_k_flc, sizeof(__pyx_k_flc), 0, 0, 1, 1},
   {&__pyx_n_u_flc, __pyx_k_flc, sizeof(__pyx_k_flc), 0, 1, 0, 1},
   {&__pyx_n_s_flc_2, __pyx_k_flc_2, sizeof(__pyx_k_flc_2), 0, 0, 1, 1},
@@ -24210,7 +24147,6 @@ static __Pyx_StringTabEntry __pyx_string_tab[] = {
   {&__pyx_n_s_initial_weight, __pyx_k_initial_weight, sizeof(__pyx_k_initial_weight), 0, 0, 1, 1},
   {&__pyx_n_u_initial_weight, __pyx_k_initial_weight, sizeof(__pyx_k_initial_weight), 0, 1, 0, 1},
   {&__pyx_n_s_initial_weight_label, __pyx_k_initial_weight_label, sizeof(__pyx_k_initial_weight_label), 0, 0, 1, 1},
-  {&__pyx_n_s_initial_weight_label_2, __pyx_k_initial_weight_label_2, sizeof(__pyx_k_initial_weight_label_2), 0, 0, 1, 1},
   {&__pyx_n_s_insert, __pyx_k_insert, sizeof(__pyx_k_insert), 0, 0, 1, 1},
   {&__pyx_n_u_internet, __pyx_k_internet, sizeof(__pyx_k_internet), 0, 1, 0, 1},
   {&__pyx_n_s_is_internet_available, __pyx_k_is_internet_available, sizeof(__pyx_k_is_internet_available), 0, 0, 1, 1},
