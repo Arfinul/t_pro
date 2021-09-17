@@ -23,6 +23,8 @@ import serial
 import time
 import re
 
+os.chdir("/home/agnext/Documents/tragnext")
+
 logging.basicConfig(filename='server_logs.log',
                     filemode='a',
                     format='%(asctime)s - %(name)s - %(levelname)s - %(message)s',
@@ -30,7 +32,7 @@ logging.basicConfig(filename='server_logs.log',
 logger = logging.getLogger(("FLC"))
 
 configparser = configparser.RawConfigParser()   
-os.chdir("/home/agnext/Documents/tragnext")
+
 #HOME = os.environ["HOME"]
 #DIR_PATH = os.path.join(HOME, "Documents", "tragnext")
 #os.chdir(DIR_PATH)
@@ -385,12 +387,12 @@ class MyTkApp(tk.Frame):
             self._flc_btn.place_forget()
             self._coarse_btn.place_forget()
             #self._flc_btn_by_weight.place_forget()
-            self._coarse_btn_by_weight.place_forget()
+            #self._coarse_btn_by_weight.place_forget()
             self.by_count_text.place_forget()
             self.mlc_label.place_forget()
-            self.final_weight_label.place_forget()
+            #self.final_weight_label.place_forget()
             self.mlc_formula_label.place_forget()
-            self.initial_weight_label.place_forget()
+            #self.initial_weight_label.place_forget()
             helper.update_graph()
         except Exception as e:
             logger.exception(str('Exception occured in "send_data_api" function\nError message:' + str(e)))

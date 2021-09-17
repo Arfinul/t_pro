@@ -282,7 +282,7 @@ def free_space():
         rest_files_names = glob.glob("flc_utils/trainVideo/testing/*.avi")
         if len(rest_files_names) > 0:
             rest_files_names.sort()
-            delete_files = rest_files_names[:-10]
+            delete_files = rest_files_names
             for i in delete_files:
                 os.remove(i)
 
