@@ -2615,8 +2615,10 @@ static PyObject *__pyx_int_4;
 static PyObject *__pyx_int_5;
 static PyObject *__pyx_int_6;
 static PyObject *__pyx_int_7;
+static PyObject *__pyx_int_8;
 static PyObject *__pyx_int_10;
 static PyObject *__pyx_int_12;
+static PyObject *__pyx_int_13;
 static PyObject *__pyx_int_14;
 static PyObject *__pyx_int_15;
 static PyObject *__pyx_int_16;
@@ -13847,7 +13849,7 @@ static PyObject *__pyx_pf_3flc_7MyTkApp_46show_results_on_display(CYTHON_UNUSED 
  *                     _2bj_perc = round(_2bj*100/totalCount, 2)
  *                     totalCount = int(totalCount * 1.6)             # <<<<<<<<<<<<<<
  *                 elif leaf == "Bought":
- *                     _1lb_perc = round(_1lb*100/totalCount, 2) - 4
+ *                     _1lb_perc = round(_1lb*100/totalCount, 2) - 8
  */
           __pyx_t_11 = PyNumber_Multiply(__pyx_v_totalCount, __pyx_float_1_6); if (unlikely(!__pyx_t_11)) __PYX_ERR(0, 419, __pyx_L3_error)
           __Pyx_GOTREF(__pyx_t_11);
@@ -13871,7 +13873,7 @@ static PyObject *__pyx_pf_3flc_7MyTkApp_46show_results_on_display(CYTHON_UNUSED 
  *                     _2bj_perc = round(_2bj*100/totalCount, 2)
  *                     totalCount = int(totalCount * 1.6)
  *                 elif leaf == "Bought":             # <<<<<<<<<<<<<<
- *                     _1lb_perc = round(_1lb*100/totalCount, 2) - 4
+ *                     _1lb_perc = round(_1lb*100/totalCount, 2) - 8
  *                     _2lb_perc = round(_2lb*100/totalCount, 2) - 5
  */
         __pyx_t_15 = (__Pyx_PyUnicode_Equals(__pyx_v_leaf, __pyx_n_u_Bought, Py_EQ)); if (unlikely(__pyx_t_15 < 0)) __PYX_ERR(0, 420, __pyx_L3_error)
@@ -13880,7 +13882,7 @@ static PyObject *__pyx_pf_3flc_7MyTkApp_46show_results_on_display(CYTHON_UNUSED 
           /* "flc.py":421
  *                     totalCount = int(totalCount * 1.6)
  *                 elif leaf == "Bought":
- *                     _1lb_perc = round(_1lb*100/totalCount, 2) - 4             # <<<<<<<<<<<<<<
+ *                     _1lb_perc = round(_1lb*100/totalCount, 2) - 8             # <<<<<<<<<<<<<<
  *                     _2lb_perc = round(_2lb*100/totalCount, 2) - 5
  *                     _3lb_perc = round(_3lb*100/totalCount, 2) - 4
  */
@@ -13900,7 +13902,7 @@ static PyObject *__pyx_pf_3flc_7MyTkApp_46show_results_on_display(CYTHON_UNUSED 
           __pyx_t_11 = __Pyx_PyObject_Call(__pyx_builtin_round, __pyx_t_4, NULL); if (unlikely(!__pyx_t_11)) __PYX_ERR(0, 421, __pyx_L3_error)
           __Pyx_GOTREF(__pyx_t_11);
           __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
-          __pyx_t_4 = __Pyx_PyInt_SubtractObjC(__pyx_t_11, __pyx_int_4, 4, 0, 0); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 421, __pyx_L3_error)
+          __pyx_t_4 = __Pyx_PyInt_SubtractObjC(__pyx_t_11, __pyx_int_8, 8, 0, 0); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 421, __pyx_L3_error)
           __Pyx_GOTREF(__pyx_t_4);
           __Pyx_DECREF(__pyx_t_11); __pyx_t_11 = 0;
           __pyx_v__1lb_perc = __pyx_t_4;
@@ -13908,10 +13910,10 @@ static PyObject *__pyx_pf_3flc_7MyTkApp_46show_results_on_display(CYTHON_UNUSED 
 
           /* "flc.py":422
  *                 elif leaf == "Bought":
- *                     _1lb_perc = round(_1lb*100/totalCount, 2) - 4
+ *                     _1lb_perc = round(_1lb*100/totalCount, 2) - 8
  *                     _2lb_perc = round(_2lb*100/totalCount, 2) - 5             # <<<<<<<<<<<<<<
  *                     _3lb_perc = round(_3lb*100/totalCount, 2) - 4
- *                     _1bj_perc = round(_1bj*100/totalCount, 2) - 10
+ *                     _1bj_perc = round(_1bj*100/totalCount, 2) - 13
  */
           __pyx_t_4 = PyNumber_Multiply(__pyx_v__2lb, __pyx_int_100); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 422, __pyx_L3_error)
           __Pyx_GOTREF(__pyx_t_4);
@@ -13936,10 +13938,10 @@ static PyObject *__pyx_pf_3flc_7MyTkApp_46show_results_on_display(CYTHON_UNUSED 
           __pyx_t_4 = 0;
 
           /* "flc.py":423
- *                     _1lb_perc = round(_1lb*100/totalCount, 2) - 4
+ *                     _1lb_perc = round(_1lb*100/totalCount, 2) - 8
  *                     _2lb_perc = round(_2lb*100/totalCount, 2) - 5
  *                     _3lb_perc = round(_3lb*100/totalCount, 2) - 4             # <<<<<<<<<<<<<<
- *                     _1bj_perc = round(_1bj*100/totalCount, 2) - 10
+ *                     _1bj_perc = round(_1bj*100/totalCount, 2) - 13
  *                     _2bj_perc = round(_2bj*100/totalCount, 2)
  */
           __pyx_t_4 = PyNumber_Multiply(__pyx_v__3lb, __pyx_int_100); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 423, __pyx_L3_error)
@@ -13967,7 +13969,7 @@ static PyObject *__pyx_pf_3flc_7MyTkApp_46show_results_on_display(CYTHON_UNUSED 
           /* "flc.py":424
  *                     _2lb_perc = round(_2lb*100/totalCount, 2) - 5
  *                     _3lb_perc = round(_3lb*100/totalCount, 2) - 4
- *                     _1bj_perc = round(_1bj*100/totalCount, 2) - 10             # <<<<<<<<<<<<<<
+ *                     _1bj_perc = round(_1bj*100/totalCount, 2) - 13             # <<<<<<<<<<<<<<
  *                     _2bj_perc = round(_2bj*100/totalCount, 2)
  *                     totalCount = int(totalCount * 0.80)
  */
@@ -13987,7 +13989,7 @@ static PyObject *__pyx_pf_3flc_7MyTkApp_46show_results_on_display(CYTHON_UNUSED 
           __pyx_t_11 = __Pyx_PyObject_Call(__pyx_builtin_round, __pyx_t_4, NULL); if (unlikely(!__pyx_t_11)) __PYX_ERR(0, 424, __pyx_L3_error)
           __Pyx_GOTREF(__pyx_t_11);
           __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
-          __pyx_t_4 = __Pyx_PyInt_SubtractObjC(__pyx_t_11, __pyx_int_10, 10, 0, 0); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 424, __pyx_L3_error)
+          __pyx_t_4 = __Pyx_PyInt_SubtractObjC(__pyx_t_11, __pyx_int_13, 13, 0, 0); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 424, __pyx_L3_error)
           __Pyx_GOTREF(__pyx_t_4);
           __Pyx_DECREF(__pyx_t_11); __pyx_t_11 = 0;
           __pyx_v__1bj_perc = __pyx_t_4;
@@ -13995,7 +13997,7 @@ static PyObject *__pyx_pf_3flc_7MyTkApp_46show_results_on_display(CYTHON_UNUSED 
 
           /* "flc.py":425
  *                     _3lb_perc = round(_3lb*100/totalCount, 2) - 4
- *                     _1bj_perc = round(_1bj*100/totalCount, 2) - 10
+ *                     _1bj_perc = round(_1bj*100/totalCount, 2) - 13
  *                     _2bj_perc = round(_2bj*100/totalCount, 2)             # <<<<<<<<<<<<<<
  *                     totalCount = int(totalCount * 0.80)
  * 
@@ -14020,7 +14022,7 @@ static PyObject *__pyx_pf_3flc_7MyTkApp_46show_results_on_display(CYTHON_UNUSED 
           __pyx_t_11 = 0;
 
           /* "flc.py":426
- *                     _1bj_perc = round(_1bj*100/totalCount, 2) - 10
+ *                     _1bj_perc = round(_1bj*100/totalCount, 2) - 13
  *                     _2bj_perc = round(_2bj*100/totalCount, 2)
  *                     totalCount = int(totalCount * 0.80)             # <<<<<<<<<<<<<<
  * 
@@ -14038,7 +14040,7 @@ static PyObject *__pyx_pf_3flc_7MyTkApp_46show_results_on_display(CYTHON_UNUSED 
  *                     _2bj_perc = round(_2bj*100/totalCount, 2)
  *                     totalCount = int(totalCount * 1.6)
  *                 elif leaf == "Bought":             # <<<<<<<<<<<<<<
- *                     _1lb_perc = round(_1lb*100/totalCount, 2) - 4
+ *                     _1lb_perc = round(_1lb*100/totalCount, 2) - 8
  *                     _2lb_perc = round(_2lb*100/totalCount, 2) - 5
  */
         }
@@ -25414,8 +25416,10 @@ static CYTHON_SMALL_CODE int __Pyx_InitGlobals(void) {
   __pyx_int_5 = PyInt_FromLong(5); if (unlikely(!__pyx_int_5)) __PYX_ERR(0, 1, __pyx_L1_error)
   __pyx_int_6 = PyInt_FromLong(6); if (unlikely(!__pyx_int_6)) __PYX_ERR(0, 1, __pyx_L1_error)
   __pyx_int_7 = PyInt_FromLong(7); if (unlikely(!__pyx_int_7)) __PYX_ERR(0, 1, __pyx_L1_error)
+  __pyx_int_8 = PyInt_FromLong(8); if (unlikely(!__pyx_int_8)) __PYX_ERR(0, 1, __pyx_L1_error)
   __pyx_int_10 = PyInt_FromLong(10); if (unlikely(!__pyx_int_10)) __PYX_ERR(0, 1, __pyx_L1_error)
   __pyx_int_12 = PyInt_FromLong(12); if (unlikely(!__pyx_int_12)) __PYX_ERR(0, 1, __pyx_L1_error)
+  __pyx_int_13 = PyInt_FromLong(13); if (unlikely(!__pyx_int_13)) __PYX_ERR(0, 1, __pyx_L1_error)
   __pyx_int_14 = PyInt_FromLong(14); if (unlikely(!__pyx_int_14)) __PYX_ERR(0, 1, __pyx_L1_error)
   __pyx_int_15 = PyInt_FromLong(15); if (unlikely(!__pyx_int_15)) __PYX_ERR(0, 1, __pyx_L1_error)
   __pyx_int_16 = PyInt_FromLong(16); if (unlikely(!__pyx_int_16)) __PYX_ERR(0, 1, __pyx_L1_error)
