@@ -470,7 +470,7 @@ int main(int argc, char *argv[])
     }
     else if (argc > 1) filename = argv[1];
 
-    float const thresh = (argc > 5) ? std::stof(argv[5]) : 0.63;
+    float const thresh = (argc > 5) ? std::stof(argv[5]) : 0.65;
 
     Detector detector(cfg_file, weights_file);
 
@@ -484,7 +484,7 @@ int main(int argc, char *argv[])
     auto str = oss.str();
 
     std::string out_videofile = "flc_utils/trainVideo/testing/result.avi";
-    bool const save_output_videofile = true;   // true - for history
+    bool const save_output_videofile = false;   // true - for history
     bool const send_network = false;        // true - for remote detection
     bool const use_kalman_filter = true;   // true - for stationary camera
 
