@@ -21,6 +21,8 @@ import serial
 import time
 import re
 
+os.chdir("/home/agnext/Documents/tragnext")
+
 logging.basicConfig(filename='server_logs.log',
                     filemode='a',
                     format='%(asctime)s - %(name)s - %(levelname)s - %(message)s',
@@ -28,7 +30,7 @@ logging.basicConfig(filename='server_logs.log',
 logger = logging.getLogger(("FLC"))
 
 configparser = configparser.RawConfigParser()   
-os.chdir("/home/agnext/Documents/tragnext")
+
 #HOME = os.environ["HOME"]
 #DIR_PATH = os.path.join(HOME, "Documents", "tragnext")
 #os.chdir(DIR_PATH)
@@ -309,7 +311,7 @@ class MyTkApp(tk.Frame):
         try:
             p = subprocess.Popen("exec " + command, stdout= subprocess.PIPE, shell=True)
             p.wait()
-            os.rename("flc_utils/trainVideo/testing/result.avi", "flc_utils/trainVideo/testing/" + datetime.datetime.now().strftime("%d-%m-%Y %H:%M:%S") + "_" + str(self.customer_id) + ".avi")
+            #os.rename("flc_utils/trainVideo/testing/result.avi", "flc_utils/trainVideo/testing/" + datetime.datetime.now().strftime("%d-%m-%Y %H:%M:%S") + "_" + str(self.customer_id) + ".avi")
             self.moisture_loss_count()
             self.show_results_on_display()
             self.endRecord.place(x=int(configparser.get('gui-config', 'endrecord_btn_x')), y=int(configparser.get('gui-config', 'endrecord_btn_y')))
