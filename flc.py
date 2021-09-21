@@ -254,7 +254,7 @@ class MyTkApp(tk.Frame):
             p = subprocess.Popen("exec " + command, stdout= subprocess.PIPE, shell=True)
             p.wait()
             os.rename("flc_utils/trainVideo/testing/result.avi", "flc_utils/trainVideo/testing/" + datetime.datetime.now().strftime("%d-%m-%Y %H:%M:%S") + "_" + str(self.customer_id) + ".avi")
-            #self.moisture_loss_count()
+            self.moisture_loss_count()
             self.show_results_on_display()
             self.endRecord.place(x=int(configparser.get('gui-config', 'endrecord_btn_x')), y=int(configparser.get('gui-config', 'endrecord_btn_y')))
         except Exception as e:
@@ -270,8 +270,8 @@ class MyTkApp(tk.Frame):
             self._coarse_btn.place_forget()
             self.leaf_type_label.place_forget()
             self.dynamic_label.place_forget()
-       #     self._initial_weight_label.place_forget()
-        #    self._final_weight_label.place_forget()
+            self._initial_weight_label.place_forget()
+            self._final_weight_label.place_forget()
             self._lot_weight_label.place_forget()
             self.mlc_label.place_forget()
             self.mlc_formula_label.place_forget()
@@ -390,9 +390,9 @@ class MyTkApp(tk.Frame):
             #self._coarse_btn_by_weight.place_forget()
             self.by_count_text.place_forget()
             self.mlc_label.place_forget()
-            #self.final_weight_label.place_forget()
+            self.final_weight_label.place_forget()
             self.mlc_formula_label.place_forget()
-            #self.initial_weight_label.place_forget()
+            self.initial_weight_label.place_forget()
             helper.update_graph()
         except Exception as e:
             logger.exception(str('Exception occured in "send_data_api" function\nError message:' + str(e)))
@@ -411,12 +411,12 @@ class MyTkApp(tk.Frame):
             
             if totalCount != 0:
                 if leaf == "Own":
-                    _1lb_perc = round(_1lb*100/totalCount, 2) + 3
-                    _2lb_perc = round(_2lb*100/totalCount, 2) - 7
-                    _3lb_perc = round(_3lb*100/totalCount, 2) + 2
-                    _1bj_perc = round(_1bj*100/totalCount, 2) - 0.7
+                    _1lb_perc = round(_1lb*100/totalCount, 2) - 5
+                    _2lb_perc = round(_2lb*100/totalCount, 2) + 2
+                    _3lb_perc = round(_3lb*100/totalCount, 2)
+                    _1bj_perc = round(_1bj*100/totalCount, 2) - 12
                     _2bj_perc = round(_2bj*100/totalCount, 2)
-                    totalCount = int(totalCount * 1.6)
+                    totalCount = int(totalCount * 0.80)
                 elif leaf == "Bought":
                     _1lb_perc = round(_1lb*100/totalCount, 2) - 8
                     _2lb_perc = round(_2lb*100/totalCount, 2) - 5
@@ -532,21 +532,21 @@ class MyTkApp(tk.Frame):
 
         self.mlc_label = tk.Button(self.window, text="MLC %  " + '{:.2f}'.format(self.mlc_value), command=self.do_nothing, fg="white", bg="#12B653", width=int(configparser.get('gui-config', 'result_btn_width')),height=int(configparser.get('gui-config', 'result_btn_height')), font=('times', 14, 'bold'))
 
-        #self._initial_weight_label = tk.Button(self.window, text="Initial Weight (Kg):" + '{:.2f}'.format(self.initial_weight), command=self.do_nothing, fg="white", bg="#12B653", width=int(configparser.get('gui-config', 'result_btn_width')),height=int(configparser.get('gui-config', 'result_btn_height')), font=('times', 14, 'bold'))
+        self._initial_weight_label = tk.Button(self.window, text="Initial Weight (Kg):" + '{:.2f}'.format(self.initial_weight), command=self.do_nothing, fg="white", bg="#12B653", width=int(configparser.get('gui-config', 'result_btn_width')),height=int(configparser.get('gui-config', 'result_btn_height')), font=('times', 14, 'bold'))
         
-        #self._final_weight_label = tk.Button(self.window, text="Final Weight (Kg):" + '{:.2f}'.format(self.final_weight), command=self.do_nothing, fg="white", bg="#12B653", width=int(configparser.get('gui-config', 'result_btn_width')),height=int(configparser.get('gui-config', 'result_btn_height')), font=('times', 14, 'bold'))
+        self._final_weight_label = tk.Button(self.window, text="Final Weight (Kg):" + '{:.2f}'.format(self.final_weight), command=self.do_nothing, fg="white", bg="#12B653", width=int(configparser.get('gui-config', 'result_btn_width')),height=int(configparser.get('gui-config', 'result_btn_height')), font=('times', 14, 'bold'))
         
         self._lot_weight_label = tk.Button(self.window, text="Lot Weight (Kg): " + self.lot_weight_verify.get(), command=self.do_nothing, fg="white", bg="#12B653", width=int(configparser.get('gui-config', 'result_btn_width')),height=int(configparser.get('gui-config', 'result_btn_height')), font=('times', 14, 'bold'))
 
         self.mlc_formula_label = tk.Label(self.window, text="M.L. = ((Ini Weight - Fin Weight)/Ini Weight)*100", font=('times', 10), bg="#f7f0f5")
         
-        #self.mlc_label.place(x=280, y=180)
-       # self._initial_weight_label.place(x=280, y=230)
-       # self._final_weight_label.place(x=280, y=280)
+        self.mlc_label.place(x=280, y=180)
+        self._initial_weight_label.place(x=280, y=230)
+        self._final_weight_label.place(x=280, y=280)
         self.leaf_type_label.place(x=510, y=180)
         self.dynamic_label.place(x=510, y=230)
         self._lot_weight_label.place(x=510, y=280)
-        #self.mlc_formula_label.pack()
+        self.mlc_formula_label.pack()
         self.mlc_formula_label.place(x=900, y=600) 
      
     def login_verify(self):
@@ -752,22 +752,22 @@ class MyTkApp(tk.Frame):
             logger.exception(str('Exception occured in "login_success" function\nError message:' + str(e)))
     def get_weight_from_scale(self, timeoutVar_seconds):
         buffer = ""
+        port = serial.Serial("/dev/ttyUSB0", baudrate=9600)
         weight_list = []
         # Get values for 30 x 0.2 = 6 seconds
         try:
-            port = serial.Serial("/dev/ttyUSB0", baudrate=19200)
             timeout = timeoutVar_seconds * 5
             max_data = 0
             while timeout:
-                ser_bytes = port.readline(10)
-                ser_bytes = ser_bytes.replace(b'L', b'')
-                decoded_bytes = float(ser_bytes[0:len(ser_bytes) - 2].decode("utf-8"))
-                if decoded_bytes > max_data:
-                    max_data = decoded_bytes
-                    timeout = timeout - 1
-                    time.sleep(.01)
-
-            port.close()
+                ser_bytes = str(port.readline(7))
+                decoded_bytes = float(ser_bytes[3:8])
+                final = decoded_bytes / 1000
+                if final > max_data:
+                    max_data = final
+                timeout = timeout - 1
+                time.sleep(.01)
+            print("HEHE"+str(max_data))
+            messagebox.showinfo("Weight:", max_data)
             return max_data
         except:
             self.show_error_msg("Connect Weighing Scale")
@@ -775,11 +775,11 @@ class MyTkApp(tk.Frame):
 
     # Initial Weight wrapepr
     def get_initial_weight(self):
-        self.initial_weight = self.get_weight_from_scale(6)
+        self.initial_weight = self.get_weight_from_scale(5)
 
     # Final Weight wrapper
     def get_final_weight(self):
-        self.final_weight = self.get_weight_from_scale(6)
+        self.final_weight = self.get_weight_from_scale(5)
 
     # Moisture Loss Formula
     def moisture_loss_count(self):
