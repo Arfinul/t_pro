@@ -116,7 +116,7 @@ def qualix_api(token, payload, new_fields, leaf_type):
                 )
     response = requests.post(
             #'http://70.37.95.226:7019/api/scan',
-            'http://13.71.36.247:7007/api/scan/post-tea',
+            'http://tea.qualix.ai:9994/api/scan/post-tea',
             data=mp_encoder,
             headers={'Content-Type': mp_encoder.content_type,
                      "Authorization": "Bearer " + token
@@ -136,7 +136,7 @@ def login_api_qualix(username, password):
         querystring = {"response_type":"code",
                         "client_id": "client-mobile"
                         }
-        response = session.get("http://13.71.36.247:7007/oauth/authorize", params=querystring)
+        response = session.get("http://tea.qualix.ai:9994/oauth/authorize", params=querystring)
         #response = session.get("http://23.98.216.140:8071/oauth/authorize", params=querystring)
 
         print("OAUTH DBG: "+ str(response))
@@ -154,7 +154,7 @@ def login_api_qualix(username, password):
         querystring = {"bearer":"mobile"}
         response = session.post(
                     #'http://23.98.216.140:8071/login',
-                    'http://13.71.36.247:7007/login',
+                    'http://tea.qualix.ai:9994/login',
                     data=mp_encoder,
                     params=querystring,
                     headers=headers,
