@@ -1902,7 +1902,6 @@ static const char __pyx_k_MyTkApp_login_verify[] = "MyTkApp.login_verify";
 static const char __pyx_k_MyTkApp_place_inputs[] = "MyTkApp.place_inputs";
 static const char __pyx_k_MyTkApp_show_options[] = "MyTkApp.show_options";
 static const char __pyx_k_exec_killall_onboard[] = "exec killall onboard";
-static const char __pyx_k_final_weight_label_2[] = "final_weight_label";
 static const char __pyx_k_initial_weight_label[] = "_initial_weight_label";
 static const char __pyx_k_measure_final_weight[] = "measure_final_weight";
 static const char __pyx_k_password_login_entry[] = "password_login_entry";
@@ -1925,7 +1924,6 @@ static const char __pyx_k_Measure_Initial_Weight[] = "Measure Initial Weight";
 static const char __pyx_k_MyTkApp_details_verify[] = "MyTkApp.details_verify";
 static const char __pyx_k_MyTkApp_popup_keyboard[] = "MyTkApp.popup_keyboard";
 static const char __pyx_k_MyTkApp_show_error_msg[] = "MyTkApp.show_error_msg";
-static const char __pyx_k_initial_weight_label_2[] = "initial_weight_label";
 static const char __pyx_k_Please_fill_all_details[] = "Please fill all details.";
 static const char __pyx_k_Please_select_leaf_type[] = "Please select leaf type";
 static const char __pyx_k_details_entered_success[] = "details_entered_success";
@@ -2260,7 +2258,6 @@ static PyObject *__pyx_n_s_final;
 static PyObject *__pyx_n_s_final_weight;
 static PyObject *__pyx_n_u_final_weight;
 static PyObject *__pyx_n_s_final_weight_label;
-static PyObject *__pyx_n_s_final_weight_label_2;
 static PyObject *__pyx_n_s_flc;
 static PyObject *__pyx_n_u_flc;
 static PyObject *__pyx_n_s_flc_2;
@@ -2313,7 +2310,6 @@ static PyObject *__pyx_n_s_init;
 static PyObject *__pyx_n_s_initial_weight;
 static PyObject *__pyx_n_u_initial_weight;
 static PyObject *__pyx_n_s_initial_weight_label;
-static PyObject *__pyx_n_s_initial_weight_label_2;
 static PyObject *__pyx_n_s_insert;
 static PyObject *__pyx_n_u_internet;
 static PyObject *__pyx_n_s_is_internet_available;
@@ -13008,7 +13004,7 @@ static PyObject *__pyx_pf_3flc_7MyTkApp_42send_data_api(CYTHON_UNUSED PyObject *
  *             #self._coarse_btn_by_weight.place_forget()
  *             self.by_count_text.place_forget()             # <<<<<<<<<<<<<<
  *             self.mlc_label.place_forget()
- *             self.final_weight_label.place_forget()
+ *             self._final_weight_label.place_forget()
  */
       __pyx_t_16 = __Pyx_PyObject_GetAttrStr(__pyx_v_self, __pyx_n_s_by_count_text); if (unlikely(!__pyx_t_16)) __PYX_ERR(0, 391, __pyx_L3_error)
       __Pyx_GOTREF(__pyx_t_16);
@@ -13036,7 +13032,7 @@ static PyObject *__pyx_pf_3flc_7MyTkApp_42send_data_api(CYTHON_UNUSED PyObject *
  *             #self._coarse_btn_by_weight.place_forget()
  *             self.by_count_text.place_forget()
  *             self.mlc_label.place_forget()             # <<<<<<<<<<<<<<
- *             self.final_weight_label.place_forget()
+ *             self._final_weight_label.place_forget()
  *             self.mlc_formula_label.place_forget()
  */
       __pyx_t_12 = __Pyx_PyObject_GetAttrStr(__pyx_v_self, __pyx_n_s_mlc_label); if (unlikely(!__pyx_t_12)) __PYX_ERR(0, 392, __pyx_L3_error)
@@ -13064,11 +13060,11 @@ static PyObject *__pyx_pf_3flc_7MyTkApp_42send_data_api(CYTHON_UNUSED PyObject *
       /* "flc.py":393
  *             self.by_count_text.place_forget()
  *             self.mlc_label.place_forget()
- *             self.final_weight_label.place_forget()             # <<<<<<<<<<<<<<
+ *             self._final_weight_label.place_forget()             # <<<<<<<<<<<<<<
  *             self.mlc_formula_label.place_forget()
- *             self.initial_weight_label.place_forget()
+ *             self._initial_weight_label.place_forget()
  */
-      __pyx_t_16 = __Pyx_PyObject_GetAttrStr(__pyx_v_self, __pyx_n_s_final_weight_label_2); if (unlikely(!__pyx_t_16)) __PYX_ERR(0, 393, __pyx_L3_error)
+      __pyx_t_16 = __Pyx_PyObject_GetAttrStr(__pyx_v_self, __pyx_n_s_final_weight_label); if (unlikely(!__pyx_t_16)) __PYX_ERR(0, 393, __pyx_L3_error)
       __Pyx_GOTREF(__pyx_t_16);
       __pyx_t_12 = __Pyx_PyObject_GetAttrStr(__pyx_t_16, __pyx_n_s_place_forget); if (unlikely(!__pyx_t_12)) __PYX_ERR(0, 393, __pyx_L3_error)
       __Pyx_GOTREF(__pyx_t_12);
@@ -13092,9 +13088,9 @@ static PyObject *__pyx_pf_3flc_7MyTkApp_42send_data_api(CYTHON_UNUSED PyObject *
 
       /* "flc.py":394
  *             self.mlc_label.place_forget()
- *             self.final_weight_label.place_forget()
+ *             self._final_weight_label.place_forget()
  *             self.mlc_formula_label.place_forget()             # <<<<<<<<<<<<<<
- *             self.initial_weight_label.place_forget()
+ *             self._initial_weight_label.place_forget()
  *             helper.update_graph()
  */
       __pyx_t_12 = __Pyx_PyObject_GetAttrStr(__pyx_v_self, __pyx_n_s_mlc_formula_label); if (unlikely(!__pyx_t_12)) __PYX_ERR(0, 394, __pyx_L3_error)
@@ -13120,13 +13116,13 @@ static PyObject *__pyx_pf_3flc_7MyTkApp_42send_data_api(CYTHON_UNUSED PyObject *
       __Pyx_DECREF(__pyx_t_9); __pyx_t_9 = 0;
 
       /* "flc.py":395
- *             self.final_weight_label.place_forget()
+ *             self._final_weight_label.place_forget()
  *             self.mlc_formula_label.place_forget()
- *             self.initial_weight_label.place_forget()             # <<<<<<<<<<<<<<
+ *             self._initial_weight_label.place_forget()             # <<<<<<<<<<<<<<
  *             helper.update_graph()
  *         except Exception as e:
  */
-      __pyx_t_16 = __Pyx_PyObject_GetAttrStr(__pyx_v_self, __pyx_n_s_initial_weight_label_2); if (unlikely(!__pyx_t_16)) __PYX_ERR(0, 395, __pyx_L3_error)
+      __pyx_t_16 = __Pyx_PyObject_GetAttrStr(__pyx_v_self, __pyx_n_s_initial_weight_label); if (unlikely(!__pyx_t_16)) __PYX_ERR(0, 395, __pyx_L3_error)
       __Pyx_GOTREF(__pyx_t_16);
       __pyx_t_12 = __Pyx_PyObject_GetAttrStr(__pyx_t_16, __pyx_n_s_place_forget); if (unlikely(!__pyx_t_12)) __PYX_ERR(0, 395, __pyx_L3_error)
       __Pyx_GOTREF(__pyx_t_12);
@@ -13150,7 +13146,7 @@ static PyObject *__pyx_pf_3flc_7MyTkApp_42send_data_api(CYTHON_UNUSED PyObject *
 
       /* "flc.py":396
  *             self.mlc_formula_label.place_forget()
- *             self.initial_weight_label.place_forget()
+ *             self._initial_weight_label.place_forget()
  *             helper.update_graph()             # <<<<<<<<<<<<<<
  *         except Exception as e:
  *             logger.exception(str('Exception occured in "send_data_api" function\nError message:' + str(e)))
@@ -13203,7 +13199,7 @@ static PyObject *__pyx_pf_3flc_7MyTkApp_42send_data_api(CYTHON_UNUSED PyObject *
     __Pyx_XDECREF(__pyx_t_9); __pyx_t_9 = 0;
 
     /* "flc.py":397
- *             self.initial_weight_label.place_forget()
+ *             self._initial_weight_label.place_forget()
  *             helper.update_graph()
  *         except Exception as e:             # <<<<<<<<<<<<<<
  *             logger.exception(str('Exception occured in "send_data_api" function\nError message:' + str(e)))
@@ -13260,7 +13256,7 @@ static PyObject *__pyx_pf_3flc_7MyTkApp_42send_data_api(CYTHON_UNUSED PyObject *
       }
 
       /* "flc.py":397
- *             self.initial_weight_label.place_forget()
+ *             self._initial_weight_label.place_forget()
  *             helper.update_graph()
  *         except Exception as e:             # <<<<<<<<<<<<<<
  *             logger.exception(str('Exception occured in "send_data_api" function\nError message:' + str(e)))
@@ -24318,7 +24314,6 @@ static __Pyx_StringTabEntry __pyx_string_tab[] = {
   {&__pyx_n_s_final_weight, __pyx_k_final_weight, sizeof(__pyx_k_final_weight), 0, 0, 1, 1},
   {&__pyx_n_u_final_weight, __pyx_k_final_weight, sizeof(__pyx_k_final_weight), 0, 1, 0, 1},
   {&__pyx_n_s_final_weight_label, __pyx_k_final_weight_label, sizeof(__pyx_k_final_weight_label), 0, 0, 1, 1},
-  {&__pyx_n_s_final_weight_label_2, __pyx_k_final_weight_label_2, sizeof(__pyx_k_final_weight_label_2), 0, 0, 1, 1},
   {&__pyx_n_s_flc, __pyx_k_flc, sizeof(__pyx_k_flc), 0, 0, 1, 1},
   {&__pyx_n_u_flc, __pyx_k_flc, sizeof(__pyx_k_flc), 0, 1, 0, 1},
   {&__pyx_n_s_flc_2, __pyx_k_flc_2, sizeof(__pyx_k_flc_2), 0, 0, 1, 1},
@@ -24371,7 +24366,6 @@ static __Pyx_StringTabEntry __pyx_string_tab[] = {
   {&__pyx_n_s_initial_weight, __pyx_k_initial_weight, sizeof(__pyx_k_initial_weight), 0, 0, 1, 1},
   {&__pyx_n_u_initial_weight, __pyx_k_initial_weight, sizeof(__pyx_k_initial_weight), 0, 1, 0, 1},
   {&__pyx_n_s_initial_weight_label, __pyx_k_initial_weight_label, sizeof(__pyx_k_initial_weight_label), 0, 0, 1, 1},
-  {&__pyx_n_s_initial_weight_label_2, __pyx_k_initial_weight_label_2, sizeof(__pyx_k_initial_weight_label_2), 0, 0, 1, 1},
   {&__pyx_n_s_insert, __pyx_k_insert, sizeof(__pyx_k_insert), 0, 0, 1, 1},
   {&__pyx_n_u_internet, __pyx_k_internet, sizeof(__pyx_k_internet), 0, 1, 0, 1},
   {&__pyx_n_s_is_internet_available, __pyx_k_is_internet_available, sizeof(__pyx_k_is_internet_available), 0, 0, 1, 1},

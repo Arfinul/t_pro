@@ -390,9 +390,9 @@ class MyTkApp(tk.Frame):
             #self._coarse_btn_by_weight.place_forget()
             self.by_count_text.place_forget()
             self.mlc_label.place_forget()
-            self.final_weight_label.place_forget()
+            self._final_weight_label.place_forget()
             self.mlc_formula_label.place_forget()
-            self.initial_weight_label.place_forget()
+            self._initial_weight_label.place_forget()
             helper.update_graph()
         except Exception as e:
             logger.exception(str('Exception occured in "send_data_api" function\nError message:' + str(e)))
