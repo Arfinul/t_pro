@@ -1,5 +1,5 @@
 # cython: language_level=3
-# -*- coding: utf-8 -*-
+
 import tkinter as tk
 from tkinter import *
 from tkinter import messagebox
@@ -122,10 +122,10 @@ class MyTkApp(tk.Frame):
         self.password_verify = StringVar()
          
         self.username_login_entry = Entry(self.window, textvariable=self.username_verify, font = "Helvetica 15")
-        self.username_login_entry.insert(1, "hml.op@agnext.in")
+        self.username_login_entry.insert(1, "tea002.op@agnext.in")
 
         self.password_login_entry = Entry(self.window, textvariable=self.password_verify, show= '*', font = "Helvetica 15")
-        self.password_login_entry.insert(1, "hml-op")
+        self.password_login_entry.insert(1, "tea002")
         
         self.signin = tk.Button(self.window, text="Login", command=self.login_verify, fg="white", bg="#539051", width=int(configparser.get('gui-config', 'signin_btn_width')),height=int(configparser.get('gui-config', 'signin_btn_height')), font=("Helvetica 15 bold"))
 
@@ -195,7 +195,7 @@ class MyTkApp(tk.Frame):
         self.wait_till_mlc = tk.IntVar()
         
         self.measure_weight = tk.Button(self.window, text="Measure Initial Weight", command=self.get_initial_weight, fg="white", bg="#539051", font=('times', 16, 'bold'))
-        self.measure_final_weight = tk.Button(self.window, text="Measure Final Weight", command=lambda:[self.get_final_weight(), self.wait_till_mlc.set(1)], fg="white", bg="#539051", font=('times', 16, 'bold'))
+        #self.measure_final_weight = tk.Button(self.window, text="Measure Final Weight", command=lambda:[self.get_final_weight(), self.wait_till_mlc.set(1)], fg="white", bg="#539051", font=('times', 16, 'bold'))
 
     def restart(self):
         if messagebox.askokcancel("Quit", "Do you really want to restart the system?"):
@@ -251,7 +251,7 @@ class MyTkApp(tk.Frame):
         try:
             p = subprocess.Popen("exec " + command, stdout= subprocess.PIPE, shell=True)
             p.wait()
-            #os.rename("flc_utils/trainVideo/testing/result.avi", "flc_utils/trainVideo/testing/" + datetime.datetime.now().strftime("%d-%m-%Y %H:%M:%S") + "_" + str(self.customer_id) + ".avi")
+            os.rename("flc_utils/trainVideo/testing/result.avi", "flc_utils/trainVideo/testing/" + datetime.datetime.now().strftime("%d-%m-%Y %H:%M:%S") + "_" + str(self.customer_id) + ".avi")
             self.moisture_loss_count()
             self.show_results_on_display()
             self.endRecord.place(x=int(configparser.get('gui-config', 'endrecord_btn_x')), y=int(configparser.get('gui-config', 'endrecord_btn_y')))
@@ -385,7 +385,7 @@ class MyTkApp(tk.Frame):
             self._flc_btn.place_forget()
             self._coarse_btn.place_forget()
             #self._flc_btn_by_weight.place_forget()
-           # self._coarse_btn_by_weight.place_forget()
+            self._coarse_btn_by_weight.place_forget()
             self.by_count_text.place_forget()
             self.mlc_label.place_forget()
             self._final_weight_label.place_forget()
@@ -791,7 +791,7 @@ class MyTkApp(tk.Frame):
 
 def launchApp():
     window = tk.Tk()
-    #window.attributes('-fullscreen',True)
+    window.attributes('-fullscreen',True)
     MyTkApp(window)
     tk.mainloop()
 
