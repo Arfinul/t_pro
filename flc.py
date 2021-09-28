@@ -134,7 +134,7 @@ class MyTkApp(tk.Frame):
         self.by_count_text = Label(self.window, text="By Count ", font=('times', 20, 'bold'), bg="#f7f0f5")
         self.by_weight_text = Label(self.window, text="By Weight ", font=('times', 20, 'bold'), bg="#f7f0f5")
         self.entered = tk.Button(self.window, text="Start FLC", command=self.details_verify, fg="white", bg="#539051", width=int(configparser.get('gui-config', 'start_flc_width')),height=int(configparser.get('gui-config', 'start_flc_height')), font=('times', 16, 'bold'))
-        self.formula = Label(self.window, text="FLC = 1LB + 2LB + 1Banjhi + 0.67 * 3LB", font=("Helvetica", 15), background='white')
+        self.formula = Label(self.window, text="FLC = 1LB + 2LB + 3LB + 1Banjhi + 2Banjhi", font=("Helvetica", 15), background='white')
         self.warning_sign = Label(self.window, text="", font=('times', 15, 'bold'), fg="red", bg="white")
 
         img = ImageTk.PhotoImage(Image.open(configparser.get('gui-config', 'logo')))
@@ -252,7 +252,7 @@ class MyTkApp(tk.Frame):
             p = subprocess.Popen("exec " + command, stdout= subprocess.PIPE, shell=True)
             p.wait()
             os.rename("flc_utils/trainVideo/testing/result.avi", "flc_utils/trainVideo/testing/" + datetime.datetime.now().strftime("%d-%m-%Y %H:%M:%S") + "_" + str(self.customer_id) + ".avi")
-            self.moisture_loss_count()
+            #self.moisture_loss_count()
             self.show_results_on_display()
             self.endRecord.place(x=int(configparser.get('gui-config', 'endrecord_btn_x')), y=int(configparser.get('gui-config', 'endrecord_btn_y')))
         except Exception as e:
@@ -428,7 +428,7 @@ class MyTkApp(tk.Frame):
                 _3lb_perc = 0 if _3lb_perc < 0 else _3lb_perc
                 _1bj_perc = 0 if _1bj_perc < 0 else _1bj_perc
                 _2bj_perc = 0 if _2bj_perc < 0 else _2bj_perc
-                _flc_perc = _1lb_perc + _2lb_perc + _1bj_perc + (0.67 * _3lb_perc)
+                _flc_perc = _1lb_perc + _2lb_perc + _1bj_perc + _3lb_perc + _2bj_perc
                 _flc_perc = 100 if _flc_perc > 100 else _flc_perc
                 _flc_perc_by_weight = 24.53 + (0.45 * _flc_perc)
                 _flc_perc_by_weight = 100 if _flc_perc_by_weight > 100 else _flc_perc_by_weight
