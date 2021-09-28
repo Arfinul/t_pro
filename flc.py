@@ -750,46 +750,44 @@ class MyTkApp(tk.Frame):
             #th.start() 
         except Exception as e:
             logger.exception(str('Exception occured in "login_success" function\nError message:' + str(e)))
-    def get_weight_from_scale(self, timeoutVar_seconds):
+    
+    def get_weight_from_scale(self):
         buffer = ""
-        port = serial.Serial("/dev/ttyUSB0", baudrate=9600)
         weight_list = []
         # Get values for 30 x 0.2 = 6 seconds
         try:
-            timeout = timeoutVar_seconds * 5
-            max_data = 0
-            while timeout:
-                ser_bytes = str(port.readline(7))
-                decoded_bytes = float(ser_bytes[3:8])
-                final = decoded_bytes / 1000
-                if final > max_data:
-                    max_data = final
-                timeout = timeout - 1
-                time.sleep(.01)
-            print("HEHE"+str(max_data))
-            messagebox.showinfo("Weight:", max_data)
-            return max_data
+            ser = serial.Serial('/dev/ttyUSB0', 9600)
+            t_end = time.time() + 30 * 0.2
+            while time.time() < t_end:
+                one_byte = ser.read(1)
+                buffer += one_byte.decode("ascii")
+            
+            weights_list = re.findall(r'\[([^]]*)\]', buffer)
+            filtered_wt = max(set(weights_list), key=weight_list.count)
+            weight_to_float = float(filtered_wt)/1000
+            messagebox.showinfo("Weight:", weight_to_float)
+            ser.close()
+            return weight_to_float
         except:
             self.show_error_msg("Connect Weighing Scale")
             print("Weighing scale Serial ERROR")
-
     # Initial Weight wrapepr
     def get_initial_weight(self):
-        self.initial_weight = self.get_weight_from_scale(5)
+        self.initial_weight = self.get_weight_from_scale()
 
     # Final Weight wrapper
     def get_final_weight(self):
-        self.final_weight = self.get_weight_from_scale(5)
+        self.final_weight = self.get_weight_from_scale()
 
     # Moisture Loss Formula
     def moisture_loss_count(self):
         self.measure_final_weight.place(x=500, y=110, height=30, width=230)
         self.measure_final_weight.wait_variable(self.wait_till_mlc)
-        #if self.initial_weight is not 0 and self.final_weight is not 0 and self.final_weight < self.initial_weight:
-        self.mlc_value = ((self.initial_weight - self.final_weight)/self.initial_weight)*100
-        #else:
+        if self.initial_weight is not 0 and self.final_weight is not 0 and self.final_weight < self.initial_weight:
+            self.mlc_value = ((self.initial_weight - self.final_weight)/self.initial_weight)*100
+        else:
             # TODO: POP-UP ERROR FOR RE-MEASURING
-            #print("Measured Initial weight cannot be Zero or greater than the final weight measured")
+            print("Measured Initial weight cannot be Zero or greater than the final weight measured")
         self.measure_final_weight.place_forget()
 
 def launchApp():
