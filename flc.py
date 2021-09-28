@@ -748,6 +748,7 @@ class MyTkApp(tk.Frame):
             #th.start() 
         except Exception as e:
             logger.exception(str('Exception occured in "login_success" function\nError message:' + str(e)))
+    
     def get_weight_from_scale(self, timeoutVar_seconds):
         buffer = ""
         weight_list = []
@@ -758,6 +759,7 @@ class MyTkApp(tk.Frame):
             max_data = 0
             while timeout:
                 ser_bytes = port.readline(10)
+                ser_bytes = ser_bytes.replace(b'L', b'')
                 decoded_bytes = float(ser_bytes[0:len(ser_bytes) - 2].decode("utf-8"))
                 if decoded_bytes > max_data:
                     max_data = decoded_bytes
@@ -769,7 +771,7 @@ class MyTkApp(tk.Frame):
         except:
             self.show_error_msg("Connect Weighing Scale")
             print("Weighing scale Serial ERROR")
-
+    
     # Initial Weight wrapepr
     def get_initial_weight(self):
         self.initial_weight = self.get_weight_from_scale(6)
