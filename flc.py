@@ -785,11 +785,11 @@ class MyTkApp(tk.Frame):
     def moisture_loss_count(self):
         self.measure_final_weight.place(x=500, y=110, height=30, width=230)
         self.measure_final_weight.wait_variable(self.wait_till_mlc)
-        if self.initial_weight is not 0 and self.final_weight is not 0 and self.final_weight < self.initial_weight:
-            self.mlc_value = ((self.initial_weight - self.final_weight)/self.initial_weight)*100
-        else:
+        #if self.initial_weight is not 0 and self.final_weight is not 0 and self.final_weight < self.initial_weight:
+        self.mlc_value = ((self.initial_weight - self.final_weight)/self.initial_weight)*100
+        #else:
             # TODO: POP-UP ERROR FOR RE-MEASURING
-            print("Measured Initial weight cannot be Zero or greater than the final weight measured")
+            #print("Measured Initial weight cannot be Zero or greater than the final weight measured")
         self.measure_final_weight.place_forget()
 
 def launchApp():
