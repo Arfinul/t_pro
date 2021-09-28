@@ -88,7 +88,7 @@ def qualix_api(token, payload, new_fields, leaf_type):
                     })
     elif leaf_type == "Own":
         data_ = json.dumps({
-                    "section_id": str(new_fields['section_id']),
+                    "section_unique_code": str(new_fields['section_id']),
                     "batch_id": "Good-001",
                     "commodity_id": "4",
                     "device_serial_no": "TEAM-002",
