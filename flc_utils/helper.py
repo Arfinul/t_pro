@@ -115,7 +115,6 @@ def qualix_api(token, payload, new_fields, leaf_type):
                    }
                 )
     response = requests.post(
-            #'http://70.37.95.226:7019/api/scan',
             'http://13.71.36.247:7007/api/scan/post-tea',
             data=mp_encoder,
             headers={'Content-Type': mp_encoder.content_type,
