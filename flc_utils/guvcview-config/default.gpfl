@@ -2,7 +2,7 @@
 APP{"ecam_tk1_guvcview 1.7.2-g97452ea"}
 # control data
 #Brightness
-ID{0x00980900};CHK{-15:15:1:0}=VAL{0}
+ID{0x00980900};CHK{-15:15:1:0}=VAL{2}
 #Contrast
 ID{0x00980901};CHK{0:30:1:4}=VAL{15}
 #Saturation

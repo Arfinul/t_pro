@@ -1038,25 +1038,9 @@ static int __Pyx_IternextUnpackEndCheck(PyObject *retval, Py_ssize_t expected);
 
 /* PyIntBinop.proto */
 #if !CYTHON_COMPILING_IN_PYPY
-static PyObject* __Pyx_PyInt_AddObjC(PyObject *op1, PyObject *op2, long intval, int inplace);
-#else
-#define __Pyx_PyInt_AddObjC(op1, op2, intval, inplace)\
-    (inplace ? PyNumber_InPlaceAdd(op1, op2) : PyNumber_Add(op1, op2))
-#endif
-
-/* PyIntBinop.proto */
-#if !CYTHON_COMPILING_IN_PYPY
 static PyObject* __Pyx_PyInt_SubtractObjC(PyObject *op1, PyObject *op2, long intval, int inplace);
 #else
 #define __Pyx_PyInt_SubtractObjC(op1, op2, intval, inplace)\
-    (inplace ? PyNumber_InPlaceSubtract(op1, op2) : PyNumber_Subtract(op1, op2))
-#endif
-
-/* PyFloatBinop.proto */
-#if !CYTHON_COMPILING_IN_PYPY
-static PyObject* __Pyx_PyFloat_SubtractObjC(PyObject *op1, PyObject *op2, double floatval, int inplace);
-#else
-#define __Pyx_PyFloat_SubtractObjC(op1, op2, floatval, inplace)\
     (inplace ? PyNumber_InPlaceSubtract(op1, op2) : PyNumber_Subtract(op1, op2))
 #endif
 
@@ -1085,6 +1069,14 @@ static PyObject* __Pyx_PyUnicode_BuildFromAscii(Py_ssize_t ulength, char* chars,
 
 /* CIntToPyUnicode.proto */
 static CYTHON_INLINE PyObject* __Pyx_PyUnicode_From_long(long value, Py_ssize_t width, char padding_char, char format_char);
+
+/* PyIntBinop.proto */
+#if !CYTHON_COMPILING_IN_PYPY
+static PyObject* __Pyx_PyInt_AddObjC(PyObject *op1, PyObject *op2, long intval, int inplace);
+#else
+#define __Pyx_PyInt_AddObjC(op1, op2, intval, inplace)\
+    (inplace ? PyNumber_InPlaceAdd(op1, op2) : PyNumber_Add(op1, op2))
+#endif
 
 /* PySequenceContains.proto */
 static CYTHON_INLINE int __Pyx_PySequence_ContainsTF(PyObject* item, PyObject* seq, int eq) {
@@ -2344,17 +2336,16 @@ static PyObject *__pyx_pf_3flc_2launchApp(CYTHON_UNUSED PyObject *__pyx_self); /
 static PyObject *__pyx_tp_new_3flc___pyx_scope_struct____init__(PyTypeObject *t, PyObject *a, PyObject *k); /*proto*/
 static PyObject *__pyx_float__01;
 static PyObject *__pyx_float_0_0;
-static PyObject *__pyx_float_0_7;
-static PyObject *__pyx_float_1_6;
+static PyObject *__pyx_float_1_8;
 static PyObject *__pyx_float_0_45;
 static PyObject *__pyx_float_24_53;
 static PyObject *__pyx_int_0;
 static PyObject *__pyx_int_1;
 static PyObject *__pyx_int_2;
-static PyObject *__pyx_int_3;
+static PyObject *__pyx_int_4;
 static PyObject *__pyx_int_5;
 static PyObject *__pyx_int_6;
-static PyObject *__pyx_int_7;
+static PyObject *__pyx_int_8;
 static PyObject *__pyx_int_10;
 static PyObject *__pyx_int_12;
 static PyObject *__pyx_int_14;
@@ -2364,6 +2355,8 @@ static PyObject *__pyx_int_17;
 static PyObject *__pyx_int_18;
 static PyObject *__pyx_int_20;
 static PyObject *__pyx_int_22;
+static PyObject *__pyx_int_26;
+static PyObject *__pyx_int_28;
 static PyObject *__pyx_int_30;
 static PyObject *__pyx_int_40;
 static PyObject *__pyx_int_60;
@@ -14501,7 +14494,7 @@ static PyObject *__pyx_pf_3flc_7MyTkApp_46show_results_on_display(CYTHON_UNUSED 
  * 
  *             if totalCount != 0:             # <<<<<<<<<<<<<<
  *                 if leaf == "Own":
- *                     _1lb_perc = round(_1lb*100/totalCount, 2) + 3
+ *                     _1lb_perc = round(_1lb*100/totalCount, 2) - 8
  */
       __pyx_t_4 = PyObject_RichCompare(__pyx_v_totalCount, __pyx_int_0, Py_NE); __Pyx_XGOTREF(__pyx_t_4); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 410, __pyx_L3_error)
       __pyx_t_15 = __Pyx_PyObject_IsTrue(__pyx_t_4); if (unlikely(__pyx_t_15 < 0)) __PYX_ERR(0, 410, __pyx_L3_error)
@@ -14512,8 +14505,8 @@ static PyObject *__pyx_pf_3flc_7MyTkApp_46show_results_on_display(CYTHON_UNUSED 
  * 
  *             if totalCount != 0:
  *                 if leaf == "Own":             # <<<<<<<<<<<<<<
- *                     _1lb_perc = round(_1lb*100/totalCount, 2) + 3
- *                     _2lb_perc = round(_2lb*100/totalCount, 2) - 7
+ *                     _1lb_perc = round(_1lb*100/totalCount, 2) - 8
+ *                     _2lb_perc = round(_2lb*100/totalCount, 2) - 20
  */
         __pyx_t_15 = (__Pyx_PyUnicode_Equals(__pyx_v_leaf, __pyx_n_u_Own, Py_EQ)); if (unlikely(__pyx_t_15 < 0)) __PYX_ERR(0, 411, __pyx_L3_error)
         if (__pyx_t_15) {
@@ -14521,9 +14514,9 @@ static PyObject *__pyx_pf_3flc_7MyTkApp_46show_results_on_display(CYTHON_UNUSED 
           /* "flc.py":412
  *             if totalCount != 0:
  *                 if leaf == "Own":
- *                     _1lb_perc = round(_1lb*100/totalCount, 2) + 3             # <<<<<<<<<<<<<<
- *                     _2lb_perc = round(_2lb*100/totalCount, 2) - 7
- *                     _3lb_perc = round(_3lb*100/totalCount, 2) + 2
+ *                     _1lb_perc = round(_1lb*100/totalCount, 2) - 8             # <<<<<<<<<<<<<<
+ *                     _2lb_perc = round(_2lb*100/totalCount, 2) - 20
+ *                     _3lb_perc = round(_3lb*100/totalCount, 2) - 4
  */
           __pyx_t_4 = PyNumber_Multiply(__pyx_v__1lb, __pyx_int_100); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 412, __pyx_L3_error)
           __Pyx_GOTREF(__pyx_t_4);
@@ -14541,7 +14534,7 @@ static PyObject *__pyx_pf_3flc_7MyTkApp_46show_results_on_display(CYTHON_UNUSED 
           __pyx_t_11 = __Pyx_PyObject_Call(__pyx_builtin_round, __pyx_t_4, NULL); if (unlikely(!__pyx_t_11)) __PYX_ERR(0, 412, __pyx_L3_error)
           __Pyx_GOTREF(__pyx_t_11);
           __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
-          __pyx_t_4 = __Pyx_PyInt_AddObjC(__pyx_t_11, __pyx_int_3, 3, 0); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 412, __pyx_L3_error)
+          __pyx_t_4 = __Pyx_PyInt_SubtractObjC(__pyx_t_11, __pyx_int_8, 8, 0); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 412, __pyx_L3_error)
           __Pyx_GOTREF(__pyx_t_4);
           __Pyx_DECREF(__pyx_t_11); __pyx_t_11 = 0;
           __pyx_v__1lb_perc = __pyx_t_4;
@@ -14549,10 +14542,10 @@ static PyObject *__pyx_pf_3flc_7MyTkApp_46show_results_on_display(CYTHON_UNUSED 
 
           /* "flc.py":413
  *                 if leaf == "Own":
- *                     _1lb_perc = round(_1lb*100/totalCount, 2) + 3
- *                     _2lb_perc = round(_2lb*100/totalCount, 2) - 7             # <<<<<<<<<<<<<<
- *                     _3lb_perc = round(_3lb*100/totalCount, 2) + 2
- *                     _1bj_perc = round(_1bj*100/totalCount, 2) - 0.7
+ *                     _1lb_perc = round(_1lb*100/totalCount, 2) - 8
+ *                     _2lb_perc = round(_2lb*100/totalCount, 2) - 20             # <<<<<<<<<<<<<<
+ *                     _3lb_perc = round(_3lb*100/totalCount, 2) - 4
+ *                     _1bj_perc = round(_1bj*100/totalCount, 2) - 28
  */
           __pyx_t_4 = PyNumber_Multiply(__pyx_v__2lb, __pyx_int_100); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 413, __pyx_L3_error)
           __Pyx_GOTREF(__pyx_t_4);
@@ -14570,18 +14563,18 @@ static PyObject *__pyx_pf_3flc_7MyTkApp_46show_results_on_display(CYTHON_UNUSED 
           __pyx_t_11 = __Pyx_PyObject_Call(__pyx_builtin_round, __pyx_t_4, NULL); if (unlikely(!__pyx_t_11)) __PYX_ERR(0, 413, __pyx_L3_error)
           __Pyx_GOTREF(__pyx_t_11);
           __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
-          __pyx_t_4 = __Pyx_PyInt_SubtractObjC(__pyx_t_11, __pyx_int_7, 7, 0); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 413, __pyx_L3_error)
+          __pyx_t_4 = __Pyx_PyInt_SubtractObjC(__pyx_t_11, __pyx_int_20, 20, 0); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 413, __pyx_L3_error)
           __Pyx_GOTREF(__pyx_t_4);
           __Pyx_DECREF(__pyx_t_11); __pyx_t_11 = 0;
           __pyx_v__2lb_perc = __pyx_t_4;
           __pyx_t_4 = 0;
 
           /* "flc.py":414
- *                     _1lb_perc = round(_1lb*100/totalCount, 2) + 3
- *                     _2lb_perc = round(_2lb*100/totalCount, 2) - 7
- *                     _3lb_perc = round(_3lb*100/totalCount, 2) + 2             # <<<<<<<<<<<<<<
- *                     _1bj_perc = round(_1bj*100/totalCount, 2) - 0.7
- *                     _2bj_perc = round(_2bj*100/totalCount, 2)
+ *                     _1lb_perc = round(_1lb*100/totalCount, 2) - 8
+ *                     _2lb_perc = round(_2lb*100/totalCount, 2) - 20
+ *                     _3lb_perc = round(_3lb*100/totalCount, 2) - 4             # <<<<<<<<<<<<<<
+ *                     _1bj_perc = round(_1bj*100/totalCount, 2) - 28
+ *                     _2bj_perc = round(_2bj*100/totalCount, 2) - 26
  */
           __pyx_t_4 = PyNumber_Multiply(__pyx_v__3lb, __pyx_int_100); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 414, __pyx_L3_error)
           __Pyx_GOTREF(__pyx_t_4);
@@ -14599,18 +14592,18 @@ static PyObject *__pyx_pf_3flc_7MyTkApp_46show_results_on_display(CYTHON_UNUSED 
           __pyx_t_11 = __Pyx_PyObject_Call(__pyx_builtin_round, __pyx_t_4, NULL); if (unlikely(!__pyx_t_11)) __PYX_ERR(0, 414, __pyx_L3_error)
           __Pyx_GOTREF(__pyx_t_11);
           __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
-          __pyx_t_4 = __Pyx_PyInt_AddObjC(__pyx_t_11, __pyx_int_2, 2, 0); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 414, __pyx_L3_error)
+          __pyx_t_4 = __Pyx_PyInt_SubtractObjC(__pyx_t_11, __pyx_int_4, 4, 0); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 414, __pyx_L3_error)
           __Pyx_GOTREF(__pyx_t_4);
           __Pyx_DECREF(__pyx_t_11); __pyx_t_11 = 0;
           __pyx_v__3lb_perc = __pyx_t_4;
           __pyx_t_4 = 0;
 
           /* "flc.py":415
- *                     _2lb_perc = round(_2lb*100/totalCount, 2) - 7
- *                     _3lb_perc = round(_3lb*100/totalCount, 2) + 2
- *                     _1bj_perc = round(_1bj*100/totalCount, 2) - 0.7             # <<<<<<<<<<<<<<
- *                     _2bj_perc = round(_2bj*100/totalCount, 2)
- *                     totalCount = int(totalCount * 1.6)
+ *                     _2lb_perc = round(_2lb*100/totalCount, 2) - 20
+ *                     _3lb_perc = round(_3lb*100/totalCount, 2) - 4
+ *                     _1bj_perc = round(_1bj*100/totalCount, 2) - 28             # <<<<<<<<<<<<<<
+ *                     _2bj_perc = round(_2bj*100/totalCount, 2) - 26
+ *                     totalCount = int(totalCount * 1.8)
  */
           __pyx_t_4 = PyNumber_Multiply(__pyx_v__1bj, __pyx_int_100); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 415, __pyx_L3_error)
           __Pyx_GOTREF(__pyx_t_4);
@@ -14628,17 +14621,17 @@ static PyObject *__pyx_pf_3flc_7MyTkApp_46show_results_on_display(CYTHON_UNUSED 
           __pyx_t_11 = __Pyx_PyObject_Call(__pyx_builtin_round, __pyx_t_4, NULL); if (unlikely(!__pyx_t_11)) __PYX_ERR(0, 415, __pyx_L3_error)
           __Pyx_GOTREF(__pyx_t_11);
           __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
-          __pyx_t_4 = __Pyx_PyFloat_SubtractObjC(__pyx_t_11, __pyx_float_0_7, 0.7, 0); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 415, __pyx_L3_error)
+          __pyx_t_4 = __Pyx_PyInt_SubtractObjC(__pyx_t_11, __pyx_int_28, 28, 0); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 415, __pyx_L3_error)
           __Pyx_GOTREF(__pyx_t_4);
           __Pyx_DECREF(__pyx_t_11); __pyx_t_11 = 0;
           __pyx_v__1bj_perc = __pyx_t_4;
           __pyx_t_4 = 0;
 
           /* "flc.py":416
- *                     _3lb_perc = round(_3lb*100/totalCount, 2) + 2
- *                     _1bj_perc = round(_1bj*100/totalCount, 2) - 0.7
- *                     _2bj_perc = round(_2bj*100/totalCount, 2)             # <<<<<<<<<<<<<<
- *                     totalCount = int(totalCount * 1.6)
+ *                     _3lb_perc = round(_3lb*100/totalCount, 2) - 4
+ *                     _1bj_perc = round(_1bj*100/totalCount, 2) - 28
+ *                     _2bj_perc = round(_2bj*100/totalCount, 2) - 26             # <<<<<<<<<<<<<<
+ *                     totalCount = int(totalCount * 1.8)
  *                 elif leaf == "Bought":
  */
           __pyx_t_4 = PyNumber_Multiply(__pyx_v__2bj, __pyx_int_100); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 416, __pyx_L3_error)
@@ -14657,194 +14650,200 @@ static PyObject *__pyx_pf_3flc_7MyTkApp_46show_results_on_display(CYTHON_UNUSED 
           __pyx_t_11 = __Pyx_PyObject_Call(__pyx_builtin_round, __pyx_t_4, NULL); if (unlikely(!__pyx_t_11)) __PYX_ERR(0, 416, __pyx_L3_error)
           __Pyx_GOTREF(__pyx_t_11);
           __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
-          __pyx_v__2bj_perc = __pyx_t_11;
-          __pyx_t_11 = 0;
-
-          /* "flc.py":417
- *                     _1bj_perc = round(_1bj*100/totalCount, 2) - 0.7
- *                     _2bj_perc = round(_2bj*100/totalCount, 2)
- *                     totalCount = int(totalCount * 1.6)             # <<<<<<<<<<<<<<
- *                 elif leaf == "Bought":
- *                     _1lb_perc = round(_1lb*100/totalCount, 2) + 3
- */
-          __pyx_t_11 = PyNumber_Multiply(__pyx_v_totalCount, __pyx_float_1_6); if (unlikely(!__pyx_t_11)) __PYX_ERR(0, 417, __pyx_L3_error)
-          __Pyx_GOTREF(__pyx_t_11);
-          __pyx_t_4 = __Pyx_PyNumber_Int(__pyx_t_11); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 417, __pyx_L3_error)
+          __pyx_t_4 = __Pyx_PyInt_SubtractObjC(__pyx_t_11, __pyx_int_26, 26, 0); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 416, __pyx_L3_error)
           __Pyx_GOTREF(__pyx_t_4);
           __Pyx_DECREF(__pyx_t_11); __pyx_t_11 = 0;
-          __Pyx_DECREF_SET(__pyx_v_totalCount, __pyx_t_4);
+          __pyx_v__2bj_perc = __pyx_t_4;
           __pyx_t_4 = 0;
+
+          /* "flc.py":417
+ *                     _1bj_perc = round(_1bj*100/totalCount, 2) - 28
+ *                     _2bj_perc = round(_2bj*100/totalCount, 2) - 26
+ *                     totalCount = int(totalCount * 1.8)             # <<<<<<<<<<<<<<
+ *                 elif leaf == "Bought":
+ *                     _1lb_perc = round(_1lb*100/totalCount, 2) - 8
+ */
+          __pyx_t_4 = PyNumber_Multiply(__pyx_v_totalCount, __pyx_float_1_8); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 417, __pyx_L3_error)
+          __Pyx_GOTREF(__pyx_t_4);
+          __pyx_t_11 = __Pyx_PyNumber_Int(__pyx_t_4); if (unlikely(!__pyx_t_11)) __PYX_ERR(0, 417, __pyx_L3_error)
+          __Pyx_GOTREF(__pyx_t_11);
+          __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
+          __Pyx_DECREF_SET(__pyx_v_totalCount, __pyx_t_11);
+          __pyx_t_11 = 0;
 
           /* "flc.py":411
  * 
  *             if totalCount != 0:
  *                 if leaf == "Own":             # <<<<<<<<<<<<<<
- *                     _1lb_perc = round(_1lb*100/totalCount, 2) + 3
- *                     _2lb_perc = round(_2lb*100/totalCount, 2) - 7
+ *                     _1lb_perc = round(_1lb*100/totalCount, 2) - 8
+ *                     _2lb_perc = round(_2lb*100/totalCount, 2) - 20
  */
           goto __pyx_L12;
         }
 
         /* "flc.py":418
- *                     _2bj_perc = round(_2bj*100/totalCount, 2)
- *                     totalCount = int(totalCount * 1.6)
+ *                     _2bj_perc = round(_2bj*100/totalCount, 2) - 26
+ *                     totalCount = int(totalCount * 1.8)
  *                 elif leaf == "Bought":             # <<<<<<<<<<<<<<
- *                     _1lb_perc = round(_1lb*100/totalCount, 2) + 3
- *                     _2lb_perc = round(_2lb*100/totalCount, 2) - 7
+ *                     _1lb_perc = round(_1lb*100/totalCount, 2) - 8
+ *                     _2lb_perc = round(_2lb*100/totalCount, 2) - 20
  */
         __pyx_t_15 = (__Pyx_PyUnicode_Equals(__pyx_v_leaf, __pyx_n_u_Bought, Py_EQ)); if (unlikely(__pyx_t_15 < 0)) __PYX_ERR(0, 418, __pyx_L3_error)
         if (__pyx_t_15) {
 
           /* "flc.py":419
- *                     totalCount = int(totalCount * 1.6)
+ *                     totalCount = int(totalCount * 1.8)
  *                 elif leaf == "Bought":
- *                     _1lb_perc = round(_1lb*100/totalCount, 2) + 3             # <<<<<<<<<<<<<<
- *                     _2lb_perc = round(_2lb*100/totalCount, 2) - 7
- *                     _3lb_perc = round(_3lb*100/totalCount, 2) + 2
+ *                     _1lb_perc = round(_1lb*100/totalCount, 2) - 8             # <<<<<<<<<<<<<<
+ *                     _2lb_perc = round(_2lb*100/totalCount, 2) - 20
+ *                     _3lb_perc = round(_3lb*100/totalCount, 2) - 4
  */
-          __pyx_t_4 = PyNumber_Multiply(__pyx_v__1lb, __pyx_int_100); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 419, __pyx_L3_error)
-          __Pyx_GOTREF(__pyx_t_4);
-          __pyx_t_11 = __Pyx_PyNumber_Divide(__pyx_t_4, __pyx_v_totalCount); if (unlikely(!__pyx_t_11)) __PYX_ERR(0, 419, __pyx_L3_error)
+          __pyx_t_11 = PyNumber_Multiply(__pyx_v__1lb, __pyx_int_100); if (unlikely(!__pyx_t_11)) __PYX_ERR(0, 419, __pyx_L3_error)
           __Pyx_GOTREF(__pyx_t_11);
-          __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
-          __pyx_t_4 = PyTuple_New(2); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 419, __pyx_L3_error)
-          __Pyx_GOTREF(__pyx_t_4);
-          __Pyx_GIVEREF(__pyx_t_11);
-          PyTuple_SET_ITEM(__pyx_t_4, 0, __pyx_t_11);
-          __Pyx_INCREF(__pyx_int_2);
-          __Pyx_GIVEREF(__pyx_int_2);
-          PyTuple_SET_ITEM(__pyx_t_4, 1, __pyx_int_2);
-          __pyx_t_11 = 0;
-          __pyx_t_11 = __Pyx_PyObject_Call(__pyx_builtin_round, __pyx_t_4, NULL); if (unlikely(!__pyx_t_11)) __PYX_ERR(0, 419, __pyx_L3_error)
-          __Pyx_GOTREF(__pyx_t_11);
-          __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
-          __pyx_t_4 = __Pyx_PyInt_AddObjC(__pyx_t_11, __pyx_int_3, 3, 0); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 419, __pyx_L3_error)
+          __pyx_t_4 = __Pyx_PyNumber_Divide(__pyx_t_11, __pyx_v_totalCount); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 419, __pyx_L3_error)
           __Pyx_GOTREF(__pyx_t_4);
           __Pyx_DECREF(__pyx_t_11); __pyx_t_11 = 0;
-          __pyx_v__1lb_perc = __pyx_t_4;
+          __pyx_t_11 = PyTuple_New(2); if (unlikely(!__pyx_t_11)) __PYX_ERR(0, 419, __pyx_L3_error)
+          __Pyx_GOTREF(__pyx_t_11);
+          __Pyx_GIVEREF(__pyx_t_4);
+          PyTuple_SET_ITEM(__pyx_t_11, 0, __pyx_t_4);
+          __Pyx_INCREF(__pyx_int_2);
+          __Pyx_GIVEREF(__pyx_int_2);
+          PyTuple_SET_ITEM(__pyx_t_11, 1, __pyx_int_2);
           __pyx_t_4 = 0;
+          __pyx_t_4 = __Pyx_PyObject_Call(__pyx_builtin_round, __pyx_t_11, NULL); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 419, __pyx_L3_error)
+          __Pyx_GOTREF(__pyx_t_4);
+          __Pyx_DECREF(__pyx_t_11); __pyx_t_11 = 0;
+          __pyx_t_11 = __Pyx_PyInt_SubtractObjC(__pyx_t_4, __pyx_int_8, 8, 0); if (unlikely(!__pyx_t_11)) __PYX_ERR(0, 419, __pyx_L3_error)
+          __Pyx_GOTREF(__pyx_t_11);
+          __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
+          __pyx_v__1lb_perc = __pyx_t_11;
+          __pyx_t_11 = 0;
 
           /* "flc.py":420
  *                 elif leaf == "Bought":
- *                     _1lb_perc = round(_1lb*100/totalCount, 2) + 3
- *                     _2lb_perc = round(_2lb*100/totalCount, 2) - 7             # <<<<<<<<<<<<<<
- *                     _3lb_perc = round(_3lb*100/totalCount, 2) + 2
- *                     _1bj_perc = round(_1bj*100/totalCount, 2) - 0.7
+ *                     _1lb_perc = round(_1lb*100/totalCount, 2) - 8
+ *                     _2lb_perc = round(_2lb*100/totalCount, 2) - 20             # <<<<<<<<<<<<<<
+ *                     _3lb_perc = round(_3lb*100/totalCount, 2) - 4
+ *                     _1bj_perc = round(_1bj*100/totalCount, 2) - 28
  */
-          __pyx_t_4 = PyNumber_Multiply(__pyx_v__2lb, __pyx_int_100); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 420, __pyx_L3_error)
-          __Pyx_GOTREF(__pyx_t_4);
-          __pyx_t_11 = __Pyx_PyNumber_Divide(__pyx_t_4, __pyx_v_totalCount); if (unlikely(!__pyx_t_11)) __PYX_ERR(0, 420, __pyx_L3_error)
+          __pyx_t_11 = PyNumber_Multiply(__pyx_v__2lb, __pyx_int_100); if (unlikely(!__pyx_t_11)) __PYX_ERR(0, 420, __pyx_L3_error)
           __Pyx_GOTREF(__pyx_t_11);
-          __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
-          __pyx_t_4 = PyTuple_New(2); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 420, __pyx_L3_error)
-          __Pyx_GOTREF(__pyx_t_4);
-          __Pyx_GIVEREF(__pyx_t_11);
-          PyTuple_SET_ITEM(__pyx_t_4, 0, __pyx_t_11);
-          __Pyx_INCREF(__pyx_int_2);
-          __Pyx_GIVEREF(__pyx_int_2);
-          PyTuple_SET_ITEM(__pyx_t_4, 1, __pyx_int_2);
-          __pyx_t_11 = 0;
-          __pyx_t_11 = __Pyx_PyObject_Call(__pyx_builtin_round, __pyx_t_4, NULL); if (unlikely(!__pyx_t_11)) __PYX_ERR(0, 420, __pyx_L3_error)
-          __Pyx_GOTREF(__pyx_t_11);
-          __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
-          __pyx_t_4 = __Pyx_PyInt_SubtractObjC(__pyx_t_11, __pyx_int_7, 7, 0); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 420, __pyx_L3_error)
+          __pyx_t_4 = __Pyx_PyNumber_Divide(__pyx_t_11, __pyx_v_totalCount); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 420, __pyx_L3_error)
           __Pyx_GOTREF(__pyx_t_4);
           __Pyx_DECREF(__pyx_t_11); __pyx_t_11 = 0;
-          __pyx_v__2lb_perc = __pyx_t_4;
+          __pyx_t_11 = PyTuple_New(2); if (unlikely(!__pyx_t_11)) __PYX_ERR(0, 420, __pyx_L3_error)
+          __Pyx_GOTREF(__pyx_t_11);
+          __Pyx_GIVEREF(__pyx_t_4);
+          PyTuple_SET_ITEM(__pyx_t_11, 0, __pyx_t_4);
+          __Pyx_INCREF(__pyx_int_2);
+          __Pyx_GIVEREF(__pyx_int_2);
+          PyTuple_SET_ITEM(__pyx_t_11, 1, __pyx_int_2);
           __pyx_t_4 = 0;
+          __pyx_t_4 = __Pyx_PyObject_Call(__pyx_builtin_round, __pyx_t_11, NULL); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 420, __pyx_L3_error)
+          __Pyx_GOTREF(__pyx_t_4);
+          __Pyx_DECREF(__pyx_t_11); __pyx_t_11 = 0;
+          __pyx_t_11 = __Pyx_PyInt_SubtractObjC(__pyx_t_4, __pyx_int_20, 20, 0); if (unlikely(!__pyx_t_11)) __PYX_ERR(0, 420, __pyx_L3_error)
+          __Pyx_GOTREF(__pyx_t_11);
+          __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
+          __pyx_v__2lb_perc = __pyx_t_11;
+          __pyx_t_11 = 0;
 
           /* "flc.py":421
- *                     _1lb_perc = round(_1lb*100/totalCount, 2) + 3
- *                     _2lb_perc = round(_2lb*100/totalCount, 2) - 7
- *                     _3lb_perc = round(_3lb*100/totalCount, 2) + 2             # <<<<<<<<<<<<<<
- *                     _1bj_perc = round(_1bj*100/totalCount, 2) - 0.7
- *                     _2bj_perc = round(_2bj*100/totalCount, 2)
+ *                     _1lb_perc = round(_1lb*100/totalCount, 2) - 8
+ *                     _2lb_perc = round(_2lb*100/totalCount, 2) - 20
+ *                     _3lb_perc = round(_3lb*100/totalCount, 2) - 4             # <<<<<<<<<<<<<<
+ *                     _1bj_perc = round(_1bj*100/totalCount, 2) - 28
+ *                     _2bj_perc = round(_2bj*100/totalCount, 2) - 26
  */
-          __pyx_t_4 = PyNumber_Multiply(__pyx_v__3lb, __pyx_int_100); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 421, __pyx_L3_error)
-          __Pyx_GOTREF(__pyx_t_4);
-          __pyx_t_11 = __Pyx_PyNumber_Divide(__pyx_t_4, __pyx_v_totalCount); if (unlikely(!__pyx_t_11)) __PYX_ERR(0, 421, __pyx_L3_error)
+          __pyx_t_11 = PyNumber_Multiply(__pyx_v__3lb, __pyx_int_100); if (unlikely(!__pyx_t_11)) __PYX_ERR(0, 421, __pyx_L3_error)
           __Pyx_GOTREF(__pyx_t_11);
-          __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
-          __pyx_t_4 = PyTuple_New(2); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 421, __pyx_L3_error)
-          __Pyx_GOTREF(__pyx_t_4);
-          __Pyx_GIVEREF(__pyx_t_11);
-          PyTuple_SET_ITEM(__pyx_t_4, 0, __pyx_t_11);
-          __Pyx_INCREF(__pyx_int_2);
-          __Pyx_GIVEREF(__pyx_int_2);
-          PyTuple_SET_ITEM(__pyx_t_4, 1, __pyx_int_2);
-          __pyx_t_11 = 0;
-          __pyx_t_11 = __Pyx_PyObject_Call(__pyx_builtin_round, __pyx_t_4, NULL); if (unlikely(!__pyx_t_11)) __PYX_ERR(0, 421, __pyx_L3_error)
-          __Pyx_GOTREF(__pyx_t_11);
-          __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
-          __pyx_t_4 = __Pyx_PyInt_AddObjC(__pyx_t_11, __pyx_int_2, 2, 0); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 421, __pyx_L3_error)
+          __pyx_t_4 = __Pyx_PyNumber_Divide(__pyx_t_11, __pyx_v_totalCount); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 421, __pyx_L3_error)
           __Pyx_GOTREF(__pyx_t_4);
           __Pyx_DECREF(__pyx_t_11); __pyx_t_11 = 0;
-          __pyx_v__3lb_perc = __pyx_t_4;
+          __pyx_t_11 = PyTuple_New(2); if (unlikely(!__pyx_t_11)) __PYX_ERR(0, 421, __pyx_L3_error)
+          __Pyx_GOTREF(__pyx_t_11);
+          __Pyx_GIVEREF(__pyx_t_4);
+          PyTuple_SET_ITEM(__pyx_t_11, 0, __pyx_t_4);
+          __Pyx_INCREF(__pyx_int_2);
+          __Pyx_GIVEREF(__pyx_int_2);
+          PyTuple_SET_ITEM(__pyx_t_11, 1, __pyx_int_2);
           __pyx_t_4 = 0;
+          __pyx_t_4 = __Pyx_PyObject_Call(__pyx_builtin_round, __pyx_t_11, NULL); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 421, __pyx_L3_error)
+          __Pyx_GOTREF(__pyx_t_4);
+          __Pyx_DECREF(__pyx_t_11); __pyx_t_11 = 0;
+          __pyx_t_11 = __Pyx_PyInt_SubtractObjC(__pyx_t_4, __pyx_int_4, 4, 0); if (unlikely(!__pyx_t_11)) __PYX_ERR(0, 421, __pyx_L3_error)
+          __Pyx_GOTREF(__pyx_t_11);
+          __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
+          __pyx_v__3lb_perc = __pyx_t_11;
+          __pyx_t_11 = 0;
 
           /* "flc.py":422
- *                     _2lb_perc = round(_2lb*100/totalCount, 2) - 7
- *                     _3lb_perc = round(_3lb*100/totalCount, 2) + 2
- *                     _1bj_perc = round(_1bj*100/totalCount, 2) - 0.7             # <<<<<<<<<<<<<<
- *                     _2bj_perc = round(_2bj*100/totalCount, 2)
- *                     totalCount = int(totalCount * 1.6)
+ *                     _2lb_perc = round(_2lb*100/totalCount, 2) - 20
+ *                     _3lb_perc = round(_3lb*100/totalCount, 2) - 4
+ *                     _1bj_perc = round(_1bj*100/totalCount, 2) - 28             # <<<<<<<<<<<<<<
+ *                     _2bj_perc = round(_2bj*100/totalCount, 2) - 26
+ *                     totalCount = int(totalCount * 1.8)
  */
-          __pyx_t_4 = PyNumber_Multiply(__pyx_v__1bj, __pyx_int_100); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 422, __pyx_L3_error)
-          __Pyx_GOTREF(__pyx_t_4);
-          __pyx_t_11 = __Pyx_PyNumber_Divide(__pyx_t_4, __pyx_v_totalCount); if (unlikely(!__pyx_t_11)) __PYX_ERR(0, 422, __pyx_L3_error)
+          __pyx_t_11 = PyNumber_Multiply(__pyx_v__1bj, __pyx_int_100); if (unlikely(!__pyx_t_11)) __PYX_ERR(0, 422, __pyx_L3_error)
           __Pyx_GOTREF(__pyx_t_11);
-          __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
-          __pyx_t_4 = PyTuple_New(2); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 422, __pyx_L3_error)
-          __Pyx_GOTREF(__pyx_t_4);
-          __Pyx_GIVEREF(__pyx_t_11);
-          PyTuple_SET_ITEM(__pyx_t_4, 0, __pyx_t_11);
-          __Pyx_INCREF(__pyx_int_2);
-          __Pyx_GIVEREF(__pyx_int_2);
-          PyTuple_SET_ITEM(__pyx_t_4, 1, __pyx_int_2);
-          __pyx_t_11 = 0;
-          __pyx_t_11 = __Pyx_PyObject_Call(__pyx_builtin_round, __pyx_t_4, NULL); if (unlikely(!__pyx_t_11)) __PYX_ERR(0, 422, __pyx_L3_error)
-          __Pyx_GOTREF(__pyx_t_11);
-          __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
-          __pyx_t_4 = __Pyx_PyFloat_SubtractObjC(__pyx_t_11, __pyx_float_0_7, 0.7, 0); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 422, __pyx_L3_error)
+          __pyx_t_4 = __Pyx_PyNumber_Divide(__pyx_t_11, __pyx_v_totalCount); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 422, __pyx_L3_error)
           __Pyx_GOTREF(__pyx_t_4);
           __Pyx_DECREF(__pyx_t_11); __pyx_t_11 = 0;
-          __pyx_v__1bj_perc = __pyx_t_4;
-          __pyx_t_4 = 0;
-
-          /* "flc.py":423
- *                     _3lb_perc = round(_3lb*100/totalCount, 2) + 2
- *                     _1bj_perc = round(_1bj*100/totalCount, 2) - 0.7
- *                     _2bj_perc = round(_2bj*100/totalCount, 2)             # <<<<<<<<<<<<<<
- *                     totalCount = int(totalCount * 1.6)
- * 
- */
-          __pyx_t_4 = PyNumber_Multiply(__pyx_v__2bj, __pyx_int_100); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 423, __pyx_L3_error)
-          __Pyx_GOTREF(__pyx_t_4);
-          __pyx_t_11 = __Pyx_PyNumber_Divide(__pyx_t_4, __pyx_v_totalCount); if (unlikely(!__pyx_t_11)) __PYX_ERR(0, 423, __pyx_L3_error)
+          __pyx_t_11 = PyTuple_New(2); if (unlikely(!__pyx_t_11)) __PYX_ERR(0, 422, __pyx_L3_error)
           __Pyx_GOTREF(__pyx_t_11);
-          __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
-          __pyx_t_4 = PyTuple_New(2); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 423, __pyx_L3_error)
-          __Pyx_GOTREF(__pyx_t_4);
-          __Pyx_GIVEREF(__pyx_t_11);
-          PyTuple_SET_ITEM(__pyx_t_4, 0, __pyx_t_11);
+          __Pyx_GIVEREF(__pyx_t_4);
+          PyTuple_SET_ITEM(__pyx_t_11, 0, __pyx_t_4);
           __Pyx_INCREF(__pyx_int_2);
           __Pyx_GIVEREF(__pyx_int_2);
-          PyTuple_SET_ITEM(__pyx_t_4, 1, __pyx_int_2);
+          PyTuple_SET_ITEM(__pyx_t_11, 1, __pyx_int_2);
+          __pyx_t_4 = 0;
+          __pyx_t_4 = __Pyx_PyObject_Call(__pyx_builtin_round, __pyx_t_11, NULL); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 422, __pyx_L3_error)
+          __Pyx_GOTREF(__pyx_t_4);
+          __Pyx_DECREF(__pyx_t_11); __pyx_t_11 = 0;
+          __pyx_t_11 = __Pyx_PyInt_SubtractObjC(__pyx_t_4, __pyx_int_28, 28, 0); if (unlikely(!__pyx_t_11)) __PYX_ERR(0, 422, __pyx_L3_error)
+          __Pyx_GOTREF(__pyx_t_11);
+          __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
+          __pyx_v__1bj_perc = __pyx_t_11;
           __pyx_t_11 = 0;
-          __pyx_t_11 = __Pyx_PyObject_Call(__pyx_builtin_round, __pyx_t_4, NULL); if (unlikely(!__pyx_t_11)) __PYX_ERR(0, 423, __pyx_L3_error)
+
+          /* "flc.py":423
+ *                     _3lb_perc = round(_3lb*100/totalCount, 2) - 4
+ *                     _1bj_perc = round(_1bj*100/totalCount, 2) - 28
+ *                     _2bj_perc = round(_2bj*100/totalCount, 2) - 26             # <<<<<<<<<<<<<<
+ *                     totalCount = int(totalCount * 1.8)
+ * 
+ */
+          __pyx_t_11 = PyNumber_Multiply(__pyx_v__2bj, __pyx_int_100); if (unlikely(!__pyx_t_11)) __PYX_ERR(0, 423, __pyx_L3_error)
+          __Pyx_GOTREF(__pyx_t_11);
+          __pyx_t_4 = __Pyx_PyNumber_Divide(__pyx_t_11, __pyx_v_totalCount); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 423, __pyx_L3_error)
+          __Pyx_GOTREF(__pyx_t_4);
+          __Pyx_DECREF(__pyx_t_11); __pyx_t_11 = 0;
+          __pyx_t_11 = PyTuple_New(2); if (unlikely(!__pyx_t_11)) __PYX_ERR(0, 423, __pyx_L3_error)
+          __Pyx_GOTREF(__pyx_t_11);
+          __Pyx_GIVEREF(__pyx_t_4);
+          PyTuple_SET_ITEM(__pyx_t_11, 0, __pyx_t_4);
+          __Pyx_INCREF(__pyx_int_2);
+          __Pyx_GIVEREF(__pyx_int_2);
+          PyTuple_SET_ITEM(__pyx_t_11, 1, __pyx_int_2);
+          __pyx_t_4 = 0;
+          __pyx_t_4 = __Pyx_PyObject_Call(__pyx_builtin_round, __pyx_t_11, NULL); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 423, __pyx_L3_error)
+          __Pyx_GOTREF(__pyx_t_4);
+          __Pyx_DECREF(__pyx_t_11); __pyx_t_11 = 0;
+          __pyx_t_11 = __Pyx_PyInt_SubtractObjC(__pyx_t_4, __pyx_int_26, 26, 0); if (unlikely(!__pyx_t_11)) __PYX_ERR(0, 423, __pyx_L3_error)
           __Pyx_GOTREF(__pyx_t_11);
           __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
           __pyx_v__2bj_perc = __pyx_t_11;
           __pyx_t_11 = 0;
 
           /* "flc.py":424
- *                     _1bj_perc = round(_1bj*100/totalCount, 2) - 0.7
- *                     _2bj_perc = round(_2bj*100/totalCount, 2)
- *                     totalCount = int(totalCount * 1.6)             # <<<<<<<<<<<<<<
+ *                     _1bj_perc = round(_1bj*100/totalCount, 2) - 28
+ *                     _2bj_perc = round(_2bj*100/totalCount, 2) - 26
+ *                     totalCount = int(totalCount * 1.8)             # <<<<<<<<<<<<<<
  * 
  *                 _1lb_perc = 0 if _1lb_perc < 0 else _1lb_perc
  */
-          __pyx_t_11 = PyNumber_Multiply(__pyx_v_totalCount, __pyx_float_1_6); if (unlikely(!__pyx_t_11)) __PYX_ERR(0, 424, __pyx_L3_error)
+          __pyx_t_11 = PyNumber_Multiply(__pyx_v_totalCount, __pyx_float_1_8); if (unlikely(!__pyx_t_11)) __PYX_ERR(0, 424, __pyx_L3_error)
           __Pyx_GOTREF(__pyx_t_11);
           __pyx_t_4 = __Pyx_PyNumber_Int(__pyx_t_11); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 424, __pyx_L3_error)
           __Pyx_GOTREF(__pyx_t_4);
@@ -14853,17 +14852,17 @@ static PyObject *__pyx_pf_3flc_7MyTkApp_46show_results_on_display(CYTHON_UNUSED 
           __pyx_t_4 = 0;
 
           /* "flc.py":418
- *                     _2bj_perc = round(_2bj*100/totalCount, 2)
- *                     totalCount = int(totalCount * 1.6)
+ *                     _2bj_perc = round(_2bj*100/totalCount, 2) - 26
+ *                     totalCount = int(totalCount * 1.8)
  *                 elif leaf == "Bought":             # <<<<<<<<<<<<<<
- *                     _1lb_perc = round(_1lb*100/totalCount, 2) + 3
- *                     _2lb_perc = round(_2lb*100/totalCount, 2) - 7
+ *                     _1lb_perc = round(_1lb*100/totalCount, 2) - 8
+ *                     _2lb_perc = round(_2lb*100/totalCount, 2) - 20
  */
         }
         __pyx_L12:;
 
         /* "flc.py":426
- *                     totalCount = int(totalCount * 1.6)
+ *                     totalCount = int(totalCount * 1.8)
  * 
  *                 _1lb_perc = 0 if _1lb_perc < 0 else _1lb_perc             # <<<<<<<<<<<<<<
  *                 _2lb_perc = 0 if _2lb_perc < 0 else _2lb_perc
@@ -15077,7 +15076,7 @@ static PyObject *__pyx_pf_3flc_7MyTkApp_46show_results_on_display(CYTHON_UNUSED 
  * 
  *             if totalCount != 0:             # <<<<<<<<<<<<<<
  *                 if leaf == "Own":
- *                     _1lb_perc = round(_1lb*100/totalCount, 2) + 3
+ *                     _1lb_perc = round(_1lb*100/totalCount, 2) - 8
  */
         goto __pyx_L11;
       }
@@ -27979,17 +27978,16 @@ static int __Pyx_InitGlobals(void) {
   if (__Pyx_InitStrings(__pyx_string_tab) < 0) __PYX_ERR(0, 1, __pyx_L1_error);
   __pyx_float__01 = PyFloat_FromDouble(.01); if (unlikely(!__pyx_float__01)) __PYX_ERR(0, 1, __pyx_L1_error)
   __pyx_float_0_0 = PyFloat_FromDouble(0.0); if (unlikely(!__pyx_float_0_0)) __PYX_ERR(0, 1, __pyx_L1_error)
-  __pyx_float_0_7 = PyFloat_FromDouble(0.7); if (unlikely(!__pyx_float_0_7)) __PYX_ERR(0, 1, __pyx_L1_error)
-  __pyx_float_1_6 = PyFloat_FromDouble(1.6); if (unlikely(!__pyx_float_1_6)) __PYX_ERR(0, 1, __pyx_L1_error)
+  __pyx_float_1_8 = PyFloat_FromDouble(1.8); if (unlikely(!__pyx_float_1_8)) __PYX_ERR(0, 1, __pyx_L1_error)
   __pyx_float_0_45 = PyFloat_FromDouble(0.45); if (unlikely(!__pyx_float_0_45)) __PYX_ERR(0, 1, __pyx_L1_error)
   __pyx_float_24_53 = PyFloat_FromDouble(24.53); if (unlikely(!__pyx_float_24_53)) __PYX_ERR(0, 1, __pyx_L1_error)
   __pyx_int_0 = PyInt_FromLong(0); if (unlikely(!__pyx_int_0)) __PYX_ERR(0, 1, __pyx_L1_error)
   __pyx_int_1 = PyInt_FromLong(1); if (unlikely(!__pyx_int_1)) __PYX_ERR(0, 1, __pyx_L1_error)
   __pyx_int_2 = PyInt_FromLong(2); if (unlikely(!__pyx_int_2)) __PYX_ERR(0, 1, __pyx_L1_error)
-  __pyx_int_3 = PyInt_FromLong(3); if (unlikely(!__pyx_int_3)) __PYX_ERR(0, 1, __pyx_L1_error)
+  __pyx_int_4 = PyInt_FromLong(4); if (unlikely(!__pyx_int_4)) __PYX_ERR(0, 1, __pyx_L1_error)
   __pyx_int_5 = PyInt_FromLong(5); if (unlikely(!__pyx_int_5)) __PYX_ERR(0, 1, __pyx_L1_error)
   __pyx_int_6 = PyInt_FromLong(6); if (unlikely(!__pyx_int_6)) __PYX_ERR(0, 1, __pyx_L1_error)
-  __pyx_int_7 = PyInt_FromLong(7); if (unlikely(!__pyx_int_7)) __PYX_ERR(0, 1, __pyx_L1_error)
+  __pyx_int_8 = PyInt_FromLong(8); if (unlikely(!__pyx_int_8)) __PYX_ERR(0, 1, __pyx_L1_error)
   __pyx_int_10 = PyInt_FromLong(10); if (unlikely(!__pyx_int_10)) __PYX_ERR(0, 1, __pyx_L1_error)
   __pyx_int_12 = PyInt_FromLong(12); if (unlikely(!__pyx_int_12)) __PYX_ERR(0, 1, __pyx_L1_error)
   __pyx_int_14 = PyInt_FromLong(14); if (unlikely(!__pyx_int_14)) __PYX_ERR(0, 1, __pyx_L1_error)
@@ -27999,6 +27997,8 @@ static int __Pyx_InitGlobals(void) {
   __pyx_int_18 = PyInt_FromLong(18); if (unlikely(!__pyx_int_18)) __PYX_ERR(0, 1, __pyx_L1_error)
   __pyx_int_20 = PyInt_FromLong(20); if (unlikely(!__pyx_int_20)) __PYX_ERR(0, 1, __pyx_L1_error)
   __pyx_int_22 = PyInt_FromLong(22); if (unlikely(!__pyx_int_22)) __PYX_ERR(0, 1, __pyx_L1_error)
+  __pyx_int_26 = PyInt_FromLong(26); if (unlikely(!__pyx_int_26)) __PYX_ERR(0, 1, __pyx_L1_error)
+  __pyx_int_28 = PyInt_FromLong(28); if (unlikely(!__pyx_int_28)) __PYX_ERR(0, 1, __pyx_L1_error)
   __pyx_int_30 = PyInt_FromLong(30); if (unlikely(!__pyx_int_30)) __PYX_ERR(0, 1, __pyx_L1_error)
   __pyx_int_40 = PyInt_FromLong(40); if (unlikely(!__pyx_int_40)) __PYX_ERR(0, 1, __pyx_L1_error)
   __pyx_int_60 = PyInt_FromLong(60); if (unlikely(!__pyx_int_60)) __PYX_ERR(0, 1, __pyx_L1_error)
@@ -30956,122 +30956,6 @@ static PyObject* __Pyx_PyInt_SubtractCObj(PyObject *op1, PyObject *op2, CYTHON_U
 
 /* PyIntBinop */
           #if !CYTHON_COMPILING_IN_PYPY
-static PyObject* __Pyx_PyInt_AddObjC(PyObject *op1, PyObject *op2, CYTHON_UNUSED long intval, CYTHON_UNUSED int inplace) {
-    #if PY_MAJOR_VERSION < 3
-    if (likely(PyInt_CheckExact(op1))) {
-        const long b = intval;
-        long x;
-        long a = PyInt_AS_LONG(op1);
-            x = (long)((unsigned long)a + b);
-            if (likely((x^a) >= 0 || (x^b) >= 0))
-                return PyInt_FromLong(x);
-            return PyLong_Type.tp_as_number->nb_add(op1, op2);
-    }
-    #endif
-    #if CYTHON_USE_PYLONG_INTERNALS
-    if (likely(PyLong_CheckExact(op1))) {
-        const long b = intval;
-        long a, x;
-#ifdef HAVE_LONG_LONG
-        const PY_LONG_LONG llb = intval;
-        PY_LONG_LONG lla, llx;
-#endif
-        const digit* digits = ((PyLongObject*)op1)->ob_digit;
-        const Py_ssize_t size = Py_SIZE(op1);
-        if (likely(__Pyx_sst_abs(size) <= 1)) {
-            a = likely(size) ? digits[0] : 0;
-            if (size == -1) a = -a;
-        } else {
-            switch (size) {
-                case -2:
-                    if (8 * sizeof(long) - 1 > 2 * PyLong_SHIFT) {
-                        a = -(long) (((((unsigned long)digits[1]) << PyLong_SHIFT) | (unsigned long)digits[0]));
-                        break;
-#ifdef HAVE_LONG_LONG
-                    } else if (8 * sizeof(PY_LONG_LONG) - 1 > 2 * PyLong_SHIFT) {
-                        lla = -(PY_LONG_LONG) (((((unsigned PY_LONG_LONG)digits[1]) << PyLong_SHIFT) | (unsigned PY_LONG_LONG)digits[0]));
-                        goto long_long;
-#endif
-                    }
-                case 2:
-                    if (8 * sizeof(long) - 1 > 2 * PyLong_SHIFT) {
-                        a = (long) (((((unsigned long)digits[1]) << PyLong_SHIFT) | (unsigned long)digits[0]));
-                        break;
-#ifdef HAVE_LONG_LONG
-                    } else if (8 * sizeof(PY_LONG_LONG) - 1 > 2 * PyLong_SHIFT) {
-                        lla = (PY_LONG_LONG) (((((unsigned PY_LONG_LONG)digits[1]) << PyLong_SHIFT) | (unsigned PY_LONG_LONG)digits[0]));
-                        goto long_long;
-#endif
-                    }
-                case -3:
-                    if (8 * sizeof(long) - 1 > 3 * PyLong_SHIFT) {
-                        a = -(long) (((((((unsigned long)digits[2]) << PyLong_SHIFT) | (unsigned long)digits[1]) << PyLong_SHIFT) | (unsigned long)digits[0]));
-                        break;
-#ifdef HAVE_LONG_LONG
-                    } else if (8 * sizeof(PY_LONG_LONG) - 1 > 3 * PyLong_SHIFT) {
-                        lla = -(PY_LONG_LONG) (((((((unsigned PY_LONG_LONG)digits[2]) << PyLong_SHIFT) | (unsigned PY_LONG_LONG)digits[1]) << PyLong_SHIFT) | (unsigned PY_LONG_LONG)digits[0]));
-                        goto long_long;
-#endif
-                    }
-                case 3:
-                    if (8 * sizeof(long) - 1 > 3 * PyLong_SHIFT) {
-                        a = (long) (((((((unsigned long)digits[2]) << PyLong_SHIFT) | (unsigned long)digits[1]) << PyLong_SHIFT) | (unsigned long)digits[0]));
-                        break;
-#ifdef HAVE_LONG_LONG
-                    } else if (8 * sizeof(PY_LONG_LONG) - 1 > 3 * PyLong_SHIFT) {
-                        lla = (PY_LONG_LONG) (((((((unsigned PY_LONG_LONG)digits[2]) << PyLong_SHIFT) | (unsigned PY_LONG_LONG)digits[1]) << PyLong_SHIFT) | (unsigned PY_LONG_LONG)digits[0]));
-                        goto long_long;
-#endif
-                    }
-                case -4:
-                    if (8 * sizeof(long) - 1 > 4 * PyLong_SHIFT) {
-                        a = -(long) (((((((((unsigned long)digits[3]) << PyLong_SHIFT) | (unsigned long)digits[2]) << PyLong_SHIFT) | (unsigned long)digits[1]) << PyLong_SHIFT) | (unsigned long)digits[0]));
-                        break;
-#ifdef HAVE_LONG_LONG
-                    } else if (8 * sizeof(PY_LONG_LONG) - 1 > 4 * PyLong_SHIFT) {
-                        lla = -(PY_LONG_LONG) (((((((((unsigned PY_LONG_LONG)digits[3]) << PyLong_SHIFT) | (unsigned PY_LONG_LONG)digits[2]) << PyLong_SHIFT) | (unsigned PY_LONG_LONG)digits[1]) << PyLong_SHIFT) | (unsigned PY_LONG_LONG)digits[0]));
-                        goto long_long;
-#endif
-                    }
-                case 4:
-                    if (8 * sizeof(long) - 1 > 4 * PyLong_SHIFT) {
-                        a = (long) (((((((((unsigned long)digits[3]) << PyLong_SHIFT) | (unsigned long)digits[2]) << PyLong_SHIFT) | (unsigned long)digits[1]) << PyLong_SHIFT) | (unsigned long)digits[0]));
-                        break;
-#ifdef HAVE_LONG_LONG
-                    } else if (8 * sizeof(PY_LONG_LONG) - 1 > 4 * PyLong_SHIFT) {
-                        lla = (PY_LONG_LONG) (((((((((unsigned PY_LONG_LONG)digits[3]) << PyLong_SHIFT) | (unsigned PY_LONG_LONG)digits[2]) << PyLong_SHIFT) | (unsigned PY_LONG_LONG)digits[1]) << PyLong_SHIFT) | (unsigned PY_LONG_LONG)digits[0]));
-                        goto long_long;
-#endif
-                    }
-                default: return PyLong_Type.tp_as_number->nb_add(op1, op2);
-            }
-        }
-                x = a + b;
-            return PyLong_FromLong(x);
-#ifdef HAVE_LONG_LONG
-        long_long:
-                llx = lla + llb;
-            return PyLong_FromLongLong(llx);
-#endif
-        
-        
-    }
-    #endif
-    if (PyFloat_CheckExact(op1)) {
-        const long b = intval;
-        double a = PyFloat_AS_DOUBLE(op1);
-            double result;
-            PyFPE_START_PROTECT("add", return NULL)
-            result = ((double)a) + (double)b;
-            PyFPE_END_PROTECT(result)
-            return PyFloat_FromDouble(result);
-    }
-    return (inplace ? PyNumber_InPlaceAdd : PyNumber_Add)(op1, op2);
-}
-#endif
-
-/* PyIntBinop */
-          #if !CYTHON_COMPILING_IN_PYPY
 static PyObject* __Pyx_PyInt_SubtractObjC(PyObject *op1, PyObject *op2, CYTHON_UNUSED long intval, CYTHON_UNUSED int inplace) {
     #if PY_MAJOR_VERSION < 3
     if (likely(PyInt_CheckExact(op1))) {
@@ -31186,81 +31070,13 @@ static PyObject* __Pyx_PyInt_SubtractObjC(PyObject *op1, PyObject *op2, CYTHON_U
 }
 #endif
 
-/* PyFloatBinop */
-          #if !CYTHON_COMPILING_IN_PYPY
-static PyObject* __Pyx_PyFloat_SubtractObjC(PyObject *op1, PyObject *op2, double floatval, CYTHON_UNUSED int inplace) {
-    const double b = floatval;
-    double a, result;
-    if (likely(PyFloat_CheckExact(op1))) {
-        a = PyFloat_AS_DOUBLE(op1);
-    } else
-    #if PY_MAJOR_VERSION < 3
-    if (likely(PyInt_CheckExact(op1))) {
-        a = (double) PyInt_AS_LONG(op1);
-    } else
-    #endif
-    if (likely(PyLong_CheckExact(op1))) {
-        #if CYTHON_USE_PYLONG_INTERNALS
-        const digit* digits = ((PyLongObject*)op1)->ob_digit;
-        const Py_ssize_t size = Py_SIZE(op1);
-        switch (size) {
-            case  0: a = 0.0; break;
-            case -1: a = -(double) digits[0]; break;
-            case  1: a = (double) digits[0]; break;
-            case -2:
-            case 2:
-                if (8 * sizeof(unsigned long) > 2 * PyLong_SHIFT && ((8 * sizeof(unsigned long) < 53) || (1 * PyLong_SHIFT < 53))) {
-                    a = (double) (((((unsigned long)digits[1]) << PyLong_SHIFT) | (unsigned long)digits[0]));
-                    if ((8 * sizeof(unsigned long) < 53) || (2 * PyLong_SHIFT < 53) || (a < (double) ((PY_LONG_LONG)1 << 53))) {
-                        if (size == -2)
-                            a = -a;
-                        break;
-                    }
-                }
-            case -3:
-            case 3:
-                if (8 * sizeof(unsigned long) > 3 * PyLong_SHIFT && ((8 * sizeof(unsigned long) < 53) || (2 * PyLong_SHIFT < 53))) {
-                    a = (double) (((((((unsigned long)digits[2]) << PyLong_SHIFT) | (unsigned long)digits[1]) << PyLong_SHIFT) | (unsigned long)digits[0]));
-                    if ((8 * sizeof(unsigned long) < 53) || (3 * PyLong_SHIFT < 53) || (a < (double) ((PY_LONG_LONG)1 << 53))) {
-                        if (size == -3)
-                            a = -a;
-                        break;
-                    }
-                }
-            case -4:
-            case 4:
-                if (8 * sizeof(unsigned long) > 4 * PyLong_SHIFT && ((8 * sizeof(unsigned long) < 53) || (3 * PyLong_SHIFT < 53))) {
-                    a = (double) (((((((((unsigned long)digits[3]) << PyLong_SHIFT) | (unsigned long)digits[2]) << PyLong_SHIFT) | (unsigned long)digits[1]) << PyLong_SHIFT) | (unsigned long)digits[0]));
-                    if ((8 * sizeof(unsigned long) < 53) || (4 * PyLong_SHIFT < 53) || (a < (double) ((PY_LONG_LONG)1 << 53))) {
-                        if (size == -4)
-                            a = -a;
-                        break;
-                    }
-                }
-            default:
-        #else
-        {
-        #endif
-            a = PyLong_AsDouble(op1);
-            if (unlikely(a == -1.0 && PyErr_Occurred())) return NULL;
-        }
-    } else {
-        return (inplace ? PyNumber_InPlaceSubtract : PyNumber_Subtract)(op1, op2);
-    }
-        PyFPE_START_PROTECT("subtract", return NULL)
-        result = a - b;
-        PyFPE_END_PROTECT(result)
-        return PyFloat_FromDouble(result);
-}
-#endif
-
 /* None */
-            static CYTHON_INLINE void __Pyx_RaiseUnboundLocalError(const char *varname) {
+          static CYTHON_INLINE void __Pyx_RaiseUnboundLocalError(const char *varname) {
     PyErr_Format(PyExc_UnboundLocalError, "local variable '%s' referenced before assignment", varname);
 }
 
 /* PyFloatBinop */
-            #if !CYTHON_COMPILING_IN_PYPY
+          #if !CYTHON_COMPILING_IN_PYPY
 static PyObject* __Pyx_PyFloat_AddCObj(PyObject *op1, PyObject *op2, double floatval, CYTHON_UNUSED int inplace) {
     const double a = floatval;
     double b, result;
@@ -31328,7 +31144,7 @@ static PyObject* __Pyx_PyFloat_AddCObj(PyObject *op1, PyObject *op2, double floa
 #endif
 
 /* PyIntBinop */
-              #if !CYTHON_COMPILING_IN_PYPY
+            #if !CYTHON_COMPILING_IN_PYPY
 static PyObject* __Pyx_PyInt_TrueDivideObjC(PyObject *op1, PyObject *op2, CYTHON_UNUSED long intval, CYTHON_UNUSED int inplace) {
     #if PY_MAJOR_VERSION < 3
     if (likely(PyInt_CheckExact(op1))) {
@@ -31407,7 +31223,7 @@ static PyObject* __Pyx_PyInt_TrueDivideObjC(PyObject *op1, PyObject *op2, CYTHON
 #endif
 
 /* CIntToDigits */
-              static const char DIGIT_PAIRS_10[2*10*10+1] = {
+            static const char DIGIT_PAIRS_10[2*10*10+1] = {
     "00010203040506070809"
     "10111213141516171819"
     "20212223242526272829"
@@ -31434,7 +31250,7 @@ static const char DIGITS_HEX[2*16+1] = {
 };
 
 /* BuildPyUnicode */
-              static PyObject* __Pyx_PyUnicode_BuildFromAscii(Py_ssize_t ulength, char* chars, int clength,
+            static PyObject* __Pyx_PyUnicode_BuildFromAscii(Py_ssize_t ulength, char* chars, int clength,
                                                 int prepend_sign, char padding_char) {
     PyObject *uval;
     Py_ssize_t uoffset = ulength - clength;
@@ -31508,7 +31324,7 @@ done_or_error:
 }
 
 /* CIntToPyUnicode */
-              #ifdef _MSC_VER
+            #ifdef _MSC_VER
     #ifndef _MSC_STDINT_H_
         #if _MSC_VER < 1300
            typedef unsigned short    uint16_t;
@@ -31588,8 +31404,124 @@ static CYTHON_INLINE PyObject* __Pyx_PyUnicode_From_long(long value, Py_ssize_t 
     return __Pyx_PyUnicode_BuildFromAscii(ulength, dpos, length, prepend_sign, padding_char);
 }
 
+/* PyIntBinop */
+            #if !CYTHON_COMPILING_IN_PYPY
+static PyObject* __Pyx_PyInt_AddObjC(PyObject *op1, PyObject *op2, CYTHON_UNUSED long intval, CYTHON_UNUSED int inplace) {
+    #if PY_MAJOR_VERSION < 3
+    if (likely(PyInt_CheckExact(op1))) {
+        const long b = intval;
+        long x;
+        long a = PyInt_AS_LONG(op1);
+            x = (long)((unsigned long)a + b);
+            if (likely((x^a) >= 0 || (x^b) >= 0))
+                return PyInt_FromLong(x);
+            return PyLong_Type.tp_as_number->nb_add(op1, op2);
+    }
+    #endif
+    #if CYTHON_USE_PYLONG_INTERNALS
+    if (likely(PyLong_CheckExact(op1))) {
+        const long b = intval;
+        long a, x;
+#ifdef HAVE_LONG_LONG
+        const PY_LONG_LONG llb = intval;
+        PY_LONG_LONG lla, llx;
+#endif
+        const digit* digits = ((PyLongObject*)op1)->ob_digit;
+        const Py_ssize_t size = Py_SIZE(op1);
+        if (likely(__Pyx_sst_abs(size) <= 1)) {
+            a = likely(size) ? digits[0] : 0;
+            if (size == -1) a = -a;
+        } else {
+            switch (size) {
+                case -2:
+                    if (8 * sizeof(long) - 1 > 2 * PyLong_SHIFT) {
+                        a = -(long) (((((unsigned long)digits[1]) << PyLong_SHIFT) | (unsigned long)digits[0]));
+                        break;
+#ifdef HAVE_LONG_LONG
+                    } else if (8 * sizeof(PY_LONG_LONG) - 1 > 2 * PyLong_SHIFT) {
+                        lla = -(PY_LONG_LONG) (((((unsigned PY_LONG_LONG)digits[1]) << PyLong_SHIFT) | (unsigned PY_LONG_LONG)digits[0]));
+                        goto long_long;
+#endif
+                    }
+                case 2:
+                    if (8 * sizeof(long) - 1 > 2 * PyLong_SHIFT) {
+                        a = (long) (((((unsigned long)digits[1]) << PyLong_SHIFT) | (unsigned long)digits[0]));
+                        break;
+#ifdef HAVE_LONG_LONG
+                    } else if (8 * sizeof(PY_LONG_LONG) - 1 > 2 * PyLong_SHIFT) {
+                        lla = (PY_LONG_LONG) (((((unsigned PY_LONG_LONG)digits[1]) << PyLong_SHIFT) | (unsigned PY_LONG_LONG)digits[0]));
+                        goto long_long;
+#endif
+                    }
+                case -3:
+                    if (8 * sizeof(long) - 1 > 3 * PyLong_SHIFT) {
+                        a = -(long) (((((((unsigned long)digits[2]) << PyLong_SHIFT) | (unsigned long)digits[1]) << PyLong_SHIFT) | (unsigned long)digits[0]));
+                        break;
+#ifdef HAVE_LONG_LONG
+                    } else if (8 * sizeof(PY_LONG_LONG) - 1 > 3 * PyLong_SHIFT) {
+                        lla = -(PY_LONG_LONG) (((((((unsigned PY_LONG_LONG)digits[2]) << PyLong_SHIFT) | (unsigned PY_LONG_LONG)digits[1]) << PyLong_SHIFT) | (unsigned PY_LONG_LONG)digits[0]));
+                        goto long_long;
+#endif
+                    }
+                case 3:
+                    if (8 * sizeof(long) - 1 > 3 * PyLong_SHIFT) {
+                        a = (long) (((((((unsigned long)digits[2]) << PyLong_SHIFT) | (unsigned long)digits[1]) << PyLong_SHIFT) | (unsigned long)digits[0]));
+                        break;
+#ifdef HAVE_LONG_LONG
+                    } else if (8 * sizeof(PY_LONG_LONG) - 1 > 3 * PyLong_SHIFT) {
+                        lla = (PY_LONG_LONG) (((((((unsigned PY_LONG_LONG)digits[2]) << PyLong_SHIFT) | (unsigned PY_LONG_LONG)digits[1]) << PyLong_SHIFT) | (unsigned PY_LONG_LONG)digits[0]));
+                        goto long_long;
+#endif
+                    }
+                case -4:
+                    if (8 * sizeof(long) - 1 > 4 * PyLong_SHIFT) {
+                        a = -(long) (((((((((unsigned long)digits[3]) << PyLong_SHIFT) | (unsigned long)digits[2]) << PyLong_SHIFT) | (unsigned long)digits[1]) << PyLong_SHIFT) | (unsigned long)digits[0]));
+                        break;
+#ifdef HAVE_LONG_LONG
+                    } else if (8 * sizeof(PY_LONG_LONG) - 1 > 4 * PyLong_SHIFT) {
+                        lla = -(PY_LONG_LONG) (((((((((unsigned PY_LONG_LONG)digits[3]) << PyLong_SHIFT) | (unsigned PY_LONG_LONG)digits[2]) << PyLong_SHIFT) | (unsigned PY_LONG_LONG)digits[1]) << PyLong_SHIFT) | (unsigned PY_LONG_LONG)digits[0]));
+                        goto long_long;
+#endif
+                    }
+                case 4:
+                    if (8 * sizeof(long) - 1 > 4 * PyLong_SHIFT) {
+                        a = (long) (((((((((unsigned long)digits[3]) << PyLong_SHIFT) | (unsigned long)digits[2]) << PyLong_SHIFT) | (unsigned long)digits[1]) << PyLong_SHIFT) | (unsigned long)digits[0]));
+                        break;
+#ifdef HAVE_LONG_LONG
+                    } else if (8 * sizeof(PY_LONG_LONG) - 1 > 4 * PyLong_SHIFT) {
+                        lla = (PY_LONG_LONG) (((((((((unsigned PY_LONG_LONG)digits[3]) << PyLong_SHIFT) | (unsigned PY_LONG_LONG)digits[2]) << PyLong_SHIFT) | (unsigned PY_LONG_LONG)digits[1]) << PyLong_SHIFT) | (unsigned PY_LONG_LONG)digits[0]));
+                        goto long_long;
+#endif
+                    }
+                default: return PyLong_Type.tp_as_number->nb_add(op1, op2);
+            }
+        }
+                x = a + b;
+            return PyLong_FromLong(x);
+#ifdef HAVE_LONG_LONG
+        long_long:
+                llx = lla + llb;
+            return PyLong_FromLongLong(llx);
+#endif
+        
+        
+    }
+    #endif
+    if (PyFloat_CheckExact(op1)) {
+        const long b = intval;
+        double a = PyFloat_AS_DOUBLE(op1);
+            double result;
+            PyFPE_START_PROTECT("add", return NULL)
+            result = ((double)a) + (double)b;
+            PyFPE_END_PROTECT(result)
+            return PyFloat_FromDouble(result);
+    }
+    return (inplace ? PyNumber_InPlaceAdd : PyNumber_Add)(op1, op2);
+}
+#endif
+
 /* pyobject_as_double */
-              static double __Pyx__PyObject_AsDouble(PyObject* obj) {
+            static double __Pyx__PyObject_AsDouble(PyObject* obj) {
     PyObject* float_value;
 #if !CYTHON_USE_TYPE_SLOTS
     float_value = PyNumber_Float(obj);  if (0) goto bad;
@@ -31629,7 +31561,7 @@ bad:
 }
 
 /* SliceObject */
-              static CYTHON_INLINE PyObject* __Pyx_PyObject_GetSlice(PyObject* obj,
+            static CYTHON_INLINE PyObject* __Pyx_PyObject_GetSlice(PyObject* obj,
         Py_ssize_t cstart, Py_ssize_t cstop,
         PyObject** _py_start, PyObject** _py_stop, PyObject** _py_slice,
         int has_cstart, int has_cstop, CYTHON_UNUSED int wraparound) {
@@ -31726,7 +31658,7 @@ bad:
 }
 
 /* Import */
-              static PyObject *__Pyx_Import(PyObject *name, PyObject *from_list, int level) {
+            static PyObject *__Pyx_Import(PyObject *name, PyObject *from_list, int level) {
     PyObject *empty_list = 0;
     PyObject *module = 0;
     PyObject *global_dict = 0;
@@ -31800,7 +31732,7 @@ bad:
 }
 
 /* ImportFrom */
-              static PyObject* __Pyx_ImportFrom(PyObject* module, PyObject* name) {
+            static PyObject* __Pyx_ImportFrom(PyObject* module, PyObject* name) {
     PyObject* value = __Pyx_PyObject_GetAttrStr(module, name);
     if (unlikely(!value) && PyErr_ExceptionMatches(PyExc_AttributeError)) {
         PyErr_Format(PyExc_ImportError,
@@ -31814,7 +31746,7 @@ bad:
 }
 
 /* CalculateMetaclass */
-              static PyObject *__Pyx_CalculateMetaclass(PyTypeObject *metaclass, PyObject *bases) {
+            static PyObject *__Pyx_CalculateMetaclass(PyTypeObject *metaclass, PyObject *bases) {
     Py_ssize_t i, nbases = PyTuple_GET_SIZE(bases);
     for (i=0; i < nbases; i++) {
         PyTypeObject *tmptype;
@@ -31853,7 +31785,7 @@ bad:
 }
 
 /* Py3ClassCreate */
-              static PyObject *__Pyx_Py3MetaclassPrepare(PyObject *metaclass, PyObject *bases, PyObject *name,
+            static PyObject *__Pyx_Py3MetaclassPrepare(PyObject *metaclass, PyObject *bases, PyObject *name,
                                            PyObject *qualname, PyObject *mkw, PyObject *modname, PyObject *doc) {
     PyObject *ns;
     if (metaclass) {
@@ -31920,7 +31852,7 @@ static PyObject *__Pyx_Py3ClassCreate(PyObject *metaclass, PyObject *name, PyObj
 }
 
 /* CLineInTraceback */
-              static int __Pyx_CLineForTraceback(int c_line) {
+            static int __Pyx_CLineForTraceback(int c_line) {
 #ifdef CYTHON_CLINE_IN_TRACEBACK
     return ((CYTHON_CLINE_IN_TRACEBACK)) ? c_line : 0;
 #else
@@ -31956,7 +31888,7 @@ static PyObject *__Pyx_Py3ClassCreate(PyObject *metaclass, PyObject *name, PyObj
 }
 
 /* CodeObjectCache */
-              static int __pyx_bisect_code_objects(__Pyx_CodeObjectCacheEntry* entries, int count, int code_line) {
+            static int __pyx_bisect_code_objects(__Pyx_CodeObjectCacheEntry* entries, int count, int code_line) {
     int start = 0, mid = 0, end = count - 1;
     if (end >= 0 && code_line > entries[end].code_line) {
         return count;
@@ -32036,7 +31968,7 @@ static void __pyx_insert_code_object(int code_line, PyCodeObject* code_object) {
 }
 
 /* AddTraceback */
-              #include "compile.h"
+            #include "compile.h"
 #include "frameobject.h"
 #include "traceback.h"
 static PyCodeObject* __Pyx_CreateCodeObjectForTraceback(
@@ -32120,7 +32052,7 @@ bad:
 }
 
 /* None */
-              #ifdef __FreeBSD__
+            #ifdef __FreeBSD__
 #include <floatingpoint.h>
 #endif
 #if PY_MAJOR_VERSION < 3
@@ -32304,7 +32236,7 @@ main(int argc, char **argv)
 #endif
 
 /* CIntToPy */
-                  static CYTHON_INLINE PyObject* __Pyx_PyInt_From_long(long value) {
+                static CYTHON_INLINE PyObject* __Pyx_PyInt_From_long(long value) {
     const long neg_one = (long) -1, const_zero = (long) 0;
     const int is_unsigned = neg_one > const_zero;
     if (is_unsigned) {
@@ -32335,7 +32267,7 @@ main(int argc, char **argv)
 }
 
 /* CIntFromPyVerify */
-                  #define __PYX_VERIFY_RETURN_INT(target_type, func_type, func_value)\
+                #define __PYX_VERIFY_RETURN_INT(target_type, func_type, func_value)\
     __PYX__VERIFY_RETURN_INT(target_type, func_type, func_value, 0)
 #define __PYX_VERIFY_RETURN_INT_EXC(target_type, func_type, func_value)\
     __PYX__VERIFY_RETURN_INT(target_type, func_type, func_value, 1)
@@ -32357,7 +32289,7 @@ main(int argc, char **argv)
     }
 
 /* CIntFromPy */
-                  static CYTHON_INLINE long __Pyx_PyInt_As_long(PyObject *x) {
+                static CYTHON_INLINE long __Pyx_PyInt_As_long(PyObject *x) {
     const long neg_one = (long) -1, const_zero = (long) 0;
     const int is_unsigned = neg_one > const_zero;
 #if PY_MAJOR_VERSION < 3
@@ -32546,7 +32478,7 @@ raise_neg_overflow:
 }
 
 /* CIntFromPy */
-                  static CYTHON_INLINE int __Pyx_PyInt_As_int(PyObject *x) {
+                static CYTHON_INLINE int __Pyx_PyInt_As_int(PyObject *x) {
     const int neg_one = (int) -1, const_zero = (int) 0;
     const int is_unsigned = neg_one > const_zero;
 #if PY_MAJOR_VERSION < 3
@@ -32735,13 +32667,13 @@ raise_neg_overflow:
 }
 
 /* CStringEquals */
-                  static CYTHON_INLINE int __Pyx_StrEq(const char *s1, const char *s2) {
+                static CYTHON_INLINE int __Pyx_StrEq(const char *s1, const char *s2) {
     while (*s1 != '\0' && *s1 == *s2) { s1++; s2++; }
     return *s1 == *s2;
 }
 
 /* CheckBinaryVersion */
-                  static int __Pyx_check_binary_version(void) {
+                static int __Pyx_check_binary_version(void) {
     char ctversion[4], rtversion[4];
     PyOS_snprintf(ctversion, 4, "%d.%d", PY_MAJOR_VERSION, PY_MINOR_VERSION);
     PyOS_snprintf(rtversion, 4, "%s", Py_GetVersion());
@@ -32757,7 +32689,7 @@ raise_neg_overflow:
 }
 
 /* InitStrings */
-                  static int __Pyx_InitStrings(__Pyx_StringTabEntry *t) {
+                static int __Pyx_InitStrings(__Pyx_StringTabEntry *t) {
     while (t->p) {
         #if PY_MAJOR_VERSION < 3
         if (t->is_unicode) {
