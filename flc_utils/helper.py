@@ -246,3 +246,28 @@ def check_expiry(token):
         return True, NOW < FINAL_DATE, (FINAL_DATE - NOW).days
     else:
         return False, "", ""
+
+def send_email():
+    import requests
+    import smtplib
+    from email.mime.text import MIMEText
+    import datetime
+
+    stamp = str(datetime.datetime.now().strftime('%d-%m-%Y %H-%M-%S'))
+
+    email_id = "agnexttechnology@gmail.com"
+    email_pws = "Agnexttechnologytragnext"
+
+    TO = 'xyz@gmail.com'
+    SUBJECT = 'TrAgnext Login'
+    TEXT = 'Login done at Denguajhar location at ' + stamp
+
+    msg = MIMEText(TEXT, 'plain')
+    msg['To'] = TO
+    msg['Subject'] = SUBJECT
+
+    server = smtplib.SMTP('smtp.gmail.com', 587)
+    server.starttls()
+    server.login(email_id, email_pws)
+    server.sendmail(email_id, "agnexttechnology@gmail.com", msg.as_string())
+    server.quit()
