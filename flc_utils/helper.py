@@ -151,7 +151,7 @@ def inst_centers_list_qualix(region_id, customer_id, token):
 
 def is_internet_available():
     try:
-        urlopen("http://216.58.192.142", timeout=10)
+        urlopen("https://google.com", timeout=10)
         return True
     except Exception as e:
         return False

@@ -146,7 +146,7 @@ class MyTkApp(tk.Frame):
 
         self.welcome_text = Label(self.window, text="Welcome, ", font=('times', 15, 'bold'), bg="#f7f0f5")
         self.entered = tk.Button(self.window, text="Start FLC", command=self.details_verify, fg="white", bg="#539051", width=int(configparser.get('gui-config', 'signin_btn_width')),height=int(configparser.get('gui-config', 'signin_btn_height')), font=('times', 16, 'bold'))
-        self.formula = Label(self.window, text="FLC = 1LB + 2LB + 1Banjhi + 0.50 * 3LB", font=("Helvetica", 15), background='white')
+        self.formula = Label(self.window, text="FLC = 1LB + 2LB + 1Banjhi + 0.67 * 3LB", font=("Helvetica", 15), background='white')
         self.warning_sign = Label(self.window, text="", font=('times', 15, 'bold'), fg="red", bg="white")
 
         img = ImageTk.PhotoImage(Image.open(configparser.get('gui-config', 'logo')))
@@ -569,16 +569,16 @@ class MyTkApp(tk.Frame):
             if totalCount != 0:
                 if leaf == "Own":
                     _1lb_perc = round(_1lb*100/totalCount, 2) + 3
-                    _2lb_perc = round(_2lb*100/totalCount, 2) - 15
-                    _3lb_perc = round(_3lb*100/totalCount, 2) - 7
-                    _1bj_perc = round(_1bj*100/totalCount, 2)
+                    _2lb_perc = round(_2lb*100/totalCount, 2) - 7
+                    _3lb_perc = round(_3lb*100/totalCount, 2) + 2
+                    _1bj_perc = round(_1bj*100/totalCount, 2) + 0.7
                     _2bj_perc = round(_2bj*100/totalCount, 2)
                     totalCount = int(totalCount * 1.6)
                 elif leaf == "--":
                     _1lb_perc = round(_1lb*100/totalCount, 2) + 3
-                    _2lb_perc = round(_2lb*100/totalCount, 2) - 15
-                    _3lb_perc = round(_3lb*100/totalCount, 2) - 7
-                    _1bj_perc = round(_1bj*100/totalCount, 2)
+                    _2lb_perc = round(_2lb*100/totalCount, 2) - 10
+                    _3lb_perc = round(_3lb*100/totalCount, 2) - 4
+                    _1bj_perc = round(_1bj*100/totalCount, 2) + 0.7
                     _2bj_perc = round(_2bj*100/totalCount, 2)
                     totalCount = int(totalCount * 1.6)
 
@@ -587,7 +587,7 @@ class MyTkApp(tk.Frame):
                 _3lb_perc = 0 if _3lb_perc < 0 else _3lb_perc
                 _1bj_perc = 0 if _1bj_perc < 0 else _1bj_perc
                 _2bj_perc = 0 if _2bj_perc < 0 else _2bj_perc
-                _flc_perc = _1lb_perc + _2lb_perc + _1bj_perc + (0.50 * _3lb_perc)
+                _flc_perc = _1lb_perc + _2lb_perc + _1bj_perc + (0.67 * _3lb_perc)
                 _flc_perc = 100 if _flc_perc > 100 else _flc_perc
                 _coarse_perc = 100 - _flc_perc
             else:
