@@ -312,7 +312,7 @@ class MyTkApp(tk.Frame):
             p = subprocess.Popen("exec " + command, stdout= subprocess.PIPE, shell=True)
             p.wait()
             #os.rename("flc_utils/trainVideo/testing/result.avi", "flc_utils/trainVideo/testing/" + datetime.datetime.now().strftime("%d-%m-%Y %H:%M:%S") + "_" + str(self.customer_id) + ".avi")
-            #self.moisture_loss_count()
+            self.moisture_loss_count()
             self.show_results_on_display()
             self.endRecord.place(x=int(configparser.get('gui-config', 'endrecord_btn_x')), y=int(configparser.get('gui-config', 'endrecord_btn_y')))
         except Exception as e:
@@ -609,10 +609,10 @@ class MyTkApp(tk.Frame):
             
             if totalCount != 0:
                 if leaf == "Own":
-                    _1lb_perc = round(_1lb*100/totalCount, 2) + 2
-                    _2lb_perc = round(_2lb*100/totalCount, 2) - 15
+                    _1lb_perc = round(_1lb*100/totalCount, 2) - 5
+                    _2lb_perc = round(_2lb*100/totalCount, 2) - 20
                     _3lb_perc = round(_3lb*100/totalCount, 2) - 5
-                    _1bj_perc = round(_1bj*100/totalCount, 2)
+                    _1bj_perc = round(_1bj*100/totalCount, 2) - 2
                     _2bj_perc = round(_2bj*100/totalCount, 2)
                     totalCount = int(totalCount * 1.6)
                 elif leaf == "Bought":
