@@ -20,7 +20,7 @@ from google.auth.transport.requests import Request
 
 from discord_webhook import DiscordWebhook
 
-webhook_url = "https://discordapp.com/api/webhooks/885786784427024384/JDC-nMpDFySY1HBndQJQ7OR2N09WGnV60ed8Zs49DmFCxFj8CerDLS2soEHAlZlVDXOX"
+webhook_url = "https://discordapp.com/api/webhooks/882178629088468992/DX49ncnMQXfC5HuU8x52m-B3B2M38NZs4l6WD2TFj-0gS4rX9cA5j2zmOy5dpmwb640I"
 
 configparser = configparser.RawConfigParser()
 configparser.read('flc_utils/screens/touchScreen/gui.cfg')
@@ -111,7 +111,7 @@ def qualix_api(token, payload, new_fields, leaf_type):
     mp_encoder = MultipartEncoder(
             fields={
                 "data": data_,
-                "analyses": analyses_,
+                "analytics": analyses_,
                    }
                 )
     response = requests.post(
