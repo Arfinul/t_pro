@@ -616,7 +616,7 @@ class MyTkApp(tk.Frame):
                     _2bj_perc = round(_2bj*100/totalCount, 2)
                     totalCount = int(totalCount * 1.6)
                 elif leaf == "Bought":
-                    _1lb_perc = round(_1lb*100/totalCount, 2)
+                    _1lb_perc = round(_1lb*100/totalCount, 2) - 3
                     _2lb_perc = round(_2lb*100/totalCount, 2) - 25
                     _3lb_perc = round(_3lb*100/totalCount, 2) - 4
                     _1bj_perc = round(_1bj*100/totalCount, 2)
