@@ -484,7 +484,7 @@ int main(int argc, char *argv[])
     auto str = oss.str();
 
     std::string out_videofile = "flc_utils/trainVideo/testing/result.avi";
-    bool const save_output_videofile = false;   // true - for history
+    bool const save_output_videofile = true;   // true - for history
     bool const send_network = false;        // true - for remote detection
     bool const use_kalman_filter = true;   // true - for stationary camera
 
