@@ -1,12 +1,12 @@
-import sys
+import sys, datetime, time
 import os
 import threading
 from os import listdir
 from os.path import isfile, join
-
+import ntpath
 import math
 from hurry.filesize import size
-
+from sh import git
 import boto3
 from boto3.s3.transfer import TransferConfig
 
@@ -59,6 +59,41 @@ def get_size(start_path = SCAN_VID_DIR):
                 total_size += os.path.getsize(fp)
     return total_size
 
+def get_files_by_file_size(dirname, reverse=True):
+    """ Return list of file paths in directory sorted by file size """
+
+    # Get list of files
+    filepaths = []
+    file_names = []
+    for basename in os.listdir(dirname):
+        filename = os.path.join(dirname, basename)
+        if os.path.isfile(filename):
+            filepaths.append(filename)
+
+    # Re-populate list with filename, size tuples
+    for i in range(len(filepaths)):
+        filepaths[i] = (filepaths[i], os.path.getsize(filepaths[i]))
+
+    # Sort list by file size
+    # If reverse=True sort from largest to smallest
+    # If reverse=False sort from smallest to largest
+    filepaths.sort(key=lambda filename: filename[1], reverse=reverse)
+
+    # Re-populate list with just filenames
+    for i in range(len(filepaths)):
+    	# print(filepaths[i][0])
+        filepaths[i] = filepaths[i][0]
+        file_names.append(ntpath.basename(filepaths[i]))
+
+    return file_names
+
+def track_uploading(file_name_, file_size_, time_):
+    f = open('s3_upload_info.csv','a')
+    client_ = "Arfin_Agnext"
+    dt_ = datetime.datetime.now().strftime("%d-%m-%Y %H:%M:%S")
+    f.write(f"{client_},{dt_},{file_name_},{file_size_},{time_}\n")
+    f.close()
+
 # File operation to delete or list or whatever
 def fileOps():
     no_of_files = 0
@@ -71,9 +106,14 @@ def fileOps():
                         if os.path.isfile(os.path.join(SCAN_VID_DIR, name))])
         if no_of_files > 0:
             # Get list of all the files
-            list_of_files = os.listdir(SCAN_VID_DIR)
+            # list_of_files = os.listdir(SCAN_VID_DIR)
+            list_of_files = get_files_by_file_size(SCAN_VID_DIR)
             while no_of_files > 0:
+                start = time.time()
+                file_size_ = os.path.getsize(os.path.join(SCAN_VID_DIR,list_of_files[no_of_files - 1]))/(1024*1024)
                 uploadVidsToS3(list_of_files[no_of_files - 1])
+                end = time.time()
+                track_uploading(list_of_files[no_of_files - 1],round(file_size_,2),round(end-start,2))
                 os.remove(os.path.join(SCAN_VID_DIR, list_of_files[no_of_files - 1]))
                 no_of_files -= 1
             
@@ -103,33 +143,25 @@ def uploadVidsToS3(file_to_upload):
     # 
     # To make it more effiecient, depending upon the internet speed
     #   we can paralellize or serialize the upload for multiple files
-    #
-    # For now its serially
+
     s3_client.upload_file(
             file, 
-            S3_BUCKET, 'Nagrijuli/{}'.format(key),
+            S3_BUCKET, 'Arfin_Agnext/{}'.format(key),
             ExtraArgs={'ContentType': 'video/mp4'},
             Config = config,
             Callback = ProgressPercentage(file_to_upload)
             )
 
 # Main method to call
-fileOps()
+SCAN_VID_DIR = os.path.join(os.environ['HOME'], "Documents","tragnext","flc_utils","trainVideo","testing")
 
-
-
-# import os, csv, dic
-# csv_path = os.path.join(os.environ['HOME'], "Documents","tragnext", "s3_upload.csv")
-# file_exists = os.path.isfile(filename)
-# csv_path = os.path.isfile('result.csv')
-# if not os.path.exists(csv_path):
-#     with open (csv_path, 'a') as csvfile:
-# 	    # headers = ['Client', 'Size', 'Time', 'S3_Bucket_Folder']
-# 	    headers = ['TimeStamp', 'light', 'Proximity']
-# 	    writer = csv.DictWriter(csvfile, delimiter=',', lineterminator='\n',fieldnames=headers)
-
-#     if not csv_path:
-#         writer.writeheader()  # file doesn't exist yet, write a header
-
-#     writer.writerow({'TimeStamp': dic['ts'], 'light': dic['light'], 'Proximity': dic['prox']})
-
+path_to_watch = SCAN_VID_DIR
+print('S3 upload started ....')
+before = dict ([(f, None) for f in os.listdir (path_to_watch)])
+while 1:
+        after = dict ([(f, None) for f in os.listdir (path_to_watch)])
+        added = [f for f in after if not f in before]
+        if added:
+                fileOps()
+        else:
+             before = after
