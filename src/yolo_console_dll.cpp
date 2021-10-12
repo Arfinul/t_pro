@@ -553,6 +553,10 @@ int main(int argc, char *argv[])
                 cv::VideoCapture cap;
                 if (filename == "web_camera") {
                     cap.open(0);
+		    cap.set(cv::CAP_PROP_FRAME_WIDTH,640);
+		    cap.set(cv::CAP_PROP_FRAME_HEIGHT,480);
+		    //cap.set(cv::CAP_PROP_CONVERT_RGB , false);
+		    cap.set(cv::CAP_PROP_FPS, 120);
                     cap >> cur_frame;
                 } else if (!use_zed_camera) {
                     cap.open(filename);
