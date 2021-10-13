@@ -252,7 +252,7 @@ class MyTkApp(tk.Frame):
             p = subprocess.Popen("exec " + command, stdout= subprocess.PIPE, shell=True)
             p.wait()
             os.rename("flc_utils/trainVideo/testing/result.avi", "flc_utils/trainVideo/testing/" + datetime.datetime.now().strftime("%d-%m-%Y %H:%M:%S") + "_" + str(self.customer_id) + ".avi")
-            #self.moisture_loss_count()
+            self.moisture_loss_count()
             self.show_results_on_display()
             self.endRecord.place(x=int(configparser.get('gui-config', 'endrecord_btn_x')), y=int(configparser.get('gui-config', 'endrecord_btn_y')))
         except Exception as e:
@@ -749,36 +749,32 @@ class MyTkApp(tk.Frame):
         except Exception as e:
             logger.exception(str('Exception occured in "login_success" function\nError message:' + str(e)))
     
-    def get_weight_from_scale(self, timeoutVar_seconds):
-        buffer = ""
-        weight_list = []
+    def get_weight_from_scale(self):
+            buffer = ''
+            weight_list = []
         # Get values for 30 x 0.2 = 6 seconds
-        try:
-            port = serial.Serial("/dev/ttyUSB0", baudrate=19200)
-            timeout = timeoutVar_seconds * 5
-            max_data = 0
-            while timeout:
-                ser_bytes = port.readline(10)
-                ser_bytes = ser_bytes.replace(b'L', b'')
-                decoded_bytes = float(ser_bytes[0:len(ser_bytes) - 2].decode("utf-8"))
-                if decoded_bytes > max_data:
-                    max_data = decoded_bytes
-                    timeout = timeout - 1
-                    time.sleep(.01)
-
-            port.close()
-            return max_data
-        except:
+        #try:
+            ser = serial.Serial('/dev/ttyUSB0', 19200)
+            t_end = time.time() + 30 * 0.2
+            while time.time() < t_end:
+                one_byte = ser.read(1)
+                buffer += one_byte.decode("ascii")
+            weights_list = re.findall(r"[-+]?\d*\.\d+|\d+",buffer)
+            filtered_wt = max(set(weights_list), key=weight_list.count)
+            weight_to_float = float(filtered_wt)
+            messagebox.showinfo("Weight:", weight_to_float)
+            ser.close()
+            return weight_to_float
+        #except:
             self.show_error_msg("Connect Weighing Scale")
-            print("Weighing scale Serial ERROR")
-    
+            print("Weighing scale Serial ERROR") 
     # Initial Weight wrapepr
     def get_initial_weight(self):
-        self.initial_weight = self.get_weight_from_scale(6)
+        self.initial_weight = self.get_weight_from_scale()
 
     # Final Weight wrapper
     def get_final_weight(self):
-        self.final_weight = self.get_weight_from_scale(6)
+        self.final_weight = self.get_weight_from_scale()
 
     # Moisture Loss Formula
     def moisture_loss_count(self):
