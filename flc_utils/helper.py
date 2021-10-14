@@ -85,6 +85,7 @@ def qualix_api(token, payload, new_fields, leaf_type):
                     "weight": str(new_fields['lot_weight']),
                     "commodity_category_id":"2",
                     "commodity_name":"Tea",
+                    "created_on":str(current_milli_time())
                     })
     elif leaf_type == "Own":
         data_ = json.dumps({
@@ -97,7 +98,8 @@ def qualix_api(token, payload, new_fields, leaf_type):
                     "quantity_unit": "kg",
                     "weight": str(new_fields['lot_weight']),
                     "commodity_category_id":"2",
-                    "commodity_name":"Tea",
+                    "commodity_name":"Tea",                
+                    "created_on":str(current_milli_time())
                     })
     data_ = data_.replace("'", '"')
     print("DEBUG: " + data_)
@@ -115,8 +117,7 @@ def qualix_api(token, payload, new_fields, leaf_type):
                    }
                 )
     response = requests.post(
-            #'http://70.37.95.226:7019/api/scan',
-            'http://tea.qualix.ai:9994/api/scan/post-tea',
+            'http://20.204.98.119:7007/api/scan/post-tea',
             data=mp_encoder,
             headers={'Content-Type': mp_encoder.content_type,
                      "Authorization": "Bearer " + token
@@ -136,8 +137,7 @@ def login_api_qualix(username, password):
         querystring = {"response_type":"code",
                         "client_id": "client-mobile"
                         }
-        response = session.get("http://tea.qualix.ai:9994/oauth/authorize", params=querystring)
-        #response = session.get("http://23.98.216.140:8071/oauth/authorize", params=querystring)
+        response = session.get("http://20.204.98.119:7007/oauth/authorize", params=querystring)
 
         print("OAUTH DBG: "+ str(response))
 
@@ -153,8 +153,7 @@ def login_api_qualix(username, password):
         headers={'Content-Type': mp_encoder.content_type}
         querystring = {"bearer":"mobile"}
         response = session.post(
-                    #'http://23.98.216.140:8071/login',
-                    'http://tea.qualix.ai:9994/login',
+                    'http://20.204.98.119:7007/login'    
                     data=mp_encoder,
                     params=querystring,
                     headers=headers,
@@ -172,6 +171,9 @@ def login_api_qualix(username, password):
         return True, access_token, customer_id, first_name
     except:
         return False, access_token, customer_id, first_name
+
+def current_milli_time():
+    return round(time.time() * 1000)
 
 def regions_list_qualix(customer_id, token):
     region_names, region_ids = [], []
