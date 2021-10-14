@@ -153,7 +153,7 @@ def login_api_qualix(username, password):
         headers={'Content-Type': mp_encoder.content_type}
         querystring = {"bearer":"mobile"}
         response = session.post(
-                    'http://20.204.98.119:7007/login'    
+                    'http://20.204.98.119:7007/login', 
                     data=mp_encoder,
                     params=querystring,
                     headers=headers,
