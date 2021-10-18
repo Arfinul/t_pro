@@ -21,7 +21,7 @@ import serial
 import time
 import re
 
-os.chdir("/home/agnext/Documents/tragnext")
+os.chdir("/home/nvidia/Documents/tragnext")
 
 logging.basicConfig(filename='server_logs.log',
                     filemode='a',
@@ -46,7 +46,7 @@ configparser.read('flc_utils/screens/touchScreen/gui.cfg')
 USE_INTERNET = configparser.get('gui-config', 'internet')
 
 cmd = """
-export LD_LIBRARY_PATH=/home/agnext/Documents/tragnext/
+export LD_LIBRARY_PATH=/home/nvidia/Documents/tragnext/
 ./uselib cfg/jorhat_Dec.names cfg/jorhat_Dec.cfg weights/jorhat_Dec_final.weights web_camera > output.txt
 """
 
@@ -664,7 +664,7 @@ class MyTkApp(tk.Frame):
             f.write(f"{dt_},{flc_},{coarse_},{_1lbp},{_2lbp},{_3lbp},{_1bjp},{_2bjp},{total_},{leaf},{_flc_perc_by_weight},{_coarse_perc_by_weight},{_mlc_val_csv},{_ini_wt_csv},{_fin_wt_csv}\n")
             f.close()
             
-            r = open('/home/agnext/Desktop/results.csv','a')
+            r = open('/home/nvidia/Desktop/results.csv','a')
             r.write(f"{dt_},{flc_},{coarse_},{leaf},{_flc_perc_by_weight},{_coarse_perc_by_weight},{_mlc_val_csv},{_ini_wt_csv},{_fin_wt_csv}\n")
             r.close()
 

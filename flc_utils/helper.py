@@ -71,17 +71,9 @@ def qualix_api(token, payload, sectionId, new_fields, moisture_percentage):
                     })
     data_ = data_.replace("'", '"')
     print("DEBUG: ", data_)
-    #webhook = DiscordWebhook(url='https://discordapp.com/api/webhooks/880779682486816808/Lxz0az1YlA6ZcOyB2oVP7F9UFjllexp20bFxv6N-mkItDGLt9wZqtWF2Oc9MF_0U5u5P', content='DATA')
-    #response = webhook.execute()
-    #webhook = DiscordWebhook(url='https://discordapp.com/api/webhooks/880779682486816808/Lxz0az1YlA6ZcOyB2oVP7F9UFjllexp20bFxv6N-mkItDGLt9wZqtWF2Oc9MF_0U5u5P', content=str(data_))
-    #response = webhook.execute()
     analyses_ = json.dumps(li)
     analyses_ = analyses_.replace("'", '"')
     print("DEBUG: ", analyses_)
-    #webhook = DiscordWebhook(url='https://discordapp.com/api/webhooks/880779682486816808/Lxz0az1YlA6ZcOyB2oVP7F9UFjllexp20bFxv6N-mkItDGLt9wZqtWF2Oc9MF_0U5u5P', content='ANALYSES')
-    #response = webhook.execute()    
-    #webhook = DiscordWebhook(url='https://discordapp.com/api/webhooks/880779682486816808/Lxz0az1YlA6ZcOyB2oVP7F9UFjllexp20bFxv6N-mkItDGLt9wZqtWF2Oc9MF_0U5u5P', content=str(analyses_))
-    #response = webhook.execute()
     mp_encoder = MultipartEncoder(
             fields={
                 "data": data_,
