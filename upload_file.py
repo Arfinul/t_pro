@@ -87,7 +87,7 @@ def get_files_by_file_size(dirname, reverse=True):
     return file_names
 
 def track_uploading(file_name_, file_size_, time_):
-    f = open('s3_upload_info.csv','a')
+    f = open(os.path.join(ROOT_DIR,'s3_upload_info.csv'),'a')
     client_ = "aideobarie_xavier_nx_2"
     dt_ = datetime.datetime.now().strftime("%d-%m-%Y %H:%M:%S")
     f.write(f"{client_},{dt_},{file_name_},{file_size_},{time_}\n")
@@ -159,6 +159,7 @@ def uploadVidsToS3(file_to_upload):
 
 try:
     # Main method to call
+    ROOT_DIR = os.path.join(os.environ['HOME'], "Documents","tragnext")
     SCAN_VID_DIR = os.path.join(os.environ['HOME'], "Documents","tragnext","flc_utils","trainVideo","upload_s3")
 
     path_to_watch = SCAN_VID_DIR

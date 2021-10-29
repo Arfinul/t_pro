@@ -39,7 +39,7 @@ def compress():
             actual_name = os.path.splitext(list_of_files[no_of_files - 1])[0] + ".mp4"
             input_file = os.path.join(path_to_watch, list_of_files[no_of_files - 1])
             output_file = os.path.join(UPLOAD_DIR, "result.mp4")
-            cmd = "ffmpeg -i " + input_file + " -vcodec libx265 -crf 20 " + output_file
+            cmd = "ffmpeg -i " + input_file + " -vcodec libx265 -crf 22 " + output_file
             print("\n\n")
             print(cmd)
             print("\n\n")
