@@ -1,0 +1,2 @@
+tmux new-session -d -s upload \; send-keys "python3 /home/agnext/Documents/tragnext/upload_file.py" Enter
+tmux new-session -d -s compress \; send-keys "python3 /home/agnext/Documents/tragnext/compress_video.py" Enter

@@ -15,7 +15,6 @@ import json
 import configparser
 import math
 import gc
-import threading
 from flc_utils import helper
 import logging
 import numpy as np
@@ -51,7 +50,7 @@ export LD_LIBRARY_PATH=/home/agnext/Documents/tragnext/
 """
 
 pwd = configparser.get('gui-config', 'sys_password')
-jetson_clock_cmd = 'jetson_clocks'
+jetson_clock_cmd = 'jetson_clocks --fan'
 
 
 class MyTkApp(tk.Frame):
@@ -251,7 +250,7 @@ class MyTkApp(tk.Frame):
         try:
             p = subprocess.Popen("exec " + command, stdout= subprocess.PIPE, shell=True)
             p.wait()
-            os.rename("flc_utils/trainVideo/testing/result.avi", "flc_utils/trainVideo/testing/" + datetime.datetime.now().strftime("%d-%m-%Y %H:%M:%S") + "_" + str(self.customer_id) + ".avi")
+            #os.rename("flc_utils/trainVideo/testing/result.avi", "flc_utils/trainVideo/testing/" + datetime.datetime.now().strftime("%d-%m-%Y_%H:%M:%S") + "_" + str(self.customer_id) + ".avi")
             self.moisture_loss_count()
             self.show_results_on_display()
             self.endRecord.place(x=int(configparser.get('gui-config', 'endrecord_btn_x')), y=int(configparser.get('gui-config', 'endrecord_btn_y')))
@@ -385,7 +384,7 @@ class MyTkApp(tk.Frame):
             self._flc_btn.place_forget()
             self._coarse_btn.place_forget()
             #self._flc_btn_by_weight.place_forget()
-            self._coarse_btn_by_weight.place_forget()
+#            self._coarse_btn_by_weight.place_forget()
             self.by_count_text.place_forget()
             self.mlc_label.place_forget()
             self._final_weight_label.place_forget()
@@ -750,10 +749,10 @@ class MyTkApp(tk.Frame):
             logger.exception(str('Exception occured in "login_success" function\nError message:' + str(e)))
     
     def get_weight_from_scale(self):
-            buffer = ''
-            weight_list = []
+        buffer = ''
+        weight_list = []
         # Get values for 30 x 0.2 = 6 seconds
-        #try:
+        try:
             ser = serial.Serial('/dev/ttyUSB0', 19200)
             t_end = time.time() + 30 * 0.2
             while time.time() < t_end:
@@ -765,7 +764,7 @@ class MyTkApp(tk.Frame):
             messagebox.showinfo("Weight:", weight_to_float)
             ser.close()
             return weight_to_float
-        #except:
+        except:
             self.show_error_msg("Connect Weighing Scale")
             print("Weighing scale Serial ERROR") 
     # Initial Weight wrapepr
