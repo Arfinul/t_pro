@@ -4,14 +4,12 @@ import tkinter as tk
 from tkinter import *
 from tkinter import messagebox
 from tkinter import font
-import cv2
 import os
 from PIL import Image,ImageTk
 import datetime
 import sys
 import subprocess   
 import requests
-import json
 import configparser
 import math
 import gc
@@ -22,7 +20,7 @@ import numpy as np
 import serial
 import time
 import re
-
+import shutil
 os.chdir("/home/agnext/Documents/tragnext")
 
 logging.basicConfig(filename='server_logs.log',
@@ -253,7 +251,9 @@ class MyTkApp(tk.Frame):
         try:
             p = subprocess.Popen("exec " + command, stdout= subprocess.PIPE, shell=True)
             p.wait()
-            os.rename("flc_utils/trainVideo/testing/result.avi", "flc_utils/trainVideo/testing/" + datetime.datetime.now().strftime("%d-%m-%Y_%H:%M:%S") + "_" + str(self.customer_id) + ".avi")
+            filename = "flc_utils/trainVideo/testing/" + datetime.datetime.now().strftime("%d-%m-%Y_%H:%M:%S") + "_" + str(self.customer_id) + ".mp4"
+            os.rename("flc_utils/trainVideo/testing/result.mp4", filename)
+            shutil.move(filename, "/media/320D245C31AD621A")
             self.moisture_loss_count()
             self.show_results_on_display()
             self.endRecord.place(x=int(configparser.get('gui-config', 'endrecord_btn_x')), y=int(configparser.get('gui-config', 'endrecord_btn_y')))
@@ -411,19 +411,19 @@ class MyTkApp(tk.Frame):
             
             if totalCount != 0:
                 if leaf == "Own":
-                    _1lb_perc = round(_1lb*100/totalCount, 2) - 5
+                    _1lb_perc = round(_1lb*100/totalCount, 2) - 12
                     _2lb_perc = round(_2lb*100/totalCount, 2) + 2
-                    _3lb_perc = round(_3lb*100/totalCount, 2)
+                    _3lb_perc = round(_3lb*100/totalCount, 2) - 5
                     _1bj_perc = round(_1bj*100/totalCount, 2) - 12
                     _2bj_perc = round(_2bj*100/totalCount, 2)
-                    totalCount = int(totalCount * 0.80)
+                    totalCount = int(totalCount * 0.55)
                 elif leaf == "Bought":
-                    _1lb_perc = round(_1lb*100/totalCount, 2) - 8
-                    _2lb_perc = round(_2lb*100/totalCount, 2) - 5
-                    _3lb_perc = round(_3lb*100/totalCount, 2) - 4
-                    _1bj_perc = round(_1bj*100/totalCount, 2) - 13
+                    _1lb_perc = round(_1lb*100/totalCount, 2) - 15
+                    _2lb_perc = round(_2lb*100/totalCount, 2) - 8
+                    _3lb_perc = round(_3lb*100/totalCount, 2) - 10
+                    _1bj_perc = round(_1bj*100/totalCount, 2) - 8
                     _2bj_perc = round(_2bj*100/totalCount, 2)
-                    totalCount = int(totalCount * 0.80)
+                    totalCount = int(totalCount * 0.55)
 
                 _1lb_perc = 0 if _1lb_perc < 0 else _1lb_perc
                 _2lb_perc = 0 if _2lb_perc < 0 else _2lb_perc

@@ -493,7 +493,7 @@ int main(int argc, char *argv[])
     oss << std::put_time(&tm, "%d-%m-%Y %H-%M-%S");
     auto str = oss.str();
 
-    std::string out_videofile = "flc_utils/trainVideo/testing/result.avi";
+    std::string out_videofile = "flc_utils/trainVideo/testing/result.mp4";
     bool const save_output_videofile = true;   // true - for history
     bool const send_network = false;        // true - for remote detection
     bool const use_kalman_filter = true;   // true - for stationary camera
@@ -1041,4 +1041,3 @@ int main(int argc, char *argv[])
 
     return 0;
 }
-
