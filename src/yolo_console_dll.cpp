@@ -190,6 +190,7 @@ float fine_percnt = 0.0;// Agnext
 float perc_count_1lb = 0.0; //Agnext
 float perc_count_2lb = 0.0; //Agnext
 float perc_count_3lb = 0.0; //Agnext
+float perc_count_4lb = 0.0; //Agnext
 float perc_count_1Banjhi = 0.0; //Agnext
 float perc_count_2Banjhi = 0.0; //Agnext
 float perc_count_coarse = 0.0; //Agnext
@@ -199,6 +200,7 @@ std::string frame_str = ""; // Agnext
 std::string _1lb_str = "";  // Agnext
 std::string _2lb_str = "";  // Agnext
 std::string _3lb_str = "";  // Agnext
+std::string _4lb_str = "";  // Agnext
 std::string _1Banjhi_str = "";  // Agnext   
 std::string _2Banjhi_str = "";  // Agnext
 std::string coarse_str = "";    // Agnext
@@ -802,31 +804,35 @@ int main(int argc, char *argv[])
                         _3lb_count_str = "3LB : " + std::to_string(count_3lb); // Agnext
                         _3lb_str = "3LB %: " + std::to_string(perc_count_3lb); // Agnext
                         putText(draw_frame, _3lb_str.substr(0,11), cv::Point2f(10, 160), cv::FONT_HERSHEY_COMPLEX_SMALL, 1.2, cv::Scalar(0, 255, 255), 1);  // Agnext
+                      
+                        perc_count_4lb = perc_count_2lb/4;
+                        _4lb_str = "4LB %: " + std::to_string(perc_count_4lb); // Agnext
+                        putText(draw_frame, _4lb_str.substr(0,11), cv::Point2f(10, 190), cv::FONT_HERSHEY_COMPLEX_SMALL, 1.2, cv::Scalar(0, 255, 255), 1);  // Agnext
 
                         perc_count_1Banjhi = (float(count_1Banjhi)*100)/total;
                         _1Banjhi_count_str = "1Banjhi : " + std::to_string(count_1Banjhi); // Agnext
                         _1Banjhi_str = "1Banjhi %: " + std::to_string(perc_count_1Banjhi); // Agnext    
-                        putText(draw_frame, _1Banjhi_str.substr(0,15), cv::Point2f(10, 190), cv::FONT_HERSHEY_COMPLEX_SMALL, 1.2, cv::Scalar(0, 255, 255), 1);  // Agnext   
+                        putText(draw_frame, _1Banjhi_str.substr(0,15), cv::Point2f(10, 220), cv::FONT_HERSHEY_COMPLEX_SMALL, 1.2, cv::Scalar(0, 255, 255), 1);  // Agnext   
                         
                         perc_count_2Banjhi = (float(count_2Banjhi)*100)/total;
                         _2Banjhi_count_str = "2Banjhi : " + std::to_string(count_2Banjhi); // Agnext
                         _2Banjhi_str = "2Banjhi %: " + std::to_string(perc_count_2Banjhi); // Agnext    
-                        putText(draw_frame, _2Banjhi_str.substr(0,15), cv::Point2f(10, 220), cv::FONT_HERSHEY_COMPLEX_SMALL, 1.2, cv::Scalar(0, 255, 255), 1);  // Agnext
+                        putText(draw_frame, _2Banjhi_str.substr(0,15), cv::Point2f(10, 250), cv::FONT_HERSHEY_COMPLEX_SMALL, 1.2, cv::Scalar(0, 255, 255), 1);  // Agnext
 
                         _cluster_count_str = "Cluster : " + std::to_string(count_cluster); // Agnext
 
                         perc_count_coarse = (float(count_coarse)*100)/total;
                         _coarse_count_str = "Coarse : " + std::to_string(count_coarse); // Agnext
                         coarse_str = "Coarse %: " + std::to_string(perc_count_coarse); // Agnext
-                        putText(draw_frame, coarse_str.substr(0,14), cv::Point2f(10, 250), cv::FONT_HERSHEY_COMPLEX_SMALL, 1.2, cv::Scalar(0, 255, 255), 1);  // Agnext
+                        putText(draw_frame, coarse_str.substr(0,14), cv::Point2f(10, 280), cv::FONT_HERSHEY_COMPLEX_SMALL, 1.2, cv::Scalar(0, 255, 255), 1);  // Agnext
 
                         fine_percnt = (float(count_1lb) + float(count_2lb) + float(count_1Banjhi)) * 100 / total; // Agnext
 
                         fine_per = "FLC % : " + std::to_string(fine_percnt); // Agnext
-                        putText(draw_frame, fine_per.substr(0,12), cv::Point2f(10, 280), cv::FONT_HERSHEY_COMPLEX_SMALL, 1.2, cv::Scalar(0, 255, 255), 2);  // Agnext
+                        putText(draw_frame, fine_per.substr(0,12), cv::Point2f(10, 310), cv::FONT_HERSHEY_COMPLEX_SMALL, 1.2, cv::Scalar(0, 255, 255), 2);  // Agnext
 
                         total_str = "Total : " + std::to_string(total); // Agnext
-                        putText(draw_frame, total_str, cv::Point2f(10, 310), cv::FONT_HERSHEY_COMPLEX_SMALL, 1.2, cv::Scalar(0, 255, 255), 1);  // Agnext
+                        putText(draw_frame, total_str, cv::Point2f(10, 340), cv::FONT_HERSHEY_COMPLEX_SMALL, 1.2, cv::Scalar(0, 255, 255), 1);  // Agnext
                         
                         // TIMER
                         auto t_end = std::chrono::high_resolution_clock::now(); // Agnext

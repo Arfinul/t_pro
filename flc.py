@@ -21,6 +21,7 @@ import numpy as np
 import serial
 import time
 import re
+import threading
 
 logging.basicConfig(filename='server_logs.log',
                     filemode='a',
@@ -133,7 +134,7 @@ class MyTkApp(tk.Frame):
         self.by_count_text = Label(self.window, text="By Count ", font=('times', 20, 'bold'), bg="#f7f0f5")
         self.by_weight_text = Label(self.window, text="By Weight ", font=('times', 20, 'bold'), bg="#f7f0f5")
         self.entered = tk.Button(self.window, text="Start FLC", command=self.details_verify, fg="white", bg="#539051", width=int(configparser.get('gui-config', 'start_flc_width')),height=int(configparser.get('gui-config', 'start_flc_height')), font=('times', 16, 'bold'))
-        self.formula = Label(self.window, text="FLC = 1LB + 2LB + 3LB + 1Banjhi + 2Banjhi", font=("Helvetica", 15), background='white')
+        self.formula = Label(self.window, text="FLC = 1LB + 2LB + 3LB + 4LB + 1Banjhi + 2Banjhi", font=("Helvetica", 15), background='white')
         self.warning_sign = Label(self.window, text="", font=('times', 15, 'bold'), fg="red", bg="white")
 
         img = ImageTk.PhotoImage(Image.open(configparser.get('gui-config', 'logo')))
@@ -372,7 +373,7 @@ class MyTkApp(tk.Frame):
                     self.msg_sent.configure(text="Data saved", fg="green")
                     if helper.is_internet_available():
                         t = threading.Thread(target=helper.update_spreadsheet, 
-                            args=(self.results["one_leaf_bud"], self.results["two_leaf_bud"], 
+                            args=(self.results[""], self.results["two_leaf_bud"], 
                                 self.results["three_leaf_bud"], self.results["one_leaf_banjhi"], 
                                 self.results["two_leaf_banjhi"], 100 - self.results["quality_score"], self.results["total_count"], self.results["quality_score"],))
                         t.start()
@@ -408,26 +409,48 @@ class MyTkApp(tk.Frame):
             
             if totalCount != 0:
                 if leaf == "Own":
-                    _1lb_perc = round(_1lb*100/totalCount, 2) - 8
-                    _2lb_perc = round(_2lb*100/totalCount, 2) - 20
+                    _1lb_perc = round(_1lb*100/totalCount, 2) - 10
+                    _2lb_perc = round(_2lb*100/totalCount, 2) - 24
                     _3lb_perc = round(_3lb*100/totalCount, 2) - 4
-                    _1bj_perc = round(_1bj*100/totalCount, 2) - 28
-                    _2bj_perc = round(_2bj*100/totalCount, 2) - 26
+                    
+                    _4lb_perc = _2lb_perc/5 + _3lb_perc
+                    _1lb_perc = round(_1lb*100/totalCount, 2) - 20
+                    _2lb_perc = round(_2lb*100/totalCount, 2) - 40
+                    _3lb_perc = round(_3lb*100/totalCount, 2)
+                    _1bj_perc = round(_1bj*100/totalCount, 2) - 10
+                    _2bj_perc = round(_2bj*100/totalCount, 2) - 10
                     totalCount = int(totalCount * 1.8)
+                    
                 elif leaf == "Bought":
-                    _1lb_perc = round(_1lb*100/totalCount, 2) - 8
-                    _2lb_perc = round(_2lb*100/totalCount, 2) - 20
+                    _1lb_perc = round(_1lb*100/totalCount, 2) - 10
+                    _2lb_perc = round(_2lb*100/totalCount, 2) - 24
                     _3lb_perc = round(_3lb*100/totalCount, 2) - 4
-                    _1bj_perc = round(_1bj*100/totalCount, 2) - 28
-                    _2bj_perc = round(_2bj*100/totalCount, 2) - 26
+                    
+                    _4lb_perc = _2lb_perc/5 + _3lb_perc
+                    _1lb_perc = round(_1lb*100/totalCount, 2) - 20
+                    _2lb_perc = round(_2lb*100/totalCount, 2) - 40
+                    _3lb_perc = round(_3lb*100/totalCount, 2)
+                    _1bj_perc = round(_1bj*100/totalCount, 2) - 10
+                    _2bj_perc = round(_2bj*100/totalCount, 2) - 10
                     totalCount = int(totalCount * 1.8)
+                    
+                    
+                #elif leaf == "Bought":
+                    #_1lb_perc = round(_1lb*100/totalCount, 2) - 10
+                    #_2lb_perc = round(_2lb*100/totalCount, 2) - 24
+                    #_3lb_perc = round(_3lb*100/totalCount, 2) - 4
+                    #_1bj_perc = round(_1bj*100/totalCount, 2) - 28
+                    #_2bj_perc = round(_2bj*100/totalCount, 2) - 26
+                    #_4lb_perc = _2lb_perc/5 + _3lb_perc
+                    # totalCount = int(totalCount * 1.8)
 
                 _1lb_perc = 0 if _1lb_perc < 0 else _1lb_perc
                 _2lb_perc = 0 if _2lb_perc < 0 else _2lb_perc
                 _3lb_perc = 0 if _3lb_perc < 0 else _3lb_perc
+                _4lb_perc = 0 if _4lb_perc < 0 else _4lb_perc
                 _1bj_perc = 0 if _1bj_perc < 0 else _1bj_perc
                 _2bj_perc = 0 if _2bj_perc < 0 else _2bj_perc
-                _flc_perc = _1lb_perc + _2lb_perc + _1bj_perc + _3lb_perc + _2bj_perc
+                _flc_perc = _1lb_perc + _2lb_perc + _1bj_perc + _3lb_perc + _2bj_perc + _4lb_perc
                 _flc_perc = 100 if _flc_perc > 100 else _flc_perc
                 _flc_perc_by_weight = 24.53 + (0.45 * _flc_perc)
                 _flc_perc_by_weight = 100 if _flc_perc_by_weight > 100 else _flc_perc_by_weight
@@ -439,6 +462,7 @@ class MyTkApp(tk.Frame):
                 _3lb_perc = 0.0
                 _1bj_perc = 0.0
                 _2bj_perc = 0.0
+                _4lb_perc = 0.0
                 _coarse_perc = 0.0
                 _flc_perc = 0.0
                 _coarse_perc_by_weight = 0.0
@@ -458,8 +482,9 @@ class MyTkApp(tk.Frame):
             _3lbp = str(_3lb_perc)
             _1bjp = str(_1bj_perc)
             _2bjp = str(_2bj_perc)
+            _4lbp = str(_4lb_perc)
             total_ = str(totalCount)
-            f.write(f"{dt_},{flc_},{coarse_},{_1lbp},{_2lbp},{_3lbp},{_1bjp},{_2bjp},{total_},{leaf},{_flc_perc_by_weight},{_coarse_perc_by_weight},{_mlc_val_csv},{_ini_wt_csv},{_fin_wt_csv}\n")
+            f.write(f"{dt_},{flc_},{coarse_},{_1lbp},{_2lbp},{_3lbp},{_4lbp},{_1bjp},{_2bjp},{total_},{leaf},{_flc_perc_by_weight},{_coarse_perc_by_weight},{_mlc_val_csv},{_ini_wt_csv},{_fin_wt_csv}\n")
             f.close()
             
             r = open('/home/agnext/Desktop/results.csv','a')
@@ -471,10 +496,12 @@ class MyTkApp(tk.Frame):
             self.results['three_leaf_bud'] = int(np.ceil(_3lb_perc * totalCount/100))
             self.results['one_leaf_banjhi'] = int(np.ceil(_1bj_perc * totalCount/100))
             self.results['two_leaf_banjhi'] = int(np.ceil(_2bj_perc * totalCount/100))
+            self.results['four_leaf_bud'] = int(np.ceil(_4lb_perc * totalCount/100))
             self.results['one_bud_count'] = 0
             self.results['one_leaf_count'] = 0
             self.results['two_leaf_count'] = 0
             self.results['three_leaf_count'] = 0
+            self.results['four_leaf_count'] = 0
             self.results['one_banjhi_count'] = 0
             self.results['total_count'] = totalCount
             self.results['quality_score'] = "{:.2f}".format(_flc_perc)
