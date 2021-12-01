@@ -484,7 +484,7 @@ int main(int argc, char *argv[])
     auto str = oss.str();
 
     std::string out_videofile = "flc_utils/trainVideo/testing/result.avi";
-    bool const save_output_videofile = true;   // true - for history
+    bool const save_output_videofile = false;   // true - for history
     bool const send_network = false;        // true - for remote detection
     bool const use_kalman_filter = true;   // true - for stationary camera
 
@@ -553,6 +553,10 @@ int main(int argc, char *argv[])
                 cv::VideoCapture cap;
                 if (filename == "web_camera") {
                     cap.open(0);
+		    cap.set(cv::CAP_PROP_FRAME_WIDTH,640);
+		    cap.set(cv::CAP_PROP_FRAME_HEIGHT,480);
+		    //cap.set(cv::CAP_PROP_CONVERT_RGB , false);
+		    cap.set(cv::CAP_PROP_FPS, 120);
                     cap >> cur_frame;
                 } else if (!use_zed_camera) {
                     cap.open(filename);
