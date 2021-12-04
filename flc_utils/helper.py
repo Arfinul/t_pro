@@ -31,7 +31,8 @@ def get_class_count():
     frame_count = li[0].split(": ")[1]
     _1lb = int(li[1].split(": ")[1])
     _2lb = int(li[2].split(": ")[1])
-    _3lb = int(li[3].split(": ")[1]) 
+    _3lb = int(li[3].split(": ")[1])
+    _4lb = int(li[4].split(": ")[1])
     _1bj = int(li[4].split(": ")[1])
     _2bj = int(li[5].split(": ")[1])
     _cluster = int(li[6].split(": ")[1])
@@ -39,7 +40,7 @@ def get_class_count():
     _perc = round(float(li[8].split(": ")[1]), 2)
     _perc = _perc if math.isnan(float(_perc)) == False else 0
 
-    totalCount = int(_1lb + _2lb + _3lb + _1bj + _2bj + _coarse)
+    totalCount = int(_1lb + _2lb + _3lb + _4lb +  _1bj + _2bj + _coarse)
     return _1lb, _2lb, _3lb, _1bj, _2bj, _coarse, totalCount, _perc
 
 
