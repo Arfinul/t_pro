@@ -20,7 +20,9 @@ from google.auth.transport.requests import Request
 
 from discord_webhook import DiscordWebhook
 
-webhook_url = "https://discordapp.com/api/webhooks/882178629088468992/DX49ncnMQXfC5HuU8x52m-B3B2M38NZs4l6WD2TFj-0gS4rX9cA5j2zmOy5dpmwb640I"
+import time
+
+webhook_url = "https://discordapp.com/api/webhooks/898163900720230400/zZO9kcV5Zi79RJa7U0VCY8VIvQkTNCEWT2H3KMRnQSlIj1-0e4-39bDaAGm0LtD-5Lv4"
 
 configparser = configparser.RawConfigParser()
 configparser.read('flc_utils/screens/touchScreen/gui.cfg')
@@ -117,7 +119,8 @@ def qualix_api(token, payload, new_fields, leaf_type):
                    }
                 )
     response = requests.post(
-            'http://20.204.98.119:7007/api/scan/post-tea',
+            'http://20.204.98.119:9994/api/scan/post-tea',
+            #'http://20.204.98.119:7007/api/scan/post-tea',
             data=mp_encoder,
             headers={'Content-Type': mp_encoder.content_type,
                      "Authorization": "Bearer " + token
@@ -137,7 +140,7 @@ def login_api_qualix(username, password):
         querystring = {"response_type":"code",
                         "client_id": "client-mobile"
                         }
-        response = session.get("http://20.204.98.119:7007/oauth/authorize", params=querystring)
+        response = session.get("http://20.204.98.119:9994/oauth/authorize", params=querystring)
 
         print("OAUTH DBG: "+ str(response))
 
@@ -153,7 +156,7 @@ def login_api_qualix(username, password):
         headers={'Content-Type': mp_encoder.content_type}
         querystring = {"bearer":"mobile"}
         response = session.post(
-                    'http://20.204.98.119:7007/login', 
+                    'http://20.204.98.119:9994/login', 
                     data=mp_encoder,
                     params=querystring,
                     headers=headers,

@@ -23,7 +23,7 @@ import serial
 import time
 import re
 
-os.chdir("/home/agnext/Documents/tragnext")
+os.chdir("/home/nvidia/Documents/tragnext")
 
 logging.basicConfig(filename='server_logs.log',
                     filemode='a',
@@ -48,7 +48,7 @@ configparser.read('flc_utils/screens/touchScreen/gui.cfg')
 USE_INTERNET = configparser.get('gui-config', 'internet')
 
 cmd = """
-export LD_LIBRARY_PATH=/home/agnext/Documents/tragnext/
+export LD_LIBRARY_PATH=/home/nvidia/Documents/tragnext/
 ./uselib cfg/jorhat_Dec.names cfg/jorhat_Dec.cfg weights/jorhat_Dec_final.weights web_camera > output.txt
 """
 
@@ -411,19 +411,19 @@ class MyTkApp(tk.Frame):
             
             if totalCount != 0:
                 if leaf == "Own":
-                    _1lb_perc = round(_1lb*100/totalCount, 2) - 5
-                    _2lb_perc = round(_2lb*100/totalCount, 2) + 2
-                    _3lb_perc = round(_3lb*100/totalCount, 2)
-                    _1bj_perc = round(_1bj*100/totalCount, 2) - 12
-                    _2bj_perc = round(_2bj*100/totalCount, 2)
-                    totalCount = int(totalCount * 0.80)
-                elif leaf == "Bought":
-                    _1lb_perc = round(_1lb*100/totalCount, 2) - 8
+                    _1lb_perc = round(_1lb*100/totalCount, 2) - 12
                     _2lb_perc = round(_2lb*100/totalCount, 2) - 5
-                    _3lb_perc = round(_3lb*100/totalCount, 2) - 4
-                    _1bj_perc = round(_1bj*100/totalCount, 2) - 13
+                    _3lb_perc = round(_3lb*100/totalCount, 2) - 6
+                    _1bj_perc = round(_1bj*100/totalCount, 2) - 14
                     _2bj_perc = round(_2bj*100/totalCount, 2)
-                    totalCount = int(totalCount * 0.80)
+                    totalCount = int(totalCount * 0.40)
+                elif leaf == "Bought":
+                    _1lb_perc = round(_1lb*100/totalCount, 2) - 12
+                    _2lb_perc = round(_2lb*100/totalCount, 2) - 5
+                    _3lb_perc = round(_3lb*100/totalCount, 2) - 6
+                    _1bj_perc = round(_1bj*100/totalCount, 2) - 14
+                    _2bj_perc = round(_2bj*100/totalCount, 2)
+                    totalCount = int(totalCount * 0.40)
 
                 _1lb_perc = 0 if _1lb_perc < 0 else _1lb_perc
                 _2lb_perc = 0 if _2lb_perc < 0 else _2lb_perc
@@ -465,7 +465,7 @@ class MyTkApp(tk.Frame):
             f.write(f"{dt_},{flc_},{coarse_},{_1lbp},{_2lbp},{_3lbp},{_1bjp},{_2bjp},{total_},{leaf},{_flc_perc_by_weight},{_coarse_perc_by_weight},{_mlc_val_csv},{_ini_wt_csv},{_fin_wt_csv}\n")
             f.close()
             
-            r = open('/home/agnext/Desktop/results.csv','a')
+            r = open('/home/nvidia/Desktop/results.csv','a')
             r.write(f"{dt_},{flc_},{coarse_},{leaf},{_flc_perc_by_weight},{_coarse_perc_by_weight},{_mlc_val_csv},{_ini_wt_csv},{_fin_wt_csv}\n")
             r.close()
 
@@ -753,7 +753,7 @@ class MyTkApp(tk.Frame):
     
     def get_weight_from_scale(self):
         buffer = ""
-        weight_list = []
+        weights_list = []
         # Get values for 30 x 0.2 = 6 seconds
         try:
             ser = serial.Serial('/dev/ttyUSB0', 9600)
@@ -762,9 +762,9 @@ class MyTkApp(tk.Frame):
                 one_byte = ser.read(1)
                 buffer += one_byte.decode("ascii")
             
-            weights_list = re.findall(r'\[([^]]*)\]', buffer)
-            filtered_wt = max(set(weights_list), key=weight_list.count)
-            weight_to_float = float(filtered_wt)/1000
+            weights_list = re.findall(r"[-+]?\d*\.\d+|\d+", buffer)
+            filtered_wt = max(set(weights_list), key=weights_list.count)
+            weight_to_float = float(filtered_wt)
             messagebox.showinfo("Weight:", weight_to_float)
             ser.close()
             return weight_to_float
