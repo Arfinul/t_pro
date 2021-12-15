@@ -4,7 +4,6 @@ import cv2
 import imutils, configparser, datetime
 import classify, rotate, display_results
 
-
 config = configparser.ConfigParser()
 config.read('flc.conf')
 root_folder = config.get('input_path', 'root_folder')
