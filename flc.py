@@ -22,7 +22,6 @@ import serial
 import time
 import re
 import threading
-
 logging.basicConfig(filename='server_logs.log',
                     filemode='a',
                     format='%(asctime)s - %(name)s - %(levelname)s - %(message)s',
