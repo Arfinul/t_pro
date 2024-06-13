@@ -63,14 +63,50 @@ Leveraging the Azure cloud for the Contract Tool MVP offers a compelling solutio
 Developing and hosting the Contract Tool on-premises was considered. However, this approach would require significant upfront investment in hardware and software infrastructure, and it would lack the scalability and flexibility offered by the Azure cloud environment.
 
 ### External API documentation
-Reference:
+Reference: **Required**
 
 ### Product Summary Circumstances and Exceptions
+Initial Design of this solution  **Required**
 
 ## Section 2: Data Governance 
+PLEASE NOTE:
+* The application specific Data Governance details requested below are for documentation purposes.
+* An approval of this public cloud account request is NOT an approval for use and movement of the data.
+* For specific questions regarding data usage and governance, the Data Governance team may be contacted at: data-governance@optum.com
 
 ### Data Details
+The meta data will contain following data fields
+* Contract File Name
+* Line Of Business
+* Agreement Effective Date
+* Agreement End Date
+* Vaccine List available
+* Chain Code(s)
+* NCPDP
+* IsActive
+
+Classification or response based on following test inputs 
+* Please provide all chain codes with an active Medicare agreement - return all chain codes which are active and related to medicare 
+* Please provide all chain codes - - return all chain codes
+
+- Policy 13A - 13A.2.01.03 Securing Protected and Confidential Information
+- Policy 15A - 15A Data Governance (Draft)
+
 ### Intended Data Use 
+There is new Use case for the data, and there will be both as-is use cases and new/modified use cases.
+In the cases of delivering data to other cloud subscriptions, we use Azure Private link
+Note: There may be follow-up with additional questions by the Platform Data Governance team.
+- [x] This is a new application
+- [ ] This is a replacement for an existing system
+      
+Data Use Cases:
+- [x] Data use cases remain as-is and unchanged
+- [ ] New and/or modified use cases for the data
+      
+Does data need to return to targets outside of your cloud account?
+- [ ] Yes
+- [x] No
+
 ### Upstream Data Interfaces and Sources
 ### Source Data Sets
 ### Downstream Targets 
@@ -94,6 +130,9 @@ Reference:
 |Azure OpenAI Service (GPT-4)	| Large language model for generating natural language responses to user queries |
 |ReactJS Web Application	| Front-end user interface for interacting with the Contract Tool |
 |[Insert other relevant Azure services here] | [Describe their purpose] |
+
+Architecture Diagram
+![MicrosoftTeams-image (1)](https://github.com/Arfinul/t_pro/assets/29590484/69e5afe0-7e0f-4a5a-9d30-cf4d75a69784)
 
 ### Architecture Circumstances and Exceptions
 
