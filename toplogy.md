@@ -4,35 +4,51 @@
 |:--------------------------:|:------:|--------------:|--------:|:-----------------:|:-----------------:|
 |Contract Tool (Azure Based) |        |               |         | Azure             | OptumRx           |
 
-| Table of Contents                      |
-|:---------------------------------------|
-|Section 1: General                      |
-|Section 2: Data Governance              |
-|Section 3: Code Delivery and Management |
-|Section 4: Architecture Summary         |
-|Section 5: Network Summary              |
-|Section 6: Security Criteria            |
+## Table of Contents
+* Section 1: General                      
+* Section 2: Data Governance              
+* Section 3: Code Delivery and Management 
+* Section 4: Architecture Summary         
+* Section 5: Network Summary              
+* Section 6: Security Criteria            
 
 ## Section 1: General
 ### Description
 This document outlines the intake request for the development of the Contract Tool MVP in the Azure public cloud environment. The Contract Tool will provide a user-friendly interface for answering key questions related to pharma contracts, improving efficiency and accessibility to critical information. This initial MVP focuses on delivering core functionality while leveraging Azure services for scalability and cost-effectiveness.
 
 ### Business Segment Chief Architect Awareness
-Business Segment Chief Architect: 
+* proof of approval on mail from the Business Segment Chief Architect - **Required**
+* Business Segment Chief Architect - **Required**
 
 ### User Details
-*	Who are your users? Primarily internal OptumRx personnel with potential future expansion to include other Optum business units.
-*	Are they internal (UHG Employees), external, or a mix of both? Initially internal, potentially expanding to other internal Optum business units in the future.
-*	What is the expected activity (total population, Daily active Users, new users per month)? For the MVP phase, limited user base with projected [Insert Estimated Number] daily active users.
-*	Describe how you are authenticating and authorizing users: Users will be authenticated via [Specify Authentication Method - e.g., Azure Active Directory]. Access control will be role-based with different permission levels for viewing, uploading, and managing contracts.
+*	Users are primarily internal OptumRx personnel
+*	Potentially expanding to other internal Optum business units in the future.
+* Expected activity (total population, Daily active Users, new users per month)?
+  * For the MVP phase, limited user base with projected [**Required Insert Estimated Number**] daily active users.
+* Authenticating and authorizing
+  * Users will be authenticated via [**Required Specify Authentication Method - e.g., Azure Active Directory**].
+  * Access control will be role-based with different permission levels for viewing, uploading, and managing contracts.
 
 ### Teams
-Primarily, this application caters to teams within OptumRx responsible for
 * Contract Management
 *	Data Analytics
 *	Business Operations
 
 ### Workload Placement use case
+* **Commercial Initiative**: This solution has the potential to support external clients in the future, streamlining interactions with pharmaceutical companies.
+* **Data\User Gravity**: Minimal data transfer required outside of Optum's existing systems. User base primarily internal, minimizing external network dependency.
+* **Critical Emerging Technology**: Leverages Azure's cloud-native technologies including AI/ML services and serverless functions for efficient scaling and resource management.
+* **Requires emerging public cloud technology**: The data needs to be hosted in Azure so that other teams with valid workload placement use cases can make use of the data in their applications.
+* **Using emerging technologies**
+  * Azure OpenAI Service – LLM Models GPT 4 
+  * Azure Functions
+  * Azure Storage Accounts
+  * Azure App Service
+  * Azure Container Registry
+  * Azure Container Apps
+  * Azure API Management
+  * Azure DevOps
+  * Application Gateway
 
 ### Existing workload displacement & cost recovery
 * Perceived amount of cost savings over time: Projected cost savings through increased efficiency in:
